@@ -1,0 +1,72 @@
+{
+  "name": "AutoRadar — La vérité sur chaque voiture",
+  "short_name": "AutoRadar",
+  "description": "Agrégateur auto FR/BE/CH · Score de confiance · Sans publicité",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#ffffff",
+  "theme_color": "#1D9E75",
+  "lang": "fr",
+  "categories": ["automotive", "shopping", "utilities"],
+  "icons": [
+    { "src": "icons/icon-72.png",   "sizes": "72x72",   "type": "image/png", "purpose": "maskable any" },
+    { "src": "icons/icon-96.png",   "sizes": "96x96",   "type": "image/png", "purpose": "maskable any" },
+    { "src": "icons/icon-128.png",  "sizes": "128x128", "type": "image/png", "purpose": "maskable any" },
+    { "src": "icons/icon-144.png",  "sizes": "144x144", "type": "image/png", "purpose": "maskable any" },
+    { "src": "icons/icon-152.png",  "sizes": "152x152", "type": "image/png", "purpose": "maskable any" },
+    { "src": "icons/icon-180.png",  "sizes": "180x180", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-192.png",  "sizes": "192x192", "type": "image/png", "purpose": "maskable any" },
+    { "src": "icons/icon-384.png",  "sizes": "384x384", "type": "image/png", "purpose": "maskable any" },
+    { "src": "icons/icon-512.png",  "sizes": "512x512", "type": "image/png", "purpose": "maskable any" }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshots/mobile-search.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Recherche de véhicules avec score de confiance"
+    },
+    {
+      "src": "screenshots/desktop-results.png",
+      "sizes": "1280x800",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Résultats avec filtres avancés"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Rechercher",
+      "url": "/?view=search",
+      "description": "Lancer une nouvelle recherche",
+      "icons": [{ "src": "icons/icon-96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Mes favoris",
+      "url": "/?view=favs",
+      "description": "Voir mes voitures favorites",
+      "icons": [{ "src": "icons/icon-96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Publier une annonce",
+      "url": "/?action=post",
+      "description": "Déposer une annonce gratuite",
+      "icons": [{ "src": "icons/icon-96.png", "sizes": "96x96" }]
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=org.autoradar.app",
+      "id": "org.autoradar.app"
+    },
+    {
+      "platform": "itunes",
+      "url": "https://apps.apple.com/app/autoradar/id000000000"
+    }
+  ],
+  "prefer_related_applications": false
+}
