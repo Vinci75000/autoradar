@@ -3,13 +3,11 @@
    Strategy: Cache-First for app shell, Network-First for API calls
    ================================================================ */
 
-const CACHE_NAME    = 'autoradar-v1';
+const CACHE_NAME    = 'autoradar-v2';
 const CACHE_ASSETS  = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/icons/icon-192.png',
-  '/icons/icon-512.png',
   'https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap',
 ];
 
