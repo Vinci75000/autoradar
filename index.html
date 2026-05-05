@@ -4369,6 +4369,12 @@ const FREE_PHOTOS  = 3;
 const PRO_PHOTOS   = 10;
 const LEGEND_PHOTOS = 13;
 
+/* Liste des concours d'élégance — exposée au scope module pour que les
+   chips de l'étape Distinctions puissent référencer chaque entrée par
+   son index dans onclick (évite l'imbrication de guillemets dans les
+   attributs HTML, qui cassait sur "Villa d'Este"). */
+const PAD_CONCOURS = ['Pebble Beach', "Villa d'Este", 'Rétromobile', 'Chantilly Arts & Élégance', 'Concours of Elegance', 'Goodwood Revival', 'Autre'];
+
 let _padStep   = 0;
 let _padData   = {};
 let _padPhotos = []; /* array of { url: dataURL } */
@@ -4693,7 +4699,6 @@ function padS3() {
 function padS4() {
   const concours = _padData.concours_list || [];
   const auctions = _padData.auction_history || [];
-  const concoursOptions = ['Pebble Beach', "Villa d'Este", 'Rétromobile', 'Chantilly Arts & Élégance', 'Concours of Elegance', 'Goodwood Revival', 'Autre'];
   const showOther = concours.includes('Autre');
 
   const auctionRows = auctions.length === 0
@@ -4719,7 +4724,7 @@ function padS4() {
     <div class="pad-fgroup">
       <label class="pad-flbl">Concours d'élégance</label>
       <div class="pad-chips">
-        ${concoursOptions.map(name => `<span class="pad-chip${concours.includes(name)?' on':''}" data-concours="${name.replace(/"/g,'&quot;')}" onclick="padToggleConcours(${JSON.stringify(name)})">${name}</span>`).join('')}
+        ${PAD_CONCOURS.map((name, i) => `<span class="pad-chip${concours.includes(name)?' on':''}" data-idx="${i}" onclick="padToggleConcours(${i})">${name}</span>`).join('')}
       </div>
       <div id="pad-concours-other-wrap" style="display:${showOther?'':'none'};margin-top:8px">
         <input id="pad-concours-other" class="pad-finp" value="${_padData.concours_other||''}" placeholder="Précisez l'autre concours" oninput="padFieldChange('concours_other', this.value)" />
@@ -4748,11 +4753,13 @@ function padAuctionRemove(idx) {
   if (_padData.auction_history) _padData.auction_history.splice(idx, 1);
   padRenderStep();
 }
-function padToggleConcours(name) {
+function padToggleConcours(idx) {
+  const name = PAD_CONCOURS[idx];
+  if (!name) return;
   const list = _padData.concours_list = _padData.concours_list || [];
   const i = list.indexOf(name);
   if (i >= 0) list.splice(i, 1); else list.push(name);
-  const chip = document.querySelector(`.pad-chip[data-concours="${(name+'').replace(/"/g,'&quot;')}"]`);
+  const chip = document.querySelector(`.pad-chip[data-idx="${idx}"]`);
   if (chip) chip.classList.toggle('on');
   if (name === 'Autre') {
     const otherWrap = document.getElementById('pad-concours-other-wrap');
