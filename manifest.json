@@ -1,13 +1,13 @@
 {
-  "name": "AutoRadar — La vérité sur chaque voiture",
-  "short_name": "AutoRadar",
-  "description": "Agrégateur auto FR/BE/CH · Score de confiance · Sans publicité",
+  "name": "Carnet — Une histoire de voitures",
+  "short_name": "Carnet",
+  "description": "Agrégateur premium d'annonces auto. Score architecturé sur features factuelles. Sans publicité.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#ffffff",
-  "theme_color": "#1D9E75",
+  "background_color": "#F4F1EA",
+  "theme_color": "#1F4D2F",
   "lang": "fr",
   "categories": ["automotive", "shopping", "utilities"],
   "icons": [

@@ -3,23 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="AutoRadar — Agrégateur auto France, Belgique, Suisse. Score de confiance sur chaque annonce. Sans publicité.">
-<meta name="theme-color" content="#1D9E75">
+<meta name="description" content="Carnet — Une histoire de voitures. Agrégateur premium d'annonces auto avec score architecturé sur features factuelles. Sans publicité.">
+<meta name="theme-color" content="#1F4D2F"><!-- vert anglais Carnet, anciennement #1D9E75 -->
 <!-- Open Graph -->
-<meta property="og:title" content="AutoRadar — La vérité sur chaque voiture." />
-<meta property="og:description" content="Trouvez votre prochain véhicule avec un score de confiance sur chaque annonce. Agrégateur auto FR/BE/CH, 100% sans pub." />
+<meta property="og:title" content="Carnet — Une histoire de voitures." />
+<meta property="og:description" content="Sélection · Registre · Enchères · Mon carnet. Score de confiance architecturé sur features factuelles." />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://autoradar.org" />
-<meta property="og:image" content="https://autoradar.org/og.png" />
+<meta property="og:url" content="https://autoradar.org" /> <!-- TODO: switch to https://carnet.life when DNS is pointed -->
+<meta property="og:image" content="https://autoradar.org/og.png" /> <!-- TODO: regenerate og image with Carnet branding -->
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="AutoRadar — La vérité sur chaque voiture." />
-<meta name="twitter:description" content="Score de confiance · Agrégateur auto FR/BE/CH · Sans pub." />
+<meta name="twitter:title" content="Carnet — Une histoire de voitures." />
+<meta name="twitter:description" content="Sélection · Registre · Enchères · Mon carnet · Sans pub." />
 <!-- PWA -->
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="AutoRadar">
+<meta name="apple-mobile-web-app-title" content="Carnet">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
 <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
@@ -33,18 +33,65 @@
     });
   }
 </script>
-<title>AutoRadar BETA — La vérité sur chaque voiture.</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<title>Carnet BETA — Une histoire de voitures.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700;1,800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#f5f5f3;min-height:100vh;padding:24px 16px}
+body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;min-height:100vh;padding:24px 16px;-webkit-font-smoothing:antialiased}
 :root{
-  --gc:#1D9E75;--gd:#BA7517;--gf:#D85A30;--gr:#E24B4A;
-  --mono:'DM Mono',monospace;--sans:'Plus Jakarta Sans',sans-serif;
-  --bg:#fff;--bg2:#f5f5f3;--border:#e5e5e2;--border2:#d0d0cc;
-  --text:#1a1a18;--text2:#6b6b67;--text3:#a0a09c;--r:10px;--rsm:6px
+  /* ── Encre ── */
+  --ink:#0A0A0A;
+  --ink-2:#1A1A1A;
+  --ink-soft:#3D3D3D;
+  --ink-15:rgba(10,10,10,0.15);
+  --ink-08:rgba(10,10,10,0.08);
+
+  /* ── Papier ── */
+  --paper:#F4F1EA;
+  --paper-2:#EBE7DD;
+  --paper-pure:#FAFAF7;
+
+  /* ── Accents (jamais > 30% surface) ── */
+  --orange:#E85A1F;        /* Sélection · LIVE · point variable */
+  --orange-bright:#FF6320;
+  --vert:#1F4D2F;          /* Validation · carnet OK */
+  --vert-soft:#2A6A41;
+
+  /* ── ALIASES compat code existant ── */
+  --gc:#1F4D2F;            /* anciennement #1D9E75 → vert anglais Carnet */
+  --gd:#E85A1F;            /* anciennement jaune-brun → orange Carnet */
+  --gf:#E85A1F;            /* anciennement orange-rouge → orange Carnet */
+  --gr:#E85A1F;            /* anciennement rouge → orange Carnet */
+  --bg:#FAFAF7;            /* anciennement #fff → papier pur */
+  --bg2:#F4F1EA;           /* anciennement #f5f5f3 → papier */
+  --border:rgba(10,10,10,0.15);
+  --border2:rgba(10,10,10,0.28);
+  --text:#0A0A0A;          /* anciennement #1a1a18 → encre profonde */
+  --text2:#3D3D3D;
+  --text3:rgba(10,10,10,0.4);
+
+  /* ── Typographie Carnet ── */
+  --display:'Bodoni Moda',serif;
+  --serif:'Cormorant Garamond',serif;
+  --mono:'DM Mono',monospace;
+  --sans:'Cormorant Garamond',serif;  /* alias compat — l'app appelait --sans pour les sans-serif modernes, on bascule sur le serif éditorial */
+
+  /* ── Border radius — Carnet est traditionnel, quasi carré ── */
+  --r:2px;
+  --rsm:2px;
+
+  /* ── Système Fibonacci (cf doc Méthode v1.1) ── */
+  --f-1:1px; --f-2:2px; --f-3:3px; --f-4:5px;
+  --f-5:8px; --f-6:13px; --f-7:21px; --f-8:34px;
+  --f-9:55px; --f-10:89px; --f-11:144px;
+
+  /* ── Phi ── */
+  --phi:1.618;
+  --phi-inv:0.618;
 }
 .wrap{max-width:800px;margin:0 auto}
 
@@ -865,14 +912,54 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#f5f5f3
 .sp{display:inline-block;width:12px;height:12px;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin .65s linear infinite;vertical-align:middle}
 .sp-dark{display:inline-block;width:10px;height:10px;border:1.5px solid var(--border2);border-top-color:var(--gc);border-radius:50%;animation:spin .65s linear infinite;vertical-align:middle}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── Carnet wordmark (charte v8 §I) ── */
+.carnet-wordmark{display:inline-flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.carnet-emblem{flex-shrink:0;align-self:center}
+.carnet-word{font-family:var(--display);font-style:italic;font-weight:500;font-size:28px;letter-spacing:-0.025em;color:var(--ink);display:inline-flex;align-items:flex-end;gap:0.04em;line-height:0.85}
+.carnet-pt{width:0.165em;height:0.165em;background:var(--orange);display:inline-block;margin-bottom:0.085em}
+.carnet-beta{font-family:var(--mono);font-size:9px;font-weight:500;background:var(--ink);color:var(--paper);padding:2px 7px;letter-spacing:0.22em;margin-left:1px;text-transform:uppercase;align-self:center}
+.carnet-tagline{font-family:var(--serif);font-style:italic;font-weight:300;font-size:13px;color:var(--ink-soft);margin-left:8px}
 </style>
 </head>
 <body>
+
+<!-- ════════════════════════════════════════════════
+     CARNET EMBLEM — SVG symbols (charte v8 §II)
+     Construction φ : 7 règles, voir charte §III
+     ════════════════════════════════════════════════ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="carnet-c" viewBox="0 0 1000 1000">
+      <path d="M 414 191 L 724 191 L 724 362 L 414 362 A 138 138 0 0 0 414 638 L 724 638 L 724 809 L 414 809 A 309 309 0 0 1 414 191 Z" fill="currentColor"/>
+    </symbol>
+    <symbol id="carnet-c-outline" viewBox="0 0 1000 1000">
+      <path d="M 414 191 L 724 191 L 724 362 L 414 362 A 138 138 0 0 0 414 638 L 724 638 L 724 809 L 414 809 A 309 309 0 0 1 414 191 Z" fill="none" stroke="currentColor" stroke-width="14"/>
+    </symbol>
+    <symbol id="carnet-dot" viewBox="0 0 1000 1000">
+      <rect x="790" y="703" width="106" height="106" fill="currentColor"/>
+    </symbol>
+    <symbol id="carnet-dot-outline" viewBox="0 0 1000 1000">
+      <rect x="790" y="703" width="106" height="106" fill="none" stroke="currentColor" stroke-width="10"/>
+    </symbol>
+  </defs>
+</svg>
+
 <div class="wrap">
 
 <!-- ═══ HEADER ═══ -->
 <div class="ar-head">
-  <div class="ar-logo"><span class="ar-dot"></span>AutoRadar<span style="font-size:9px;font-weight:600;background:#1a1a18;color:#fff;padding:2px 6px;border-radius:4px;letter-spacing:0.04em;margin-left:1px">BETA</span><span class="ar-tag">— La vérité sur chaque voiture.</span></div>
+  <div class="ar-logo carnet-wordmark">
+    <!-- Emblème C. (charte v8 §II) -->
+    <svg class="carnet-emblem" viewBox="0 0 1000 1000" width="32" height="32" aria-hidden="true">
+      <use href="#carnet-c" style="color:var(--ink)"/>
+      <use href="#carnet-dot" style="color:var(--orange)"/>
+    </svg>
+    <!-- Wordmark "Carnet." Bodoni Moda 500 italique + point carré orange -->
+    <span class="carnet-word">Carnet<span class="carnet-pt"></span></span>
+    <span class="carnet-beta">BETA</span>
+    <span class="ar-tag carnet-tagline">— Une histoire de voitures.</span>
+  </div>
   <nav class="ar-nav">
     <button class="nav-btn active" id="nb-search" onclick="showView('search')">Recherche</button>
     <button class="nav-btn" id="nb-favs" onclick="showView('favs')">
@@ -1066,7 +1153,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#f5f5f3
 <!-- ── Donation ── -->
 <div class="ar-don">
   <span style="width:8px;height:8px;border-radius:50%;background:var(--gc);flex-shrink:0;box-shadow:0 0 0 2px rgba(29,158,117,0.25),0 0 8px 2px rgba(29,158,117,0.5);animation:ledPulse 2.4s ease-in-out infinite"></span>
-  <span>AutoRadar est 100% sans publicité. Si cet outil vous aide à trouver votre prochain véhicule, <a href="#" onclick="event.preventDefault();showPaywall('default')">soutenez le projet</a> — même 1€ compte.</span>
+  <span>Carnet est 100% sans publicité. Si cet outil vous aide à trouver votre prochain véhicule, <a href="#" onclick="event.preventDefault();showPaywall('default')">soutenez le projet</a> — même 1€ compte.</span>
 </div>
 
 <!-- Reviews & App Stores -->
@@ -1102,7 +1189,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#f5f5f3
     <div class="ar-review-inp-row">
       <input id="review-name" class="ar-review-name-inp" type="text" placeholder="Votre prénom" maxlength="30" />
     </div>
-    <textarea id="review-text" class="ar-review-text-inp" placeholder="Décrivez votre expérience avec AutoRadar…"></textarea>
+    <textarea id="review-text" class="ar-review-text-inp" placeholder="Décrivez votre expérience avec Carnet…"></textarea>
     <div class="ar-review-submit-row">
       <span class="ar-review-hint">En bêta — vos avis façonnent le produit.</span>
       <button class="ar-review-submit" onclick="submitReview()">Publier l'avis →</button>
@@ -1152,7 +1239,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#f5f5f3
   <span class="ar-footer-sep">·</span>
   <button class="ar-footer-link" onclick="openInfoModal('bug')">Signaler un bug</button>
 </div>
-<div class="ar-footer-copy">AutoRadar BETA · 2025 · Données illustratives en phase bêta</div>
+<div class="ar-footer-copy">Carnet BETA · 2026 · Données illustratives en phase bêta</div>
 
 </div><!-- .wrap -->
 
@@ -1166,7 +1253,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#f5f5f3
     <div class="modal-body-scroll">
       <div class="legal-section">
         <div class="legal-title">Statut juridique</div>
-        <div class="legal-text">AutoRadar est en cours d'enregistrement en tant qu'ONG (organisation non gouvernementale). Les dons effectués seront déductibles fiscalement une fois l'enregistrement finalisé. Un reçu fiscal vous sera délivré pour chaque don. Pour toute question sur votre situation fiscale, consultez votre conseiller fiscal ou l'administration de votre pays.</div>
+        <div class="legal-text">Carnet est en cours d'enregistrement en tant qu'ONG (organisation non gouvernementale). Les dons effectués seront déductibles fiscalement une fois l'enregistrement finalisé. Un reçu fiscal vous sera délivré pour chaque don. Pour toute question sur votre situation fiscale, consultez votre conseiller fiscal ou l'administration de votre pays.</div>
       </div>
       <div class="legal-section">
         <div class="legal-title">Déductibilité fiscale des dons</div>
@@ -1179,28 +1266,28 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#f5f5f3
       </div>
       <div class="legal-section">
         <div class="legal-title">Éditeur</div>
-        <div class="legal-text">AutoRadar est un projet indépendant en phase bêta. Il n'est pas affilié à LeParking, AutoScout24, LeBonCoin, La Centrale ou tout autre agrégateur automobile.</div>
+        <div class="legal-text">Carnet est un projet indépendant en phase bêta. Il n'est pas affilié à LeParking, AutoScout24, LeBonCoin, La Centrale ou tout autre agrégateur automobile.</div>
       </div>
       <div class="legal-section">
         <div class="legal-title">Données personnelles &amp; RGPD</div>
-        <div class="legal-text">AutoRadar <strong>ne collecte aucune donnée personnelle côté serveur</strong>. Vos favoris, collections, préférences et historique de navigation sont stockés exclusivement dans le localStorage de votre navigateur et ne quittent jamais votre appareil.<br><br>
+        <div class="legal-text">Carnet <strong>ne collecte aucune donnée personnelle côté serveur</strong>. Vos favoris, collections, préférences et historique de navigation sont stockés exclusivement dans le localStorage de votre navigateur et ne quittent jamais votre appareil.<br><br>
         Conformément au RGPD, vous disposez d'un droit d'accès, de rectification et de suppression. Pour supprimer l'intégralité de vos données : ouvrez la console de votre navigateur et tapez <code style="font-family:var(--mono);font-size:11px;background:var(--bg2);padding:1px 5px;border-radius:3px">localStorage.clear()</code>.</div>
       </div>
       <div class="legal-section">
         <div class="legal-title">Cookies</div>
-        <div class="legal-text">AutoRadar n'utilise aucun cookie tiers, aucun tracker publicitaire, aucun pixel de reciblage. Le localStorage est utilisé uniquement pour sauvegarder vos préférences en local.</div>
+        <div class="legal-text">Carnet n'utilise aucun cookie tiers, aucun tracker publicitaire, aucun pixel de reciblage. Le localStorage est utilisé uniquement pour sauvegarder vos préférences en local.</div>
       </div>
       <div class="legal-section">
         <div class="legal-title">Fiabilité des scores</div>
-        <div class="legal-text">Les scores de confiance sont des <strong>indicateurs</strong> basés sur des données publiques agrégées. Ils ne constituent pas une expertise technique certifiée. AutoRadar ne saurait être tenu responsable d'une décision d'achat. Une inspection indépendante reste recommandée avant tout achat.</div>
+        <div class="legal-text">Les scores de confiance sont des <strong>indicateurs</strong> basés sur des données publiques agrégées. Ils ne constituent pas une expertise technique certifiée. Carnet ne saurait être tenu responsable d'une décision d'achat. Une inspection indépendante reste recommandée avant tout achat.</div>
       </div>
       <div class="legal-section">
         <div class="legal-title">Phase bêta</div>
-        <div class="legal-text">AutoRadar est en phase bêta. Les données d'annonces sont actuellement illustratives. La version de production connectera des sources réelles (LeBonCoin, AutoScout24, La Centrale, 2ememain.be).</div>
+        <div class="legal-text">Carnet est en phase bêta. Les données d'annonces sont actuellement illustratives. La version de production connectera des sources réelles (LeBonCoin, AutoScout24, La Centrale, 2ememain.be).</div>
       </div>
       <div class="legal-section">
         <div class="legal-title">Contact</div>
-        <div class="legal-text"><a href="mailto:contact@autoradar.org">contact@autoradar.org</a></div>
+        <div class="legal-text"><a href="mailto:contact@carnet.life">contact@carnet.life</a></div>
       </div>
     </div>
   </div>
@@ -1345,7 +1432,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#f5f5f3
           <div class="lb-badge-card-icon">🛡️</div>
           <div class="lb-badge-card-body">
             <div class="lb-badge-card-name" style="color:#1E3A8A">Gardien</div>
-            <div class="lb-badge-card-desc">Soutien mensuel actif. Vous maintenez AutoRadar en vie — chaque mois compte.</div>
+            <div class="lb-badge-card-desc">Soutien mensuel actif. Vous maintenez Carnet en vie — chaque mois compte.</div>
           </div>
           <div class="lb-badge-card-status locked" id="lb-status-guardian">🔒 Non obtenu</div>
         </div>
@@ -1438,7 +1525,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#f5f5f3
   <div class="share-modal">
     <div class="share-head">
       <div>
-        <div class="share-title">Partagez AutoRadar</div>
+        <div class="share-title">Partagez Carnet</div>
         <div class="share-sub">Aidez d'autres acheteurs à éviter les mauvaises surprises</div>
       </div>
       <button class="pw-close" onclick="closeShare()">×</button>
@@ -1492,12 +1579,12 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#f5f5f3
     <!-- ── SCREEN 1: Plans + donation libre ── -->
     <div id="pw-s1">
       <div class="pw-head">
-        <div class="pw-logo"><span class="ar-dot"></span>AutoRadar</div>
+        <div class="pw-logo"><span class="ar-dot"></span>Carnet</div>
         <button class="pw-close" onclick="closePaywall()">×</button>
       </div>
       <div class="pw-hero">
         <div class="pw-context-label" id="pw-label">Sans publicité</div>
-        <div class="pw-title" id="pw-title">AutoRadar est gratuit. Votre soutien le garde ainsi.</div>
+        <div class="pw-title" id="pw-title">Carnet est gratuit. Votre soutien le garde ainsi.</div>
         <div class="pw-sub" id="pw-sub">Aucune pub, aucun sponsor, aucune vente de données. Juste des voitures, et ceux qui permettent au projet d'exister.</div>
       </div>
       <div style="text-align:center;padding:6px 20px 2px">
@@ -1517,7 +1604,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#f5f5f3
           <div class="pw-plan-save">&nbsp;</div>
           <div class="pw-features">
             <div class="pw-feat">Couvre 1 mois de serveurs</div>
-            <div class="pw-feat">Garde AutoRadar sans pub</div>
+            <div class="pw-feat">Garde Carnet sans pub</div>
             <div class="pw-feat">Accès gratuit pour tous</div>
           </div>
           <button class="pw-plan-btn" onclick="event.stopPropagation();selectPlan('monthly',this.closest('.pw-plan'))">Commencer</button>
@@ -1625,7 +1712,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#f5f5f3
           <span class="pw-av" style="background:#534AB7">S</span>
           <span class="pw-av" style="background:#D85A30">A</span>
         </div>
-        <span>589 personnes soutiennent déjà AutoRadar</span>
+        <span>589 personnes soutiennent déjà Carnet</span>
       </div>
       <div class="pw-skip" onclick="closePaywall()">Continuer gratuitement — je soutiendrai plus tard</div>
     </div>
@@ -1695,7 +1782,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#f5f5f3
     <div id="pw-thankyou" style="display:none" class="pw-thankyou">
       <div class="pw-ty-icon">♥</div>
       <div class="pw-ty-title">Merci, vous êtes formidable.</div>
-      <div class="pw-ty-sub">Votre soutien garde AutoRadar sans publicité<br>et libre pour tous. C'est grâce à vous que ça dure.</div>
+      <div class="pw-ty-sub">Votre soutien garde Carnet sans publicité<br>et libre pour tous. C'est grâce à vous que ça dure.</div>
       <button class="pw-ty-close" onclick="closePaywall()">Continuer →</button>
     </div>
 
@@ -1828,7 +1915,7 @@ const COUNTRIES= ["France","Belgique","Suisse"];
 const OPTIONS_MAIN  = ["Cuir","4x4","Toit ouvrant","GPS intégré","Caméra recul","Sièges chauffants","Régulateur vitesse","1ère main","CT récent","Pack sport","Jantes alliage","Climatisation"];
 const OPTIONS_OTHER = ["Suspension sport","Toit panoramique","Caméra 360°","Aide au stationnement","Démarrage sans clé","Accès sans clé","Volant chauffant","Sièges électriques","Sièges massants","Climatisation bi-zone","Affichage tête haute","Régulateur adaptatif","Détection angles morts","Freinage d'urgence auto","Aide maintien de voie","Phares LED","Phares Matrix LED","Pack hiver","Attelage","Barre de toit","Coffre électrique","CarPlay / Android Auto","Bluetooth","Chargeur sans fil","Tableau de bord digital"];
 const OPTIONS       = [...OPTIONS_MAIN, ...OPTIONS_OTHER];
-const SOURCES  = ["LeBonCoin","AutoScout24","La Centrale","2ememain.be","AutoRadar"];
+const SOURCES  = ["LeBonCoin","AutoScout24","La Centrale","2ememain.be","Carnet"];
 const OWNERS   = ["1 propr.","2 propr.","3+ propr."];
 const SEL      = { make:new Set(), fuel:new Set(), gear:new Set(), country:new Set(), opts:new Set(), model:new Set(), motorisation:new Set(), source:new Set(), owners:new Set() };
 
@@ -3047,21 +3134,21 @@ const PW_SEGMENTS = {
   ai_user: {
     label: 'Recherche IA',
     title: 'Vous utilisez la recherche IA.',
-    sub: 'Chaque requête coûte quelques centimes à faire tourner. Si AutoRadar vous fait gagner du temps, aidez-le à rester en vie — sans publicité.'
+    sub: 'Chaque requête coûte quelques centimes à faire tourner. Si Carnet vous fait gagner du temps, aidez-le à rester en vie — sans publicité.'
   },
   collector: {
     label: 'Vos favoris',
     title: 'Votre sélection prend vraiment forme.',
-    sub: 'Vous construisez une vraie liste. C\'est exactement pour ça qu\'AutoRadar existe — aidez-nous à continuer sans jamais vendre vos données ni afficher des pubs.'
+    sub: 'Vous construisez une vraie liste. C\'est exactement pour ça que Carnet existe — aidez-nous à continuer sans jamais vendre vos données ni afficher des pubs.'
   },
   power_user: {
     label: 'Utilisateur actif',
-    title: 'Vous explorez AutoRadar sérieusement.',
+    title: 'Vous explorez Carnet sérieusement.',
     sub: 'Plus le produit est utilisé, plus il coûte à faire tourner. Et on refuse la publicité. Votre soutien, même 1€, change vraiment quelque chose.'
   },
   default: {
     label: 'Sans publicité',
-    title: 'AutoRadar est gratuit. Votre soutien le garde ainsi.',
+    title: 'Carnet est gratuit. Votre soutien le garde ainsi.',
     sub: 'Aucune pub, aucun sponsor, aucune vente de données. Juste des voitures, et les personnes qui permettent au projet d\'exister.'
   }
 };
@@ -3321,11 +3408,11 @@ const FAQ_ITEMS = [
   { q: "D'où viennent les annonces ?",
     a: "En production : LeBonCoin, AutoScout24, La Centrale et 2ememain.be. En phase bêta, les données sont illustratives pour vous montrer ce que sera le produit final." },
   { q: "Mes dons sont-ils déductibles des impôts ?",
-    a: "Oui, une fois AutoRadar enregistré comme ONG reconnue. En France : déduction à 66% (un don de 15€ vous coûte réellement 5,10€). En Belgique : 45% à partir de 40€. En Suisse : déductible selon votre canton. Un reçu fiscal vous sera délivré automatiquement pour chaque don." },
-  { q: "AutoRadar est-il vraiment gratuit ?",
+    a: "Oui, une fois Carnet enregistré comme ONG reconnue. En France : déduction à 66% (un don de 15€ vous coûte réellement 5,10€). En Belgique : 45% à partir de 40€. En Suisse : déductible selon votre canton. Un reçu fiscal vous sera délivré automatiquement pour chaque don." },
+  { q: "Carnet est-il vraiment gratuit ?",
     a: "Oui. Les fonctionnalités essentielles sont et resteront gratuites. Le bouton « Soutenir » permet à ceux qui le souhaitent de contribuer au projet — sans jamais bloquer l'accès au contenu." },
   { q: "Mes données sont-elles partagées ou vendues ?",
-    a: "Non. AutoRadar ne collecte aucune donnée personnelle côté serveur. Vos favoris, collections et préférences vivent uniquement dans votre navigateur (localStorage) et ne quittent jamais votre appareil." },
+    a: "Non. Carnet ne collecte aucune donnée personnelle côté serveur. Vos favoris, collections et préférences vivent uniquement dans votre navigateur (localStorage) et ne quittent jamais votre appareil." },
   { q: "Le score est-il fiable à 100% ?",
     a: "Non, et on l'assume clairement. Le score est un indicateur synthétique basé sur des données publiques — pas une expertise technique certifiée. Une inspection indépendante reste recommandée avant tout achat important." },
   { q: "À quelle fréquence les annonces sont-elles mises à jour ?",
@@ -3556,14 +3643,14 @@ function submitReview() {
   showToast('Avis publié — merci ♥');
 }
 
-const SHARE_URL  = 'https://autoradar.org';
-const SHARE_TEXT = 'AutoRadar — La vérité sur chaque voiture. Score de confiance, historique complet, recherche IA. 100% sans publicité.';
-const SHARE_HASHTAGS = 'AutoRadar,voiture,achatvehicule';
+const SHARE_URL  = 'https://autoradar.org'; /* TODO: switch to https://carnet.life when DNS is pointed */
+const SHARE_TEXT = 'Carnet — Une histoire de voitures. Score de confiance architecturé sur features factuelles. 100% sans publicité.';
+const SHARE_HASHTAGS = 'Carnet,voiture,achatvehicule';
 
 function shareAutoRadar() {
   /* On mobile, try native share sheet first */
   if (navigator.share) {
-    navigator.share({ title: 'AutoRadar', text: SHARE_TEXT, url: SHARE_URL }).catch(() => openShare());
+    navigator.share({ title: 'Carnet', text: SHARE_TEXT, url: SHARE_URL }).catch(() => openShare());
   } else {
     openShare();
   }
@@ -3591,11 +3678,11 @@ function shareVia(channel) {
     whatsapp:  `https://wa.me/?text=${encodeURIComponent(SHARE_TEXT + ' ' + SHARE_URL)}`,
     messenger: `https://www.facebook.com/dialog/send?link=${url}&app_id=181477185219982&redirect_uri=${url}`,
     sms:       `sms:?body=${encodeURIComponent(SHARE_TEXT + ' ' + SHARE_URL)}`,
-    email:     `mailto:?subject=${encodeURIComponent('AutoRadar — La vérité sur chaque voiture')}&body=${encodeURIComponent(SHARE_TEXT + '\n\n' + SHARE_URL)}`,
+    email:     `mailto:?subject=${encodeURIComponent('Carnet — Une histoire de voitures')}&body=${encodeURIComponent(SHARE_TEXT + '\n\n' + SHARE_URL)}`,
     twitter:   `https://twitter.com/intent/tweet?text=${text}&url=${url}&hashtags=${SHARE_HASHTAGS}`,
     linkedin:  `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
     facebook:  `https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`,
-    reddit:    `https://www.reddit.com/submit?url=${url}&title=${encodeURIComponent('AutoRadar — La vérité sur chaque voiture (sans pub)')}`
+    reddit:    `https://www.reddit.com/submit?url=${url}&title=${encodeURIComponent('Carnet — Une histoire de voitures (sans pub)')}`
   };
   if (map[channel]) window.open(map[channel], '_blank', 'noopener,width=600,height=500');
   closeShare();
@@ -4309,7 +4396,7 @@ function padS4() {
     <div class="pad-fgroup" style="margin-top:4px">
       <label style="display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--text2);cursor:pointer">
         <input type="checkbox" id="pad-cgu" ${_padData.cgu?'checked':''} onchange="padFieldChange('cgu',this.checked)" style="margin-top:2px;accent-color:var(--gc)" />
-        J'accepte les <a href="#" style="color:var(--gc)">conditions générales</a> et la <a href="#" style="color:var(--gc)">politique de confidentialité</a> d'AutoRadar. *
+        J'accepte les <a href="#" style="color:var(--gc)">conditions générales</a> et la <a href="#" style="color:var(--gc)">politique de confidentialité</a> de Carnet. *
       </label>
     </div>`;
 }
@@ -4335,7 +4422,7 @@ function padS5() {
       </div>
     </div>
     ${_padPlan !== 'free' ? `<div style="padding:10px 12px;background:#E1F5EE;border-radius:var(--rsm);border:1px solid #9FE1CB;font-size:12px;color:#085041;margin-bottom:12px">💳 Le paiement sera demandé après publication. Vous ne serez débité que si vous confirmez.</div>` : ''}
-    <div style="font-size:11px;color:var(--text3);line-height:1.65">En publiant, vous confirmez que le véhicule vous appartient et que les informations sont exactes. L'annonce sera visible dans les 5 minutes sur AutoRadar.</div>`;
+    <div style="font-size:11px;color:var(--text3);line-height:1.65">En publiant, vous confirmez que le véhicule vous appartient et que les informations sont exactes. L'annonce sera visible dans les 5 minutes sur Carnet.</div>`;
 }
 
 /* ── Navigation ── */
@@ -4498,7 +4585,7 @@ function padBuildInvoiceHTML(invoiceNum, date) {
 <body>
 <div class="card">
   <div class="head">
-    <div class="logo"><span class="logo-dot"></span>AutoRadar</div>
+    <div class="logo"><span class="logo-dot"></span>Carnet</div>
     <div class="invoice-num">${invoiceNum}</div>
   </div>
   <div class="hero">
@@ -4520,9 +4607,9 @@ function padBuildInvoiceHTML(invoiceNum, date) {
     <span class="total-val">${padPlanAmount()}</span>
   </div>
   <div class="foot">
-    Merci de faire confiance à AutoRadar 🙏<br>
-    Questions ? <a href="mailto:contact@autoradar.org">contact@autoradar.org</a><br>
-    AutoRadar · <a href="https://autoradar.org">autoradar.org</a>
+    Merci de faire confiance à Carnet 🙏<br>
+    Questions ? <a href="mailto:contact@carnet.life">contact@carnet.life</a><br>
+    Carnet · <a href="https://autoradar.org">autoradar.org</a> <!-- TODO: switch to https://carnet.life when DNS is pointed -->
   </div>
 </div>
 </body></html>`;
@@ -4619,7 +4706,7 @@ function padDownloadInvoice() {
   const url   = URL.createObjectURL(blob);
   const a     = document.createElement('a');
   a.href      = url;
-  a.download  = `AutoRadar-${num}.html`;
+  a.download  = `Carnet-${num}.html`;
   document.body.appendChild(a);
   a.click();
   setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 1000);
@@ -4649,9 +4736,9 @@ const _sb = (typeof supabase !== 'undefined' && !SUPABASE_URL.includes('VOTRE_')
   : null;
 
 if (_sb) {
-  console.log('[AutoRadar] Supabase connecté ✓');
+  console.log('[Carnet] Supabase connecté ✓');
 } else {
-  console.info('[AutoRadar] Mode localStorage — configurez SUPABASE_URL et SUPABASE_ANON pour activer la DB');
+  console.info('[Carnet] Mode localStorage — configurez SUPABASE_URL et SUPABASE_ANON pour activer la DB');
 }
 
 /* ── Auth state ── */
@@ -4735,7 +4822,7 @@ removeFav = function(carId) {
       ch: car.ch || [], ss: car.ss || {}, hs: car.hs || []
     }));
     render();
-    console.log(`[AutoRadar DB] ${C.length} annonces chargées`);
+    console.log(`[Carnet DB] ${C.length} annonces chargées`);
   }
 })();
 
