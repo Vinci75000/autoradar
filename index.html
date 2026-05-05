@@ -958,6 +958,27 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
   --rec-border-rich:rgba(31,77,47,0.22);
   --rec-border-minimal:rgba(232,90,31,0.22);
 }
+
+/* ── Records block (rendu dans la fiche voiture) ── */
+.crn-records{margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
+.crn-records-title{font-family:var(--display);font-style:italic;font-weight:500;font-size:13px;color:var(--text);margin-bottom:10px;letter-spacing:-0.01em}
+.crn-records-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.crn-rec{padding:10px 11px;background:var(--rec-bg);border:1px solid var(--rec-border);border-radius:var(--rsm);min-width:0}
+.crn-rec-label{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:5px;font-weight:500}
+.crn-rec-value{font-family:var(--display);font-style:italic;font-weight:500;font-size:13px;line-height:1.25;color:var(--text);word-break:break-word}
+.crn-rec-detail{font-family:var(--serif);font-size:11px;color:var(--text2);margin-top:4px;line-height:1.35;font-style:italic}
+.crn-rec-rich{background:var(--rec-bg-rich);border-color:var(--rec-border-rich)}
+.crn-rec-rich .crn-rec-label{color:var(--rec-rich)}
+.crn-rec-minimal{background:var(--rec-bg-minimal);border-color:var(--rec-border-minimal)}
+.crn-rec-minimal .crn-rec-label{color:var(--rec-minimal)}
+.crn-rec-empty .crn-rec-label{color:var(--rec-empty)}
+.crn-rec-empty .crn-rec-value{color:var(--text2);font-weight:400}
+.crn-records-footer{margin-top:10px;font-family:var(--serif);font-style:italic;font-size:11px;color:var(--text3);text-align:center}
+
+/* ── Mobile : ≤640px → 2x2, ≤380px → 2x2 conservé ── */
+@media (max-width:640px){
+  .crn-records-grid{grid-template-columns:repeat(2,1fr)}
+}
 </style>
 </head>
 <body>
@@ -2633,6 +2654,39 @@ function deriveCollectionRecord(car) {
 }
 
 /* ═══════════════════════════════════════════════
+   RECORDS BLOCK RENDERER
+   Affiche systématiquement les 4 cartes (Service /
+   Auction / Provenance / Collection), même toutes
+   vides — une fiche dépouillée est aussi une info.
+═══════════════════════════════════════════════ */
+function renderRecordsBlock(car) {
+  const r = deriveRecords(car);
+  const cls = (rec) => `crn-rec crn-rec-${rec.state}`;
+  const cell = (rec, label) => `
+    <div class="${cls(rec)}">
+      <div class="crn-rec-label">${label}</div>
+      <div class="crn-rec-value">${rec.label}</div>
+      ${rec.detail ? `<div class="crn-rec-detail">${rec.detail}</div>` : ''}
+    </div>`;
+  const emptyCount = ['service','auction','provenance','collection']
+    .filter(k => r[k].state === 'empty').length;
+  const footer = emptyCount >= 3
+    ? `<div class="crn-records-footer">Carnet en cours d'enrichissement.</div>`
+    : '';
+  return `
+    <div class="crn-records">
+      <div class="crn-records-title">Le carnet</div>
+      <div class="crn-records-grid">
+        ${cell(r.service,    'Service')}
+        ${cell(r.auction,    'Enchères')}
+        ${cell(r.provenance, 'Provenance')}
+        ${cell(r.collection, 'Collection')}
+      </div>
+      ${footer}
+    </div>`;
+}
+
+/* ═══════════════════════════════════════════════
    SEARCH CARD RENDERER
 ═══════════════════════════════════════════════ */
 function renderCard(car) {
@@ -2646,6 +2700,7 @@ function renderCard(car) {
         <span class="ar-ts" style="color:${col}">${car.sc}/100</span>
       </div>
       <div class="ar-bdown">${Object.values(car.ss).map(browRow).join('')}</div>
+      ${renderRecordsBlock(car)}
       <div class="ar-opts-section">
         <div class="ar-opts-title">Équipements du véhicule</div>
         <div class="ar-opts-grid">${optsGrid(car)}</div>
@@ -4936,7 +4991,10 @@ removeFav = function(carId) {
       src: car.src, age: car.age_label || '—',
       tr: car.tr || 0, td: car.td || 0, ow: car.ow || 1, sc: car.sc,
       ve: car.ve || '—', opts: car.opts || [],
-      ch: car.ch || [], ss: car.ss || {}, hs: car.hs || []
+      ch: car.ch || [], ss: car.ss || {}, hs: car.hs || [],
+      de: car.de || null,
+      feat_carnet_complet: car.feat_carnet_complet,
+      ecr_id: car.ecr_id || null
     }));
     render();
     console.log(`[Carnet DB] ${C.length} annonces chargées`);
