@@ -979,6 +979,32 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
 @media (max-width:640px){
   .crn-records-grid{grid-template-columns:repeat(2,1fr)}
 }
+
+/* ══════════════════════════════════════════
+   MANIFESTE — modale éditoriale
+   Bodoni italique pour titres, Cormorant pour
+   corps, DM Mono pour la signature finale.
+══════════════════════════════════════════ */
+.manifest-overlay{position:fixed;inset:0;background:rgba(10,10,10,0.55);z-index:1000;display:flex;align-items:flex-start;justify-content:center;padding:40px 20px;overflow-y:auto}
+.manifest-modal{position:relative;background:var(--paper);max-width:720px;width:100%;padding:64px 56px 48px;box-shadow:0 12px 48px rgba(0,0,0,0.18);border-radius:var(--rsm)}
+.manifest-modal .modal-close{position:absolute;top:18px;right:22px;background:none;border:none;cursor:pointer;font-size:24px;color:var(--text3);line-height:1;padding:4px 8px}
+.manifest-modal .modal-close:hover{color:var(--text)}
+.manifest-baseline{font-family:var(--display);font-style:italic;font-weight:500;font-size:32px;line-height:1.15;color:var(--ink);text-align:center;margin-bottom:48px;letter-spacing:-0.02em}
+.manifest-body{font-family:var(--serif);font-weight:400;font-size:16px;line-height:1.7;color:var(--ink-2)}
+.manifest-body p{margin-bottom:18px}
+.manifest-section-title{font-family:var(--display);font-style:italic;font-weight:500;font-size:18px;color:var(--ink);margin-top:36px;margin-bottom:14px;letter-spacing:-0.01em}
+.manifest-record-title{font-family:var(--display);font-style:italic;font-weight:500;font-size:15px;color:var(--ink);margin-top:22px;margin-bottom:6px}
+.manifest-signature{font-family:var(--mono);font-weight:400;font-size:12px;text-transform:uppercase;letter-spacing:0.18em;color:var(--ink-soft);text-align:center;margin-top:48px;padding-top:28px;border-top:1px solid var(--ink-15)}
+
+@media (max-width:640px){
+  .manifest-overlay{padding:20px 12px}
+  .manifest-modal{padding:48px 24px 32px}
+  .manifest-baseline{font-size:22px;margin-bottom:32px}
+  .manifest-body{font-size:15px;line-height:1.65}
+  .manifest-section-title{font-size:16px;margin-top:28px}
+  .manifest-record-title{font-size:14px;margin-top:18px}
+  .manifest-signature{font-size:10px;letter-spacing:0.15em;margin-top:36px}
+}
 </style>
 </head>
 <body>
@@ -1292,13 +1318,15 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
 
 <!-- Footer nav -->
 <div class="ar-footer">
+  <button class="ar-footer-link" onclick="openManifest()">Le manifeste</button>
+  <span class="ar-footer-sep">·</span>
   <button class="ar-footer-link" onclick="openInfoModal('legal')">Mentions légales</button>
   <span class="ar-footer-sep">·</span>
   <button class="ar-footer-link" onclick="openInfoModal('faq')">FAQ</button>
   <span class="ar-footer-sep">·</span>
   <button class="ar-footer-link" onclick="openInfoModal('bug')">Signaler un bug</button>
 </div>
-<div class="ar-footer-copy">Carnet BETA · 2026 · Données illustratives en phase bêta</div>
+<div class="ar-footer-copy" style="font-family:var(--mono);letter-spacing:0.05em">Carnet — A record of every record.</div>
 
 </div><!-- .wrap -->
 
@@ -1348,6 +1376,41 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
         <div class="legal-title">Contact</div>
         <div class="legal-text"><a href="mailto:contact@carnet.life">contact@carnet.life</a></div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: Manifeste Carnet ═══ -->
+<div id="modal-manifest" class="manifest-overlay" style="display:none" onclick="if(event.target===this)closeManifest()">
+  <div class="manifest-modal" role="dialog" aria-modal="true" aria-labelledby="manifest-baseline">
+    <button class="modal-close" onclick="closeManifest()" aria-label="Fermer">×</button>
+    <div id="manifest-baseline" class="manifest-baseline">Une histoire de voitures.</div>
+    <div class="manifest-body">
+      <p>Carnet est né d'une conviction : chaque voiture mérite son carnet. Pas une fiche d'annonce, pas un dossier commercial — un carnet, au sens ancien du mot. Le registre où s'écrivent les choses qui comptent.</p>
+
+      <div class="manifest-section-title">Quatre Records, quatre carnets</div>
+
+      <div class="manifest-record-title"><em>Service Record</em> — l'entretien.</div>
+      <p>Le carnet d'entretien d'une voiture est sa colonne vertébrale. Un carnet complet vaut souvent plus qu'un détail esthétique. Il dit la continuité, la main soigneuse, le respect du temps qui passe. Quand nous avons l'information, nous l'inscrivons. Quand nous ne l'avons pas, nous le disons aussi.</p>
+
+      <div class="manifest-record-title"><em>Auction Record</em> — les passages publics.</div>
+      <p>Quand une voiture passe aux enchères, elle laisse une trace. Date, maison, prix d'adjudication, numéro de lot. Cette trace dessine sa trajectoire de marché et, parfois, son histoire culturelle.</p>
+
+      <div class="manifest-record-title"><em>Provenance Record</em> — les propriétaires.</div>
+      <p>Une voiture n'appartient jamais qu'à elle-même et à la chaîne de ceux qui l'ont gardée. Combien étaient-ils. Qui était le premier. Si elle est référencée par l'Exclusive Car Registry, sa provenance est vérifiée — et nous le signalons.</p>
+
+      <div class="manifest-record-title"><em>Collection Record</em> — les distinctions.</div>
+      <p>Concours d'élégance, expositions, films, parutions presse. Une voiture qui a été vue est une voiture qui a une histoire à raconter.</p>
+
+      <div class="manifest-section-title">Le Record Score</div>
+      <p>Notre note sur cent ne juge pas. Elle agrège. Elle rend lisible. Elle décompose pour que vous puissiez décider — <em>vous</em> — ce qui compte pour votre prochain achat. Une voiture peut être 95/100 sur le Service et 40/100 sur la Provenance. À vous de lire.</p>
+
+      <div class="manifest-section-title">Ce que nous ne ferons jamais</div>
+      <p>Pas de publicité. Pas d'urgence factice. Pas de superlatifs vides. Pas de mise en vedette payante. Pas d'annonces réécrites pour vendre mieux. Le matériel parle pour lui. Notre rôle est de l'organiser, pas de le maquiller.</p>
+
+      <p>Si vous publiez une voiture chez nous, vous l'inscrivez dans son carnet. Si vous en achetez une, vous reprenez l'écriture du carnet à votre tour.</p>
+
+      <div class="manifest-signature">Carnet — A record of every record.</div>
     </div>
   </div>
 </div>
@@ -3607,6 +3670,15 @@ function openInfoModal(type) {
 }
 function closeInfoModal(type) {
   document.getElementById('modal-' + type).style.display = 'none';
+}
+
+function openManifest() {
+  const el = document.getElementById('modal-manifest');
+  if (el) { el.style.display = 'flex'; el.scrollTop = 0; }
+}
+function closeManifest() {
+  const el = document.getElementById('modal-manifest');
+  if (el) el.style.display = 'none';
 }
 
 function buildFAQ() {
