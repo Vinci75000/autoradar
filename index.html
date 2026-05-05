@@ -1366,7 +1366,7 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
           <span class="ar-store-name" style="color:#DA552F">Product Hunt</span>
         </div>
       </a>
-      <button class="ar-share-btn" onclick="shareAutoRadar()">↗ Partager</button>
+      <button class="ar-share-btn" onclick="shareCarnet()">↗ Partager</button>
     </div>
   </div>
 </div>
@@ -3979,11 +3979,11 @@ function submitReview() {
   showToast('Avis publié — merci ♥');
 }
 
-const SHARE_URL  = 'https://autoradar.org'; /* TODO: switch to https://carnet.life when DNS is pointed */
-const SHARE_TEXT = 'Carnet — Une histoire de voitures. Score de confiance architecturé sur features factuelles. 100% sans publicité.';
+const SHARE_URL  = 'https://carnet.life';
+const SHARE_TEXT = 'Carnet — Une histoire de voitures. Quatre Records pour chaque voiture. Sans bruit.';
 const SHARE_HASHTAGS = 'Carnet,voiture,achatvehicule';
 
-function shareAutoRadar() {
+function shareCarnet() {
   /* On mobile, try native share sheet first */
   if (navigator.share) {
     navigator.share({ title: 'Carnet', text: SHARE_TEXT, url: SHARE_URL }).catch(() => openShare());
@@ -3991,6 +3991,8 @@ function shareAutoRadar() {
     openShare();
   }
 }
+/* Compat alias — au cas où un appelant externe utilise encore l'ancien nom */
+var shareAutoRadar = shareCarnet;
 
 function openShare() {
   document.getElementById('share-url-inp').value = SHARE_URL;
@@ -5134,7 +5136,7 @@ function padBuildInvoiceHTML(invoiceNum, date) {
   <div class="foot">
     Carnet vous remercie.<br>
     Questions ? <a href="mailto:contact@carnet.life">contact@carnet.life</a><br>
-    Carnet · <a href="https://autoradar.org">autoradar.org</a> <!-- TODO: switch to https://carnet.life when DNS is pointed -->
+    Carnet · <a href="https://carnet.life">carnet.life</a>
   </div>
 </div>
 </body></html>`;
