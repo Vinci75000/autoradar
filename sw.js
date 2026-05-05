@@ -1,14 +1,16 @@
 /* ================================================================
-   AutoRadar — Service Worker
+   AutoRadar (backend) / Carnet (visible) — Service Worker
    Strategy: Cache-First for app shell, Network-First for API calls
+   Note: cache name keeps "autoradar" prefix (backend identity);
+         only the version is bumped to invalidate old caches.
    ================================================================ */
 
-const CACHE_NAME    = 'autoradar-v2';
+const CACHE_NAME    = 'autoradar-v3-carnet-pass1';
 const CACHE_ASSETS  = [
   '/',
   '/index.html',
   '/manifest.json',
-  'https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap',
+  'https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700;1,800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Mono:wght@300;400;500&display=swap',
 ];
 
 /* ── Install: pre-cache app shell ── */
@@ -76,7 +78,7 @@ self.addEventListener('push', event => {
   if (!event.data) return;
   const data = event.data.json();
   event.waitUntil(
-    self.registration.showNotification(data.title || 'AutoRadar', {
+    self.registration.showNotification(data.title || 'Carnet', {
       body:    data.body || 'Nouvelle alerte véhicule',
       icon:    '/icons/icon-192.png',
       badge:   '/icons/icon-72.png',
