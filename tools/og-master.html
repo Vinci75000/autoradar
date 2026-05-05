@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Carnet OG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,500;1,500&family=Cormorant+Garamond:ital,wght@0,300;1,400&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1200px;height:630px;overflow:hidden;background:#FAFAF7;font-family:'Cormorant Garamond',serif;color:#0A0A0A;-webkit-font-smoothing:antialiased}
+
+/* paper grain */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;opacity:0.35;
+  background-image:
+    radial-gradient(circle at 25% 25%, rgba(10,10,10,1) 0.5px, transparent 0.6px),
+    radial-gradient(circle at 75% 75%, rgba(10,10,10,1) 0.5px, transparent 0.6px);
+  background-size:5px 5px,5px 5px;background-position:0 0,2.5px 2.5px;
+  mix-blend-mode:multiply;
+}
+.frame{position:absolute;inset:32px;border:1px solid #0A0A0A}
+
+/* strip top */
+.strip{
+  position:absolute;top:62px;left:80px;right:80px;
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:24px;
+  padding-bottom:18px;border-bottom:1px solid #0A0A0A;
+  font-family:'DM Mono',monospace;font-size:13px;font-weight:500;
+  text-transform:uppercase;letter-spacing:0.22em;color:#0A0A0A;
+}
+.strip .l{justify-self:start;color:#3D3D3D}
+.strip .c{justify-self:center;display:flex;align-items:center;gap:10px;color:#0A0A0A}
+.strip .c svg{width:22px;height:22px}
+.strip .r{justify-self:end;color:#3D3D3D}
+
+/* center stage */
+.stage{
+  position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:38px;padding:0 80px;
+}
+.eyebrow{
+  font-family:'DM Mono',monospace;font-size:13px;font-weight:500;
+  text-transform:uppercase;letter-spacing:0.4em;color:#3D3D3D;
+  display:flex;align-items:center;gap:22px;
+}
+.eyebrow::before,.eyebrow::after{content:"";width:60px;height:1px;background:#0A0A0A}
+
+.wordmark{
+  font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;
+  font-size:220px;line-height:0.85;letter-spacing:-0.025em;color:#0A0A0A;
+  display:inline-flex;align-items:flex-end;gap:0.04em;
+}
+.wordmark .pt{
+  width:0.165em;height:0.165em;background:#E85A1F;
+  display:inline-block;margin-bottom:0.085em;
+}
+
+.tagline{
+  font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;
+  font-size:42px;color:#0A0A0A;letter-spacing:-0.018em;line-height:1.1;
+  text-align:center;
+}
+.tagline-sub{
+  font-family:'DM Mono',monospace;font-size:13px;font-weight:500;
+  text-transform:uppercase;letter-spacing:0.32em;color:#3D3D3D;
+}
+
+/* footer strip */
+.foot{
+  position:absolute;left:80px;right:80px;bottom:62px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:18px;border-top:1px solid #0A0A0A;
+  font-family:'DM Mono',monospace;font-size:11px;font-weight:500;
+  text-transform:uppercase;letter-spacing:0.22em;color:#3D3D3D;
+}
+</style>
+</head>
+<body>
+<div class="frame"></div>
+
+<div class="strip">
+  <span class="l">Une histoire de voitures</span>
+  <span class="c">
+    <svg viewBox="0 0 1000 1000" aria-hidden="true">
+      <path d="M 414 191 L 724 191 L 724 362 L 414 362 A 138 138 0 0 0 414 638 L 724 638 L 724 809 L 414 809 A 309 309 0 0 1 414 191 Z" fill="#0A0A0A"/>
+      <rect x="790" y="703" width="106" height="106" fill="#E85A1F"/>
+    </svg>
+    Carnet
+  </span>
+  <span class="r">Mai 2026</span>
+</div>
+
+<div class="stage">
+  <div class="eyebrow">Volume I · Bêta publique</div>
+  <div class="wordmark">Carnet<span class="pt"></span></div>
+  <div class="tagline">Une histoire de voitures.</div>
+  <div class="tagline-sub">— Sélection · Registre · Enchères · Mon carnet —</div>
+</div>
+
+<div class="foot">
+  <span>Sans publicité · Sans tracking</span>
+  <span>carnet.life</span>
+</div>
+</body>
+</html>
