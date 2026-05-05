@@ -2554,6 +2554,85 @@ function getFiltered() {
 }
 
 /* ═══════════════════════════════════════════════
+   RECORDS FRAMEWORK — pure dérivations
+   Lit une voiture et renvoie l'état des 4 Records :
+   Service · Auction · Provenance · Collection.
+   Garantie : ne lance jamais d'erreur, renvoie
+   toujours un objet { state, label, detail } par Record.
+   États : 'rich' | 'minimal' | 'empty'.
+═══════════════════════════════════════════════ */
+function deriveRecords(car) {
+  return {
+    service:    deriveServiceRecord(car),
+    auction:    deriveAuctionRecord(car),
+    provenance: deriveProvenanceRecord(car),
+    collection: deriveCollectionRecord(car)
+  };
+}
+
+function deriveServiceRecord(car) {
+  const desc = (car && car.de ? String(car.de) : '').toLowerCase();
+  const hasCarnetMention = /carnet\s+(complet|d['’]entretien|de\s+suivi)|factures\s+(disponibles|tous)|entretien\s+(complet|suivi)/i.test(desc);
+  const hasNoCarnet = /sans\s+carnet|carnet\s+manquant|aucun\s+document/i.test(desc);
+
+  if (car && car.feat_carnet_complet === true)  return { state:'rich',    label:'Carnet complet',    detail:'Documentation continue' };
+  if (hasCarnetMention)                          return { state:'rich',    label:'Carnet documenté',  detail:'Mention dans la description' };
+  if ((car && car.feat_carnet_complet === false) || hasNoCarnet)
+                                                 return { state:'minimal', label:'Carnet absent',     detail:'Documentation non fournie' };
+  return { state:'empty', label:'Non renseigné', detail:'Demander au vendeur' };
+}
+
+function deriveAuctionRecord(car) {
+  const src = (car && car.src ? String(car.src) : '').toLowerCase();
+  const auctionHouses = ['bonhams','sotheby','rmsotheby','artcurial',
+                         'bringatrailer','collectingcars','goodingco',
+                         'mecum','aguttes','oldtimergalerie'];
+  const houseLabels = {
+    bonhams:'Bonhams', sotheby:"RM Sotheby's", rmsotheby:"RM Sotheby's",
+    artcurial:'Artcurial', bringatrailer:'Bring a Trailer',
+    collectingcars:'Collecting Cars', goodingco:'Gooding & Co',
+    mecum:'Mecum', aguttes:'Aguttes', oldtimergalerie:'Oldtimer Galerie'
+  };
+  const found = auctionHouses.find(h => src.includes(h));
+  if (found) {
+    return { state:'rich', label:'Mise en vente publique', detail:`Source : ${houseLabels[found] || found}` };
+  }
+  return { state:'empty', label:'Aucun passage public référencé', detail:'' };
+}
+
+function deriveProvenanceRecord(car) {
+  if (car && car.ow != null && car.ow > 0) {
+    const owners = car.ow;
+    const label = owners === 1 ? 'Première main'
+                : owners === 2 ? 'Deux propriétaires'
+                : `${owners} propriétaires`;
+    return { state:'rich', label, detail: owners <= 2 ? 'Provenance favorable' : 'Provenance documentée' };
+  }
+  if (car && car.ecr_id != null) {
+    return { state:'rich', label:'Référencée ECR', detail:'Provenance vérifiée' };
+  }
+  return { state:'empty', label:'Provenance non documentée', detail:'' };
+}
+
+function deriveCollectionRecord(car) {
+  const desc = (car && car.de ? String(car.de) : '');
+  const concoursPatterns = [
+    { pattern: /pebble\s*beach/i,           name:'Pebble Beach' },
+    { pattern: /villa\s*d['’]?este/i,       name:"Villa d'Este" },
+    { pattern: /rétromobile|retromobile/i,  name:'Rétromobile' },
+    { pattern: /chantilly\s*arts?/i,        name:'Chantilly Arts & Élégance' },
+    { pattern: /concours\s*of\s*elegance/i, name:'Concours of Elegance' },
+    { pattern: /goodwood\s*revival/i,       name:'Goodwood Revival' }
+  ];
+  const matches = concoursPatterns.filter(p => p.pattern.test(desc)).map(p => p.name);
+  if (matches.length > 0) {
+    return { state:'rich', label: matches.join(' · '),
+             detail: `${matches.length} distinction${matches.length > 1 ? 's' : ''}` };
+  }
+  return { state:'empty', label:'Aucune distinction documentée', detail:'' };
+}
+
+/* ═══════════════════════════════════════════════
    SEARCH CARD RENDERER
 ═══════════════════════════════════════════════ */
 function renderCard(car) {
