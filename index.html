@@ -325,9 +325,10 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
 /* Priority dots */
 .fav-priority{display:flex;align-items:center;gap:3px}
 .pd{font-size:10px;cursor:pointer;color:var(--border2)}
-.pd.on-3{color:var(--gr)}
-.pd.on-2{color:var(--gd)}
+/* 3 paliers Carnet : vert (calme) → ink-soft (neutre) → orange (alerte) */
 .pd.on-1{color:var(--gc)}
+.pd.on-2{color:var(--ink-soft)}
+.pd.on-3{color:var(--orange)}
 
 /* Note section */
 .fav-note-wrap{background:var(--bg2);border-radius:var(--rsm);padding:8px 10px;border:1px solid var(--border);margin-bottom:8px}
@@ -378,9 +379,10 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
 .modal-prio-opt{flex:1;padding:8px 6px;border:1px solid var(--border2);border-radius:var(--rsm);cursor:pointer;background:var(--bg);text-align:center;font-size:12px;font-family:var(--sans);color:var(--text2)}
 .modal-prio-opt:hover{border-color:var(--border);color:var(--text)}
 .modal-prio-opt.sel{border-width:1.5px}
-.modal-prio-opt[data-p="1"].sel{border-color:var(--gc);background:#E1F5EE;color:#085041}
-.modal-prio-opt[data-p="2"].sel{border-color:var(--gd);background:#FAEEDA;color:#633806}
-.modal-prio-opt[data-p="3"].sel{border-color:var(--gr);background:#FCEBEB;color:#791f1f}
+/* 3 priorités Carnet : vert (basse, sereine) · neutre (normale) · orange (haute, alerte) */
+.modal-prio-opt[data-p="1"].sel{border-color:var(--vert);background:rgba(31,77,47,0.08);color:var(--vert)}
+.modal-prio-opt[data-p="2"].sel{border-color:var(--ink-soft);background:var(--paper-2);color:var(--ink-soft)}
+.modal-prio-opt[data-p="3"].sel{border-color:var(--orange);background:rgba(232,90,31,0.08);color:var(--orange)}
 .modal-note-inp{width:100%;padding:8px 10px;border:1px solid var(--border2);border-radius:var(--rsm);font-family:var(--sans);font-size:12px;color:var(--text);background:var(--bg);resize:none;height:70px;line-height:1.5;margin-bottom:0}
 .modal-note-inp:focus{outline:none;border-color:var(--gc)}
 .modal-foot{display:flex;gap:8px;justify-content:flex-end;padding:14px 18px;border-top:1px solid var(--border);background:var(--bg2)}
