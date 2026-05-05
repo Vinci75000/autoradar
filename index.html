@@ -938,6 +938,26 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
 .carnet-pt{width:0.165em;height:0.165em;background:var(--orange);display:inline-block;margin-bottom:0.085em}
 .carnet-beta{font-family:var(--mono);font-size:9px;font-weight:500;background:var(--ink);color:var(--paper);padding:2px 7px;letter-spacing:0.22em;margin-left:1px;text-transform:uppercase;align-self:center}
 .carnet-tagline{font-family:var(--serif);font-style:italic;font-weight:300;font-size:13px;color:var(--ink-soft);margin-left:8px}
+
+/* ══════════════════════════════════════════
+   RECORDS FRAMEWORK — design tokens
+   (additif · ne touche pas aux tokens existants)
+   Charte v8 §IV — états sémantiques
+   - rich    : vert anglais — carnet OK, signal positif
+   - minimal : orange Polo — attention sobre, pas alarme
+   - empty   : gris encre 40% — neutre, pas négatif
+══════════════════════════════════════════ */
+:root{
+  --rec-rich:#1F4D2F;
+  --rec-minimal:#E85A1F;
+  --rec-empty:rgba(10,10,10,0.4);
+  --rec-bg:var(--paper-pure);
+  --rec-bg-rich:rgba(31,77,47,0.04);
+  --rec-bg-minimal:rgba(232,90,31,0.04);
+  --rec-border:rgba(10,10,10,0.12);
+  --rec-border-rich:rgba(31,77,47,0.22);
+  --rec-border-minimal:rgba(232,90,31,0.22);
+}
 </style>
 </head>
 <body>
