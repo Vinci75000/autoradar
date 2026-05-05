@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Carnet PWA icon master — charte v8 §II + §VII.02 (App icon)
+  - Canvas 1000×1000
+  - Background: ink #0A0A0A
+  - C: paper #F4F1EA (visible on ink)
+  - Dot: orange #E85A1F
+  - Emblem scaled to fit ~70% inner safe zone for PWA maskable spec
+    (safe circle = inner 80% radius). Source path coords are 414..724
+    horizontal, 191..809 vertical → centered & scaled by 0.78.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
+  <rect width="1000" height="1000" fill="#0A0A0A"/>
+  <g transform="translate(154,110) scale(0.78)">
+    <!-- C body (charte v8 §III: H=618, T=171, O=277, R=309, r=138, P=106) -->
+    <path d="M 414 191 L 724 191 L 724 362 L 414 362 A 138 138 0 0 0 414 638 L 724 638 L 724 809 L 414 809 A 309 309 0 0 1 414 191 Z" fill="#F4F1EA"/>
+    <!-- Square orange dot -->
+    <rect x="790" y="703" width="106" height="106" fill="#E85A1F"/>
+  </g>
+</svg>
