@@ -3,18 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Carnet — Une histoire de voitures. Agrégateur premium d'annonces auto avec score architecturé sur features factuelles. Sans publicité.">
-<meta name="theme-color" content="#1F4D2F"><!-- vert anglais Carnet, anciennement #1D9E75 -->
+<meta name="description" content="Carnet — Quatre Records pour chaque voiture : Service, Enchères, Provenance, Collection. La marketplace éditoriale des voitures qui méritent un carnet.">
+<meta name="theme-color" content="#1F4D2F"><!-- vert anglais Carnet -->
 <!-- Open Graph -->
 <meta property="og:title" content="Carnet — Une histoire de voitures." />
-<meta property="og:description" content="Sélection · Registre · Enchères · Mon carnet. Score de confiance architecturé sur features factuelles." />
+<meta property="og:description" content="Quatre Records pour chaque voiture. Curated Automotive Records Network." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://carnet.life" />
 <meta property="og:image" content="/og.png" />
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Carnet — Une histoire de voitures." />
-<meta name="twitter:description" content="Sélection · Registre · Enchères · Mon carnet · Sans pub." />
+<meta name="twitter:description" content="Quatre Records pour chaque voiture. Curated Automotive Records Network." />
 <!-- PWA -->
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -33,7 +33,7 @@
     });
   }
 </script>
-<title>Carnet BETA — Une histoire de voitures.</title>
+<title>Carnet — Une histoire de voitures.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700;1,800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
@@ -1068,7 +1068,7 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
 <!-- ═══ SEARCH VIEW ═══ -->
 <div id="view-search">
   <div class="ar-srow">
-    <input id="aiq" class="ar-sinp" placeholder="Recherche IA — ex: berline diesel auto cuir toit-ouvrant moins de 25 000€ France" />
+    <input id="aiq" class="ar-sinp" placeholder="Recherche libre — ex : 911 Carrera 3.2, première main, carnet complet, sous 80 000€" />
     <button class="ar-sbtn" id="aib" onclick="doAI()"><span id="aii">Rechercher ↗</span></button>
   </div>
   <div id="aichips" class="ar-aichips"></div>
@@ -1179,7 +1179,7 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
     <span style="font-size:11px;font-weight:500;color:var(--gc);white-space:nowrap">Commencer →</span>
   </div>
   <div class="ar-meta">
-    <span><strong id="mc">8</strong> véhicules · <span id="msr">4 sources</span></span>
+    <span><strong id="mc">8</strong> carnets ouverts · <span id="msr">4 sources</span></span>
     <div class="ar-sort">
       <button class="ar-sb on" id="sb-score" onclick="ss('score')">Score ↓</button>
       <button class="ar-sb" id="sb-price" onclick="ss('price')">Prix</button>
