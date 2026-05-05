@@ -670,8 +670,9 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
 .pad-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1050;display:flex;align-items:center;justify-content:center;padding:16px;animation:pwFadeIn 0.18s ease}
 .pad-modal{background:var(--bg);border-radius:14px;max-width:560px;width:100%;max-height:92vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 16px 48px rgba(0,0,0,0.2);animation:pwSlideUp 0.22s ease}
 .pad-head{padding:16px 20px 14px;border-bottom:1px solid var(--border);flex-shrink:0}
-.pad-head-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.pad-title{font-size:15px;font-weight:600;color:var(--text)}
+.pad-head-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;gap:12px}
+.pad-umbrella{font-family:var(--mono);font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.14em;color:var(--text3);margin-bottom:3px}
+.pad-title{font-family:var(--display);font-style:italic;font-weight:500;font-size:18px;color:var(--text);letter-spacing:-0.01em;line-height:1.15}
 .pad-progress{display:flex;gap:4px}
 .pad-step-dot{height:3px;border-radius:2px;background:var(--border);transition:width 0.2s,background 0.2s;flex:1}
 .pad-step-dot.done{background:var(--gc)}
@@ -978,6 +979,49 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
 /* ── Mobile : ≤640px → 2x2, ≤380px → 2x2 conservé ── */
 @media (max-width:640px){
   .crn-records-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+/* ══════════════════════════════════════════
+   WIZARD RECORDS — écrans S2/S3/S4 et S7
+══════════════════════════════════════════ */
+.pad-intro{font-family:var(--serif);font-style:italic;font-size:13px;line-height:1.55;color:var(--text2);margin-bottom:18px;padding:10px 12px;background:var(--rec-bg-rich);border-left:2px solid var(--rec-rich);border-radius:0 var(--rsm) var(--rsm) 0}
+.pad-radio-row{display:flex;flex-direction:column;gap:6px;margin-bottom:6px}
+.pad-radio{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--text);cursor:pointer;padding:8px 10px;border:1px solid var(--border);border-radius:var(--rsm);background:var(--bg)}
+.pad-radio:hover{border-color:var(--border2)}
+.pad-radio input{accent-color:var(--gc);margin-top:1px;flex-shrink:0}
+.pad-radio.sel{border-color:var(--gc);background:var(--rec-bg-rich)}
+.pad-help{font-size:11px;color:var(--text3);font-style:italic;margin-top:3px;line-height:1.45}
+.pad-checkbox{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--text);cursor:pointer;padding:6px 0}
+.pad-checkbox input{accent-color:var(--gc);margin-top:2px;flex-shrink:0}
+.pad-counter{font-family:var(--mono);font-size:10px;color:var(--text3);text-align:right;margin-top:3px}
+
+/* Repeatable rows (auction history) */
+.pad-rep-row{display:grid;grid-template-columns:1.4fr 0.7fr 1fr 0.9fr auto;gap:8px;align-items:end;padding:10px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rsm);margin-bottom:8px}
+.pad-rep-row .pad-flbl{margin-bottom:3px}
+.pad-rep-del{align-self:end;height:32px;width:32px;border:1px solid var(--border2);background:var(--bg);border-radius:var(--rsm);cursor:pointer;color:var(--text3);font-size:14px;line-height:1}
+.pad-rep-del:hover{color:var(--rec-minimal);border-color:var(--rec-minimal)}
+.pad-rep-add{font-size:12px;padding:7px 12px;border:1px dashed var(--border2);background:none;border-radius:var(--rsm);cursor:pointer;color:var(--text2);font-family:var(--sans);width:100%;margin-top:2px}
+.pad-rep-add:hover{border-color:var(--gc);color:var(--gc);border-style:solid}
+.pad-rep-empty{font-size:12px;color:var(--text3);font-style:italic;text-align:center;padding:14px;background:var(--bg2);border:1px dashed var(--border);border-radius:var(--rsm);margin-bottom:8px}
+
+/* Multi-select chips (concours) */
+.pad-chips{display:flex;flex-wrap:wrap;gap:6px}
+.pad-chip{font-size:12px;padding:5px 11px;border:1px solid var(--border2);border-radius:100px;cursor:pointer;background:var(--bg);color:var(--text2);font-family:var(--sans);user-select:none}
+.pad-chip:hover{border-color:var(--gc);color:var(--text)}
+.pad-chip.on{background:var(--rec-rich);border-color:var(--rec-rich);color:var(--paper-pure)}
+
+/* Recap Records summary */
+.pad-recap-records{margin-top:14px;padding:14px;background:var(--rec-bg);border:1px solid var(--rec-border);border-radius:var(--rsm)}
+.pad-recap-records-title{font-family:var(--display);font-style:italic;font-weight:500;font-size:13px;color:var(--text);margin-bottom:10px}
+.pad-recap-rec-row{display:flex;justify-content:space-between;font-size:12px;line-height:1.55;padding:4px 0;border-top:1px solid var(--border)}
+.pad-recap-rec-row:first-of-type{border-top:none}
+.pad-recap-rec-key{color:var(--text3);font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.06em;font-weight:500;flex-shrink:0;width:100px}
+.pad-recap-rec-val{color:var(--text2);text-align:right;flex:1;min-width:0;word-break:break-word}
+.pad-recap-rec-val em{font-family:var(--display);font-style:italic;color:var(--text);font-weight:500}
+
+@media (max-width:640px){
+  .pad-rep-row{grid-template-columns:1fr 1fr;gap:6px}
+  .pad-rep-row .pad-rep-del{grid-column:span 2;width:100%}
 }
 
 /* ══════════════════════════════════════════
@@ -1503,10 +1547,13 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
 <div id="modal-post-ad" class="pad-overlay" style="display:none" onclick="if(event.target===this)closePostAd()">
   <div class="pad-modal">
 
-    <!-- Head: title + progress bar -->
+    <!-- Head: umbrella + per-step title + progress bar -->
     <div class="pad-head">
       <div class="pad-head-top">
-        <div class="pad-title" id="pad-title">Votre véhicule</div>
+        <div>
+          <div class="pad-umbrella">Inscrire votre voiture</div>
+          <div class="pad-title" id="pad-title">La voiture</div>
+        </div>
         <button class="modal-close" onclick="closePostAd()">×</button>
       </div>
       <div class="pad-progress" id="pad-progress"></div>
@@ -4260,11 +4307,13 @@ function renderBadgeStatuses(profile) {
    POST AD — 5-STEP FLOW
 ═══════════════════════════════════════════════ */
 const PAD_STEPS = [
-  { title:'Votre véhicule',     label:'Étape 1 sur 5 — Infos du véhicule' },
-  { title:'Photos',             label:'Étape 2 sur 5 — Photos de l\'annonce' },
-  { title:'Durée & formule',    label:'Étape 3 sur 5 — Choisir votre offre' },
-  { title:'Vos coordonnées',    label:'Étape 4 sur 5 — Contact' },
-  { title:'Récapitulatif',      label:'Étape 5 sur 5 — Vérification' }
+  { title:'La voiture',          label:'1 sur 7 — Identité du véhicule',           key:'vehicle'    },
+  { title:'Le carnet',           label:'2 sur 7 — Service & entretien',            key:'service'    },
+  { title:'La provenance',       label:'3 sur 7 — Propriétaires & histoire',       key:'provenance' },
+  { title:'Les distinctions',    label:'4 sur 7 — Enchères, concours, médias',     key:'collection' },
+  { title:'Photos',              label:'5 sur 7 — Iconographie',                   key:'photos'     },
+  { title:'Formule',             label:'6 sur 7 — Choisir votre offre',            key:'plan'       },
+  { title:'Vos coordonnées',     label:'7 sur 7 — Contact & vérification',         key:'contact'    }
 ];
 const FREE_PHOTOS  = 3;
 const PRO_PHOTOS   = 10;
@@ -4312,16 +4361,18 @@ function padRenderStep() {
     if (_padStep === 2) body.innerHTML = padS3();
     if (_padStep === 3) body.innerHTML = padS4();
     if (_padStep === 4) body.innerHTML = padS5();
+    if (_padStep === 5) body.innerHTML = padS6();
+    if (_padStep === 6) body.innerHTML = padS7();
   } catch(e) {
     console.error('padS' + (_padStep+1) + ' error:', e);
     body.innerHTML = `<p style="padding:20px;color:red;font-size:12px">Erreur étape ${_padStep+1}: ${e.message}</p>`;
   }
 
   padRestoreFields();
-  next.textContent = _padStep === 4 ? 'Publier l\'annonce ✓' : 'Continuer →';
+  next.textContent = _padStep === PAD_STEPS.length - 1 ? 'Publier l\'annonce ✓' : 'Continuer →';
   next.disabled    = false;
 
-  if (_padStep === 1) padBindPhotoSlots();
+  if (_padStep === 4) padBindPhotoSlots();
 }
 
 /* ── City autocomplete (Nominatim OSM) ── */
@@ -4512,8 +4563,155 @@ function padS1() {
     </div>`;
 }
 
-/* ── Screen 2: Photos ── */
+/* ── Screen 2: Le carnet (Service Record) ── */
 function padS2() {
+  const status = _padData.service_status || 'unknown';
+  const factures = _padData.service_factures ? 'checked' : '';
+  const radio = (val, title, sub) => `
+    <label class="pad-radio${status===val?' sel':''}">
+      <input type="radio" name="service_status" value="${val}" ${status===val?'checked':''} onchange="padFieldChange('service_status', this.value); padRenderStep()" />
+      <span><strong style="font-weight:500">${title}</strong>${sub?` <span style="color:var(--text3);font-size:12px">— ${sub}</span>`:''}</span>
+    </label>`;
+  return `
+    <div class="pad-intro">Le carnet d'entretien est la colonne vertébrale d'une voiture. Renseignez ce que vous savez, sautez ce que vous ne savez pas. Mieux vaut une absence honnête qu'une affirmation hâtive.</div>
+
+    <div class="pad-fgroup">
+      <label class="pad-flbl">L'état du carnet</label>
+      <div class="pad-radio-row">
+        ${radio('complete','Complet','toutes les révisions documentées')}
+        ${radio('partial','Partiel','quelques traces, des trous')}
+        ${radio('absent','Absent','pas de carnet à fournir')}
+        ${radio('unknown','Je ne sais pas','')}
+      </div>
+    </div>
+
+    <div class="pad-fgroup">
+      <label class="pad-flbl">Dernière révision</label>
+      <input id="pad-service-last-date" class="pad-finp" type="date" value="${_padData.service_last_date||''}" oninput="padFieldChange('service_last_date', this.value)" />
+      <div class="pad-help">Si vous avez la date sous les yeux.</div>
+    </div>
+
+    <div class="pad-fgroup">
+      <label class="pad-checkbox">
+        <input type="checkbox" id="pad-service-factures" ${factures} onchange="padFieldChange('service_factures', this.checked)" />
+        <span>Factures disponibles<div class="pad-help">Cochez si vous pouvez fournir les factures sur demande.</div></span>
+      </label>
+    </div>
+
+    <div class="pad-fgroup">
+      <label class="pad-flbl">Notes sur l'entretien</label>
+      <textarea id="pad-service-notes" class="pad-ftextarea" maxlength="200" placeholder="Atelier de référence, pièces remplacées, particularité." oninput="padFieldChange('service_notes', this.value); document.getElementById('pad-service-notes-counter').textContent = this.value.length + ' / 200';">${_padData.service_notes||''}</textarea>
+      <div class="pad-counter" id="pad-service-notes-counter">${(_padData.service_notes||'').length} / 200</div>
+    </div>`;
+}
+
+/* ── Screen 3: La provenance (Provenance Record) ── */
+function padS3() {
+  const firstOwner = _padData.first_owner ? 'checked' : '';
+  return `
+    <div class="pad-intro">Une voiture n'appartient jamais qu'à elle-même et à la chaîne de ceux qui l'ont gardée.</div>
+
+    <div class="pad-frow2">
+      <div class="pad-fgroup" style="margin-bottom:8px">
+        <label class="pad-flbl">Nombre de propriétaires</label>
+        <input id="pad-owners-count" class="pad-finp" type="number" min="1" max="20" value="${_padData.owners_count||''}" placeholder="3" oninput="padFieldChange('owners_count', this.value)" />
+        <div class="pad-help">Y compris vous.</div>
+      </div>
+      <div class="pad-fgroup" style="margin-bottom:8px">
+        <label class="pad-flbl">&nbsp;</label>
+        <label class="pad-checkbox" style="padding:8px 0">
+          <input type="checkbox" id="pad-first-owner" ${firstOwner} onchange="padFieldChange('first_owner', this.checked)" />
+          <span>Première main<div class="pad-help">La voiture n'a connu que vous depuis sa sortie d'usine.</div></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="pad-fgroup">
+      <label class="pad-flbl">Histoire de la voiture</label>
+      <textarea id="pad-provenance-notes" class="pad-ftextarea" maxlength="400" placeholder="Concessionnaire d'origine, pays de première immatriculation, particularité notable." oninput="padFieldChange('provenance_notes', this.value); document.getElementById('pad-provenance-notes-counter').textContent = this.value.length + ' / 400';">${_padData.provenance_notes||''}</textarea>
+      <div class="pad-counter" id="pad-provenance-notes-counter">${(_padData.provenance_notes||'').length} / 400</div>
+    </div>
+
+    <div class="pad-fgroup">
+      <label class="pad-flbl">ID Exclusive Car Registry</label>
+      <input id="pad-ecr-id" class="pad-finp" value="${_padData.ecr_id||''}" placeholder="ECR-XXXXX" oninput="padFieldChange('ecr_id', this.value)" />
+      <div class="pad-help">Si la voiture est référencée sur l'ECR, indiquez son identifiant.</div>
+    </div>`;
+}
+
+/* ── Screen 4: Les distinctions (Auction + Collection Records) ── */
+function padS4() {
+  const concours = _padData.concours_list || [];
+  const auctions = _padData.auction_history || [];
+  const concoursOptions = ['Pebble Beach', "Villa d'Este", 'Rétromobile', 'Chantilly Arts & Élégance', 'Concours of Elegance', 'Goodwood Revival', 'Autre'];
+  const showOther = concours.includes('Autre');
+
+  const auctionRows = auctions.length === 0
+    ? `<div class="pad-rep-empty">Aucun passage public. Cliquez « + ajouter » si la voiture est passée aux enchères.</div>`
+    : auctions.map((a, i) => `
+      <div class="pad-rep-row">
+        <div><label class="pad-flbl">Maison</label><input class="pad-finp" value="${a.house||''}" placeholder="Bonhams, Artcurial…" oninput="padAuctionField(${i},'house',this.value)" /></div>
+        <div><label class="pad-flbl">Année</label><input class="pad-finp" type="number" min="1900" max="2099" value="${a.year||''}" placeholder="2019" oninput="padAuctionField(${i},'year',this.value)" /></div>
+        <div><label class="pad-flbl">Adjudication €</label><input class="pad-finp" type="number" value="${a.price||''}" placeholder="—" oninput="padAuctionField(${i},'price',this.value)" /></div>
+        <div><label class="pad-flbl">N° lot</label><input class="pad-finp" value="${a.lot||''}" placeholder="—" oninput="padAuctionField(${i},'lot',this.value)" /></div>
+        <button class="pad-rep-del" title="Supprimer" onclick="padAuctionRemove(${i})">×</button>
+      </div>`).join('');
+
+  return `
+    <div class="pad-intro">Une voiture qui a été vue est une voiture qui a une histoire. Si la vôtre est passée aux enchères, à un concours, dans un film ou un livre, c'est ici.</div>
+
+    <div class="pad-fgroup">
+      <label class="pad-flbl">Passages aux enchères</label>
+      ${auctionRows}
+      <button class="pad-rep-add" onclick="padAuctionAdd()">+ ajouter un passage</button>
+    </div>
+
+    <div class="pad-fgroup">
+      <label class="pad-flbl">Concours d'élégance</label>
+      <div class="pad-chips">
+        ${concoursOptions.map(name => `<span class="pad-chip${concours.includes(name)?' on':''}" data-concours="${name.replace(/"/g,'&quot;')}" onclick="padToggleConcours(${JSON.stringify(name)})">${name}</span>`).join('')}
+      </div>
+      <div id="pad-concours-other-wrap" style="display:${showOther?'':'none'};margin-top:8px">
+        <input id="pad-concours-other" class="pad-finp" value="${_padData.concours_other||''}" placeholder="Précisez l'autre concours" oninput="padFieldChange('concours_other', this.value)" />
+      </div>
+    </div>
+
+    <div class="pad-fgroup">
+      <label class="pad-flbl">Apparitions presse / films / livres</label>
+      <textarea id="pad-media-features" class="pad-ftextarea" maxlength="300" placeholder="Référence précise si possible : titre, année, page." oninput="padFieldChange('media_features', this.value); document.getElementById('pad-media-counter').textContent = this.value.length + ' / 300';">${_padData.media_features||''}</textarea>
+      <div class="pad-counter" id="pad-media-counter">${(_padData.media_features||'').length} / 300</div>
+    </div>`;
+}
+
+/* ── Distinctions helpers ── */
+function padAuctionField(idx, key, val) {
+  if (!_padData.auction_history) _padData.auction_history = [];
+  if (!_padData.auction_history[idx]) _padData.auction_history[idx] = {};
+  _padData.auction_history[idx][key] = val;
+}
+function padAuctionAdd() {
+  if (!_padData.auction_history) _padData.auction_history = [];
+  _padData.auction_history.push({});
+  padRenderStep();
+}
+function padAuctionRemove(idx) {
+  if (_padData.auction_history) _padData.auction_history.splice(idx, 1);
+  padRenderStep();
+}
+function padToggleConcours(name) {
+  const list = _padData.concours_list = _padData.concours_list || [];
+  const i = list.indexOf(name);
+  if (i >= 0) list.splice(i, 1); else list.push(name);
+  const chip = document.querySelector(`.pad-chip[data-concours="${(name+'').replace(/"/g,'&quot;')}"]`);
+  if (chip) chip.classList.toggle('on');
+  if (name === 'Autre') {
+    const otherWrap = document.getElementById('pad-concours-other-wrap');
+    if (otherWrap) otherWrap.style.display = list.includes('Autre') ? '' : 'none';
+  }
+}
+
+/* ── Screen 5: Photos (was S2) ── */
+function padS5() {
   const limit = _padPlan === 'free' ? FREE_PHOTOS : (_padPlan === 'pro' ? PRO_PHOTOS : LEGEND_PHOTOS);
   const totalSlots = Math.max(limit, _padPhotos.length, _padPlan === 'free' ? 6 : 10);
   let slots = '';
@@ -4541,7 +4739,7 @@ function padS2() {
       </div>`;
   return `
     <div style="font-size:12px;color:var(--text2);margin-bottom:12px">
-      <strong style="color:var(--text)">${_padPhotos.length} / ${limit}</strong> photo${limit>1?'s':''} ajoutée${_padPhotos.length>1?'s':''} 
+      <strong style="color:var(--text)">${_padPhotos.length} / ${limit}</strong> photo${limit>1?'s':''} ajoutée${_padPhotos.length>1?'s':''}
       · <span style="color:var(--gc)">Glissez pour réordonner</span>
     </div>
     ${upgrade}
@@ -4550,8 +4748,8 @@ function padS2() {
     <input type="file" id="pad-file-inp" accept="image/*" style="display:none" onchange="padHandleFile(this)" />`;
 }
 
-/* ── Screen 3: Plan ── */
-function padS3() {
+/* ── Screen 6: Plan (was S3) ── */
+function padS6() {
   const selFree = _padPlan === 'free';
   const selPro  = _padPlan === 'pro';
   const selMo   = _padPlan === 'pro_monthly';
@@ -4613,8 +4811,37 @@ function padS3() {
     </div>`;
 }
 
-/* ── Screen 4: Contact ── */
-function padS4() {
+/* ── Screen 7: Coordonnées + Récap (fusion ancienne S4 contact + S5 recap) ── */
+function padS7() {
+  const planLabels = { free:'Gratuit — 90 jours · 3 photos', pro:'Pro — 90 jours · 10 photos · 8€', pro_monthly:'Pro Mensuel · 13 photos · 8€/mois' };
+  const d = _padData;
+
+  /* Records summary — agrégation lisible des 3 nouveaux écrans */
+  const statusLabels = { complete:'Carnet complet', partial:'Carnet partiel', absent:'Carnet absent', unknown:'' };
+  const serviceParts = [];
+  if (d.service_status && statusLabels[d.service_status]) serviceParts.push(statusLabels[d.service_status]);
+  if (d.service_factures) serviceParts.push('factures disponibles');
+  if (d.service_last_date) serviceParts.push('dernière révision ' + d.service_last_date);
+
+  const provenanceParts = [];
+  if (d.first_owner) provenanceParts.push('Première main');
+  else if (d.owners_count) provenanceParts.push(d.owners_count + (Number(d.owners_count) === 1 ? ' propriétaire' : ' propriétaires'));
+  if (d.ecr_id) provenanceParts.push('ECR ' + d.ecr_id);
+
+  const distinctionsParts = [];
+  const auctionsCount = (d.auction_history || []).filter(a => a && (a.house || a.year || a.price)).length;
+  if (auctionsCount) distinctionsParts.push(auctionsCount + (auctionsCount === 1 ? ' passage aux enchères' : ' passages aux enchères'));
+  const concoursList = (d.concours_list || []).filter(c => c !== 'Autre');
+  if (concoursList.length) distinctionsParts.push(concoursList.join(' · '));
+  if ((d.concours_list || []).includes('Autre') && d.concours_other) distinctionsParts.push(d.concours_other);
+  if (d.media_features) distinctionsParts.push('mentions presse');
+
+  const recordsHasContent = serviceParts.length || provenanceParts.length || distinctionsParts.length || d.service_notes || d.provenance_notes;
+
+  const fmtRec = parts => parts.length
+    ? `<em>${parts[0]}</em>${parts.length > 1 ? ' · ' + parts.slice(1).join(' · ') : ''}`
+    : '—';
+
   return `
     <div style="font-size:12px;color:var(--text2);margin-bottom:16px;padding:10px;background:var(--bg2);border-radius:var(--rsm);border:1px solid var(--border)">
       🔒 Vos coordonnées ne sont <strong>jamais</strong> partagées publiquement. Elles servent uniquement à vous contacter pour l'annonce.
@@ -4622,34 +4849,30 @@ function padS4() {
     <div class="pad-frow2">
       <div class="pad-fgroup">
         <label class="pad-flbl">Prénom *</label>
-        <input id="pad-fname" class="pad-finp" value="${_padData.fname||''}" placeholder="Jean" oninput="padFieldChange('fname',this.value)" />
+        <input id="pad-fname" class="pad-finp" value="${d.fname||''}" placeholder="Jean" oninput="padFieldChange('fname',this.value)" />
       </div>
       <div class="pad-fgroup">
         <label class="pad-flbl">Nom</label>
-        <input id="pad-lname" class="pad-finp" value="${_padData.lname||''}" placeholder="Dupont" oninput="padFieldChange('lname',this.value)" />
+        <input id="pad-lname" class="pad-finp" value="${d.lname||''}" placeholder="Dupont" oninput="padFieldChange('lname',this.value)" />
       </div>
     </div>
     <div class="pad-fgroup">
       <label class="pad-flbl">Email *</label>
-      <input id="pad-email" class="pad-finp" type="email" value="${_padData.email||''}" placeholder="jean@email.com" oninput="padFieldChange('email',this.value)" />
+      <input id="pad-email" class="pad-finp" type="email" value="${d.email||''}" placeholder="jean@email.com" oninput="padFieldChange('email',this.value)" />
     </div>
     <div class="pad-fgroup">
       <label class="pad-flbl">Téléphone (optionnel)</label>
-      <input id="pad-phone" class="pad-finp" type="tel" value="${_padData.phone||''}" placeholder="+33 6 12 34 56 78" oninput="padFieldChange('phone',this.value)" />
+      <input id="pad-phone" class="pad-finp" type="tel" value="${d.phone||''}" placeholder="+33 6 12 34 56 78" oninput="padFieldChange('phone',this.value)" />
     </div>
     <div class="pad-fgroup" style="margin-top:4px">
       <label style="display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--text2);cursor:pointer">
-        <input type="checkbox" id="pad-cgu" ${_padData.cgu?'checked':''} onchange="padFieldChange('cgu',this.checked)" style="margin-top:2px;accent-color:var(--gc)" />
+        <input type="checkbox" id="pad-cgu" ${d.cgu?'checked':''} onchange="padFieldChange('cgu',this.checked)" style="margin-top:2px;accent-color:var(--gc)" />
         J'accepte les <a href="#" style="color:var(--gc)">conditions générales</a> et la <a href="#" style="color:var(--gc)">politique de confidentialité</a> de Carnet. *
       </label>
-    </div>`;
-}
+    </div>
 
-/* ── Screen 5: Recap ── */
-function padS5() {
-  const planLabels = { free:'Gratuit — 90 jours · 3 photos', pro:'Pro — 90 jours · 10 photos · 8€', pro_monthly:'Pro Mensuel · 13 photos · 8€/mois' };
-  const d = _padData;
-  return `
+    <div style="height:18px"></div>
+
     <div class="pad-recap-card">
       <div class="pad-recap-head">
         <span style="font-size:13px;font-weight:600;color:var(--text)">${d.make||'—'} ${d.model||''} · ${d.year||'—'}</span>
@@ -4661,12 +4884,20 @@ function padS5() {
         <div class="pad-recap-row"><span class="pad-recap-key">Boîte</span><span class="pad-recap-val">${d.gear||'—'}</span></div>
         <div class="pad-recap-row"><span class="pad-recap-key">Ville</span><span class="pad-recap-val">${d.city||'—'}${d.country?', '+d.country:''}</span></div>
         <div class="pad-recap-row"><span class="pad-recap-key">Photos</span><span class="pad-recap-val">${_padPhotos.length} photo${_padPhotos.length!==1?'s':''}</span></div>
-        <div class="pad-recap-row"><span class="pad-recap-key">Contact</span><span class="pad-recap-val">${d.fname||''} · ${d.email||'—'}</span></div>
         <div class="pad-recap-row"><span class="pad-recap-key">Formule</span><span class="pad-recap-val" style="color:var(--gc)">${planLabels[_padPlan]||'—'}</span></div>
       </div>
     </div>
-    ${_padPlan !== 'free' ? `<div style="padding:10px 12px;background:#E1F5EE;border-radius:var(--rsm);border:1px solid #9FE1CB;font-size:12px;color:#085041;margin-bottom:12px">💳 Le paiement sera demandé après publication. Vous ne serez débité que si vous confirmez.</div>` : ''}
-    <div style="font-size:11px;color:var(--text3);line-height:1.65">En publiant, vous confirmez que le véhicule vous appartient et que les informations sont exactes. L'annonce sera visible dans les 5 minutes sur Carnet.</div>`;
+
+    ${recordsHasContent ? `
+    <div class="pad-recap-records">
+      <div class="pad-recap-records-title">Le carnet de votre voiture</div>
+      <div class="pad-recap-rec-row"><span class="pad-recap-rec-key">Service</span><span class="pad-recap-rec-val">${fmtRec(serviceParts)}</span></div>
+      <div class="pad-recap-rec-row"><span class="pad-recap-rec-key">Provenance</span><span class="pad-recap-rec-val">${fmtRec(provenanceParts)}</span></div>
+      <div class="pad-recap-rec-row"><span class="pad-recap-rec-key">Distinctions</span><span class="pad-recap-rec-val">${fmtRec(distinctionsParts)}</span></div>
+    </div>` : ''}
+
+    ${_padPlan !== 'free' ? `<div style="padding:10px 12px;background:#E1F5EE;border-radius:var(--rsm);border:1px solid #9FE1CB;font-size:12px;color:#085041;margin-top:14px;margin-bottom:0">💳 Le paiement sera demandé après publication. Vous ne serez débité que si vous confirmez.</div>` : ''}
+    <div style="font-size:11px;color:var(--text3);line-height:1.65;margin-top:12px">En publiant, vous confirmez que le véhicule vous appartient et que les informations sont exactes. L'annonce sera visible dans les 5 minutes sur Carnet.</div>`;
 }
 
 /* ── Navigation ── */
@@ -4686,16 +4917,21 @@ function padNext() {
 }
 
 function padValidate() {
+  /* Step 0: vehicle — required fields unchanged */
   if (_padStep === 0) {
     const required = ['make','model','year','km','price','fuel','gear','city','country'];
     for (const f of required) {
-      if (!_padData[f]) { showToast(`Remplissez le champ requis (*)`)  ; return false; }
+      if (!_padData[f]) { showToast(`Remplissez le champ requis (*)`); return false; }
     }
   }
-  if (_padStep === 1 && _padPhotos.length === 0) {
+  /* Steps 1, 2, 3 (service, provenance, distinctions) — tous champs optionnels, aucune validation */
+  /* Step 4: photos — au moins 1 (déplacé de l'ancien step 1) */
+  if (_padStep === 4 && _padPhotos.length === 0) {
     showToast('Ajoutez au moins 1 photo'); return false;
   }
-  if (_padStep === 3) {
+  /* Step 5 (plan) — pas de validation */
+  /* Step 6: contact + récap (déplacé de l'ancien step 3) */
+  if (_padStep === 6) {
     if (!_padData.fname) { showToast('Renseignez votre prénom'); return false; }
     if (!_padData.email || !_padData.email.includes('@')) { showToast('Email invalide'); return false; }
     if (!_padData.cgu) { showToast('Acceptez les conditions générales'); return false; }
@@ -4754,7 +4990,7 @@ function padHandleFile(input) {
 }
 
 function padPhotosUpgrade() {
-  _padStep = 2; /* Go to plan screen */
+  _padStep = 5; /* Go to plan screen (step index 5 in the 7-step flow) */
   padRenderStep();
 }
 
