@@ -1025,6 +1025,17 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
 }
 
 /* ══════════════════════════════════════════
+   SCORE BREAKDOWN — regroupement par Records
+   (visuel uniquement, pas de changement de calcul)
+══════════════════════════════════════════ */
+.ar-bdown-intro{font-family:var(--serif);font-style:italic;font-size:12px;line-height:1.55;color:var(--text2);margin-bottom:12px}
+.ar-bdown-section{margin-bottom:14px}
+.ar-bdown-section:last-child{margin-bottom:0}
+.ar-bdown-section-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--border)}
+.ar-bdown-section-title{font-family:var(--display);font-style:italic;font-weight:500;font-size:13px;color:var(--text);letter-spacing:-0.01em}
+.ar-bdown-section-total{font-family:var(--mono);font-size:11px;color:var(--text2);font-weight:500}
+
+/* ══════════════════════════════════════════
    MANIFESTE — modale éditoriale
    Bodoni italique pour titres, Cormorant pour
    corps, DM Mono pour la signature finale.
@@ -2227,6 +2238,40 @@ function browRow(item) {
   </div>`;
 }
 
+/* ═══════════════════════════════════════════════
+   SCORE BREAKDOWN regroupé par Records
+   Visuel uniquement — aucune modification du calcul.
+   Mapping (cf brief C.2) :
+     Service Record    : me + an
+     Provenance Record : hi
+     Spec & condition  : px + km
+═══════════════════════════════════════════════ */
+function recordsScoreBreakdown(car) {
+  const ss = car.ss || {};
+  const empty = { v:0, m:0, l:'—' };
+  const sections = [
+    { title:'Service Record',    keys:['me','an'] },
+    { title:'Provenance Record', keys:['hi']      },
+    { title:'Spec & condition',  keys:['px','km'] }
+  ];
+  const intro = `<div class="ar-bdown-intro">Le Record Score agrège trois dimensions du carnet de la voiture. À mesure que les Auction Records et Collection Records s'enrichiront, ils contribueront en bonus.</div>`;
+  const html = sections.map(sec => {
+    const items = sec.keys.map(k => ss[k]).filter(Boolean);
+    if (items.length === 0) return '';
+    const totalV = items.reduce((s, it) => s + (it.v || 0), 0);
+    const totalM = items.reduce((s, it) => s + (it.m || 0), 0);
+    return `
+      <div class="ar-bdown-section">
+        <div class="ar-bdown-section-head">
+          <span class="ar-bdown-section-title">${sec.title}</span>
+          <span class="ar-bdown-section-total">${totalV}/${totalM}</span>
+        </div>
+        ${items.map(browRow).join('')}
+      </div>`;
+  }).join('');
+  return intro + html;
+}
+
 function optsPreview(car) {
   const selected = OPTIONS.filter(o => SEL.opts.has(o) && car.opts.includes(o));
   const rest     = car.opts.filter(o => !SEL.opts.has(o)).slice(0, Math.max(0, 4 - selected.length));
@@ -2809,7 +2854,7 @@ function renderCard(car) {
         <span>Détail du score — ${car.mk} ${car.mo}</span>
         <span class="ar-ts" style="color:${col}">${car.sc}/100</span>
       </div>
-      <div class="ar-bdown">${Object.values(car.ss).map(browRow).join('')}</div>
+      <div class="ar-bdown">${recordsScoreBreakdown(car)}</div>
       ${renderRecordsBlock(car)}
       <div class="ar-opts-section">
         <div class="ar-opts-title">Équipements du véhicule</div>
