@@ -2777,8 +2777,8 @@ function renderCard(car) {
     </div>` : '';
 
   return `
-    <div class="ar-card${open ? ' sel' : ''}" onclick="tog(${car.id})">
-      <button class="heart-btn${faved ? ' active' : ''}" title="${faved ? 'Retirer des favoris' : 'Ajouter aux favoris'}" onclick="event.stopPropagation();heartClick(${car.id})">
+    <div class="ar-card${open ? ' sel' : ''}" onclick="tog('${car.id}')">
+      <button class="heart-btn${faved ? ' active' : ''}" title="${faved ? 'Retirer des favoris' : 'Ajouter aux favoris'}" onclick="event.stopPropagation();heartClick('${car.id}')">
         ${faved ? '♥' : '♡'}
       </button>
       <div class="ar-ctop">
@@ -2893,7 +2893,7 @@ function priorityDots(carId, p) {
   return [1, 2, 3].map(n => {
     const lit  = n <= p;
     const cls  = lit ? `on-${p}` : '';
-    return `<span class="pd ${cls}" onclick="event.stopPropagation();updateFavPriority(${carId},${n})" title="Priorité ${n === 1 ? 'basse' : n === 2 ? 'normale' : 'haute'}">●</span>`;
+    return `<span class="pd ${cls}" onclick="event.stopPropagation();updateFavPriority('${carId}',${n})" title="Priorité ${n === 1 ? 'basse' : n === 2 ? 'normale' : 'haute'}">●</span>`;
   }).join('');
 }
 
@@ -2944,18 +2944,18 @@ function renderFavCard(fav) {
           </div>
           <div class="fav-note-wrap" onclick="event.stopPropagation()">
             ${fav.note
-              ? `<div class="fav-note-text" onclick="editNote(${car.id}, this)" title="Cliquer pour modifier">"${fav.note}"</div>`
-              : `<div class="fav-note-text empty" onclick="editNote(${car.id}, this)">Ajouter une note personnelle…</div>`
+              ? `<div class="fav-note-text" onclick="editNote('${car.id}', this)" title="Cliquer pour modifier">"${fav.note}"</div>`
+              : `<div class="fav-note-text empty" onclick="editNote('${car.id}', this)">Ajouter une note personnelle…</div>`
             }
           </div>
           <div class="fav-actions-row" onclick="event.stopPropagation()">
             <div class="fav-move-wrap">
               <span style="font-size:11px;color:var(--text3)">Collection :</span>
-              <select class="fav-move-sel" onchange="moveFavToCol(${car.id}, this.value); renderFavs()">
+              <select class="fav-move-sel" onchange="moveFavToCol('${car.id}', this.value); renderFavs()">
                 ${colOpts}
               </select>
             </div>
-            <button class="fav-remove-btn" onclick="removeFav(${car.id})">Retirer ×</button>
+            <button class="fav-remove-btn" onclick="removeFav('${car.id}')">Retirer ×</button>
           </div>
         </div>
       </div>
@@ -2972,8 +2972,8 @@ function editNote(carId, el) {
   ta.addEventListener('blur', () => {
     updateFavNote(carId, ta.value.trim());
     el.outerHTML = ta.value.trim()
-      ? `<div class="fav-note-text" onclick="editNote(${carId}, this)">"${ta.value.trim()}"</div>`
-      : `<div class="fav-note-text empty" onclick="editNote(${carId}, this)">Ajouter une note personnelle…</div>`;
+      ? `<div class="fav-note-text" onclick="editNote('${carId}', this)">"${ta.value.trim()}"</div>`
+      : `<div class="fav-note-text empty" onclick="editNote('${carId}', this)">Ajouter une note personnelle…</div>`;
   });
   ta.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); ta.blur(); } });
 }
