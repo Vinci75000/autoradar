@@ -41,7 +41,20 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;min-height:100vh;padding:24px 16px;-webkit-font-smoothing:antialiased}
+body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;min-height:100vh;padding:24px 16px;-webkit-font-smoothing:antialiased;position:relative}
+/* grain papier — charte v8 §I (texture papier presse, opacité légère) */
+@media (min-width:481px){
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0.35;
+    background-image:
+      radial-gradient(circle at 25% 25%, rgba(10,10,10,1) 0.4px, transparent 0.5px),
+      radial-gradient(circle at 75% 75%, rgba(10,10,10,1) 0.4px, transparent 0.5px);
+    background-size:4px 4px, 4px 4px;
+    background-position:0 0, 2px 2px;
+    mix-blend-mode:multiply;
+  }
+}
+.wrap{position:relative;z-index:1}
 :root{
   /* ── Encre ── */
   --ink:#0A0A0A;
@@ -98,8 +111,11 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
 /* ── Header ── */
 .ar-head{display:flex;align-items:center;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--border);margin-bottom:18px;flex-wrap:wrap}
 .ar-logo{font-size:17px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:8px}
-.ar-dot{width:8px;height:8px;border-radius:50%;background:var(--gc);box-shadow:0 0 0 2px rgba(29,158,117,0.25),0 0 8px 2px rgba(29,158,117,0.5);animation:ledPulse 2.4s ease-in-out infinite}
-@keyframes ledPulse{0%,100%{box-shadow:0 0 0 2px rgba(29,158,117,0.25),0 0 8px 2px rgba(29,158,117,0.45)}50%{box-shadow:0 0 0 3px rgba(29,158,117,0.15),0 0 14px 4px rgba(29,158,117,0.7)}}
+/* point carré orange — charte v8 §I & §V (jamais rond, jamais halo LED) */
+.ar-dot{width:8px;height:8px;background:var(--orange);display:inline-block;flex-shrink:0;animation:carnetPulse 2.4s ease-in-out infinite}
+@keyframes carnetPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.7;transform:scale(0.92)}}
+/* legacy ledPulse alias for any inline-styled clones still on the page */
+@keyframes ledPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.7;transform:scale(0.92)}}
 .ar-tag{font-size:11px;color:var(--text3);font-weight:400}
 .ar-nav{display:flex;gap:2px;background:var(--bg2);border-radius:var(--rsm);padding:3px;border:1px solid var(--border)}
 .nav-btn{font-size:12px;font-weight:500;padding:5px 14px;border:none;background:none;cursor:pointer;border-radius:4px;color:var(--text2);font-family:var(--sans);display:flex;align-items:center;gap:5px}
@@ -309,9 +325,10 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
 /* Priority dots */
 .fav-priority{display:flex;align-items:center;gap:3px}
 .pd{font-size:10px;cursor:pointer;color:var(--border2)}
-.pd.on-3{color:var(--gr)}
-.pd.on-2{color:var(--gd)}
+/* 3 paliers Carnet : vert (calme) → ink-soft (neutre) → orange (alerte) */
 .pd.on-1{color:var(--gc)}
+.pd.on-2{color:var(--ink-soft)}
+.pd.on-3{color:var(--orange)}
 
 /* Note section */
 .fav-note-wrap{background:var(--bg2);border-radius:var(--rsm);padding:8px 10px;border:1px solid var(--border);margin-bottom:8px}
@@ -362,9 +379,10 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
 .modal-prio-opt{flex:1;padding:8px 6px;border:1px solid var(--border2);border-radius:var(--rsm);cursor:pointer;background:var(--bg);text-align:center;font-size:12px;font-family:var(--sans);color:var(--text2)}
 .modal-prio-opt:hover{border-color:var(--border);color:var(--text)}
 .modal-prio-opt.sel{border-width:1.5px}
-.modal-prio-opt[data-p="1"].sel{border-color:var(--gc);background:#E1F5EE;color:#085041}
-.modal-prio-opt[data-p="2"].sel{border-color:var(--gd);background:#FAEEDA;color:#633806}
-.modal-prio-opt[data-p="3"].sel{border-color:var(--gr);background:#FCEBEB;color:#791f1f}
+/* 3 priorités Carnet : vert (basse, sereine) · neutre (normale) · orange (haute, alerte) */
+.modal-prio-opt[data-p="1"].sel{border-color:var(--vert);background:rgba(31,77,47,0.08);color:var(--vert)}
+.modal-prio-opt[data-p="2"].sel{border-color:var(--ink-soft);background:var(--paper-2);color:var(--ink-soft)}
+.modal-prio-opt[data-p="3"].sel{border-color:var(--orange);background:rgba(232,90,31,0.08);color:var(--orange)}
 .modal-note-inp{width:100%;padding:8px 10px;border:1px solid var(--border2);border-radius:var(--rsm);font-family:var(--sans);font-size:12px;color:var(--text);background:var(--bg);resize:none;height:70px;line-height:1.5;margin-bottom:0}
 .modal-note-inp:focus{outline:none;border-color:var(--gc)}
 .modal-foot{display:flex;gap:8px;justify-content:flex-end;padding:14px 18px;border-top:1px solid var(--border);background:var(--bg2)}
@@ -1152,8 +1170,8 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
 
 <!-- ── Donation ── -->
 <div class="ar-don">
-  <span style="width:8px;height:8px;border-radius:50%;background:var(--gc);flex-shrink:0;box-shadow:0 0 0 2px rgba(29,158,117,0.25),0 0 8px 2px rgba(29,158,117,0.5);animation:ledPulse 2.4s ease-in-out infinite"></span>
-  <span>Carnet est 100% sans publicité. Si cet outil vous aide à trouver votre prochain véhicule, <a href="#" onclick="event.preventDefault();showPaywall('default')">soutenez le projet</a> — même 1€ compte.</span>
+  <span style="width:8px;height:8px;background:var(--orange);flex-shrink:0;animation:carnetPulse 2.4s ease-in-out infinite;display:inline-block"></span>
+  <span>Carnet n'a pas de publicité. Si ces pages vous servent, <a href="#" onclick="event.preventDefault();showPaywall('default')">soutenez</a> — un euro suffit.</span>
 </div>
 
 <!-- Reviews & App Stores -->
@@ -1189,7 +1207,7 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
     <div class="ar-review-inp-row">
       <input id="review-name" class="ar-review-name-inp" type="text" placeholder="Votre prénom" maxlength="30" />
     </div>
-    <textarea id="review-text" class="ar-review-text-inp" placeholder="Décrivez votre expérience avec Carnet…"></textarea>
+    <textarea id="review-text" class="ar-review-text-inp" placeholder="Racontez votre passage par Carnet."></textarea>
     <div class="ar-review-submit-row">
       <span class="ar-review-hint">En bêta — vos avis façonnent le produit.</span>
       <button class="ar-review-submit" onclick="submitReview()">Publier l'avis →</button>
@@ -1432,7 +1450,7 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
           <div class="lb-badge-card-icon">🛡️</div>
           <div class="lb-badge-card-body">
             <div class="lb-badge-card-name" style="color:#1E3A8A">Gardien</div>
-            <div class="lb-badge-card-desc">Soutien mensuel actif. Vous maintenez Carnet en vie — chaque mois compte.</div>
+            <div class="lb-badge-card-desc">Soutien mensuel actif. Chaque mois, Carnet tient grâce à vous.</div>
           </div>
           <div class="lb-badge-card-status locked" id="lb-status-guardian">🔒 Non obtenu</div>
         </div>
@@ -1525,7 +1543,7 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
   <div class="share-modal">
     <div class="share-head">
       <div>
-        <div class="share-title">Partagez Carnet</div>
+        <div class="share-title">Partagez Carnet.</div>
         <div class="share-sub">Aidez d'autres acheteurs à éviter les mauvaises surprises</div>
       </div>
       <button class="pw-close" onclick="closeShare()">×</button>
@@ -1584,7 +1602,7 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
       </div>
       <div class="pw-hero">
         <div class="pw-context-label" id="pw-label">Sans publicité</div>
-        <div class="pw-title" id="pw-title">Carnet est gratuit. Votre soutien le garde ainsi.</div>
+        <div class="pw-title" id="pw-title">Carnet ne vit que des soutiens.</div>
         <div class="pw-sub" id="pw-sub">Aucune pub, aucun sponsor, aucune vente de données. Juste des voitures, et ceux qui permettent au projet d'exister.</div>
       </div>
       <div style="text-align:center;padding:6px 20px 2px">
@@ -1604,7 +1622,7 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
           <div class="pw-plan-save">&nbsp;</div>
           <div class="pw-features">
             <div class="pw-feat">Couvre 1 mois de serveurs</div>
-            <div class="pw-feat">Garde Carnet sans pub</div>
+            <div class="pw-feat">Carnet sans pub</div>
             <div class="pw-feat">Accès gratuit pour tous</div>
           </div>
           <button class="pw-plan-btn" onclick="event.stopPropagation();selectPlan('monthly',this.closest('.pw-plan'))">Commencer</button>
@@ -1712,7 +1730,7 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
           <span class="pw-av" style="background:#534AB7">S</span>
           <span class="pw-av" style="background:#D85A30">A</span>
         </div>
-        <span>589 personnes soutiennent déjà Carnet</span>
+        <span>589 lecteurs soutiennent Carnet.</span>
       </div>
       <div class="pw-skip" onclick="closePaywall()">Continuer gratuitement — je soutiendrai plus tard</div>
     </div>
@@ -1782,7 +1800,7 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
     <div id="pw-thankyou" style="display:none" class="pw-thankyou">
       <div class="pw-ty-icon">♥</div>
       <div class="pw-ty-title">Merci, vous êtes formidable.</div>
-      <div class="pw-ty-sub">Votre soutien garde Carnet sans publicité<br>et libre pour tous. C'est grâce à vous que ça dure.</div>
+      <div class="pw-ty-sub">Votre soutien garde Carnet sans publicité,<br>libre, intact. Il dure grâce à vous.</div>
       <button class="pw-ty-close" onclick="closePaywall()">Continuer →</button>
     </div>
 
@@ -3134,12 +3152,12 @@ const PW_SEGMENTS = {
   ai_user: {
     label: 'Recherche IA',
     title: 'Vous utilisez la recherche IA.',
-    sub: 'Chaque requête coûte quelques centimes à faire tourner. Si Carnet vous fait gagner du temps, aidez-le à rester en vie — sans publicité.'
+    sub: 'Chaque requête coûte. Pas de pub, pas de tracking. Carnet tient parce que des lecteurs paient.'
   },
   collector: {
     label: 'Vos favoris',
     title: 'Votre sélection prend vraiment forme.',
-    sub: 'Vous construisez une vraie liste. C\'est exactement pour ça que Carnet existe — aidez-nous à continuer sans jamais vendre vos données ni afficher des pubs.'
+    sub: 'Vous bâtissez une vraie liste. Carnet existe pour ça — sans jamais vendre vos données, sans pub.'
   },
   power_user: {
     label: 'Utilisateur actif',
@@ -3148,7 +3166,7 @@ const PW_SEGMENTS = {
   },
   default: {
     label: 'Sans publicité',
-    title: 'Carnet est gratuit. Votre soutien le garde ainsi.',
+    title: 'Carnet ne vit que des soutiens.',
     sub: 'Aucune pub, aucun sponsor, aucune vente de données. Juste des voitures, et les personnes qui permettent au projet d\'exister.'
   }
 };
@@ -4607,7 +4625,7 @@ function padBuildInvoiceHTML(invoiceNum, date) {
     <span class="total-val">${padPlanAmount()}</span>
   </div>
   <div class="foot">
-    Merci de faire confiance à Carnet 🙏<br>
+    Carnet vous remercie.<br>
     Questions ? <a href="mailto:contact@carnet.life">contact@carnet.life</a><br>
     Carnet · <a href="https://autoradar.org">autoradar.org</a> <!-- TODO: switch to https://carnet.life when DNS is pointed -->
   </div>
