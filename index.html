@@ -226,6 +226,10 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
 .ar-chip.pass{background:#eaf3de;color:#27500a}
 .ar-chip.warn{background:#faeeda;color:#633806}
 .ar-chip.fail{background:#fcebeb;color:#791f1f}
+.ar-chip.cote-under{background:#E85A1F;color:#F4F1EA}
+.ar-chip.cote-at{background:#1F4D2F;color:#F4F1EA}
+.ar-chip.cote-over{background:#0A0A0A;color:#F4F1EA}
+.ar-chip.cote-insuff{background:transparent;color:#0A0A0A66;border:0.5px dashed #0A0A0A33;padding:1px 6px}
 .ar-src{font-size:10px;color:var(--text3);background:var(--bg2);padding:2px 7px;border-radius:var(--rsm);border:1px solid var(--border)}
 
 /* Heart button on search cards */
@@ -2921,6 +2925,22 @@ function renderRecordsBlock(car) {
 /* ═══════════════════════════════════════════════
    SEARCH CARD RENDERER
 ═══════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════
+   COTE CARNET — cache + classification (Sprint B.3)
+   var (pas const) → window._coteSegments cross-script.
+   Le fetch IIFE est dans le 2e <script>, apres const _sb.
+═══════════════════════════════════════════════ */
+var _coteSegments = new Map();
+
+function coteChip(car) {
+  const seg = _coteSegments.get(`${car.mk}|${car.mo}`);
+  if (!seg) return '<span class="ar-chip cote-insuff">Donnée insuffisante</span>';
+  const off = Math.round((car.px - seg.median_px) / seg.median_px * 100);
+  if (car.px < seg.p25) return `<span class="ar-chip cote-under">Sous-côté −${Math.abs(off)}%</span>`;
+  if (car.px > seg.p75) return `<span class="ar-chip cote-over">Surcôté +${off}%</span>`;
+  return '<span class="ar-chip cote-at">Au prix</span>';
+}
+
 function renderCard(car) {
   const open = openId === car.id, col = scCol(car.sc);
   const faved = isFav(car.id);
@@ -2979,6 +2999,7 @@ function renderCard(car) {
             </div>
             <div class="ar-badges">
               ${car.ch.map(c => `<span class="ar-chip ${c.t}">${c.l}</span>`).join('')}
+              ${coteChip(car)}
               <span class="ar-src">${car.src} · ${car.age}</span>
             </div>
           </div>
@@ -5499,6 +5520,16 @@ removeFav = function(carId) {
       .eq('user_id', currentUser.id).eq('car_id', carId);
   }
 };
+
+/* ── Cote Carnet: fetch segments depuis Supabase ── */
+(async () => {
+  if (!_sb) return;
+  const { data } = await _sb.from('cote_segments')
+    .select('mk,mo,median_px,p25,p75').gte('n', 5);
+  if (data) data.forEach(s => _coteSegments.set(`${s.mk}|${s.mo}`, s));
+  if (typeof render === 'function') render();
+  console.log(`[AutoRadar Cote] ${_coteSegments.size} segments chargés`);
+})();
 
 /* ── Cars: load from DB if available ── */
 (async () => {
