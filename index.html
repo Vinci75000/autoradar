@@ -2933,7 +2933,7 @@ function renderRecordsBlock(car) {
 var _coteSegments = new Map();
 
 function coteChip(car) {
-  const seg = _coteSegments.get(`${car.mk}|${car.mo}`);
+  const seg = _coteSegments.get(`${car.mk}|${car.mo_canon || car.mo}`);
   if (!seg) return '<span class="ar-chip cote-insuff">Donnée insuffisante</span>';
   const off = Math.round((car.px - seg.median_px) / seg.median_px * 100);
   if (car.px < seg.p25) return `<span class="ar-chip cote-under">Sous-côté −${Math.abs(off)}%</span>`;
@@ -5539,7 +5539,7 @@ removeFav = function(carId) {
   if (data && data.length > 0) {
     C.length = 0;
     data.forEach(car => C.push({
-      id: car.id, mk: car.mk, mod: car.mod || '', mo: car.mo,
+      id: car.id, mk: car.mk, mod: car.mod || '', mo: car.mo, mo_canon: car.mo_canon || car.mo,
       yr: car.yr, km: car.km, px: car.px, fu: car.fu, ge: car.ge,
       ci: car.ci, co: car.co, lat: car.lat, lng: car.lng,
       src: car.src, age: car.age_label || '—',
