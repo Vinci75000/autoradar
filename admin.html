@@ -1187,7 +1187,7 @@
       const btn = document.getElementById('verifyCodeBtn');
       btn.disabled = true;
       btn.textContent = 'Vérification…';
-      const { error } = await sb.auth.verifyOtp({
+      const { data, error } = await sb.auth.verifyOtp({
         email: currentLoginEmail,
         token: code,
         type: 'email'
@@ -1198,7 +1198,13 @@
         showLoginStatus(`Code invalide ou expiré. Réessaie ou renvoie un code.`, 'error');
       } else {
         showLoginStatus(`Connecté ✓`);
-        // onAuthStateChange prend le relais (SIGNED_IN event → onAuth → showApp)
+        // Appel direct à onAuth — plus fiable que d'attendre onAuthStateChange
+        if (data && data.session) {
+          await onAuth(data.session);
+        } else {
+          // Fallback : forcer reload pour que init() reprenne la session
+          setTimeout(() => location.reload(), 300);
+        }
       }
     });
 
