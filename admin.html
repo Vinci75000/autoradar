@@ -728,63 +728,287 @@
     .toast.error { background: var(--rouge); }
 
 
-    /* ═══ Login OTP code flow ════════════════════════════════ */
-    .login-state-code {
-      animation: fadeIn 0.3s ease-out;
+    /* ═══ Health alerts banner ═══════════════════════════════ */
+    .health-alerts {
+      margin-bottom: 21px;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(5px); }
-      to { opacity: 1; transform: translateY(0); }
+    .alert {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 13px 21px;
+      background: var(--papier-soft);
+      border-left: 3px solid var(--gris);
+      border-radius: var(--r);
+      margin-bottom: 8px;
+      gap: 13px;
     }
-    .login-code-info {
+    .alert.warn {
+      background: rgba(232, 90, 31, 0.06);
+      border-left-color: var(--orange-polo);
+    }
+    .alert.error {
+      background: var(--rouge-soft);
+      border-left-color: var(--rouge);
+    }
+    .alert.ok {
+      background: var(--vert-soft);
+      border-left-color: var(--vert-anglais);
+    }
+    .alert-icon {
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    .alert-icon.warn { color: var(--orange-polo); }
+    .alert-icon.error { color: var(--rouge); }
+    .alert-icon.ok { color: var(--vert-anglais); }
+    .alert-body {
+      flex: 1;
       font-family: var(--sans);
       font-size: 13px;
-      color: var(--gris);
-      margin-bottom: 13px;
-      text-align: center;
-      line-height: 1.5;
+      line-height: 1.4;
     }
-    .login-code-info strong {
-      color: var(--encre);
+    .alert-title {
       font-weight: 600;
-    }
-    #loginCode {
-      font-family: var(--mono);
-      font-size: 26px;
-      letter-spacing: 0.28em;
-      text-align: center;
-      padding: 13px;
-      font-weight: 500;
-    }
-    #loginCode::placeholder {
-      letter-spacing: 0.4em;
-      color: var(--gris-line);
-    }
-    .login-actions-secondary {
-      display: flex;
-      gap: 8px;
-      margin-top: 13px;
-      justify-content: center;
-    }
-    .btn-link {
-      background: none;
-      border: none;
-      color: var(--gris);
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      cursor: pointer;
-      padding: 6px 8px;
-      transition: color 0.15s;
-    }
-    .btn-link:hover {
       color: var(--encre);
     }
-    .btn-link.danger:hover {
-      color: var(--orange-polo);
+    .alert-detail {
+      color: var(--gris);
+      font-size: 12px;
+      margin-top: 2px;
+    }
+    .alert-actions {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .health-ok {
+      padding: 13px 21px;
+      background: var(--vert-soft);
+      border-left: 3px solid var(--vert-anglais);
+      border-radius: var(--r);
+      color: var(--vert-anglais);
+      font-family: var(--sans);
+      font-size: 13px;
     }
 
+    /* ═══ Quick action chips (Cars view) ═════════════════════ */
+    .quick-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 13px;
+      padding: 13px;
+      background: var(--papier-soft);
+      border-radius: var(--r);
+      border: 1px solid var(--gris-line);
+    }
+    .quick-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      color: var(--gris);
+      text-transform: uppercase;
+      align-self: center;
+      margin-right: 8px;
+    }
+    .quick-chip {
+      padding: 5px 12px;
+      background: var(--papier);
+      border: 1px solid var(--gris-line);
+      border-radius: 100px;
+      font-family: var(--mono);
+      font-size: 11px;
+      cursor: pointer;
+      color: var(--encre);
+      transition: all 0.15s;
+    }
+    .quick-chip:hover {
+      background: var(--papier-deep);
+      border-color: var(--encre);
+    }
+    .quick-chip.active {
+      background: var(--encre);
+      color: var(--papier);
+      border-color: var(--encre);
+    }
+
+    /* ═══ Bulk action bar (sticky bottom) ═══════════════════ */
+    .bulk-bar {
+      position: fixed;
+      bottom: 21px;
+      left: 50%;
+      transform: translateX(-50%) translateY(120px);
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 13px 21px;
+      background: var(--encre);
+      color: var(--papier);
+      border-radius: var(--r);
+      box-shadow: 0 8px 24px rgba(26, 20, 16, 0.25);
+      z-index: 90;
+      opacity: 0;
+      transition: transform 0.3s, opacity 0.3s;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .bulk-bar.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+    .bulk-bar-count {
+      font-weight: 600;
+      letter-spacing: 0.06em;
+    }
+    .bulk-bar-divider {
+      width: 1px;
+      height: 21px;
+      background: rgba(250, 246, 239, 0.2);
+    }
+    .bulk-bar button {
+      padding: 6px 13px;
+      background: rgba(250, 246, 239, 0.1);
+      border: 1px solid rgba(250, 246, 239, 0.25);
+      color: var(--papier);
+      border-radius: var(--r);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .bulk-bar button:hover {
+      background: rgba(250, 246, 239, 0.2);
+    }
+    .bulk-bar button.danger {
+      color: #ff9a8a;
+    }
+    .bulk-bar button.danger:hover {
+      background: rgba(194, 65, 12, 0.35);
+    }
+
+    /* ═══ Help floating button ═══════════════════════════════ */
+    .help-fab {
+      position: fixed;
+      bottom: 21px;
+      right: 21px;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--encre);
+      color: var(--papier);
+      border: none;
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 21px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(26, 20, 16, 0.2);
+      z-index: 50;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .help-fab:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(26, 20, 16, 0.3);
+    }
+
+    /* ═══ Confirm modal (friendly, contextualisée) ═══════════ */
+    .confirm-modal .modal {
+      max-width: 480px;
+    }
+    .confirm-title {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 22px;
+      margin-bottom: 13px;
+    }
+    .confirm-msg {
+      font-family: var(--sans);
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--encre-soft);
+      margin-bottom: 21px;
+    }
+    .confirm-target {
+      padding: 13px;
+      background: var(--papier-soft);
+      border-radius: var(--r);
+      border-left: 3px solid var(--orange-polo);
+      margin-bottom: 21px;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .confirm-target-label {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: var(--gris);
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+    .confirm-target-value {
+      color: var(--encre);
+    }
+    .confirm-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+    .confirm-actions button {
+      padding: 10px 18px;
+      border-radius: var(--r);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: 1px solid var(--gris-line);
+      background: var(--papier);
+      color: var(--encre);
+    }
+    .confirm-actions button.primary {
+      background: var(--encre);
+      color: var(--papier);
+      border-color: var(--encre);
+    }
+    .confirm-actions button.danger {
+      background: var(--rouge);
+      color: var(--papier);
+      border-color: var(--rouge);
+    }
+    .confirm-actions button:hover {
+      opacity: 0.85;
+    }
+
+    /* ═══ Audit filters bar ══════════════════════════════════ */
+    .audit-filters {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 13px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    /* ═══ Empty state with action ════════════════════════════ */
+    .empty-action {
+      padding: 55px 21px;
+      text-align: center;
+      color: var(--gris);
+    }
+    .empty-action-title {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 17px;
+      margin-bottom: 8px;
+      color: var(--encre);
+    }
+    .empty-action-msg {
+      font-family: var(--sans);
+      font-size: 13px;
+      margin-bottom: 21px;
+      color: var(--gris);
+    }
+    
     /* ═══ RESPONSIVE ══════════════════════════════════════════ */
     @media (max-width: 768px) {
       :root { --sidebar: 0; }
@@ -807,24 +1031,10 @@
       </div>
       <div class="login-tag">ESPACE ADMIN</div>
       <h1 class="login-title"><em>Connecte-toi</em></h1>
-      <p class="login-sub">Reçois un code à 6 chiffres par email pour accéder à la console admin.</p>
+      <p class="login-sub">Reçois un lien magique par email pour accéder à la console admin.</p>
 
-      <!-- État A : Email -->
-      <div id="loginStateEmail">
-        <input type="email" class="login-input" id="loginEmail" placeholder="email@carnet.life" autocomplete="email">
-        <button class="btn-primary" id="loginBtn">Recevoir le code</button>
-      </div>
-
-      <!-- État B : Code OTP (hidden initial) -->
-      <div id="loginStateCode" class="login-state-code" hidden>
-        <p class="login-code-info">Code envoyé à <strong id="loginEmailDisplay"></strong></p>
-        <input type="text" class="login-input" id="loginCode" placeholder="Code reçu par email" maxlength="8" inputmode="numeric" pattern="[0-9]{6,8}" autocomplete="one-time-code">
-        <button class="btn-primary" id="verifyCodeBtn">Valider</button>
-        <div class="login-actions-secondary">
-          <button class="btn-link" id="backToEmailBtn">← Email différent</button>
-          <button class="btn-link danger" id="resendCodeBtn">Renvoyer un code</button>
-        </div>
-      </div>
+      <input type="email" class="login-input" id="loginEmail" placeholder="email@carnet.life" autocomplete="email">
+      <button class="btn-primary" id="loginBtn">Envoyer le lien magique</button>
 
       <div class="login-status" id="loginStatus"></div>
     </div>
@@ -887,6 +1097,8 @@
           <div class="view-meta" id="dashUpdated">—</div>
         </div>
 
+        <div class="health-alerts" id="healthAlerts"></div>
+
         <div class="kpi-grid" id="kpiGrid">
           <div class="loading">Chargement</div>
         </div>
@@ -917,6 +1129,17 @@
         <div class="view-header">
           <div class="view-title"><em>Voitures</em></div>
           <div class="view-meta" id="carsCount">—</div>
+        </div>
+
+        <div class="quick-actions">
+          <span class="quick-label">Filtres rapides</span>
+          <button class="quick-chip" data-quick="reset">Tout</button>
+          <button class="quick-chip" data-quick="recent24h">Ajoutées 24h</button>
+          <button class="quick-chip" data-quick="lowscore">Score &lt; 30</button>
+          <button class="quick-chip" data-quick="highscore">Score ≥ 80</button>
+          <button class="quick-chip" data-quick="premier">≥ 500k€</button>
+          <button class="quick-chip" data-quick="hyper">≥ 1M€</button>
+          <button class="quick-chip" data-quick="recentarchived">Archivées 7j</button>
         </div>
 
         <div class="filters">
@@ -1033,6 +1256,7 @@
                 <th>Wallet donateur</th>
                 <th>Tx hash</th>
                 <th>UUID Xaman</th>
+                <th class="col-actions">Actions</th>
               </tr>
             </thead>
             <tbody id="donationsBody">
@@ -1047,6 +1271,24 @@
         <div class="view-header">
           <div class="view-title"><em>Audit log</em></div>
           <div class="view-meta" id="auditCount">100 dernières actions</div>
+        </div>
+
+        <div class="audit-filters">
+          <span class="filter-label">Action</span>
+          <select id="auditFilterAction">
+            <option value="all">Toutes</option>
+            <option value="login">Login</option>
+            <option value="logout">Logout</option>
+            <option value="toggle_status">Toggle statut</option>
+            <option value="delete">Suppressions</option>
+            <option value="bulk_archive">Archivage groupé</option>
+            <option value="bulk_delete">Suppression groupée</option>
+            <option value="export_csv">Export CSV</option>
+            <option value="donation_expire">Forcer expire donation</option>
+            <option value="edit">Edits</option>
+          </select>
+          <input type="search" id="auditFilterSearch" placeholder="Email admin…">
+          <button class="btn-ghost" onclick="loadAudit()">↻ Rafraîchir</button>
         </div>
 
         <div class="data-table-wrap">
@@ -1074,6 +1316,19 @@
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal" id="modalContent"></div>
   </div>
+
+  <!-- ═══ BULK ACTION BAR ════════════════════════════════════════ -->
+  <div class="bulk-bar" id="bulkBar">
+    <span class="bulk-bar-count" id="bulkCount">0 sélectionnées</span>
+    <div class="bulk-bar-divider"></div>
+    <button onclick="bulkAction('archive')">Archiver</button>
+    <button onclick="bulkAction('restore')">Restaurer</button>
+    <button class="danger" onclick="bulkAction('delete')">Supprimer</button>
+    <button onclick="bulkClear()">Annuler sélection</button>
+  </div>
+
+  <!-- ═══ HELP FAB ═══════════════════════════════════════════════ -->
+  <button class="help-fab" id="helpFab" title="Aide" onclick="openHelp()">?</button>
 
   <!-- ═══ TOAST ══════════════════════════════════════════════════ -->
   <div class="toast" id="toast"></div>
@@ -1152,9 +1407,6 @@
       el.className = 'login-status show ' + type;
     }
 
-    let currentLoginEmail = null;
-
-    // ─── État A : Demander le code OTP ─────────────────────────
     document.getElementById('loginBtn').addEventListener('click', async () => {
       const email = document.getElementById('loginEmail').value.trim();
       if (!email) return showLoginStatus('Saisis ton email.', 'error');
@@ -1163,99 +1415,19 @@
       btn.textContent = 'Envoi…';
       const { error } = await sb.auth.signInWithOtp({
         email,
-        options: { shouldCreateUser: false }
+        options: { emailRedirectTo: location.href }
       });
       btn.disabled = false;
-      btn.textContent = 'Recevoir le code';
+      btn.textContent = 'Envoyer le lien magique';
       if (error) {
         showLoginStatus(`Erreur : ${error.message}`, 'error');
       } else {
-        currentLoginEmail = email;
-        document.getElementById('loginEmailDisplay').textContent = email;
-        document.getElementById('loginStateEmail').hidden = true;
-        document.getElementById('loginStateCode').hidden = false;
-        showLoginStatus(`Code envoyé. Vérifie ta boîte mail.`);
-        setTimeout(() => document.getElementById('loginCode').focus(), 150);
+        showLoginStatus(`Lien envoyé à ${email}. Clique dessus pour te connecter.`);
       }
     });
 
-    // ─── État B : Vérifier le code OTP ─────────────────────────
-    document.getElementById('verifyCodeBtn').addEventListener('click', async () => {
-      const code = document.getElementById('loginCode').value.trim();
-      if (code.length < 6 || code.length > 8) return showLoginStatus('Le code fait 6 à 8 chiffres.', 'error');
-      if (!currentLoginEmail) return showLoginStatus('Recommence depuis l\'email.', 'error');
-      const btn = document.getElementById('verifyCodeBtn');
-      btn.disabled = true;
-      btn.textContent = 'Vérification…';
-      const { data, error } = await sb.auth.verifyOtp({
-        email: currentLoginEmail,
-        token: code,
-        type: 'email'
-      });
-      btn.disabled = false;
-      btn.textContent = 'Valider';
-      if (error) {
-        showLoginStatus(`Code invalide ou expiré. Réessaie ou renvoie un code.`, 'error');
-      } else {
-        showLoginStatus(`Connecté ✓`);
-        // Appel direct à onAuth — plus fiable que d'attendre onAuthStateChange
-        if (data && data.session) {
-          await onAuth(data.session);
-        } else {
-          // Fallback : forcer reload pour que init() reprenne la session
-          setTimeout(() => location.reload(), 300);
-        }
-      }
-    });
-
-    // ─── Retour à l'écran email ────────────────────────────────
-    document.getElementById('backToEmailBtn').addEventListener('click', () => {
-      document.getElementById('loginStateCode').hidden = true;
-      document.getElementById('loginStateEmail').hidden = false;
-      document.getElementById('loginCode').value = '';
-      document.getElementById('loginStatus').className = 'login-status';
-      currentLoginEmail = null;
-      setTimeout(() => document.getElementById('loginEmail').focus(), 100);
-    });
-
-    // ─── Renvoyer un code ──────────────────────────────────────
-    document.getElementById('resendCodeBtn').addEventListener('click', async () => {
-      if (!currentLoginEmail) return;
-      const btn = document.getElementById('resendCodeBtn');
-      btn.disabled = true;
-      btn.textContent = 'Envoi…';
-      const { error } = await sb.auth.signInWithOtp({
-        email: currentLoginEmail,
-        options: { shouldCreateUser: false }
-      });
-      btn.disabled = false;
-      btn.textContent = 'Renvoyer un code';
-      if (error) {
-        showLoginStatus(`Erreur : ${error.message}`, 'error');
-      } else {
-        showLoginStatus(`Nouveau code envoyé.`);
-      }
-    });
-
-    // ─── Keyboard shortcuts ────────────────────────────────────
     document.getElementById('loginEmail').addEventListener('keypress', e => {
       if (e.key === 'Enter') document.getElementById('loginBtn').click();
-    });
-    document.getElementById('loginCode').addEventListener('keypress', e => {
-      if (e.key === 'Enter') document.getElementById('verifyCodeBtn').click();
-    });
-
-    // ─── Filtrer input code : numérique only ──────────────────
-    let _codeSubmitTimer = null;
-    document.getElementById('loginCode').addEventListener('input', e => {
-      e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, 8);
-      // Auto-submit : debounce 600ms après dernière touche, si ≥6 chiffres
-      clearTimeout(_codeSubmitTimer);
-      if (e.target.value.length >= 6) {
-        _codeSubmitTimer = setTimeout(() => {
-          document.getElementById('verifyCodeBtn').click();
-        }, 600);
-      }
     });
 
     document.getElementById('logoutBtn').addEventListener('click', async () => {
@@ -1275,6 +1447,368 @@
       }
     });
 
+
+    // ════════════════════════════════════════════════════════════
+    //   HEALTH ALERTS (Dashboard) — boutons fix par alert
+    // ════════════════════════════════════════════════════════════
+    function renderHealthAlerts(kpis) {
+      const container = document.getElementById('healthAlerts');
+      const alerts = [];
+
+      // No cars added in last 24h → cron health
+      if (kpis.cars_added_today === 0) {
+        alerts.push({
+          level: 'error',
+          icon: '✕',
+          title: 'Aucune voiture ajoutée dans les 24 dernières heures',
+          detail: 'Les crons scrapers ne produisent rien. Vérifie les workflows GitHub Actions.',
+          actions: [
+            { label: 'Voir GH Actions ↗', url: 'https://github.com/Vinci75000/autoradar-scraper/actions' }
+          ]
+        });
+      } else if (kpis.cars_added_today < 5) {
+        alerts.push({
+          level: 'warn',
+          icon: '!',
+          title: `Seulement ${kpis.cars_added_today} voiture(s) ajoutée(s) aujourd'hui`,
+          detail: 'Moyenne habituelle plus élevée. Activité scraper anormalement faible.',
+          actions: [
+            { label: 'Voir GH Actions ↗', url: 'https://github.com/Vinci75000/autoradar-scraper/actions' }
+          ]
+        });
+      }
+
+      // Sources actives < 5
+      if (kpis.sources_active < 5) {
+        alerts.push({
+          level: 'warn',
+          icon: '!',
+          title: `${kpis.sources_active} source(s) active(s) seulement sur les 7 derniers jours`,
+          detail: 'Plusieurs sources semblent en panne ou désactivées.',
+          actions: [
+            { label: 'Voir Sources', onClick: "switchView('sources')" }
+          ]
+        });
+      }
+
+      // Donations stuck pending
+      if (kpis.donations_count_pending > 3) {
+        alerts.push({
+          level: 'warn',
+          icon: '!',
+          title: `${kpis.donations_count_pending} donations en attente`,
+          detail: 'Des paiements Xaman pas finalisés. Probablement expirés mais pas marqués.',
+          actions: [
+            { label: 'Voir donations', onClick: "switchView('donations')" }
+          ]
+        });
+      }
+
+      // Avg score faible
+      if (kpis.avg_score && kpis.avg_score < 50) {
+        alerts.push({
+          level: 'warn',
+          icon: '!',
+          title: `Score moyen faible : ${kpis.avg_score}/100`,
+          detail: 'La qualité du catalogue est en baisse. Vérifie les sources et le scoring.',
+          actions: [
+            { label: 'Voir cars score < 30', onClick: "applyQuickFilter('lowscore'); switchView('cars')" }
+          ]
+        });
+      }
+
+      // Tout va bien
+      if (alerts.length === 0) {
+        container.innerHTML = `
+          <div class="health-ok">
+            <strong>✓ Tout est en ordre.</strong>
+            Crons actifs, sources nominales, donations à jour.
+            <em style="opacity:0.8">Tu peux respirer.</em>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = alerts.map(a => `
+        <div class="alert ${a.level}">
+          <span class="alert-icon ${a.level}">${a.icon}</span>
+          <div class="alert-body">
+            <div class="alert-title">${a.title}</div>
+            <div class="alert-detail">${a.detail}</div>
+          </div>
+          <div class="alert-actions">
+            ${a.actions.map(act => act.url 
+              ? `<a class="btn-ghost accent" href="${act.url}" target="_blank">${act.label}</a>`
+              : `<button class="btn-ghost accent" onclick="${act.onClick}">${act.label}</button>`
+            ).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ════════════════════════════════════════════════════════════
+    //   QUICK ACTIONS (Cars view chips)
+    // ════════════════════════════════════════════════════════════
+    window.applyQuickFilter = function(quick) {
+      // Reset other quick chips
+      document.querySelectorAll('.quick-chip').forEach(c => c.classList.remove('active'));
+      document.querySelector(`.quick-chip[data-quick="${quick}"]`)?.classList.add('active');
+
+      const search = document.getElementById('filterSearch');
+      const status = document.getElementById('filterStatus');
+      const tier = document.getElementById('filterTier');
+      const src = document.getElementById('filterSource');
+      const sort = document.getElementById('filterSort');
+
+      // Reset all
+      search.value = '';
+      status.value = 'active';
+      tier.value = 'all';
+      src.value = 'all';
+      sort.value = 'created_at:desc';
+
+      State.cars.quickFilter = quick;
+      State.cars.page = 0;
+
+      if (quick === 'reset') {
+        // Already reset
+      } else if (quick === 'recent24h') {
+        // Will be handled in loadCars by quickFilter
+      } else if (quick === 'lowscore') {
+        sort.value = 'sc:asc';
+      } else if (quick === 'highscore') {
+        sort.value = 'sc:desc';
+      } else if (quick === 'premier') {
+        tier.value = 'super';
+      } else if (quick === 'hyper') {
+        tier.value = 'hyper';
+      } else if (quick === 'recentarchived') {
+        status.value = 'archived';
+      }
+      loadCars();
+    };
+
+    // Wire quick chip clicks
+    document.querySelectorAll('.quick-chip').forEach(chip => {
+      chip.addEventListener('click', () => applyQuickFilter(chip.dataset.quick));
+    });
+
+    // ════════════════════════════════════════════════════════════
+    //   FRIENDLY CONFIRM MODAL (instead of native confirm())
+    // ════════════════════════════════════════════════════════════
+    function friendlyConfirm({ title, msg, target, confirmLabel, dangerLabel, onConfirm }) {
+      const overlay = document.getElementById('modalOverlay');
+      const content = document.getElementById('modalContent');
+      content.innerHTML = `
+        <div class="confirm-title"><em>${title}</em></div>
+        <div class="confirm-msg">${msg}</div>
+        ${target ? `
+          <div class="confirm-target">
+            <div class="confirm-target-label">${target.label || 'Cible'}</div>
+            <div class="confirm-target-value">${target.value}</div>
+          </div>
+        ` : ''}
+        <div class="confirm-actions">
+          <button onclick="closeModal()">Annuler</button>
+          <button class="${dangerLabel ? 'danger' : 'primary'}" id="confirmYes">${confirmLabel || dangerLabel || 'Confirmer'}</button>
+        </div>
+      `;
+      overlay.classList.add('show');
+      overlay.classList.add('confirm-modal');
+      document.getElementById('confirmYes').onclick = () => {
+        closeModal();
+        overlay.classList.remove('confirm-modal');
+        onConfirm();
+      };
+    }
+
+    // ════════════════════════════════════════════════════════════
+    //   BULK ACTIONS
+    // ════════════════════════════════════════════════════════════
+    State.bulk = { selected: new Set() };
+
+    function refreshBulkBar() {
+      const bar = document.getElementById('bulkBar');
+      const count = State.bulk.selected.size;
+      if (count === 0) {
+        bar.classList.remove('show');
+      } else {
+        bar.classList.add('show');
+        document.getElementById('bulkCount').textContent = `${count} sélectionnée${count > 1 ? 's' : ''}`;
+      }
+    }
+
+    window.bulkClear = function() {
+      State.bulk.selected.clear();
+      document.querySelectorAll('.row-check').forEach(c => c.checked = false);
+      document.getElementById('selectAll').checked = false;
+      refreshBulkBar();
+    };
+
+    window.bulkAction = async function(action) {
+      const ids = Array.from(State.bulk.selected);
+      if (ids.length === 0) return;
+
+      const labels = {
+        archive: { title: 'Archiver en lot', msg: `Tu vas archiver ${ids.length} voiture(s). Elles ne seront plus visibles dans l'app publique. Tu pourras les restaurer plus tard.`, btn: 'Archiver tout', danger: false },
+        restore: { title: 'Restaurer en lot', msg: `Tu vas restaurer ${ids.length} voiture(s) archivée(s). Elles redeviendront visibles publiquement.`, btn: 'Restaurer tout', danger: false },
+        delete: { title: 'Supprimer en lot', msg: `Tu vas supprimer DÉFINITIVEMENT ${ids.length} voiture(s). Cette action est irréversible. Es-tu sûr·e ?`, btn: 'Supprimer définitivement', danger: true }
+      };
+      const cfg = labels[action];
+
+      friendlyConfirm({
+        title: cfg.title,
+        msg: cfg.msg,
+        target: { label: 'Sélection', value: `${ids.length} voiture(s)` },
+        confirmLabel: !cfg.danger ? cfg.btn : null,
+        dangerLabel: cfg.danger ? cfg.btn : null,
+        onConfirm: async () => {
+          toast(`${cfg.title}…`);
+          try {
+            if (action === 'archive') {
+              await sb.from('cars').update({ status: 'archived_manual' }).in('id', ids);
+              await logAudit('bulk_archive', 'cars', null, { count: ids.length, ids });
+            } else if (action === 'restore') {
+              await sb.from('cars').update({ status: 'active' }).in('id', ids);
+              await logAudit('bulk_restore', 'cars', null, { count: ids.length, ids });
+            } else if (action === 'delete') {
+              await sb.from('data_lineage').delete().in('entity_id', ids);
+              await sb.from('car_fingerprints').delete().in('car_id', ids);
+              const { error } = await sb.from('cars').delete().in('id', ids);
+              if (error) throw error;
+              await logAudit('bulk_delete', 'cars', null, { count: ids.length, ids });
+            }
+            toast(`${ids.length} voiture(s) traitée(s)`, 'success');
+            bulkClear();
+            loadCars();
+          } catch (e) {
+            toast(`Erreur : ${e.message}`, 'error');
+          }
+        }
+      });
+    };
+
+    // Wire select-all checkbox
+    document.getElementById('selectAll').addEventListener('change', e => {
+      const checked = e.target.checked;
+      document.querySelectorAll('.row-check').forEach(c => {
+        c.checked = checked;
+        if (checked) State.bulk.selected.add(c.dataset.id);
+        else State.bulk.selected.delete(c.dataset.id);
+      });
+      refreshBulkBar();
+    });
+
+    // Delegate row checkbox clicks (since rows are re-rendered)
+    document.getElementById('carsBody').addEventListener('change', e => {
+      if (!e.target.classList.contains('row-check')) return;
+      const id = e.target.dataset.id;
+      if (e.target.checked) State.bulk.selected.add(id);
+      else State.bulk.selected.delete(id);
+      // Highlight row
+      e.target.closest('tr').classList.toggle('selected', e.target.checked);
+      refreshBulkBar();
+    });
+
+    // ════════════════════════════════════════════════════════════
+    //   HELP MODAL — onboarding
+    // ════════════════════════════════════════════════════════════
+    window.openHelp = function() {
+      const overlay = document.getElementById('modalOverlay');
+      const content = document.getElementById('modalContent');
+      content.innerHTML = `
+        <div class="modal-header">
+          <div class="modal-title"><em>Bienvenue sur l'admin CARNET</em></div>
+          <button class="modal-close" onclick="closeModal()">×</button>
+        </div>
+        
+        <p style="font-family: var(--editorial); font-style: italic; font-size: 16px; margin-bottom: 21px; color: var(--encre-soft);">
+          Voici les bonnes pratiques pour gérer l'app sans rien casser.
+        </p>
+
+        <div style="margin-bottom: 21px;">
+          <div style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; color: var(--gris); text-transform: uppercase; margin-bottom: 8px;">1. Dashboard</div>
+          <p style="font-family: var(--sans); font-size: 13px; line-height: 1.6;">
+            <strong>Le banner d'alertes en haut</strong> te dit ce qui ne va pas et propose un bouton pour aller le régler. Si tout est vert, tu peux respirer.
+          </p>
+        </div>
+
+        <div style="margin-bottom: 21px;">
+          <div style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; color: var(--gris); text-transform: uppercase; margin-bottom: 8px;">2. Cars (gérer les voitures)</div>
+          <p style="font-family: var(--sans); font-size: 13px; line-height: 1.6; margin-bottom: 8px;">
+            <strong>Filtres rapides</strong> en haut : <em>Score &lt; 30</em>, <em>Hyper ≥ 1M€</em>, etc. Un clic pour pré-filtrer.
+          </p>
+          <p style="font-family: var(--sans); font-size: 13px; line-height: 1.6; margin-bottom: 8px;">
+            <strong>Sélection multiple</strong> : coche plusieurs lignes → la barre noire en bas apparaît avec les actions groupées.
+          </p>
+          <p style="font-family: var(--sans); font-size: 13px; line-height: 1.6;">
+            <strong>Archiver vs Supprimer</strong> : archiver = retiré du public, restaurable. Supprimer = irréversible. En cas de doute → archive.
+          </p>
+        </div>
+
+        <div style="margin-bottom: 21px;">
+          <div style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; color: var(--gris); text-transform: uppercase; margin-bottom: 8px;">3. Voiture indésirable détectée</div>
+          <p style="font-family: var(--sans); font-size: 13px; line-height: 1.6;">
+            Tu trouves une annonce qui n'a rien à faire là (épave, scam, doublon) ?
+            → <strong>Archive-la</strong>. Si elle revient au prochain cron, ouvre le détail et regarde la <code style="background:var(--papier-soft); padding:1px 4px; border-radius:2px; font-size:11px;">src_url</code> pour comprendre la source.
+          </p>
+        </div>
+
+        <div style="margin-bottom: 21px;">
+          <div style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; color: var(--gris); text-transform: uppercase; margin-bottom: 8px;">4. Voiture absente qu'on devrait avoir</div>
+          <p style="font-family: var(--sans); font-size: 13px; line-height: 1.6;">
+            Vérifie d'abord dans Cars avec le filtre <em>Archivées 7j</em> — peut-être qu'elle a été retirée par le <em>wash cron</em>. Si oui : ouvre le détail → bouton <strong>Restaurer</strong>.
+          </p>
+        </div>
+
+        <div style="margin-bottom: 21px;">
+          <div style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; color: var(--gris); text-transform: uppercase; margin-bottom: 8px;">5. Donations</div>
+          <p style="font-family: var(--sans); font-size: 13px; line-height: 1.6;">
+            Les paiements XRP/RLUSD via Xaman arrivent ici. <em>Pending</em> = en cours, <em>signed</em> = OK, <em>expired</em> = le user n'a pas signé à temps. Tu n'as rien à faire manuellement.
+          </p>
+        </div>
+
+        <div style="margin-bottom: 21px;">
+          <div style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; color: var(--gris); text-transform: uppercase; margin-bottom: 8px;">6. Audit</div>
+          <p style="font-family: var(--sans); font-size: 13px; line-height: 1.6;">
+            Toutes tes actions sont tracées avec date et email. C'est ton historique de sécurité. Tu peux remonter en cas d'erreur.
+          </p>
+        </div>
+
+        <div style="padding: 13px; background: var(--papier-soft); border-radius: var(--r); margin-top: 21px;">
+          <strong style="font-family: var(--sans); font-size: 13px;">En cas de doute :</strong>
+          <span style="font-family: var(--editorial); font-style: italic; font-size: 14px; color: var(--orange-polo);">
+            Archive d'abord. Réfléchis ensuite.
+          </span>
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn-ghost accent" onclick="closeModal()">J'ai compris</button>
+        </div>
+      `;
+      overlay.classList.add('show');
+    };
+
+    // ════════════════════════════════════════════════════════════
+    //   DONATIONS — force-expire stuck pending
+    // ════════════════════════════════════════════════════════════
+    window.forceExpireDonation = async function(uuid) {
+      friendlyConfirm({
+        title: 'Forcer l\'expiration',
+        msg: 'Cette donation est en pending depuis longtemps. Tu peux la marquer comme expirée manuellement (cela ne touche pas Xaman, juste notre base).',
+        target: { label: 'UUID Xaman', value: uuid },
+        confirmLabel: 'Forcer expire',
+        onConfirm: async () => {
+          const { error } = await sb.from('donations').update({ status: 'expired' }).eq('xaman_uuid', uuid);
+          if (error) return toast(`Erreur : ${error.message}`, 'error');
+          await logAudit('donation_expire', 'donations', uuid);
+          toast('Marquée comme expirée', 'success');
+          loadDonations();
+        }
+      });
+    };
+
+    // ════════════════════════════════════════════════════════════
     // ════════════════════════════════════════════════════════════
     //   AUDIT LOG WRAPPER
     // ════════════════════════════════════════════════════════════
@@ -1318,6 +1852,7 @@
       try {
         const { data, error } = await sb.rpc('get_admin_kpis');
         if (error) throw error;
+        renderHealthAlerts(data);
         renderKpis(data);
         renderChart(data.cars_by_day_14d || []);
         renderTopList('topSources', data.top_sources || [], 'source', 'cnt');
@@ -1441,6 +1976,21 @@
         q = q.gte('px', min).lte('px', max);
       }
       
+      // Handle quick filter "recent24h"
+      if (State.cars.quickFilter === 'recent24h') {
+        const since = new Date(Date.now() - 24 * 3600 * 1000).toISOString();
+        q = q.gte('created_at', since);
+      }
+      if (State.cars.quickFilter === 'recentarchived') {
+        const since = new Date(Date.now() - 7 * 24 * 3600 * 1000).toISOString();
+        q = q.gte('created_at', since);
+      }
+      if (State.cars.quickFilter === 'lowscore') {
+        q = q.lt('sc', 30);
+      }
+      if (State.cars.quickFilter === 'highscore') {
+        q = q.gte('sc', 80);
+      }
       q = q.order(sortField, { ascending: sortDir === 'asc' });
       q = q.range(State.cars.page * PAGE_SIZE, State.cars.page * PAGE_SIZE + PAGE_SIZE - 1);
       
@@ -1568,35 +2118,48 @@
       if (e.target.id === 'modalOverlay') closeModal();
     });
 
-    window.toggleCarStatus = async function(id, currentStatus) {
+    window.toggleCarStatus = function(id, currentStatus) {
+      const car = State.cars.rows.find(c => c.id === id);
       const newStatus = currentStatus === 'active' ? 'archived_manual' : 'active';
-      const action = newStatus === 'active' ? 'Restaurer' : 'Archiver';
-      if (!confirm(`${action} cette voiture ?`)) return;
-      
-      const { error } = await sb.from('cars').update({ status: newStatus }).eq('id', id);
-      if (error) return toast(`Erreur : ${error.message}`, 'error');
-      
-      await logAudit('toggle_status', 'cars', id, { from: currentStatus, to: newStatus });
-      toast(`${action} OK`, 'success');
-      closeModal();
-      loadCars();
+      const archiving = newStatus !== 'active';
+      friendlyConfirm({
+        title: archiving ? 'Archiver cette voiture' : 'Restaurer cette voiture',
+        msg: archiving
+          ? 'La voiture ne sera plus visible dans l\'app publique. Tu pourras la restaurer plus tard depuis Archivées.'
+          : 'La voiture redeviendra visible dans l\'app publique.',
+        target: car ? { label: 'Voiture', value: `${car.mk || '?'} ${car.mo || ''} ${car.yr || ''} — ${car.px ? fmtEur(car.px) : 'prix ?'}` } : null,
+        confirmLabel: archiving ? 'Archiver' : 'Restaurer',
+        onConfirm: async () => {
+          const { error } = await sb.from('cars').update({ status: newStatus }).eq('id', id);
+          if (error) return toast(`Erreur : ${error.message}`, 'error');
+          await logAudit('toggle_status', 'cars', id, { from: currentStatus, to: newStatus });
+          toast(archiving ? 'Voiture archivée' : 'Voiture restaurée', 'success');
+          loadCars();
+        }
+      });
     };
 
-    window.deleteCar = async function(id) {
-      if (!confirm('Supprimer définitivement cette voiture ? Cette action est irréversible.')) return;
-      // FK delete order: data_lineage → car_fingerprints → cars
-      try {
-        await sb.from('data_lineage').delete().eq('entity_id', id);
-        await sb.from('car_fingerprints').delete().eq('car_id', id);
-        const { error } = await sb.from('cars').delete().eq('id', id);
-        if (error) throw error;
-        await logAudit('delete', 'cars', id);
-        toast('Supprimée', 'success');
-        closeModal();
-        loadCars();
-      } catch (e) {
-        toast(`Erreur : ${e.message}`, 'error');
-      }
+    window.deleteCar = function(id) {
+      const car = State.cars.rows.find(c => c.id === id);
+      friendlyConfirm({
+        title: 'Suppression définitive',
+        msg: 'Cette action est <strong>irréversible</strong>. La voiture sera supprimée de la base avec tous ses fingerprints et son historique. Si tu hésites, choisis Archiver plutôt.',
+        target: car ? { label: 'Voiture à supprimer', value: `${car.mk || '?'} ${car.mo || ''} ${car.yr || ''}` } : { label: 'ID', value: id },
+        dangerLabel: 'Supprimer définitivement',
+        onConfirm: async () => {
+          try {
+            await sb.from('data_lineage').delete().eq('entity_id', id);
+            await sb.from('car_fingerprints').delete().eq('car_id', id);
+            const { error } = await sb.from('cars').delete().eq('id', id);
+            if (error) throw error;
+            await logAudit('delete', 'cars', id, { mk: car?.mk, mo: car?.mo, yr: car?.yr });
+            toast('Voiture supprimée définitivement', 'success');
+            loadCars();
+          } catch (e) {
+            toast(`Erreur : ${e.message}`, 'error');
+          }
+        }
+      });
     };
 
     async function exportCsv() {
@@ -1655,11 +2218,11 @@
     // ════════════════════════════════════════════════════════════
     async function loadDonations() {
       const body = document.getElementById('donationsBody');
-      body.innerHTML = '<tr><td colspan="8" class="loading" style="border:none">Chargement</td></tr>';
+      body.innerHTML = '<tr><td colspan="9" class="loading" style="border:none">Chargement</td></tr>';
       
       const { data, error } = await sb.from('donations').select('*').order('created_at', { ascending: false }).limit(200);
       if (error) {
-        body.innerHTML = `<tr><td colspan="8" class="empty">Erreur : ${error.message}</td></tr>`;
+        body.innerHTML = `<tr><td colspan="9" class="empty">Erreur : ${error.message}</td></tr>`;
         return;
       }
       
@@ -1678,7 +2241,7 @@
       document.getElementById('donationsCount').textContent = `${data.length} entries`;
       
       if (data.length === 0) {
-        body.innerHTML = '<tr><td colspan="8" class="empty">Aucune donation pour le moment. <em>On compte sur la tribu.</em></td></tr>';
+        body.innerHTML = '<tr><td colspan="9" class="empty">Aucune donation pour le moment. <em>On compte sur la tribu.</em></td></tr>';
         return;
       }
       
@@ -1690,8 +2253,17 @@
           <td><span style="color:var(--gris); font-size:11px">${esc(d.method || '?')}</span></td>
           <td><span class="chip chip-${d.status}">${esc(d.status || '?')}</span></td>
           <td style="font-family:var(--mono); font-size:10px; color:var(--gris)">${truncate(d.donor_wallet_address, 14)}</td>
-          <td style="font-family:var(--mono); font-size:10px; color:var(--gris)">${truncate(d.tx_hash, 14)}</td>
+          <td style="font-family:var(--mono); font-size:10px; color:var(--gris)">
+            ${d.tx_hash 
+              ? `<a href="https://livenet.xrpl.org/transactions/${esc(d.tx_hash)}" target="_blank" title="Voir on-chain">${truncate(d.tx_hash, 14)} ↗</a>`
+              : truncate(d.tx_hash, 14)}
+          </td>
           <td style="font-family:var(--mono); font-size:10px; color:var(--gris)">${truncate(d.xaman_uuid, 12)}</td>
+          <td class="col-actions">
+            ${d.status === 'pending' && d.xaman_uuid 
+              ? `<button class="action-btn danger" onclick="forceExpireDonation('${esc(d.xaman_uuid)}')" title="Forcer marquage expired">Forcer expire</button>` 
+              : ''}
+          </td>
         </tr>
       `).join('');
     }
@@ -1699,11 +2271,25 @@
     // ════════════════════════════════════════════════════════════
     //   VIEW: AUDIT
     // ════════════════════════════════════════════════════════════
+    // Wire audit filters
+    ['auditFilterAction','auditFilterSearch'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('change', loadAudit);
+        if (id === 'auditFilterSearch') el.addEventListener('input', debounce(loadAudit, 400));
+      }
+    });
+
     async function loadAudit() {
       const body = document.getElementById('auditBody');
       body.innerHTML = '<tr><td colspan="5" class="loading" style="border:none">Chargement</td></tr>';
       
-      const { data, error } = await sb.from('admin_audit_log').select('*').order('created_at', { ascending: false }).limit(100);
+      let q = sb.from('admin_audit_log').select('*').order('created_at', { ascending: false }).limit(100);
+      const actionFilter = document.getElementById('auditFilterAction')?.value || 'all';
+      const searchFilter = document.getElementById('auditFilterSearch')?.value.trim() || '';
+      if (actionFilter !== 'all') q = q.eq('action', actionFilter);
+      if (searchFilter) q = q.ilike('admin_email', `%${searchFilter}%`);
+      const { data, error } = await q;
       if (error) {
         body.innerHTML = `<tr><td colspan="5" class="empty">Erreur : ${error.message}</td></tr>`;
         return;
