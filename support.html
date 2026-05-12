@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Support · Carnet</title>
+  <meta name="description" content="Une équipe humaine pour t'accompagner. Carnet répond.">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <style>
+    :root {
+      --encre: #1a1410;
+      --papier: #faf6ef;
+      --papier-soft: #f3ede1;
+      --orange-polo: #E85A1F;
+      --vert-anglais: #1F4D2F;
+      --gris: #6b5d4f;
+      --editorial: 'Bodoni Moda', 'Cormorant Garamond', Georgia, serif;
+      --mono: 'DM Mono', 'JetBrains Mono', monospace;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--papier);
+      color: var(--encre);
+      font-family: var(--editorial);
+      font-size: 17px;
+      line-height: 1.6;
+      min-height: 100vh;
+      padding: 89px 21px 144px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .container {
+      max-width: 610px;
+      width: 100%;
+    }
+    .wordmark {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 24px;
+      color: var(--encre);
+      text-decoration: none;
+      margin-bottom: 89px;
+    }
+    .wordmark-dot {
+      width: 10px;
+      height: 10px;
+      background: var(--orange-polo);
+      border-radius: 2px;
+    }
+    .tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.21em;
+      color: var(--gris);
+      margin-bottom: 21px;
+    }
+    h1 {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-weight: 400;
+      font-size: 55px;
+      line-height: 1.05;
+      color: var(--encre);
+      margin-bottom: 34px;
+    }
+    .lead {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 21px;
+      line-height: 1.5;
+      color: var(--encre);
+      margin-bottom: 55px;
+    }
+    h2 {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--encre);
+      font-weight: 500;
+      margin: 55px 0 21px;
+    }
+    p {
+      font-family: var(--editorial);
+      font-size: 17px;
+      line-height: 1.65;
+      color: var(--encre);
+      margin-bottom: 17px;
+    }
+    .contact-card {
+      background: var(--papier-soft);
+      padding: 34px;
+      border-radius: 2px;
+      margin: 34px 0;
+    }
+    .contact-row {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-bottom: 21px;
+    }
+    .contact-row:last-child { margin-bottom: 0; }
+    .contact-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gris);
+    }
+    .contact-value {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 19px;
+      color: var(--encre);
+    }
+    .contact-value a {
+      color: var(--orange-polo);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(232, 90, 31, 0.3);
+    }
+    .contact-value a:hover {
+      border-bottom-color: var(--orange-polo);
+    }
+    em {
+      font-style: italic;
+      color: var(--vert-anglais);
+    }
+    .divider {
+      height: 1px;
+      background: rgba(26, 20, 16, 0.08);
+      margin: 55px 0;
+    }
+    .footer {
+      margin-top: 89px;
+      text-align: center;
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 13px;
+      color: var(--gris);
+    }
+    .footer-line {
+      width: 55px;
+      height: 1px;
+      background: rgba(26, 20, 16, 0.15);
+      margin: 0 auto 13px;
+    }
+    .footer-links {
+      margin-top: 13px;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+    }
+    .footer-links a {
+      color: var(--gris);
+      text-decoration: none;
+      margin: 0 8px;
+    }
+    .footer-links a:hover { color: var(--encre); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="/" class="wordmark">
+      <span><em>Carnet</em></span>
+      <span class="wordmark-dot"></span>
+    </a>
+
+    <div class="tag">SUPPORT</div>
+    <h1><em>On répond.</em></h1>
+    <p class="lead">Une équipe humaine, pas un bot. On lit chaque message et on répond dans la journée.</p>
+
+    <div class="contact-card">
+      <div class="contact-row">
+        <span class="contact-label">Email</span>
+        <span class="contact-value"><a href="mailto:contact@carnet.life">contact@carnet.life</a></span>
+      </div>
+      <div class="contact-row">
+        <span class="contact-label">Délai de réponse</span>
+        <span class="contact-value">Sous 24 heures, du lundi au vendredi.</span>
+      </div>
+    </div>
+
+    <h2>Ce qu'on peut faire pour toi</h2>
+    <p>Une question sur ton garage. Une voiture que tu cherches qu'on n'a pas. Une suggestion. Une annonce qui devrait être là, ou qui ne devrait plus l'être. Un bug à signaler. Un retour sur ta première transaction on-chain.</p>
+    <p>On accueille tout, sans filtre, avec sérieux.</p>
+
+    <h2>Pour les vendeurs</h2>
+    <p>Si tu vends une voiture qui a sa place sur Carnet, écris-nous avec le lien de l'annonce. Notre équipe vérifie, et si la voiture mérite, elle entre dans l'app dans les 48 heures.</p>
+
+    <h2>Pour les questions on-chain</h2>
+    <p>Wallet, NFT Vehicle Certificate, transactions XRP ou RLUSD, escrow : on accompagne. Aucune question n'est <em>"bête"</em>, le sujet est nouveau pour beaucoup. On prend le temps.</p>
+
+    <div class="divider"></div>
+
+    <p style="font-style: italic; color: var(--gris); font-size: 15px;">Carnet est un projet indépendant. Une équipe humaine qui aime les voitures et qui scrute le marché pour toi. Chaque message compte.</p>
+
+    <div class="footer">
+      <div class="footer-line"></div>
+      <em>Carnet — A record of every record.</em>
+      <div class="footer-links">
+        <a href="/">Accueil</a> · <a href="/terms">Conditions</a> · <a href="/privacy">Confidentialité</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

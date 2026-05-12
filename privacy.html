@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confidentialité · Carnet</title>
+  <meta name="description" content="Ce qu'on collecte, ce qu'on ne fait pas, ce que tu peux exiger.">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <style>
+    :root {
+      --encre: #1a1410;
+      --papier: #faf6ef;
+      --papier-soft: #f3ede1;
+      --orange-polo: #E85A1F;
+      --vert-anglais: #1F4D2F;
+      --gris: #6b5d4f;
+      --editorial: 'Bodoni Moda', 'Cormorant Garamond', Georgia, serif;
+      --mono: 'DM Mono', 'JetBrains Mono', monospace;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--papier);
+      color: var(--encre);
+      font-family: var(--editorial);
+      font-size: 17px;
+      line-height: 1.6;
+      min-height: 100vh;
+      padding: 89px 21px 144px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .container { max-width: 720px; width: 100%; }
+    .wordmark {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 24px;
+      color: var(--encre);
+      text-decoration: none;
+      margin-bottom: 89px;
+    }
+    .wordmark-dot {
+      width: 10px;
+      height: 10px;
+      background: var(--orange-polo);
+      border-radius: 2px;
+    }
+    .tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.21em;
+      color: var(--gris);
+      margin-bottom: 21px;
+    }
+    h1 {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-weight: 400;
+      font-size: 55px;
+      line-height: 1.05;
+      color: var(--encre);
+      margin-bottom: 34px;
+    }
+    .lead {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 21px;
+      line-height: 1.5;
+      color: var(--encre);
+      margin-bottom: 55px;
+    }
+    h2 {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--encre);
+      font-weight: 500;
+      margin: 55px 0 21px;
+    }
+    h3 {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 19px;
+      color: var(--encre);
+      font-weight: 500;
+      margin: 21px 0 8px;
+    }
+    p {
+      font-family: var(--editorial);
+      font-size: 16px;
+      line-height: 1.65;
+      color: var(--encre);
+      margin-bottom: 13px;
+    }
+    ul {
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 13px;
+    }
+    li {
+      font-family: var(--editorial);
+      font-size: 16px;
+      line-height: 1.65;
+      color: var(--encre);
+      padding-left: 21px;
+      position: relative;
+      margin-bottom: 5px;
+    }
+    li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--gris);
+    }
+    em { font-style: italic; color: var(--vert-anglais); }
+    a { color: var(--orange-polo); text-decoration: none; border-bottom: 1px solid rgba(232, 90, 31, 0.3); }
+    a:hover { border-bottom-color: var(--orange-polo); }
+    .meta {
+      background: var(--papier-soft);
+      padding: 21px;
+      border-radius: 2px;
+      margin-bottom: 34px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      color: var(--gris);
+    }
+    .nope-list {
+      background: var(--papier-soft);
+      padding: 21px 34px;
+      border-radius: 2px;
+      margin: 21px 0;
+    }
+    .nope-list li {
+      font-style: italic;
+      color: var(--encre);
+    }
+    .nope-list li::before {
+      content: '\2014';
+      color: var(--orange-polo);
+    }
+    .divider {
+      height: 1px;
+      background: rgba(26, 20, 16, 0.08);
+      margin: 55px 0;
+    }
+    .footer {
+      margin-top: 89px;
+      text-align: center;
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 13px;
+      color: var(--gris);
+    }
+    .footer-line {
+      width: 55px;
+      height: 1px;
+      background: rgba(26, 20, 16, 0.15);
+      margin: 0 auto 13px;
+    }
+    .footer-links {
+      margin-top: 13px;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+    }
+    .footer-links a {
+      color: var(--gris);
+      text-decoration: none;
+      margin: 0 8px;
+      border-bottom: none;
+    }
+    .footer-links a:hover { color: var(--encre); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="/" class="wordmark">
+      <span><em>Carnet</em></span>
+      <span class="wordmark-dot"></span>
+    </a>
+
+    <div class="tag">POLITIQUE DE CONFIDENTIALITÉ</div>
+    <h1><em>Tes données, ta tranquillité.</em></h1>
+    <p class="lead">Ce qu'on collecte, ce qu'on ne fait pas, ce que tu peux exiger. Sans jargon.</p>
+
+    <div class="meta">DERNIÈRE MISE À JOUR : 12 MAI 2026 · VERSION 1.0 · CONFORME RGPD</div>
+
+    <h2>Le principe</h2>
+    <p>Carnet ne vit pas de la publicité, par choix. On ne revend pas tes données. On collecte le strict nécessaire pour faire fonctionner l'app. Tu peux à tout moment voir ce qu'on a, le corriger, ou tout effacer.</p>
+
+    <h2>Ce qu'on collecte</h2>
+
+    <h3>Ton compte</h3>
+    <ul>
+      <li>Adresse email (pour te contacter)</li>
+      <li>Pseudonyme ou prénom (optionnel)</li>
+      <li>Préférences (langue, devise, alertes)</li>
+    </ul>
+
+    <h3>Ton garage et tes wishlists</h3>
+    <ul>
+      <li>Voitures que tu y enregistres (marque, modèle, année, kilométrage, photos)</li>
+      <li>Carnet d'entretien (services, factures uploadées par tes soins)</li>
+      <li>Annonces que tu suis</li>
+    </ul>
+    <p>Ces données sont <em>privées par défaut</em>. Personne ne les voit, sauf toi. Elles ne deviennent publiques que si tu mets une voiture en vente sur Carnet.</p>
+
+    <h3>Tes interactions on-chain</h3>
+    <ul>
+      <li>Adresse publique du wallet que tu utilises (par exemple ton adresse XRPL <em>r…</em>)</li>
+      <li>Hash des transactions effectuées via Carnet (dons, ventes futures)</li>
+      <li>Attestation que ton wallet est vérifié par son fournisseur (Xaman, Bitget Wallet)</li>
+    </ul>
+    <p>Carnet ne stocke <em>jamais</em> de clé privée, de seed phrase, ni d'information bancaire. Ces éléments restent dans ton wallet et chez ton fournisseur de wallet.</p>
+
+    <h3>Données techniques</h3>
+    <ul>
+      <li>Type d'appareil et de navigateur (pour adapter l'affichage)</li>
+      <li>Pages consultées (pour comprendre ce qui marche, ce qui ne marche pas)</li>
+      <li>Logs d'erreur (anonymisés)</li>
+    </ul>
+    <p>Aucun cookie tiers de tracking publicitaire. Aucune intégration Google Analytics ou équivalent. On utilise un outil interne minimaliste.</p>
+
+    <h2>Ce qu'on ne fait pas</h2>
+    <div class="nope-list">
+      <ul>
+        <li>On ne revend pas tes données. À personne. Jamais.</li>
+        <li>On ne te profile pas pour de la publicité ciblée.</li>
+        <li>On ne partage pas ta liste de voitures avec qui que ce soit.</li>
+        <li>On ne lit pas tes factures uploadées (sauf si tu nous demandes de l'aide).</li>
+        <li>On n'envoie pas d'email marketing non sollicité.</li>
+      </ul>
+    </div>
+
+    <h2>Qui voit tes données</h2>
+    <ul>
+      <li><strong>Toi</strong>, évidemment, à tout moment depuis ton compte</li>
+      <li><strong>Notre équipe technique</strong>, en cas d'incident, et uniquement le temps de résoudre</li>
+      <li><strong>Nos sous-traitants techniques</strong> (Supabase pour la base de données, Cloudflare pour l'hébergement, Vercel pour le déploiement) — tous engagés contractuellement à respecter le RGPD</li>
+    </ul>
+
+    <h2>Où sont stockées tes données</h2>
+    <p>Sur des serveurs européens. Notre base principale est à Francfort (Allemagne), via Supabase. Les images transitent par le réseau Cloudflare (CDN mondial, mais le stockage primaire reste en Europe).</p>
+
+    <h2>Combien de temps on les garde</h2>
+    <ul>
+      <li><strong>Compte actif</strong> : tant que tu utilises Carnet</li>
+      <li><strong>Compte supprimé</strong> : effacement complet sous 30 jours, sauf obligations légales (comptabilité fiscale : 10 ans pour les transactions de plus de 1500 €)</li>
+      <li><strong>Logs techniques</strong> : 90 jours maximum</li>
+      <li><strong>Transactions on-chain</strong> : par nature, immuables sur le ledger XRPL. On peut effacer notre référence locale, pas la trace publique du ledger.</li>
+    </ul>
+
+    <h2>Tes droits (RGPD)</h2>
+    <p>Tu as le droit de :</p>
+    <ul>
+      <li><strong>Accéder</strong> à toutes les données qu'on a sur toi (on te les envoie en JSON, lisible)</li>
+      <li><strong>Corriger</strong> ce qui est inexact</li>
+      <li><strong>Effacer</strong> ton compte et tes données (sous 30 jours)</li>
+      <li><strong>Limiter</strong> l'usage de tes données</li>
+      <li><strong>Récupérer</strong> tes données dans un format portable</li>
+      <li><strong>T'opposer</strong> à un traitement spécifique</li>
+    </ul>
+    <p>Pour exercer ces droits, un email à <a href="mailto:privacy@carnet.life">privacy@carnet.life</a> suffit. On te répond sous 30 jours, en général sous 48 heures.</p>
+
+    <h2>Cookies</h2>
+    <p>Carnet utilise uniquement des cookies <em>strictement nécessaires</em> au fonctionnement (session, préférence de langue, panier de garage en cours de saisie). Aucun cookie publicitaire, aucun cookie de tracking tiers. Pas de banner de cookies qui te pollue donc.</p>
+
+    <h2>Mineurs</h2>
+    <p>Carnet est destiné aux adultes. Si tu as moins de 16 ans, demande l'autorisation d'un parent avant de créer un compte. Pour les transactions <em>on-chain</em>, l'âge minimum est 18 ans, conformément aux exigences MiCA et de Xaman.</p>
+
+    <h2>Modifications de cette politique</h2>
+    <p>Si on change quoi que ce soit de significatif, on te prévient par email au moins 30 jours avant. Tu peux à tout moment refuser et supprimer ton compte.</p>
+
+    <h2>Contact</h2>
+    <p><strong>Responsable du traitement</strong> : AutoRadar SAS, Paris<br>
+       <strong>Email général</strong> : <a href="mailto:contact@carnet.life">contact@carnet.life</a><br>
+       <strong>Email confidentialité</strong> : <a href="mailto:privacy@carnet.life">privacy@carnet.life</a></p>
+    <p>Tu peux aussi déposer une réclamation auprès de la CNIL (<a href="https://www.cnil.fr">cnil.fr</a>) si nos réponses ne te conviennent pas.</p>
+
+    <div class="divider"></div>
+
+    <p style="font-style: italic; color: var(--gris); font-size: 15px;">
+      Carnet est un projet indépendant. On a écrit cette politique nous-mêmes, en français, en relisant le RGPD ligne à ligne. Si quelque chose n'est pas clair, écris-nous et on précise.
+    </p>
+
+    <div class="footer">
+      <div class="footer-line"></div>
+      <em>Carnet — A record of every record.</em>
+      <div class="footer-links">
+        <a href="/">Accueil</a> · <a href="/support">Support</a> · <a href="/terms">Conditions</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

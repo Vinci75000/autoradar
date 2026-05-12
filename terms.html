@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conditions · Carnet</title>
+  <meta name="description" content="Les règles du jeu. Sobres, lisibles, respectueuses.">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <style>
+    :root {
+      --encre: #1a1410;
+      --papier: #faf6ef;
+      --papier-soft: #f3ede1;
+      --orange-polo: #E85A1F;
+      --vert-anglais: #1F4D2F;
+      --gris: #6b5d4f;
+      --editorial: 'Bodoni Moda', 'Cormorant Garamond', Georgia, serif;
+      --mono: 'DM Mono', 'JetBrains Mono', monospace;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--papier);
+      color: var(--encre);
+      font-family: var(--editorial);
+      font-size: 17px;
+      line-height: 1.6;
+      min-height: 100vh;
+      padding: 89px 21px 144px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .container { max-width: 720px; width: 100%; }
+    .wordmark {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 24px;
+      color: var(--encre);
+      text-decoration: none;
+      margin-bottom: 89px;
+    }
+    .wordmark-dot {
+      width: 10px;
+      height: 10px;
+      background: var(--orange-polo);
+      border-radius: 2px;
+    }
+    .tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.21em;
+      color: var(--gris);
+      margin-bottom: 21px;
+    }
+    h1 {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-weight: 400;
+      font-size: 55px;
+      line-height: 1.05;
+      color: var(--encre);
+      margin-bottom: 34px;
+    }
+    .lead {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 21px;
+      line-height: 1.5;
+      color: var(--encre);
+      margin-bottom: 55px;
+    }
+    h2 {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--encre);
+      font-weight: 500;
+      margin: 55px 0 21px;
+    }
+    h3 {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 19px;
+      color: var(--encre);
+      font-weight: 500;
+      margin: 21px 0 8px;
+    }
+    p {
+      font-family: var(--editorial);
+      font-size: 16px;
+      line-height: 1.65;
+      color: var(--encre);
+      margin-bottom: 13px;
+    }
+    ul {
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 13px;
+    }
+    li {
+      font-family: var(--editorial);
+      font-size: 16px;
+      line-height: 1.65;
+      color: var(--encre);
+      padding-left: 21px;
+      position: relative;
+      margin-bottom: 5px;
+    }
+    li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--gris);
+    }
+    em { font-style: italic; color: var(--vert-anglais); }
+    a { color: var(--orange-polo); text-decoration: none; border-bottom: 1px solid rgba(232, 90, 31, 0.3); }
+    a:hover { border-bottom-color: var(--orange-polo); }
+    .meta {
+      background: var(--papier-soft);
+      padding: 21px;
+      border-radius: 2px;
+      margin-bottom: 34px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      color: var(--gris);
+    }
+    .divider {
+      height: 1px;
+      background: rgba(26, 20, 16, 0.08);
+      margin: 55px 0;
+    }
+    .important {
+      background: var(--papier-soft);
+      padding: 21px;
+      border-left: 2px solid var(--orange-polo);
+      border-radius: 2px;
+      margin: 21px 0;
+    }
+    .important p {
+      font-style: italic;
+      color: var(--encre);
+      margin: 0;
+    }
+    .footer {
+      margin-top: 89px;
+      text-align: center;
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 13px;
+      color: var(--gris);
+    }
+    .footer-line {
+      width: 55px;
+      height: 1px;
+      background: rgba(26, 20, 16, 0.15);
+      margin: 0 auto 13px;
+    }
+    .footer-links {
+      margin-top: 13px;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+    }
+    .footer-links a {
+      color: var(--gris);
+      text-decoration: none;
+      margin: 0 8px;
+      border-bottom: none;
+    }
+    .footer-links a:hover { color: var(--encre); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="/" class="wordmark">
+      <span><em>Carnet</em></span>
+      <span class="wordmark-dot"></span>
+    </a>
+
+    <div class="tag">CONDITIONS D'UTILISATION</div>
+    <h1><em>Les règles du jeu.</em></h1>
+    <p class="lead">Sobres, lisibles, respectueuses. Tu peux les lire en cinq minutes.</p>
+
+    <div class="meta">DERNIÈRE MISE À JOUR : 12 MAI 2026 · VERSION 1.0</div>
+
+    <h2>1. Qui nous sommes</h2>
+    <p>Carnet est un service édité par AutoRadar SAS, une société française basée à Paris, RCS Paris en cours d'immatriculation. Notre site est <a href="https://carnet.life">carnet.life</a>, notre courriel <a href="mailto:contact@carnet.life">contact@carnet.life</a>.</p>
+    <p>Notre métier : agréger les annonces de voitures de collection et de caractère, fournir un outil de suivi (le <em>Garage</em>), et à terme faciliter les transactions <em>on-chain</em> entre collectionneurs via le XRP Ledger.</p>
+
+    <h2>2. Ce que tu peux faire</h2>
+    <ul>
+      <li>Consulter les annonces agrégées par nos soins</li>
+      <li>Créer ton <em>Garage</em> et tes <em>Wishlists</em> privées</li>
+      <li>Recevoir des alertes selon tes critères</li>
+      <li>Soutenir Carnet par un don volontaire (en euros via carte, ou en XRP / RLUSD via Xaman)</li>
+      <li>À terme : certifier tes voitures via NFT, vendre et acheter en P2P sécurisé</li>
+    </ul>
+
+    <h2>3. Ce que tu acceptes en utilisant Carnet</h2>
+    <ul>
+      <li>Tu as au moins 18 ans, ou tu utilises Carnet avec l'accord d'un parent</li>
+      <li>Les informations que tu nous fournis sont exactes</li>
+      <li>Tu n'utilises pas Carnet pour du blanchiment, de la fraude, ou tout usage illégal</li>
+      <li>Tu respectes les autres utilisateurs et les vendeurs</li>
+      <li>Tu ne tentes pas de scraper, copier, ou contourner techniquement Carnet</li>
+    </ul>
+
+    <h2>4. Sur les paiements <em>on-chain</em></h2>
+    <p>Carnet utilise le XRP Ledger pour les dons volontaires et, prochainement, les transactions P2P entre utilisateurs.</p>
+
+    <h3>Tu restes propriétaire de ton wallet</h3>
+    <p>Carnet ne détient jamais tes fonds. Tu utilises ton propre wallet (Xaman, Bitget Wallet, ou autre wallet compatible XRPL). Toutes les signatures se font directement depuis ton appareil. Carnet n'a aucun accès à tes clés privées, ni à ta seed phrase.</p>
+
+    <h3>Identification (KYC)</h3>
+    <p>L'identification réglementaire est gérée en amont par ton fournisseur de wallet (Xaman et autres), conformément aux exigences MiCA et aux directives AML/CFT européennes. Carnet ne collecte ni ne stocke d'informations d'identification au-delà de l'attestation que ton wallet est conforme.</p>
+
+    <h3>Volatilité et responsabilité</h3>
+    <div class="important">
+      <p>Les crypto-actifs (XRP, RLUSD, et autres) ne sont pas une monnaie légale. Leur valeur fluctue, parfois fortement. Tu peux perdre tout ou partie d'une somme placée en crypto. Carnet ne saurait être tenu responsable des variations de cours. Avant toute transaction, comprends ce que tu fais.</p>
+    </div>
+
+    <h3>Conformité MiCA</h3>
+    <p>Carnet s'aligne sur le règlement européen MiCA (Markets in Crypto-Assets Regulation). Les services évoluent au gré de l'autorisation progressive des actifs (RLUSD est en attente d'autorisation MiCA via Ripple Payments Europe SA, Luxembourg).</p>
+
+    <h2>5. NFT Vehicle Certificate (à venir)</h2>
+    <p>Le Vehicle Certificate est un certificat numérique <em>on-chain</em> émis par Carnet pour les voitures vérifiées. Il porte une métadonnée immuable (VIN, marque, année, photos, documents), héritable à la revente.</p>
+    <p>Posséder un Vehicle Certificate ne remplace pas la carte grise, l'acte de vente notarié, ni les obligations légales liées au véhicule physique. C'est un complément cryptographique de provenance, pas un titre de propriété au sens du droit français.</p>
+
+    <h2>6. Royalties sur les ventes secondaires</h2>
+    <p>Lorsqu'un Vehicle Certificate Carnet change de main via le marketplace P2P de l'app, une royalty de 2 % est prélevée automatiquement <em>on-chain</em> au profit de Carnet. Cette royalty est inscrite dans les métadonnées du NFT (norme XLS-20 de XRPL) et appliquée par le protocole, pas par nous.</p>
+
+    <h2>7. Données personnelles</h2>
+    <p>Voir notre <a href="/privacy">Politique de confidentialité</a> pour le détail.</p>
+    <p>En bref : on collecte le strict nécessaire (email, garage privé, préférences). On ne revend rien, on ne profile pas pour de la publicité. RGPD, ePrivacy, MiCA — on respecte.</p>
+
+    <h2>8. Propriété intellectuelle</h2>
+    <p>Le nom <em>Carnet</em>, le logo, le design, les textes éditoriaux et le code source de l'application sont la propriété d'AutoRadar SAS. Les marques tierces (Porsche, Ferrari, etc.) appartiennent à leurs ayants droit respectifs et ne sont mentionnées qu'à titre informatif.</p>
+
+    <h2>9. Modification du service</h2>
+    <p>Carnet évolue. Nous pouvons ajouter, modifier ou retirer des fonctionnalités. Les changements majeurs te sont signalés par email ou dans l'app. Tu peux à tout moment cesser d'utiliser Carnet et supprimer ton compte.</p>
+
+    <h2>10. Loi applicable</h2>
+    <p>Ces conditions sont soumises au droit français. En cas de litige, médiation préalable obligatoire via la plateforme européenne ODR (<a href="https://ec.europa.eu/consumers/odr">ec.europa.eu/consumers/odr</a>). À défaut, compétence des tribunaux de Paris.</p>
+
+    <div class="divider"></div>
+
+    <p style="font-style: italic; color: var(--gris); font-size: 15px;">
+      Ces conditions sont rédigées en français avec sérieux. Pour toute question, écris-nous à <a href="mailto:contact@carnet.life">contact@carnet.life</a>. On répond.
+    </p>
+
+    <div class="footer">
+      <div class="footer-line"></div>
+      <em>Carnet — A record of every record.</em>
+      <div class="footer-links">
+        <a href="/">Accueil</a> · <a href="/support">Support</a> · <a href="/privacy">Confidentialité</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
