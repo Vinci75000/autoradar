@@ -1096,6 +1096,11 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
   .manifest-record-title{font-size:14px;margin-top:18px}
   .manifest-signature{font-size:10px;letter-spacing:0.15em;margin-top:36px}
 }
+
+/* ── Bouton Déconnexion (sober + lisible) ── */
+.ar-logout-btn{font-size:11px;padding:4px 10px;background:none;border:1px solid var(--border2);border-radius:var(--rsm);color:var(--text2);cursor:pointer;font-family:var(--sans);transition:color 0.15s, border-color 0.15s}
+.ar-logout-btn:hover{color:var(--text);border-color:var(--text2)}
+
 </style>
 </head>
 <body>
@@ -1148,7 +1153,7 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
     <button id="auth-login-btn" class="ar-don-btn" onclick="openAuthModal()" style="display:none">Connexion</button>
     <div id="auth-user-menu" style="display:none;align-items:center;gap:6px">
       <span id="auth-user-label" style="font-size:12px;color:var(--text2);font-family:var(--sans);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
-      <button onclick="signOut()" style="font-size:11px;padding:4px 10px;background:none;border:1px solid var(--border2);border-radius:var(--rsm);color:var(--text3);cursor:pointer;font-family:var(--sans)">Déconnexion</button>
+      <button onclick="signOut()" class="ar-logout-btn">Déconnexion</button>
     </div>
     <div id="donor-badge-wrap" class="ar-badge-wrap" style="display:none" onclick="openLeaderboard()">
       <div id="donor-badge" class="ar-badge pioneer">
