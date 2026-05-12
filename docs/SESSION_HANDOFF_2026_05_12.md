@@ -434,6 +434,28 @@ _archives/
 - Lire output ligne par ligne, flag suspicious numbers immediately
 - Une diagnose claire par tour, pas de revirement
 
+### 🎯 Méthode `y/N` interactive (standard CARNET)
+
+**Validée 12 mai 2026.** Pour toute action destructive, impactante, ou enchaînée, le pattern est :
+
+1. **Annoncer** clairement ce qui va se faire (cible + action + conséquence)
+2. **Demander confirmation** avec `[y/N]` (default = N = safe)
+3. **Attendre validation explicite** avant exécution
+4. **Logger** ce qui a été fait après chaque étape
+
+Exemples concrets :
+- Script bash interactif : `read -p "→ $action [y/N] "` avant chaque opération
+- Tool admin : `friendlyConfirm()` avec target affiché + bouton primary/danger
+- Chat session : "Je vais faire X qui aura Y comme conséquence — OK pour continuer ?" avant agir
+
+Bénéfices :
+- Aucune surprise destructive
+- Sly garde le contrôle de chaque étape
+- Mode `VELOCITY` reste compatible (y rapide vaut go)
+- Permet rollback mental avant action
+
+**À appliquer systématiquement** : scripts d'install, migrations SQL, bulk actions admin, cleanup, deploy, push force, rm/delete. Jamais d'enchaînement automatique sans `y/N` intermédiaire.
+
 ### Brand rules
 - **CARNET full caps** quand on désigne l'app/asso/assistant
 - "carnet de bord" (concept) reste lowercase
