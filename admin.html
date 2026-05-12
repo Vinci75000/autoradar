@@ -750,8 +750,8 @@
     }
     #loginCode {
       font-family: var(--mono);
-      font-size: 28px;
-      letter-spacing: 0.4em;
+      font-size: 26px;
+      letter-spacing: 0.28em;
       text-align: center;
       padding: 13px;
       font-weight: 500;
@@ -818,7 +818,7 @@
       <!-- État B : Code OTP (hidden initial) -->
       <div id="loginStateCode" class="login-state-code" hidden>
         <p class="login-code-info">Code envoyé à <strong id="loginEmailDisplay"></strong></p>
-        <input type="text" class="login-input" id="loginCode" placeholder="000000" maxlength="6" inputmode="numeric" pattern="[0-9]{6}" autocomplete="one-time-code">
+        <input type="text" class="login-input" id="loginCode" placeholder="Code reçu par email" maxlength="8" inputmode="numeric" pattern="[0-9]{6,8}" autocomplete="one-time-code">
         <button class="btn-primary" id="verifyCodeBtn">Valider</button>
         <div class="login-actions-secondary">
           <button class="btn-link" id="backToEmailBtn">← Email différent</button>
@@ -1182,7 +1182,7 @@
     // ─── État B : Vérifier le code OTP ─────────────────────────
     document.getElementById('verifyCodeBtn').addEventListener('click', async () => {
       const code = document.getElementById('loginCode').value.trim();
-      if (code.length !== 6) return showLoginStatus('Le code fait 6 chiffres.', 'error');
+      if (code.length < 6 || code.length > 8) return showLoginStatus('Le code fait 6 à 8 chiffres.', 'error');
       if (!currentLoginEmail) return showLoginStatus('Recommence depuis l\'email.', 'error');
       const btn = document.getElementById('verifyCodeBtn');
       btn.disabled = true;
@@ -1240,11 +1240,15 @@
     });
 
     // ─── Filtrer input code : numérique only ──────────────────
+    let _codeSubmitTimer = null;
     document.getElementById('loginCode').addEventListener('input', e => {
-      e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, 6);
-      // Auto-submit quand 6 chiffres atteints
-      if (e.target.value.length === 6) {
-        setTimeout(() => document.getElementById('verifyCodeBtn').click(), 100);
+      e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, 8);
+      // Auto-submit : debounce 600ms après dernière touche, si ≥6 chiffres
+      clearTimeout(_codeSubmitTimer);
+      if (e.target.value.length >= 6) {
+        _codeSubmitTimer = setTimeout(() => {
+          document.getElementById('verifyCodeBtn').click();
+        }, 600);
       }
     });
 
