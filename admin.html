@@ -727,6 +727,64 @@
     .toast.success { background: var(--vert-anglais); }
     .toast.error { background: var(--rouge); }
 
+
+    /* ═══ Login OTP code flow ════════════════════════════════ */
+    .login-state-code {
+      animation: fadeIn 0.3s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .login-code-info {
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--gris);
+      margin-bottom: 13px;
+      text-align: center;
+      line-height: 1.5;
+    }
+    .login-code-info strong {
+      color: var(--encre);
+      font-weight: 600;
+    }
+    #loginCode {
+      font-family: var(--mono);
+      font-size: 28px;
+      letter-spacing: 0.4em;
+      text-align: center;
+      padding: 13px;
+      font-weight: 500;
+    }
+    #loginCode::placeholder {
+      letter-spacing: 0.4em;
+      color: var(--gris-line);
+    }
+    .login-actions-secondary {
+      display: flex;
+      gap: 8px;
+      margin-top: 13px;
+      justify-content: center;
+    }
+    .btn-link {
+      background: none;
+      border: none;
+      color: var(--gris);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      padding: 6px 8px;
+      transition: color 0.15s;
+    }
+    .btn-link:hover {
+      color: var(--encre);
+    }
+    .btn-link.danger:hover {
+      color: var(--orange-polo);
+    }
+
     /* ═══ RESPONSIVE ══════════════════════════════════════════ */
     @media (max-width: 768px) {
       :root { --sidebar: 0; }
@@ -749,10 +807,24 @@
       </div>
       <div class="login-tag">ESPACE ADMIN</div>
       <h1 class="login-title"><em>Connecte-toi</em></h1>
-      <p class="login-sub">Reçois un lien magique par email pour accéder à la console admin.</p>
+      <p class="login-sub">Reçois un code à 6 chiffres par email pour accéder à la console admin.</p>
 
-      <input type="email" class="login-input" id="loginEmail" placeholder="email@carnet.life" autocomplete="email">
-      <button class="btn-primary" id="loginBtn">Envoyer le lien magique</button>
+      <!-- État A : Email -->
+      <div id="loginStateEmail">
+        <input type="email" class="login-input" id="loginEmail" placeholder="email@carnet.life" autocomplete="email">
+        <button class="btn-primary" id="loginBtn">Recevoir le code</button>
+      </div>
+
+      <!-- État B : Code OTP (hidden initial) -->
+      <div id="loginStateCode" class="login-state-code" hidden>
+        <p class="login-code-info">Code envoyé à <strong id="loginEmailDisplay"></strong></p>
+        <input type="text" class="login-input" id="loginCode" placeholder="000000" maxlength="6" inputmode="numeric" pattern="[0-9]{6}" autocomplete="one-time-code">
+        <button class="btn-primary" id="verifyCodeBtn">Valider</button>
+        <div class="login-actions-secondary">
+          <button class="btn-link" id="backToEmailBtn">← Email différent</button>
+          <button class="btn-link danger" id="resendCodeBtn">Renvoyer un code</button>
+        </div>
+      </div>
 
       <div class="login-status" id="loginStatus"></div>
     </div>
@@ -1080,6 +1152,9 @@
       el.className = 'login-status show ' + type;
     }
 
+    let currentLoginEmail = null;
+
+    // ─── État A : Demander le code OTP ─────────────────────────
     document.getElementById('loginBtn').addEventListener('click', async () => {
       const email = document.getElementById('loginEmail').value.trim();
       if (!email) return showLoginStatus('Saisis ton email.', 'error');
@@ -1088,19 +1163,89 @@
       btn.textContent = 'Envoi…';
       const { error } = await sb.auth.signInWithOtp({
         email,
-        options: { emailRedirectTo: location.href }
+        options: { shouldCreateUser: false }
       });
       btn.disabled = false;
-      btn.textContent = 'Envoyer le lien magique';
+      btn.textContent = 'Recevoir le code';
       if (error) {
         showLoginStatus(`Erreur : ${error.message}`, 'error');
       } else {
-        showLoginStatus(`Lien envoyé à ${email}. Clique dessus pour te connecter.`);
+        currentLoginEmail = email;
+        document.getElementById('loginEmailDisplay').textContent = email;
+        document.getElementById('loginStateEmail').hidden = true;
+        document.getElementById('loginStateCode').hidden = false;
+        showLoginStatus(`Code envoyé. Vérifie ta boîte mail.`);
+        setTimeout(() => document.getElementById('loginCode').focus(), 150);
       }
     });
 
+    // ─── État B : Vérifier le code OTP ─────────────────────────
+    document.getElementById('verifyCodeBtn').addEventListener('click', async () => {
+      const code = document.getElementById('loginCode').value.trim();
+      if (code.length !== 6) return showLoginStatus('Le code fait 6 chiffres.', 'error');
+      if (!currentLoginEmail) return showLoginStatus('Recommence depuis l\'email.', 'error');
+      const btn = document.getElementById('verifyCodeBtn');
+      btn.disabled = true;
+      btn.textContent = 'Vérification…';
+      const { error } = await sb.auth.verifyOtp({
+        email: currentLoginEmail,
+        token: code,
+        type: 'email'
+      });
+      btn.disabled = false;
+      btn.textContent = 'Valider';
+      if (error) {
+        showLoginStatus(`Code invalide ou expiré. Réessaie ou renvoie un code.`, 'error');
+      } else {
+        showLoginStatus(`Connecté ✓`);
+        // onAuthStateChange prend le relais (SIGNED_IN event → onAuth → showApp)
+      }
+    });
+
+    // ─── Retour à l'écran email ────────────────────────────────
+    document.getElementById('backToEmailBtn').addEventListener('click', () => {
+      document.getElementById('loginStateCode').hidden = true;
+      document.getElementById('loginStateEmail').hidden = false;
+      document.getElementById('loginCode').value = '';
+      document.getElementById('loginStatus').className = 'login-status';
+      currentLoginEmail = null;
+      setTimeout(() => document.getElementById('loginEmail').focus(), 100);
+    });
+
+    // ─── Renvoyer un code ──────────────────────────────────────
+    document.getElementById('resendCodeBtn').addEventListener('click', async () => {
+      if (!currentLoginEmail) return;
+      const btn = document.getElementById('resendCodeBtn');
+      btn.disabled = true;
+      btn.textContent = 'Envoi…';
+      const { error } = await sb.auth.signInWithOtp({
+        email: currentLoginEmail,
+        options: { shouldCreateUser: false }
+      });
+      btn.disabled = false;
+      btn.textContent = 'Renvoyer un code';
+      if (error) {
+        showLoginStatus(`Erreur : ${error.message}`, 'error');
+      } else {
+        showLoginStatus(`Nouveau code envoyé.`);
+      }
+    });
+
+    // ─── Keyboard shortcuts ────────────────────────────────────
     document.getElementById('loginEmail').addEventListener('keypress', e => {
       if (e.key === 'Enter') document.getElementById('loginBtn').click();
+    });
+    document.getElementById('loginCode').addEventListener('keypress', e => {
+      if (e.key === 'Enter') document.getElementById('verifyCodeBtn').click();
+    });
+
+    // ─── Filtrer input code : numérique only ──────────────────
+    document.getElementById('loginCode').addEventListener('input', e => {
+      e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, 6);
+      // Auto-submit quand 6 chiffres atteints
+      if (e.target.value.length === 6) {
+        setTimeout(() => document.getElementById('verifyCodeBtn').click(), 100);
+      }
     });
 
     document.getElementById('logoutBtn').addEventListener('click', async () => {
