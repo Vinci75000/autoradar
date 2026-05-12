@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0A0A0A">
+<meta name="robots" content="noindex,nofollow">
+<title>Carnet · Ops</title>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,500&family=Cormorant+Garamond:wght@300;400&family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+:root {
+  --encre: #0A0A0A;
+  --papier: #F4F1EA;
+  --papier-pur: #FAFAF7;
+  --orange: #E85A1F;
+  --vert: #1F4D2F;
+  --rouge: #C73E1D;
+  --ambre: #BA7517;
+  --gris: #8A877F;
+  --gris-clair: #D8D4C9;
+  --border: rgba(10, 10, 10, 0.08);
+  --border-strong: rgba(10, 10, 10, 0.16);
+  --r: 2px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { background: var(--papier); color: var(--encre); }
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 0 0 max(24px, env(safe-area-inset-bottom));
+  min-height: 100vh;
+}
+
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 16px; }
+
+/* Topbar */
+.bar {
+  position: sticky; top: 0; z-index: 10;
+  background: var(--papier);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 16px 12px;
+  display: flex; align-items: center; gap: 10px;
+}
+.wm {
+  font-family: 'Bodoni Moda', serif;
+  font-style: italic; font-weight: 500;
+  font-size: 20px;
+}
+.dot {
+  width: 7px; height: 7px;
+  background: var(--orange);
+  border-radius: var(--r);
+  margin-left: 2px;
+}
+.bar-sep {
+  color: var(--gris-clair);
+  font-size: 18px;
+  margin: 0 4px;
+}
+.bar-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: 17px;
+  letter-spacing: 0.01em;
+  color: var(--encre);
+}
+.bar-actions {
+  margin-left: auto;
+  display: flex; gap: 8px; align-items: center;
+}
+.btn-ghost {
+  background: none; border: 1px solid var(--border-strong);
+  border-radius: var(--r); padding: 6px 10px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 11px; font-weight: 500;
+  color: var(--encre); cursor: pointer;
+  letter-spacing: 0.02em;
+}
+.btn-ghost:active { background: rgba(10, 10, 10, 0.04); }
+
+/* Sections */
+.section { margin: 24px 0 0; }
+.section-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; }
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400; font-size: 22px;
+  letter-spacing: 0.005em;
+}
+.section-sub {
+  color: var(--gris); font-size: 12px;
+  font-family: 'DM Mono', monospace;
+}
+
+/* Auth gate */
+.gate {
+  max-width: 360px; margin: 80px auto;
+  text-align: center;
+}
+.gate-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400; font-size: 26px;
+  margin-bottom: 10px;
+}
+.gate-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px; color: var(--gris);
+  font-weight: 300; line-height: 1.6;
+  margin-bottom: 20px;
+}
+.gate input {
+  width: 100%;
+  padding: 11px 13px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px;
+  background: var(--papier-pur);
+  color: var(--encre);
+  margin-bottom: 10px;
+}
+.gate input:focus { outline: 1px solid var(--vert); outline-offset: -1px; }
+.gate-btn {
+  width: 100%; padding: 12px;
+  background: var(--encre); color: var(--papier-pur);
+  border: none; border-radius: var(--r);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px; font-weight: 500;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+}
+.gate-error {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--rouge);
+  font-family: 'DM Mono', monospace;
+}
+
+/* Cron cards */
+.cards { display: grid; gap: 10px; }
+.card {
+  background: var(--papier-pur);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--gris-clair);
+  border-radius: var(--r);
+  padding: 14px 14px 12px;
+}
+.card.healthy   { border-left-color: var(--vert); }
+.card.unhealthy { border-left-color: var(--ambre); }
+.card.stale     { border-left-color: var(--rouge); }
+.card.never     { border-left-color: var(--gris); }
+
+.card-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.card-name {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px; font-weight: 500;
+  color: var(--encre);
+}
+.card-health {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 2px 7px;
+  border-radius: var(--r);
+}
+.card-health.healthy   { background: rgba(31, 77, 47, 0.10); color: var(--vert); }
+.card-health.unhealthy { background: rgba(186, 117, 23, 0.12); color: var(--ambre); }
+.card-health.stale     { background: rgba(199, 62, 29, 0.10); color: var(--rouge); }
+.card-health.never     { background: rgba(138, 135, 127, 0.14); color: var(--gris); }
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px 12px;
+  margin-top: 6px;
+}
+.kpi-label {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 10px;
+  color: var(--gris);
+  text-transform: lowercase;
+  letter-spacing: 0.02em;
+  margin-bottom: 1px;
+}
+.kpi-value {
+  font-family: 'DM Mono', monospace;
+  font-size: 14px; font-weight: 500;
+  color: var(--encre);
+}
+
+.card-foot {
+  display: flex; justify-content: space-between;
+  margin-top: 10px; padding-top: 8px;
+  border-top: 1px solid var(--border);
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--gris);
+}
+
+/* Sources suspendues */
+.sources-list {
+  display: grid; gap: 8px;
+}
+.source-row {
+  background: var(--papier-pur);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--ambre);
+  border-radius: var(--r);
+  padding: 11px 13px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.source-name {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px; font-weight: 500;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.source-meta {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--gris);
+}
+.source-action {
+  background: none;
+  border: 1px solid var(--vert);
+  color: var(--vert);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 5px 9px;
+  border-radius: var(--r);
+  cursor: pointer;
+  letter-spacing: 0.03em;
+  flex-shrink: 0;
+}
+
+/* Empty state */
+.empty {
+  background: var(--papier-pur);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 28px 18px;
+  text-align: center;
+}
+.empty-ornament {
+  font-family: 'Bodoni Moda', serif;
+  font-style: italic;
+  font-size: 22px;
+  color: var(--gris-clair);
+  margin-bottom: 8px;
+}
+.empty-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px;
+  color: var(--gris);
+  font-weight: 300;
+}
+
+/* Loading */
+.loading {
+  padding: 28px;
+  text-align: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--gris);
+}
+.loading::before {
+  content: ''; display: inline-block;
+  width: 6px; height: 6px;
+  background: var(--orange);
+  border-radius: 50%;
+  margin-right: 8px;
+  vertical-align: middle;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: max(20px, env(safe-area-inset-bottom));
+  left: 50%; transform: translateX(-50%);
+  background: var(--encre); color: var(--papier-pur);
+  padding: 10px 16px;
+  border-radius: var(--r);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12px;
+  z-index: 100;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.2s;
+}
+.toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<!-- Gate auth -->
+<div id="view-gate" class="gate" style="display:none">
+  <div class="gate-title">Ops</div>
+  <p class="gate-text">Cette page est privée.<br>Entre ton email pour recevoir un lien d'accès.</p>
+  <input type="email" id="gate-email" placeholder="email" autocomplete="email">
+  <button class="gate-btn" onclick="sendMagicLink()">Envoyer le lien</button>
+  <div id="gate-msg" class="gate-error" style="display:none"></div>
+</div>
+
+<!-- Gate denied -->
+<div id="view-denied" class="gate" style="display:none">
+  <div class="gate-title">Accès refusé</div>
+  <p class="gate-text">Connecté, mais ce compte n'a pas le rôle admin.<br>Contacte Sly pour l'obtenir.</p>
+  <button class="gate-btn" onclick="signOut()">Se déconnecter</button>
+</div>
+
+<!-- Dashboard -->
+<div id="view-dashboard" style="display:none">
+  <header class="bar">
+    <span class="wm">Carnet<span class="dot"></span></span>
+    <span class="bar-sep">·</span>
+    <span class="bar-title">Ops</span>
+    <div class="bar-actions">
+      <button class="btn-ghost" onclick="refreshAll()">↻</button>
+      <button class="btn-ghost" id="who" onclick="signOut()">Sortir</button>
+    </div>
+  </header>
+
+  <div class="wrap">
+
+    <section class="section">
+      <div class="section-head">
+        <span class="section-title">Crons</span>
+        <span class="section-sub">7 derniers jours</span>
+      </div>
+      <div id="cron-cards" class="cards">
+        <div class="loading">chargement</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <span class="section-title">Sources suspendues</span>
+        <span class="section-sub" id="sources-count">—</span>
+      </div>
+      <div id="sources-list" class="sources-list">
+        <div class="loading">chargement</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <span class="section-title">Derniers échecs</span>
+        <span class="section-sub">7 derniers jours</span>
+      </div>
+      <div id="failures-list" class="sources-list">
+        <div class="loading">chargement</div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+// ───── Configuration ─────
+const SB_URL  = 'https://qqbssqcuxllmtapqkmkz.supabase.co';
+const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFxYnNzcWN1eGxsbXRhcHFrbWt6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3NDAwNTEsImV4cCI6MjA5MzMxNjA1MX0.OWPte8bsQvv02HmoAaLRJgYKlRPHVWAurtfhqjh3NPQ';  // remplace avec ta clé anon publique
+const sb = supabase.createClient(SB_URL, SB_ANON);
+
+// ───── Toast ─────
+let toastTimer;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2400);
+}
+
+// ───── Format helpers ─────
+function fmtNum(n) {
+  if (n == null) return '—';
+  if (n >= 1000) return (n / 1000).toFixed(1) + 'k';
+  return String(n);
+}
+
+function fmtDuration(s) {
+  if (s == null) return '—';
+  if (s < 60) return s + 's';
+  if (s < 3600) return Math.round(s / 60) + 'min';
+  return (s / 3600).toFixed(1) + 'h';
+}
+
+function fmtRelative(iso) {
+  if (!iso) return 'jamais';
+  const now = Date.now();
+  const then = new Date(iso).getTime();
+  const diffMin = Math.round((now - then) / 60000);
+  if (diffMin < 1) return 'à l\'instant';
+  if (diffMin < 60) return `il y a ${diffMin}min`;
+  const diffH = Math.round(diffMin / 60);
+  if (diffH < 24) return `il y a ${diffH}h`;
+  const diffD = Math.round(diffH / 24);
+  return `il y a ${diffD}j`;
+}
+
+// ───── Auth flow ─────
+async function init() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) {
+    showView('gate');
+    return;
+  }
+  // Vérifier le rôle admin
+  const { data: profile, error } = await sb
+    .from('profiles')
+    .select('is_admin, email')
+    .eq('id', session.user.id)
+    .single();
+  if (error || !profile?.is_admin) {
+    showView('denied');
+    return;
+  }
+  document.getElementById('who').textContent = profile.email.split('@')[0];
+  showView('dashboard');
+  await refreshAll();
+}
+
+function showView(name) {
+  ['gate', 'denied', 'dashboard'].forEach(v => {
+    document.getElementById('view-' + v).style.display = (v === name) ? '' : 'none';
+  });
+}
+
+async function sendMagicLink() {
+  const email = document.getElementById('gate-email').value.trim();
+  if (!email) return;
+  const msg = document.getElementById('gate-msg');
+  msg.style.display = 'none';
+  const { error } = await sb.auth.signInWithOtp({
+    email,
+    options: { emailRedirectTo: window.location.href }
+  });
+  if (error) {
+    msg.textContent = error.message;
+    msg.style.display = '';
+  } else {
+    msg.style.color = 'var(--vert)';
+    msg.textContent = 'Lien envoyé. Vérifie ta boîte mail.';
+    msg.style.display = '';
+  }
+}
+
+async function signOut() {
+  await sb.auth.signOut();
+  location.reload();
+}
+
+sb.auth.onAuthStateChange((event) => {
+  if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') init();
+});
+
+// ───── Data fetchers ─────
+async function fetchDashboard() {
+  const { data, error } = await sb.from('ops_dashboard').select('*');
+  if (error) { toast('Erreur dashboard: ' + error.message); return []; }
+  return data || [];
+}
+
+async function fetchSuspendedSources() {
+  const { data, error } = await sb
+    .from('source_health')
+    .select('*')
+    .not('auto_suspended_at', 'is', null)
+    .eq('manual_override', false)
+    .order('auto_suspended_at', { ascending: false });
+  if (error) { toast('Erreur sources: ' + error.message); return []; }
+  return data || [];
+}
+
+async function fetchRecentFailures() {
+  const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 3600 * 1000).toISOString();
+  const { data, error } = await sb
+    .from('cron_runs')
+    .select('id, cron_name, source, started_at, error_message, duration_s')
+    .eq('success', false)
+    .gte('started_at', sevenDaysAgo)
+    .order('started_at', { ascending: false })
+    .limit(20);
+  if (error) { toast('Erreur fails: ' + error.message); return []; }
+  return data || [];
+}
+
+// ───── Rendering ─────
+function renderCronCards(rows) {
+  const el = document.getElementById('cron-cards');
+  if (!rows.length) {
+    el.innerHTML = `<div class="empty">
+      <div class="empty-ornament">·</div>
+      <div class="empty-text">Aucun run enregistré.<br>Les premiers arriveront au prochain cron.</div>
+    </div>`;
+    return;
+  }
+  el.innerHTML = rows.map(r => `
+    <div class="card ${r.health}">
+      <div class="card-head">
+        <span class="card-name">${escapeHtml(r.cron_name)}</span>
+        <span class="card-health ${r.health}">${labelHealth(r.health)}</span>
+      </div>
+      <div class="card-grid">
+        <div>
+          <div class="kpi-label">runs</div>
+          <div class="kpi-value">${r.runs_7d}</div>
+        </div>
+        <div>
+          <div class="kpi-label">succès</div>
+          <div class="kpi-value">${r.successes_7d}</div>
+        </div>
+        <div>
+          <div class="kpi-label">cars+</div>
+          <div class="kpi-value">${fmtNum(r.cars_added_7d)}</div>
+        </div>
+        <div>
+          <div class="kpi-label">durée moy.</div>
+          <div class="kpi-value">${fmtDuration(r.avg_duration_s_7d)}</div>
+        </div>
+      </div>
+      <div class="card-foot">
+        <span>Dernier run · ${fmtRelative(r.last_run_at)}</span>
+        <span>Dernier succès · ${fmtRelative(r.last_success_at)}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function labelHealth(h) {
+  return { healthy: 'sain', unhealthy: 'instable', stale: 'silencieux', never_succeeded: 'jamais' }[h] || h;
+}
+
+function renderSuspendedSources(rows) {
+  const el = document.getElementById('sources-list');
+  document.getElementById('sources-count').textContent = rows.length ? `${rows.length}` : '0';
+  if (!rows.length) {
+    el.innerHTML = `<div class="empty">
+      <div class="empty-ornament">·</div>
+      <div class="empty-text">Aucune source suspendue.<br>Toutes répondent.</div>
+    </div>`;
+    return;
+  }
+  el.innerHTML = rows.map(r => `
+    <div class="source-row">
+      <div style="flex:1; min-width:0">
+        <div class="source-name">${escapeHtml(r.source)}</div>
+        <div class="source-meta">
+          ${r.consecutive_failures} échecs · suspendue ${fmtRelative(r.auto_suspended_at)}
+          ${r.last_failure_reason ? '· ' + escapeHtml(r.last_failure_reason).slice(0, 60) : ''}
+        </div>
+      </div>
+      <button class="source-action" onclick="reactivate('${escapeAttr(r.source)}')">Réactiver</button>
+    </div>
+  `).join('');
+}
+
+function renderFailures(rows) {
+  const el = document.getElementById('failures-list');
+  if (!rows.length) {
+    el.innerHTML = `<div class="empty">
+      <div class="empty-ornament">·</div>
+      <div class="empty-text">Aucun échec sur 7 jours.</div>
+    </div>`;
+    return;
+  }
+  el.innerHTML = rows.map(r => `
+    <div class="source-row" style="border-left-color: var(--rouge)">
+      <div style="flex:1; min-width:0">
+        <div class="source-name">${escapeHtml(r.cron_name)}${r.source ? ' · ' + escapeHtml(r.source) : ''}</div>
+        <div class="source-meta">
+          ${fmtRelative(r.started_at)} · ${fmtDuration(r.duration_s)}
+          ${r.error_message ? '<br>' + escapeHtml(r.error_message).slice(0, 80) : ''}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function escapeHtml(s) {
+  return String(s || '').replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[c]));
+}
+function escapeAttr(s) {
+  return String(s || '').replace(/['"\\]/g, '\\$&');
+}
+
+// ───── Actions ─────
+async function reactivate(source) {
+  if (!confirm(`Réactiver "${source}" ?\n\nLe circuit breaker sera reset, la source sera retentée au prochain cron.`)) return;
+  const { error } = await sb.rpc('reset_source_circuit_breaker', { p_source: source });
+  if (error) {
+    // Fallback : update direct (si RPC pas créée)
+    const { error: err2 } = await sb
+      .from('source_health')
+      .update({
+        consecutive_failures: 0,
+        auto_suspended_at: null,
+        manual_override: false,
+        updated_at: new Date().toISOString()
+      })
+      .eq('source', source);
+    if (err2) { toast('Erreur: ' + err2.message); return; }
+  }
+  toast(`${source} réactivée.`);
+  await refreshAll();
+}
+
+async function refreshAll() {
+  const [dash, susp, fails] = await Promise.all([
+    fetchDashboard(),
+    fetchSuspendedSources(),
+    fetchRecentFailures()
+  ]);
+  renderCronCards(dash);
+  renderSuspendedSources(susp);
+  renderFailures(fails);
+}
+
+// ───── Boot ─────
+init();
+</script>
+
+</body>
+</html>
