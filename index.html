@@ -3,17 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Carnet — Quatre Records pour chaque voiture : Service, Enchères, Provenance, Collection. La marketplace éditoriale des voitures qui méritent un carnet.">
-<meta name="theme-color" content="#1F4D2F"><!-- vert anglais Carnet -->
+<meta name="description" content="CARNET — Quatre Records pour chaque voiture : Service, Enchères, Provenance, Collection. La marketplace éditoriale des voitures qui méritent un carnet.">
+<meta name="theme-color" content="#1F4D2F"><!-- vert anglais CARNET -->
 <!-- Open Graph -->
-<meta property="og:title" content="Carnet — Une histoire de voitures." />
+<meta property="og:title" content="CARNET — Une histoire de voitures." />
 <meta property="og:description" content="Quatre Records pour chaque voiture. Curated Automotive Records Network." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://carnet.life" />
 <meta property="og:image" content="/og.png" />
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Carnet — Une histoire de voitures." />
+<meta name="twitter:title" content="CARNET — Une histoire de voitures." />
 <meta name="twitter:description" content="Quatre Records pour chaque voiture. Curated Automotive Records Network." />
 <!-- PWA -->
 <meta name="mobile-web-app-capable" content="yes">
@@ -35,7 +35,7 @@
     });
   }
 </script>
-<title>Carnet — Une histoire de voitures.</title>
+<title>CARNET — Une histoire de voitures.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700;1,800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
@@ -77,10 +77,10 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
   --vert-soft:#2A6A41;
 
   /* ── ALIASES compat code existant ── */
-  --gc:#1F4D2F;            /* anciennement #1D9E75 → vert anglais Carnet */
-  --gd:#E85A1F;            /* anciennement jaune-brun → orange Carnet */
-  --gf:#E85A1F;            /* anciennement orange-rouge → orange Carnet */
-  --gr:#E85A1F;            /* anciennement rouge → orange Carnet */
+  --gc:#1F4D2F;            /* anciennement #1D9E75 → vert anglais CARNET */
+  --gd:#E85A1F;            /* anciennement jaune-brun → orange CARNET */
+  --gf:#E85A1F;            /* anciennement orange-rouge → orange CARNET */
+  --gr:#E85A1F;            /* anciennement rouge → orange CARNET */
   --bg:#FAFAF7;            /* anciennement #fff → papier pur */
   --bg2:#F4F1EA;           /* anciennement #f5f5f3 → papier */
   --border:rgba(10,10,10,0.15);
@@ -89,13 +89,13 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
   --text2:#3D3D3D;
   --text3:rgba(10,10,10,0.4);
 
-  /* ── Typographie Carnet ── */
+  /* ── Typographie CARNET ── */
   --display:'Bodoni Moda',serif;
   --serif:'Cormorant Garamond',serif;
   --mono:'DM Mono',monospace;
   --sans:'Cormorant Garamond',serif;  /* alias compat — l'app appelait --sans pour les sans-serif modernes, on bascule sur le serif éditorial */
 
-  /* ── Border radius — Carnet est traditionnel, quasi carré ── */
+  /* ── Border radius — CARNET est traditionnel, quasi carré ── */
   --r:2px;
   --rsm:2px;
 
@@ -112,7 +112,7 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
 
 /* ── Header ── */
 .ar-head{display:flex;align-items:center;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--border);margin-bottom:18px;flex-wrap:wrap}
-.ar-logo{font-size:17px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:8px}
+.ar-logo {font-family:'Bodoni Moda','Didot','Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:500;font-size:22px;color:var(--text);display:flex;align-items:center;gap:8px;letter-spacing:0.01em}
 /* point carré orange — charte v8 §I & §V (jamais rond, jamais halo LED) */
 .ar-dot{width:8px;height:8px;background:var(--orange);display:inline-block;flex-shrink:0;animation:carnetPulse 2.4s ease-in-out infinite}
 @keyframes carnetPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.7;transform:scale(0.92)}}
@@ -334,7 +334,7 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
 /* Priority dots */
 .fav-priority{display:flex;align-items:center;gap:3px}
 .pd{font-size:10px;cursor:pointer;color:var(--border2)}
-/* 3 paliers Carnet : vert (calme) → ink-soft (neutre) → orange (alerte) */
+/* 3 paliers CARNET : vert (calme) → ink-soft (neutre) → orange (alerte) */
 .pd.on-1{color:var(--gc)}
 .pd.on-2{color:var(--ink-soft)}
 .pd.on-3{color:var(--orange)}
@@ -388,7 +388,7 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
 .modal-prio-opt{flex:1;padding:8px 6px;border:1px solid var(--border2);border-radius:var(--rsm);cursor:pointer;background:var(--bg);text-align:center;font-size:12px;font-family:var(--sans);color:var(--text2)}
 .modal-prio-opt:hover{border-color:var(--border);color:var(--text)}
 .modal-prio-opt.sel{border-width:1.5px}
-/* 3 priorités Carnet : vert (basse, sereine) · neutre (normale) · orange (haute, alerte) */
+/* 3 priorités CARNET : vert (basse, sereine) · neutre (normale) · orange (haute, alerte) */
 .modal-prio-opt[data-p="1"].sel{border-color:var(--vert);background:rgba(31,77,47,0.08);color:var(--vert)}
 .modal-prio-opt[data-p="2"].sel{border-color:var(--ink-soft);background:var(--paper-2);color:var(--ink-soft)}
 .modal-prio-opt[data-p="3"].sel{border-color:var(--orange);background:rgba(232,90,31,0.08);color:var(--orange)}
@@ -590,6 +590,33 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
 .share-copy-inp{flex:1;height:34px;padding:0 10px;border:1px solid var(--border2);border-radius:var(--rsm);font-family:var(--mono);font-size:11px;color:var(--text2);background:var(--bg2)}
 .share-copy-btn{padding:0 14px;height:34px;background:var(--gc);color:#fff;border:none;border-radius:var(--rsm);font-size:12px;cursor:pointer;font-family:var(--sans);font-weight:500;white-space:nowrap}
 .share-copy-btn:hover{opacity:0.9}
+
+
+/* ─── Production badge — 6 tiers ────── */
+.ar-prod-badge{font-size:11px;font-style:italic;margin-top:3px;letter-spacing:0.01em;line-height:1.4;color:var(--text2)}
+.ar-prod-badge .ar-prod-num{font-family:var(--mono);font-style:normal;font-weight:500;font-size:11px;letter-spacing:0;color:var(--text)}
+.ar-prod-badge.tier-unique{color:#E85A1F;font-weight:500}
+.ar-prod-badge.tier-confidential{color:#E85A1F}
+.ar-prod-badge.tier-confidential .ar-prod-num{color:#E85A1F}
+.ar-prod-badge.tier-rare{color:var(--gc)}
+.ar-prod-badge.tier-rare .ar-prod-num{color:var(--gc)}
+.ar-prod-badge.tier-limited{color:var(--text2)}
+.ar-prod-badge.tier-series{color:var(--text3)}
+.ar-prod-badge.tier-series .ar-prod-num{color:var(--text2);font-weight:400}
+.ar-prod-badge.tier-volume{color:var(--text3)}
+.ar-prod-badge.tier-volume .ar-prod-num{color:var(--text2);font-weight:400}
+.ar-prod-detail{padding:11px 14px;background:var(--bg2);margin:10px 0;border-radius:0 var(--rsm) var(--rsm) 0;border-left:2px solid var(--border2)}
+.ar-prod-detail.tier-unique{border-left-color:#E85A1F}
+.ar-prod-detail.tier-confidential{border-left-color:#E85A1F}
+.ar-prod-detail.tier-rare{border-left-color:var(--gc)}
+.ar-prod-detail.tier-limited{border-left-color:var(--gc);opacity:0.85}
+.ar-prod-detail-line{font-size:13px;font-style:italic;color:var(--text);line-height:1.5}
+.ar-prod-detail-line .ar-prod-num-big{font-family:var(--mono);font-style:normal;font-weight:500;font-size:14px;letter-spacing:0;margin:0 1px;color:var(--text)}
+.ar-prod-detail.tier-unique .ar-prod-num-big{color:#E85A1F}
+.ar-prod-detail.tier-confidential .ar-prod-num-big{color:#E85A1F}
+.ar-prod-detail.tier-rare .ar-prod-num-big{color:var(--gc)}
+.ar-prod-detail.tier-limited .ar-prod-num-big{color:var(--gc)}
+.ar-prod-detail-source{font-size:9px;color:var(--text3);margin-top:5px;text-transform:uppercase;letter-spacing:0.07em;font-weight:500}
 
 /* ── Footer nav ── */
 .ar-footer{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px 18px;padding:18px 0 8px;font-size:11px;color:var(--text3)}
@@ -941,7 +968,7 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
 .sp-dark{display:inline-block;width:10px;height:10px;border:1.5px solid var(--border2);border-top-color:var(--gc);border-radius:50%;animation:spin .65s linear infinite;vertical-align:middle}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* ── Carnet wordmark (charte v8 §I) ── */
+/* ── CARNET wordmark (charte v8 §I) ── */
 .carnet-wordmark{display:inline-flex;align-items:baseline;gap:10px;flex-wrap:wrap}
 .carnet-emblem{flex-shrink:0;align-self:center}
 .carnet-word{font-family:var(--display);font-style:italic;font-weight:500;font-size:28px;letter-spacing:-0.025em;color:var(--ink);display:inline-flex;align-items:flex-end;gap:0.04em;line-height:0.85}
@@ -1104,8 +1131,8 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
       <use href="#carnet-c" style="color:var(--ink)"/>
       <use href="#carnet-dot" style="color:var(--orange)"/>
     </svg>
-    <!-- Wordmark "Carnet." Bodoni Moda 500 italique + point carré orange -->
-    <span class="carnet-word">Carnet<span class="carnet-pt"></span></span>
+    <!-- Wordmark "CARNET." Bodoni Moda 500 italique + point carré orange -->
+    <span class="carnet-word">CARNET<span class="carnet-pt"></span></span>
     <span class="carnet-beta">BETA</span>
     <span class="ar-tag carnet-tagline">— Une histoire de voitures.</span>
   </div>
@@ -1308,7 +1335,7 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
 <!-- ── Donation ── -->
 <div class="ar-don">
   <span style="width:8px;height:8px;background:var(--orange);flex-shrink:0;animation:carnetPulse 2.4s ease-in-out infinite;display:inline-block"></span>
-  <span>Carnet n'a pas de publicité. Si ces pages vous servent, <a href="#" onclick="event.preventDefault();showPaywall('default')">soutenez</a> — un euro suffit.</span>
+  <span>CARNET n'a pas de publicité. Si ces pages vous servent, <a href="#" onclick="event.preventDefault();showPaywall('default')">soutenez</a> — un euro suffit.</span>
 </div>
 
 <!-- Reviews & App Stores -->
@@ -1344,7 +1371,7 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
     <div class="ar-review-inp-row">
       <input id="review-name" class="ar-review-name-inp" type="text" placeholder="Votre prénom" maxlength="30" />
     </div>
-    <textarea id="review-text" class="ar-review-text-inp" placeholder="Racontez votre passage par Carnet."></textarea>
+    <textarea id="review-text" class="ar-review-text-inp" placeholder="Racontez votre passage par CARNET."></textarea>
     <div class="ar-review-submit-row">
       <span class="ar-review-hint">En bêta — vos avis façonnent le produit.</span>
       <button class="ar-review-submit" onclick="submitReview()">Publier l'avis →</button>
@@ -1396,7 +1423,7 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
   <span class="ar-footer-sep">·</span>
   <button class="ar-footer-link" onclick="openInfoModal('bug')">Signaler un bug</button>
 </div>
-<div class="ar-footer-copy" style="font-family:var(--mono);letter-spacing:0.05em">Carnet — A record of every record.</div>
+<div class="ar-footer-copy" style="font-family:var(--mono);letter-spacing:0.05em">CARNET — A record of every record.</div>
 
 </div><!-- .wrap -->
 
@@ -1410,7 +1437,7 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
     <div class="modal-body-scroll">
       <div class="legal-section">
         <div class="legal-title">Statut juridique</div>
-        <div class="legal-text">Carnet est en cours d'enregistrement en tant qu'ONG (organisation non gouvernementale). Les dons effectués seront déductibles fiscalement une fois l'enregistrement finalisé. Un reçu fiscal vous sera délivré pour chaque don. Pour toute question sur votre situation fiscale, consultez votre conseiller fiscal ou l'administration de votre pays.</div>
+        <div class="legal-text">CARNET est en cours d'enregistrement en tant qu'ONG (organisation non gouvernementale). Les dons effectués seront déductibles fiscalement une fois l'enregistrement finalisé. Un reçu fiscal vous sera délivré pour chaque don. Pour toute question sur votre situation fiscale, consultez votre conseiller fiscal ou l'administration de votre pays.</div>
       </div>
       <div class="legal-section">
         <div class="legal-title">Déductibilité fiscale des dons</div>
@@ -1423,24 +1450,24 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
       </div>
       <div class="legal-section">
         <div class="legal-title">Éditeur</div>
-        <div class="legal-text">Carnet est un projet indépendant en phase bêta. Il n'est pas affilié à LeParking, AutoScout24, LeBonCoin, La Centrale ou tout autre agrégateur automobile.</div>
+        <div class="legal-text">CARNET est un projet indépendant en phase bêta. Il n'est pas affilié à LeParking, AutoScout24, LeBonCoin, La Centrale ou tout autre agrégateur automobile.</div>
       </div>
       <div class="legal-section">
         <div class="legal-title">Données personnelles &amp; RGPD</div>
-        <div class="legal-text">Carnet <strong>ne collecte aucune donnée personnelle côté serveur</strong>. Vos favoris, collections, préférences et historique de navigation sont stockés exclusivement dans le localStorage de votre navigateur et ne quittent jamais votre appareil.<br><br>
+        <div class="legal-text">CARNET <strong>ne collecte aucune donnée personnelle côté serveur</strong>. Vos favoris, collections, préférences et historique de navigation sont stockés exclusivement dans le localStorage de votre navigateur et ne quittent jamais votre appareil.<br><br>
         Conformément au RGPD, vous disposez d'un droit d'accès, de rectification et de suppression. Pour supprimer l'intégralité de vos données : ouvrez la console de votre navigateur et tapez <code style="font-family:var(--mono);font-size:11px;background:var(--bg2);padding:1px 5px;border-radius:3px">localStorage.clear()</code>.</div>
       </div>
       <div class="legal-section">
         <div class="legal-title">Cookies</div>
-        <div class="legal-text">Carnet n'utilise aucun cookie tiers, aucun tracker publicitaire, aucun pixel de reciblage. Le localStorage est utilisé uniquement pour sauvegarder vos préférences en local.</div>
+        <div class="legal-text">CARNET n'utilise aucun cookie tiers, aucun tracker publicitaire, aucun pixel de reciblage. Le localStorage est utilisé uniquement pour sauvegarder vos préférences en local.</div>
       </div>
       <div class="legal-section">
         <div class="legal-title">Fiabilité des scores</div>
-        <div class="legal-text">Les scores de confiance sont des <strong>indicateurs</strong> basés sur des données publiques agrégées. Ils ne constituent pas une expertise technique certifiée. Carnet ne saurait être tenu responsable d'une décision d'achat. Une inspection indépendante reste recommandée avant tout achat.</div>
+        <div class="legal-text">Les scores de confiance sont des <strong>indicateurs</strong> basés sur des données publiques agrégées. Ils ne constituent pas une expertise technique certifiée. CARNET ne saurait être tenu responsable d'une décision d'achat. Une inspection indépendante reste recommandée avant tout achat.</div>
       </div>
       <div class="legal-section">
         <div class="legal-title">Phase bêta</div>
-        <div class="legal-text">Carnet est en bêta. Les annonces affichées sont des entrées réelles, agrégées depuis nos sources partenaires (LeBonCoin, AutoScout24, La Centrale, 2ememain, et nos concessionnaires premium). Les Quatre Records s'enrichissent au fur et à mesure de l'arrivée des données.</div>
+        <div class="legal-text">CARNET est en bêta. Les annonces affichées sont des entrées réelles, agrégées depuis nos sources partenaires (LeBonCoin, AutoScout24, La Centrale, 2ememain, et nos concessionnaires premium). Les Quatre Records s'enrichissent au fur et à mesure de l'arrivée des données.</div>
       </div>
       <div class="legal-section">
         <div class="legal-title">Contact</div>
@@ -1450,13 +1477,13 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
   </div>
 </div>
 
-<!-- ═══ MODAL: Manifeste Carnet ═══ -->
+<!-- ═══ MODAL: Manifeste CARNET ═══ -->
 <div id="modal-manifest" class="manifest-overlay" style="display:none" onclick="if(event.target===this)closeManifest()">
   <div class="manifest-modal" role="dialog" aria-modal="true" aria-labelledby="manifest-baseline">
     <button class="modal-close" onclick="closeManifest()" aria-label="Fermer">×</button>
     <div id="manifest-baseline" class="manifest-baseline">Une histoire de voitures.</div>
     <div class="manifest-body">
-      <p>Carnet est né d'une conviction : chaque voiture mérite son carnet. Pas une fiche d'annonce, pas un dossier commercial — un carnet, au sens ancien du mot. Le registre où s'écrivent les choses qui comptent.</p>
+      <p>CARNET est né d'une conviction : chaque voiture mérite son carnet. Pas une fiche d'annonce, pas un dossier commercial — un carnet, au sens ancien du mot. Le registre où s'écrivent les choses qui comptent.</p>
 
       <div class="manifest-section-title">Quatre Records, quatre carnets</div>
 
@@ -1480,7 +1507,7 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
 
       <p>Si vous publiez une voiture chez nous, vous l'inscrivez dans son carnet. Si vous en achetez une, vous reprenez l'écriture du carnet à votre tour.</p>
 
-      <div class="manifest-signature">Carnet — A record of every record.</div>
+      <div class="manifest-signature">CARNET — A record of every record.</div>
     </div>
   </div>
 </div>
@@ -1627,7 +1654,7 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
           <div class="lb-badge-card-icon">🛡️</div>
           <div class="lb-badge-card-body">
             <div class="lb-badge-card-name" style="color:#1E3A8A">Gardien</div>
-            <div class="lb-badge-card-desc">Soutien mensuel actif. Chaque mois, Carnet tient grâce à vous.</div>
+            <div class="lb-badge-card-desc">Soutien mensuel actif. Chaque mois, CARNET tient grâce à vous.</div>
           </div>
           <div class="lb-badge-card-status locked" id="lb-status-guardian">🔒 Non obtenu</div>
         </div>
@@ -1720,7 +1747,7 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
   <div class="share-modal">
     <div class="share-head">
       <div>
-        <div class="share-title">Partagez Carnet.</div>
+        <div class="share-title">Partagez CARNET.</div>
         <div class="share-sub">Aidez d'autres acheteurs à éviter les mauvaises surprises</div>
       </div>
       <button class="pw-close" onclick="closeShare()">×</button>
@@ -1776,7 +1803,7 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
     <!-- État 1 : email -->
     <div id="auth-s1">
       <div class="pw-head" style="margin-bottom:6px">
-        <div class="pw-logo"><span class="ar-dot"></span>Carnet</div>
+        <div class="pw-logo"><span class="ar-dot"></span>CARNET</div>
         <button class="pw-close" onclick="closeAuthModal()">×</button>
       </div>
 
@@ -1840,12 +1867,12 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
     <!-- ── SCREEN 1: Plans + donation libre ── -->
     <div id="pw-s1">
       <div class="pw-head">
-        <div class="pw-logo"><span class="ar-dot"></span>Carnet</div>
+        <div class="pw-logo"><span class="ar-dot"></span>CARNET</div>
         <button class="pw-close" onclick="closePaywall()">×</button>
       </div>
       <div class="pw-hero">
         <div class="pw-context-label" id="pw-label">Sans publicité</div>
-        <div class="pw-title" id="pw-title">Carnet ne vit que des soutiens.</div>
+        <div class="pw-title" id="pw-title">CARNET ne vit que des soutiens.</div>
         <div class="pw-sub" id="pw-sub">Aucune pub, aucun sponsor, aucune vente de données. Juste des voitures, et ceux qui permettent au projet d'exister.</div>
       </div>
       <div style="text-align:center;padding:6px 20px 2px">
@@ -1865,7 +1892,7 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
           <div class="pw-plan-save">&nbsp;</div>
           <div class="pw-features">
             <div class="pw-feat">Couvre 1 mois de serveurs</div>
-            <div class="pw-feat">Carnet sans pub</div>
+            <div class="pw-feat">CARNET sans pub</div>
             <div class="pw-feat">Accès gratuit pour tous</div>
           </div>
           <button class="pw-plan-btn" onclick="event.stopPropagation();selectPlan('monthly',this.closest('.pw-plan'))">Commencer</button>
@@ -1973,7 +2000,7 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
           <span class="pw-av" style="background:#534AB7">S</span>
           <span class="pw-av" style="background:#D85A30">A</span>
         </div>
-        <span>589 lecteurs soutiennent Carnet.</span>
+        <span>589 lecteurs soutiennent CARNET.</span>
       </div>
       <div class="pw-skip" onclick="closePaywall()">Continuer gratuitement — je soutiendrai plus tard</div>
     </div>
@@ -2043,7 +2070,7 @@ body{font-family:'Cormorant Garamond',serif;font-weight:300;background:#F4F1EA;m
     <div id="pw-thankyou" style="display:none" class="pw-thankyou">
       <div class="pw-ty-icon">♥</div>
       <div class="pw-ty-title">Merci, vous êtes formidable.</div>
-      <div class="pw-ty-sub">Votre soutien garde Carnet sans publicité,<br>libre, intact. Il dure grâce à vous.</div>
+      <div class="pw-ty-sub">Votre soutien garde CARNET sans publicité,<br>libre, intact. Il dure grâce à vous.</div>
       <button class="pw-ty-close" onclick="closePaywall()">Continuer →</button>
     </div>
 
@@ -2066,7 +2093,7 @@ const C = [
   { id:2, mk:"BMW",mod:"Série 3",mo:"320d xDrive",yr:2020,km:61000,px:29500,fu:"Diesel",ge:"Automatique",ci:"Bruxelles",co:"Belgique",lat:50.850,lng:4.352,src:"AutoScout24",age:"3h",tr:-1200,td:30,ow:1,sc:91,
     opts:["Cuir","4x4","Suspension sport","Pack sport","Jantes alliage","GPS intégré","Sièges chauffants","Caméra recul","Régulateur vitesse","1ère main","CT récent"],
     ss:{px:{v:22,m:25,l:"Prix marché"},me:{v:28,m:30,l:"Mécanique / fiabilité"},hi:{v:19,m:20,l:"Historique propriétaires"},an:{v:15,m:15,l:"Qualité annonce"},km:{v:7,m:10,l:"Kilométrage cohérent"}},
-    ve:"Excellent achat",ch:[{l:"Carnet complet",t:"pass"},{l:"1 propriétaire",t:"pass"},{l:"Prix en baisse",t:"pass"}],
+    ve:"Excellent achat",ch:[{l:"CARNET complet",t:"pass"},{l:"1 propriétaire",t:"pass"},{l:"Prix en baisse",t:"pass"}],
     hs:[{d:"02/2020",e:"Immatriculation neuve"},{d:"11/2021",e:"Révision 60 000 km (BMW)"},{d:"04/2023",e:"Contrôle technique — TBE"},{d:"03/2024",e:"Mise en vente"}] },
   { id:3, mk:"Ford",mod:"Focus",mo:"Focus 1.0 EcoBoost",yr:2019,km:44000,px:13800,fu:"Essence",ge:"Manuelle",ci:"Nantes",co:"France",lat:47.218,lng:-1.554,src:"La Centrale",age:"5h",tr:0,td:0,ow:2,sc:86,
     opts:["GPS intégré","Caméra recul","Régulateur vitesse","CT récent","Jantes alliage"],
@@ -2832,10 +2859,10 @@ function deriveServiceRecord(car) {
   const hasCarnetMention = /carnet\s+(complet|d['’]entretien|de\s+suivi)|factures\s+(disponibles|tous)|entretien\s+(complet|suivi)/i.test(desc);
   const hasNoCarnet = /sans\s+carnet|carnet\s+manquant|aucun\s+document/i.test(desc);
 
-  if (car && car.feat_carnet_complet === true)  return { state:'rich',    label:'Carnet complet',    detail:'Documentation continue' };
-  if (hasCarnetMention)                          return { state:'rich',    label:'Carnet documenté',  detail:'Mention dans la description' };
+  if (car && car.feat_carnet_complet === true)  return { state:'rich',    label:'CARNET complet',    detail:'Documentation continue' };
+  if (hasCarnetMention)                          return { state:'rich',    label:'CARNET documenté',  detail:'Mention dans la description' };
   if ((car && car.feat_carnet_complet === false) || hasNoCarnet)
-                                                 return { state:'minimal', label:'Carnet absent',     detail:'Documentation non fournie' };
+                                                 return { state:'minimal', label:'CARNET absent',     detail:'Documentation non fournie' };
   return { state:'empty', label:'Non renseigné', detail:'Demander au vendeur' };
 }
 
@@ -2907,7 +2934,7 @@ function renderRecordsBlock(car) {
   const emptyCount = ['service','auction','provenance','collection']
     .filter(k => r[k].state === 'empty').length;
   const footer = emptyCount >= 3
-    ? `<div class="crn-records-footer">Carnet en cours d'enrichissement.</div>`
+    ? `<div class="crn-records-footer">CARNET en cours d'enrichissement.</div>`
     : '';
   return `
     <div class="crn-records">
@@ -2921,6 +2948,15 @@ function renderRecordsBlock(car) {
       ${footer}
     </div>`;
 }
+
+
+/* PRODUCTION BADGE */
+function _shouldShowProdBadge(car){if(!car.production_total||car.production_total<=0)return false;if(car.production_total>=50000)return false;if(car.production_confidence!=null&&car.production_confidence<60)return false;return true}
+function _prodTier(n){if(n===1)return'unique';if(n<100)return'confidential';if(n<1000)return'rare';if(n<5000)return'limited';if(n<50000)return'series';return'volume'}
+function _formatProdNum(n){return n.toLocaleString('fr-FR')}
+function _prodSourceLabel(s){return({wikidata:'Wikidata',wikipedia_infobox:'Wikipedia',wikipedia_section:'Wikipedia',manual:'Source curée',llm_haiku:'Description analysée'})[s]||'Source'}
+function prodBadgeHtml(car){if(!_shouldShowProdBadge(car))return'';const t=_prodTier(car.production_total);if(car.production_total===1)return `<div class="ar-prod-badge tier-${t}">Pièce unique</div>`;return `<div class="ar-prod-badge tier-${t}">1 of <span class="ar-prod-num">${_formatProdNum(car.production_total)}</span></div>`}
+function prodDetailHtml(car){if(!_shouldShowProdBadge(car))return'';const t=_prodTier(car.production_total);const m=car.production_meta||{};let p='';if(m.year_start&&m.year_end)p=` produites entre ${m.year_start} et ${m.year_end}`;else if(m.year_start)p=` produites depuis ${m.year_start}`;else p=' produites';const s=_prodSourceLabel(car.production_source);if(car.production_total===1)return `<div class="ar-prod-detail tier-${t}"><div class="ar-prod-detail-line">Pièce unique${p}.</div><div class="ar-prod-detail-source">${s}</div></div>`;return `<div class="ar-prod-detail tier-${t}"><div class="ar-prod-detail-line">1 of <span class="ar-prod-num-big">${_formatProdNum(car.production_total)}</span>${p}.</div><div class="ar-prod-detail-source">${s}</div></div>`}
 
 /* ═══════════════════════════════════════════════
    SEARCH CARD RENDERER
@@ -2951,6 +2987,7 @@ function renderCard(car) {
         <span>Détail du score — ${car.mk} ${car.mo}</span>
         <span class="ar-ts" style="color:${col}">${car.sc}/100</span>
       </div>
+      ${prodDetailHtml(car)}
       <div class="ar-bdown">${recordsScoreBreakdown(car)}</div>
       ${renderRecordsBlock(car)}
       <div class="ar-opts-section">
@@ -2982,6 +3019,7 @@ function renderCard(car) {
         </div>
         <div class="ar-body">
           <div class="ar-title">${car.mk} ${car.mo} · ${car.yr}</div>
+          ${prodBadgeHtml(car)}
           <div class="ar-verdict" style="color:${col}">${car.ve}</div>
           <div class="ar-stats">
             <span>${car.km.toLocaleString('fr-FR')} km</span>
@@ -3559,21 +3597,21 @@ const PW_SEGMENTS = {
   ai_user: {
     label: 'Recherche IA',
     title: 'Vous utilisez la recherche IA.',
-    sub: 'Chaque requête coûte. Pas de pub, pas de tracking. Carnet tient parce que des lecteurs paient.'
+    sub: 'Chaque requête coûte. Pas de pub, pas de tracking. CARNET tient parce que des lecteurs paient.'
   },
   collector: {
     label: 'Vos favoris',
     title: 'Votre sélection prend vraiment forme.',
-    sub: 'Vous bâtissez une vraie liste. Carnet existe pour ça — sans jamais vendre vos données, sans pub.'
+    sub: 'Vous bâtissez une vraie liste. CARNET existe pour ça — sans jamais vendre vos données, sans pub.'
   },
   power_user: {
     label: 'Utilisateur actif',
-    title: 'Vous explorez Carnet sérieusement.',
+    title: 'Vous explorez CARNET sérieusement.',
     sub: 'Plus le produit est utilisé, plus il coûte à faire tourner. Et on refuse la publicité. Votre soutien, même 1€, change vraiment quelque chose.'
   },
   default: {
     label: 'Sans publicité',
-    title: 'Carnet ne vit que des soutiens.',
+    title: 'CARNET ne vit que des soutiens.',
     sub: 'Aucune pub, aucun sponsor, aucune vente de données. Juste des voitures, et les personnes qui permettent au projet d\'exister.'
   }
 };
@@ -3833,11 +3871,11 @@ const FAQ_ITEMS = [
   { q: "D'où viennent les annonces ?",
     a: "Les entrées affichées sont agrégées depuis LeBonCoin, AutoScout24, La Centrale, 2ememain et nos concessionnaires premium. Les Quatre Records (Service · Enchères · Provenance · Collection) s'enrichissent au fur et à mesure que les données nous parviennent." },
   { q: "Mes dons sont-ils déductibles des impôts ?",
-    a: "Oui, une fois Carnet enregistré comme ONG reconnue. En France : déduction à 66% (un don de 15€ vous coûte réellement 5,10€). En Belgique : 45% à partir de 40€. En Suisse : déductible selon votre canton. Un reçu fiscal vous sera délivré automatiquement pour chaque don." },
-  { q: "Carnet est-il vraiment gratuit ?",
+    a: "Oui, une fois CARNET enregistré comme ONG reconnue. En France : déduction à 66% (un don de 15€ vous coûte réellement 5,10€). En Belgique : 45% à partir de 40€. En Suisse : déductible selon votre canton. Un reçu fiscal vous sera délivré automatiquement pour chaque don." },
+  { q: "CARNET est-il vraiment gratuit ?",
     a: "Oui. Les fonctionnalités essentielles sont et resteront gratuites. Le bouton « Soutenir » permet à ceux qui le souhaitent de contribuer au projet — sans jamais bloquer l'accès au contenu." },
   { q: "Mes données sont-elles partagées ou vendues ?",
-    a: "Non. Carnet ne collecte aucune donnée personnelle côté serveur. Vos favoris, collections et préférences vivent uniquement dans votre navigateur (localStorage) et ne quittent jamais votre appareil." },
+    a: "Non. CARNET ne collecte aucune donnée personnelle côté serveur. Vos favoris, collections et préférences vivent uniquement dans votre navigateur (localStorage) et ne quittent jamais votre appareil." },
   { q: "Le score est-il fiable à 100% ?",
     a: "Non, et on l'assume clairement. Le score est un indicateur synthétique basé sur des données publiques — pas une expertise technique certifiée. Une inspection indépendante reste recommandée avant tout achat important." },
   { q: "À quelle fréquence les annonces sont-elles mises à jour ?",
@@ -4078,8 +4116,8 @@ function submitReview() {
 }
 
 const SHARE_URL  = 'https://carnet.life';
-const SHARE_TEXT = 'Carnet — Une histoire de voitures. Quatre Records pour chaque voiture. Sans bruit.';
-const SHARE_HASHTAGS = 'Carnet,voiture,achatvehicule';
+const SHARE_TEXT = 'CARNET — Une histoire de voitures. Quatre Records pour chaque voiture. Sans bruit.';
+const SHARE_HASHTAGS = 'CARNET,voiture,achatvehicule';
 
 function shareCarnet() {
   /* On mobile, try native share sheet first */
@@ -4114,11 +4152,11 @@ function shareVia(channel) {
     whatsapp:  `https://wa.me/?text=${encodeURIComponent(SHARE_TEXT + ' ' + SHARE_URL)}`,
     messenger: `https://www.facebook.com/dialog/send?link=${url}&app_id=181477185219982&redirect_uri=${url}`,
     sms:       `sms:?body=${encodeURIComponent(SHARE_TEXT + ' ' + SHARE_URL)}`,
-    email:     `mailto:?subject=${encodeURIComponent('Carnet — Une histoire de voitures')}&body=${encodeURIComponent(SHARE_TEXT + '\n\n' + SHARE_URL)}`,
+    email:     `mailto:?subject=${encodeURIComponent('CARNET — Une histoire de voitures')}&body=${encodeURIComponent(SHARE_TEXT + '\n\n' + SHARE_URL)}`,
     twitter:   `https://twitter.com/intent/tweet?text=${text}&url=${url}&hashtags=${SHARE_HASHTAGS}`,
     linkedin:  `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
     facebook:  `https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`,
-    reddit:    `https://www.reddit.com/submit?url=${url}&title=${encodeURIComponent('Carnet — Une histoire de voitures (sans pub)')}`
+    reddit:    `https://www.reddit.com/submit?url=${url}&title=${encodeURIComponent('CARNET — Une histoire de voitures (sans pub)')}`
   };
   if (map[channel]) window.open(map[channel], '_blank', 'noopener,width=600,height=500');
   closeShare();
@@ -4969,7 +5007,7 @@ function padS7() {
   const d = _padData;
 
   /* Records summary — agrégation lisible des 3 nouveaux écrans */
-  const statusLabels = { complete:'Carnet complet', partial:'Carnet partiel', absent:'Carnet absent', unknown:'' };
+  const statusLabels = { complete:'CARNET complet', partial:'CARNET partiel', absent:'CARNET absent', unknown:'' };
   const serviceParts = [];
   if (d.service_status && statusLabels[d.service_status]) serviceParts.push(statusLabels[d.service_status]);
   if (d.service_factures) serviceParts.push('factures disponibles');
@@ -5019,7 +5057,7 @@ function padS7() {
     <div class="pad-fgroup" style="margin-top:4px">
       <label style="display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--text2);cursor:pointer">
         <input type="checkbox" id="pad-cgu" ${d.cgu?'checked':''} onchange="padFieldChange('cgu',this.checked)" style="margin-top:2px;accent-color:var(--gc)" />
-        J'accepte les <a href="#" style="color:var(--gc)">conditions générales</a> et la <a href="#" style="color:var(--gc)">politique de confidentialité</a> de Carnet. *
+        J'accepte les <a href="#" style="color:var(--gc)">conditions générales</a> et la <a href="#" style="color:var(--gc)">politique de confidentialité</a> de CARNET. *
       </label>
     </div>
 
@@ -5049,7 +5087,7 @@ function padS7() {
     </div>` : ''}
 
     ${_padPlan !== 'free' ? `<div style="padding:10px 12px;background:#E1F5EE;border-radius:var(--rsm);border:1px solid #9FE1CB;font-size:12px;color:#085041;margin-top:14px;margin-bottom:0">💳 Le paiement sera demandé après publication. Vous ne serez débité que si vous confirmez.</div>` : ''}
-    <div style="font-size:11px;color:var(--text3);line-height:1.65;margin-top:12px">En publiant, vous confirmez que le véhicule vous appartient et que les informations sont exactes. L'annonce sera visible dans les 5 minutes sur Carnet.</div>`;
+    <div style="font-size:11px;color:var(--text3);line-height:1.65;margin-top:12px">En publiant, vous confirmez que le véhicule vous appartient et que les informations sont exactes. L'annonce sera visible dans les 5 minutes sur CARNET.</div>`;
 }
 
 /* ── Navigation ── */
@@ -5217,7 +5255,7 @@ function padBuildInvoiceHTML(invoiceNum, date) {
 <body>
 <div class="card">
   <div class="head">
-    <div class="logo"><span class="logo-dot"></span>Carnet</div>
+    <div class="logo"><span class="logo-dot"></span>CARNET</div>
     <div class="invoice-num">${invoiceNum}</div>
   </div>
   <div class="hero">
@@ -5239,9 +5277,9 @@ function padBuildInvoiceHTML(invoiceNum, date) {
     <span class="total-val">${padPlanAmount()}</span>
   </div>
   <div class="foot">
-    Carnet vous remercie.<br>
+    CARNET vous remercie.<br>
     Questions ? <a href="mailto:contact@carnet.life">contact@carnet.life</a><br>
-    Carnet · <a href="https://carnet.life">carnet.life</a>
+    CARNET · <a href="https://carnet.life">carnet.life</a>
   </div>
 </div>
 </body></html>`;
@@ -5338,7 +5376,7 @@ function padDownloadInvoice() {
   const url   = URL.createObjectURL(blob);
   const a     = document.createElement('a');
   a.href      = url;
-  a.download  = `Carnet-${num}.html`;
+  a.download  = `CARNET-${num}.html`;
   document.body.appendChild(a);
   a.click();
   setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 1000);
@@ -5368,9 +5406,9 @@ const _sb = (typeof supabase !== 'undefined' && !SUPABASE_URL.includes('VOTRE_')
   : null;
 
 if (_sb) {
-  console.log('[Carnet] Supabase connecté ✓');
+  console.log('[CARNET] Supabase connecté ✓');
 } else {
-  console.info('[Carnet] Mode localStorage — configurez SUPABASE_URL et SUPABASE_ANON pour activer la DB');
+  console.info('[CARNET] Mode localStorage — configurez SUPABASE_URL et SUPABASE_ANON pour activer la DB');
 }
 
 /* ── Auth state ── */
@@ -5521,7 +5559,7 @@ removeFav = function(carId) {
   }
 };
 
-/* ── Cote Carnet: fetch segments depuis Supabase ── */
+/* ── Cote CARNET: fetch segments depuis Supabase ── */
 (async () => {
   if (!_sb) return;
   const { data } = await _sb.from('cote_segments')
@@ -5534,8 +5572,8 @@ removeFav = function(carId) {
 /* ── Cars: load from DB if available ── */
 (async () => {
   if (!_sb) return;
-  const { data } = await _sb.from('cars').select('*')
-    .eq('status', 'active').order('sc', { ascending: false }).limit(200);
+  const { data } = await _sb.from('cars_with_production').select('*')
+    .eq('status', 'active').order('production_confidence', { ascending: false, nullsFirst: false }).order('sc', { ascending: false }).limit(200);
   if (data && data.length > 0) {
     C.length = 0;
     data.forEach(car => C.push({
@@ -5546,12 +5584,16 @@ removeFav = function(carId) {
       tr: car.tr || 0, td: car.td || 0, ow: car.ow || 1, sc: car.sc,
       ve: car.ve || '—', opts: car.opts || [],
       ch: car.ch || [], ss: car.ss || {}, hs: car.hs || [],
+      production_total: car.production_total,
+      production_source: car.production_source,
+      production_confidence: car.production_confidence,
+      production_meta: car.production_meta || {},
       de: car.de || null,
       feat_carnet_complet: car.feat_carnet_complet,
       ecr_id: car.ecr_id || null
     }));
     render();
-    console.log(`[Carnet DB] ${C.length} annonces chargées`);
+    console.log(`[CARNET DB] ${C.length} annonces chargées`);
   }
 })();
 

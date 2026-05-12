@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="x-apple-disable-message-reformatting">
+  <meta name="color-scheme" content="light only">
+  <meta name="supported-color-schemes" content="light only">
+  <title>Connexion à CARNET</title>
+  <style>
+    /* Reset email clients */
+    body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+    table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+    img { -ms-interpolation-mode: bicubic; border: 0; outline: none; text-decoration: none; }
+    body { margin: 0 !important; padding: 0 !important; width: 100% !important; }
+
+    /* Fallback fonts (Bodoni Moda + DM Mono not always available in mail clients) */
+    .editorial { font-family: 'Bodoni Moda', 'Didot', 'Cormorant Garamond', 'Times New Roman', Georgia, serif; }
+    .mono      { font-family: 'DM Mono', 'Menlo', 'Courier New', monospace; }
+    .sans      { font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Helvetica, Arial, sans-serif; }
+  </style>
+</head>
+<body style="margin:0; padding:0; background:#faf6ef; font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',Helvetica,Arial,sans-serif; color:#1a1410;">
+
+  <!-- Hidden preheader -->
+  <div style="display:none; max-height:0; overflow:hidden; mso-hide:all;">
+    Ton lien de connexion CARNET. Valide 1 heure. Si tu n'as pas demandé ça, ignore.
+  </div>
+
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#faf6ef;">
+    <tr>
+      <td align="center" style="padding:55px 21px;">
+
+        <!-- ─── Main container ─── -->
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:560px; background:#faf6ef;">
+
+          <!-- Wordmark CARNET + dot -->
+          <tr>
+            <td align="left" style="padding-bottom:55px;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td style="font-family:'Bodoni Moda','Didot','Cormorant Garamond',Georgia,serif; font-style:italic; font-size:28px; color:#1a1410; padding-right:10px; line-height:1;">
+                    CARNET
+                  </td>
+                  <td style="vertical-align:middle; line-height:0;">
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+                      <td width="10" height="10" style="background:#E85A1F; line-height:10px; font-size:0;">&nbsp;</td>
+                    </tr></table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Tag -->
+          <tr>
+            <td style="padding-bottom:13px; font-family:'DM Mono','Menlo','Courier New',monospace; font-size:10px; letter-spacing:0.21em; color:#6b5d4f; text-transform:uppercase;">
+              CONNEXION
+            </td>
+          </tr>
+
+          <!-- Title -->
+          <tr>
+            <td style="padding-bottom:21px; font-family:'Bodoni Moda','Didot','Cormorant Garamond',Georgia,serif; font-style:italic; font-size:34px; line-height:1.1; color:#1a1410;">
+              Ton lien est prêt.
+            </td>
+          </tr>
+
+          <!-- Lead -->
+          <tr>
+            <td style="padding-bottom:34px; font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',Helvetica,Arial,sans-serif; font-size:15px; line-height:1.6; color:#4a3d33;">
+              Tu peux te connecter à CARNET sans mot de passe.<br>
+              Clique sur le bouton ci-dessous, et tu y es.
+            </td>
+          </tr>
+
+          <!-- CTA Button -->
+          <tr>
+            <td align="left" style="padding-bottom:34px;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td style="background:#1a1410; border-radius:2px;">
+                    <a href="{{ .ConfirmationURL }}" target="_blank" style="display:inline-block; padding:14px 28px; font-family:'DM Mono','Menlo','Courier New',monospace; font-size:12px; letter-spacing:0.18em; text-transform:uppercase; color:#faf6ef; text-decoration:none;">
+                      Se connecter →
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Fallback link -->
+          <tr>
+            <td style="padding-bottom:34px; font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',Helvetica,Arial,sans-serif; font-size:12px; line-height:1.6; color:#6b5d4f;">
+              Le bouton ne marche pas&nbsp;? Colle ce lien dans ton navigateur&nbsp;:<br>
+              <a href="{{ .ConfirmationURL }}" target="_blank" style="color:#E85A1F; text-decoration:none; word-break:break-all; font-family:'DM Mono','Menlo','Courier New',monospace; font-size:11px;">
+                {{ .ConfirmationURL }}
+              </a>
+            </td>
+          </tr>
+
+          <!-- Important info card -->
+          <tr>
+            <td style="padding:21px; background:#f3ede1; border-left:3px solid #E85A1F; border-radius:2px;">
+              <div style="font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',Helvetica,Arial,sans-serif; font-size:13px; line-height:1.6; color:#1a1410;">
+                <strong>Quelques infos rapides.</strong><br>
+                <span style="color:#4a3d33;">
+                  Ce lien expire dans <strong>1 heure</strong>. Il est à usage unique.<br>
+                  Si tu n'as pas demandé cette connexion, tu peux ignorer cet email — personne n'aura accès à ton compte.
+                </span>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Spacer -->
+          <tr><td style="height:55px; line-height:55px;">&nbsp;</td></tr>
+
+          <!-- Footer -->
+          <tr>
+            <td align="left" style="border-top:1px solid rgba(26,20,16,0.08); padding-top:21px;">
+              <div style="font-family:'Bodoni Moda','Didot',Georgia,serif; font-style:italic; font-size:13px; color:#6b5d4f; margin-bottom:8px;">
+                CARNET — THE record of every record.
+              </div>
+              <div style="font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',Helvetica,Arial,sans-serif; font-size:11px; line-height:1.6; color:#6b5d4f;">
+                CARNET est une association loi 1901 à but non lucratif.<br>
+                Une question&nbsp;? Écris-nous à <a href="mailto:contact@carnet.life" style="color:#E85A1F; text-decoration:none;">contact@carnet.life</a>. On répond.
+              </div>
+              <div style="margin-top:13px; font-family:'DM Mono','Menlo','Courier New',monospace; font-size:10px; letter-spacing:0.16em; color:#6b5d4f;">
+                <a href="https://carnet.life" style="color:#6b5d4f; text-decoration:none;">CARNET.LIFE</a>
+                &nbsp;·&nbsp;
+                <a href="https://carnet.life/terms" style="color:#6b5d4f; text-decoration:none;">CONDITIONS</a>
+                &nbsp;·&nbsp;
+                <a href="https://carnet.life/privacy" style="color:#6b5d4f; text-decoration:none;">CONFIDENTIALITÉ</a>
+                &nbsp;·&nbsp;
+                <a href="https://carnet.life/support" style="color:#6b5d4f; text-decoration:none;">SUPPORT</a>
+              </div>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>

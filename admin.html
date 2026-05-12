@@ -1,0 +1,1626 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>CARNET — Admin</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+  <style>
+    :root {
+      --encre: #1a1410;
+      --encre-soft: #4a3d33;
+      --papier: #faf6ef;
+      --papier-soft: #f3ede1;
+      --papier-deep: #ebe3d3;
+      --orange-polo: #E85A1F;
+      --orange-soft: rgba(232, 90, 31, 0.08);
+      --vert-anglais: #1F4D2F;
+      --vert-soft: rgba(31, 77, 47, 0.08);
+      --gris: #6b5d4f;
+      --gris-line: rgba(26, 20, 16, 0.08);
+      --gris-line-soft: rgba(26, 20, 16, 0.04);
+      --rouge: #c2410c;
+      --rouge-soft: rgba(194, 65, 12, 0.08);
+      --editorial: 'Bodoni Moda', 'Cormorant Garamond', Georgia, serif;
+      --mono: 'DM Mono', 'JetBrains Mono', ui-monospace, monospace;
+      --sans: -apple-system, BlinkMacSystemFont, 'Inter', system-ui, sans-serif;
+
+      --topbar: 52px;
+      --sidebar: 200px;
+      --r: 2px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body { 
+      height: 100%;
+      overflow: hidden;
+    }
+    body {
+      background: var(--papier);
+      color: var(--encre);
+      font-family: var(--sans);
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--orange-polo); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ═══ LOGIN SCREEN ════════════════════════════════════════ */
+    .login-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 21px;
+    }
+    .login-card {
+      max-width: 380px;
+      width: 100%;
+      padding: 55px 34px;
+      background: var(--papier);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+    }
+    .login-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 34px;
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 24px;
+    }
+    .login-dot {
+      width: 10px; height: 10px;
+      background: var(--orange-polo);
+      border-radius: var(--r);
+    }
+    .login-tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.21em;
+      color: var(--gris);
+      margin-bottom: 13px;
+    }
+    .login-title {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 32px;
+      line-height: 1.1;
+      margin-bottom: 21px;
+    }
+    .login-sub {
+      color: var(--gris);
+      font-size: 14px;
+      margin-bottom: 34px;
+    }
+    .login-input {
+      width: 100%;
+      padding: 13px 16px;
+      font-family: var(--mono);
+      font-size: 13px;
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      background: var(--papier);
+      margin-bottom: 13px;
+      transition: border-color 0.2s;
+    }
+    .login-input:focus {
+      outline: none;
+      border-color: var(--orange-polo);
+    }
+    .btn-primary {
+      width: 100%;
+      padding: 13px 21px;
+      background: var(--encre);
+      color: var(--papier);
+      border: none;
+      border-radius: var(--r);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.85; }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .login-status {
+      margin-top: 21px;
+      padding: 13px;
+      background: var(--vert-soft);
+      color: var(--vert-anglais);
+      border-radius: var(--r);
+      font-size: 13px;
+      display: none;
+    }
+    .login-status.error {
+      background: var(--rouge-soft);
+      color: var(--rouge);
+    }
+    .login-status.show { display: block; }
+
+    /* ═══ APP LAYOUT ══════════════════════════════════════════ */
+    .app {
+      display: grid;
+      grid-template-rows: var(--topbar) 1fr;
+      grid-template-columns: var(--sidebar) 1fr;
+      height: 100vh;
+    }
+    .app.hidden { display: none; }
+
+    .topbar {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 21px;
+      background: var(--papier);
+      border-bottom: 1px solid var(--gris-line);
+      z-index: 10;
+    }
+    .topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 18px;
+    }
+    .topbar-brand-dot {
+      width: 8px; height: 8px;
+      background: var(--orange-polo);
+      border-radius: var(--r);
+    }
+    .topbar-meta {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--gris);
+    }
+    .topbar-env {
+      padding: 3px 8px;
+      background: var(--vert-soft);
+      color: var(--vert-anglais);
+      border-radius: var(--r);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .topbar-env.dev {
+      background: var(--rouge-soft);
+      color: var(--rouge);
+    }
+    .topbar-user {
+      color: var(--encre);
+    }
+    .btn-link {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--orange-polo);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .btn-link:hover { text-decoration: underline; }
+
+    /* ═══ SIDEBAR ═════════════════════════════════════════════ */
+    .sidebar {
+      grid-row: 2;
+      background: var(--papier-soft);
+      border-right: 1px solid var(--gris-line);
+      overflow-y: auto;
+      padding: 21px 0;
+    }
+    .sidebar-section {
+      padding: 0 21px 13px;
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.21em;
+      color: var(--gris);
+      text-transform: uppercase;
+    }
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 21px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--encre-soft);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    .sidebar-link:hover {
+      background: var(--papier-deep);
+      color: var(--encre);
+    }
+    .sidebar-link.active {
+      background: var(--encre);
+      color: var(--papier);
+    }
+    .sidebar-link.active .sidebar-count {
+      color: var(--papier);
+      opacity: 0.6;
+    }
+    .sidebar-count {
+      font-size: 11px;
+      color: var(--gris);
+      font-weight: 400;
+      letter-spacing: 0;
+    }
+
+    /* ═══ MAIN CONTENT ════════════════════════════════════════ */
+    .main {
+      grid-row: 2;
+      grid-column: 2;
+      overflow-y: auto;
+      padding: 21px 34px 55px;
+    }
+
+    .view {
+      max-width: 1380px;
+      margin: 0 auto;
+    }
+    .view.hidden { display: none; }
+
+    .view-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 21px;
+      padding-bottom: 13px;
+      border-bottom: 1px solid var(--gris-line);
+    }
+    .view-title {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 28px;
+      line-height: 1;
+    }
+    .view-meta {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--gris);
+      letter-spacing: 0.12em;
+    }
+
+    /* ═══ KPI CARDS ═══════════════════════════════════════════ */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 13px;
+      margin-bottom: 34px;
+    }
+    .kpi-card {
+      padding: 21px;
+      background: var(--papier-soft);
+      border-radius: var(--r);
+      border: 1px solid var(--gris-line);
+    }
+    .kpi-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      color: var(--gris);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .kpi-value {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 34px;
+      line-height: 1;
+      color: var(--encre);
+    }
+    .kpi-value.accent { color: var(--orange-polo); }
+    .kpi-sub {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--gris);
+      margin-top: 5px;
+    }
+
+    /* ═══ CHART ═══════════════════════════════════════════════ */
+    .chart-box {
+      padding: 21px;
+      background: var(--papier-soft);
+      border-radius: var(--r);
+      border: 1px solid var(--gris-line);
+      margin-bottom: 34px;
+    }
+    .chart-title {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      color: var(--gris);
+      text-transform: uppercase;
+      margin-bottom: 13px;
+    }
+    .chart-svg {
+      width: 100%;
+      height: 180px;
+    }
+    .chart-svg .bar {
+      fill: var(--orange-polo);
+      opacity: 0.85;
+      transition: opacity 0.2s;
+    }
+    .chart-svg .bar:hover {
+      opacity: 1;
+    }
+    .chart-svg .axis-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      fill: var(--gris);
+    }
+
+    /* ═══ TWO COLUMNS ═════════════════════════════════════════ */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 13px;
+    }
+    @media (max-width: 900px) {
+      .two-col { grid-template-columns: 1fr; }
+    }
+
+    /* ═══ MINI TABLE (top sources, top brands) ════════════════ */
+    .mini-table-box {
+      padding: 21px;
+      background: var(--papier-soft);
+      border-radius: var(--r);
+      border: 1px solid var(--gris-line);
+    }
+    .mini-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .mini-table td {
+      padding: 6px 0;
+      font-family: var(--mono);
+      font-size: 12px;
+      border-bottom: 1px solid var(--gris-line-soft);
+    }
+    .mini-table td:last-child {
+      text-align: right;
+      color: var(--gris);
+    }
+    .mini-table tr:last-child td { border-bottom: none; }
+
+    /* ═══ FILTERS BAR (cars view) ═════════════════════════════ */
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 13px;
+      align-items: center;
+    }
+    .filters input,
+    .filters select {
+      padding: 6px 10px;
+      font-family: var(--mono);
+      font-size: 12px;
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      background: var(--papier);
+      color: var(--encre);
+    }
+    .filters input[type="search"] {
+      min-width: 220px;
+    }
+    .filters input:focus,
+    .filters select:focus {
+      outline: none;
+      border-color: var(--orange-polo);
+    }
+    .filters .filter-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: var(--gris);
+      text-transform: uppercase;
+      margin-right: -3px;
+    }
+    .btn-ghost {
+      padding: 6px 12px;
+      background: var(--papier);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      color: var(--encre);
+      transition: background 0.15s;
+    }
+    .btn-ghost:hover { background: var(--papier-soft); }
+    .btn-ghost.danger { color: var(--rouge); }
+    .btn-ghost.accent { color: var(--orange-polo); border-color: rgba(232, 90, 31, 0.3); }
+
+    /* ═══ MAIN DATA TABLE ═════════════════════════════════════ */
+    .data-table-wrap {
+      background: var(--papier);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      overflow: auto;
+      max-height: calc(100vh - 340px);
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .data-table th {
+      position: sticky;
+      top: 0;
+      background: var(--papier-deep);
+      padding: 10px 13px;
+      text-align: left;
+      font-weight: 500;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--encre);
+      border-bottom: 1px solid var(--gris-line);
+      white-space: nowrap;
+      z-index: 1;
+    }
+    .data-table td {
+      padding: 8px 13px;
+      border-bottom: 1px solid var(--gris-line-soft);
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+    .data-table tr:hover td {
+      background: var(--papier-soft);
+    }
+    .data-table tr.selected td {
+      background: var(--orange-soft);
+    }
+    .data-table td.col-wide {
+      white-space: normal;
+      max-width: 240px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .col-actions {
+      width: 1px;
+      white-space: nowrap;
+    }
+
+    .chip {
+      display: inline-block;
+      padding: 2px 7px;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      border-radius: var(--r);
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    .chip-active {
+      background: var(--vert-soft);
+      color: var(--vert-anglais);
+    }
+    .chip-archived {
+      background: var(--gris-line);
+      color: var(--gris);
+    }
+    .chip-tier-premium {
+      background: rgba(31, 77, 47, 0.12);
+      color: var(--vert-anglais);
+    }
+    .chip-tier-luxury {
+      background: rgba(232, 90, 31, 0.12);
+      color: var(--orange-polo);
+    }
+    .chip-tier-super, .chip-tier-hyper {
+      background: var(--encre);
+      color: var(--papier);
+    }
+    .chip-signed { background: var(--vert-soft); color: var(--vert-anglais); }
+    .chip-pending { background: rgba(232, 90, 31, 0.12); color: var(--orange-polo); }
+    .chip-expired, .chip-rejected { background: var(--gris-line); color: var(--gris); }
+
+    .score-badge {
+      display: inline-block;
+      padding: 2px 6px;
+      font-size: 11px;
+      border-radius: var(--r);
+      background: var(--vert-soft);
+      color: var(--vert-anglais);
+      font-weight: 600;
+    }
+    .score-badge.low {
+      background: var(--gris-line);
+      color: var(--gris);
+    }
+    .score-badge.high {
+      background: var(--orange-soft);
+      color: var(--orange-polo);
+    }
+
+    .action-btn {
+      padding: 4px 8px;
+      background: none;
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: var(--encre);
+      cursor: pointer;
+      margin-left: 3px;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .action-btn:hover {
+      background: var(--papier-soft);
+      border-color: var(--encre);
+    }
+    .action-btn.danger {
+      color: var(--rouge);
+    }
+    .action-btn.danger:hover {
+      background: var(--rouge-soft);
+      border-color: var(--rouge);
+    }
+
+    /* ═══ PAGINATION ══════════════════════════════════════════ */
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 13px 0;
+      margin-top: 13px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--gris);
+    }
+    .pagination-info {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+    }
+    .pagination-controls {
+      display: flex;
+      gap: 5px;
+    }
+
+    /* ═══ MODAL ═══════════════════════════════════════════════ */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(26, 20, 16, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 21px;
+      z-index: 100;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal {
+      max-width: 720px;
+      width: 100%;
+      max-height: 90vh;
+      background: var(--papier);
+      border-radius: var(--r);
+      overflow-y: auto;
+      padding: 34px;
+    }
+    .modal-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 21px;
+      padding-bottom: 13px;
+      border-bottom: 1px solid var(--gris-line);
+    }
+    .modal-title {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 22px;
+    }
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 21px;
+      cursor: pointer;
+      color: var(--gris);
+      line-height: 1;
+    }
+    .modal-row {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 13px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--gris-line-soft);
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .modal-label {
+      color: var(--gris);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 10px;
+    }
+    .modal-value {
+      color: var(--encre);
+      word-break: break-word;
+    }
+    .modal-value pre {
+      background: var(--papier-soft);
+      padding: 10px;
+      border-radius: var(--r);
+      font-size: 11px;
+      overflow-x: auto;
+    }
+    .modal-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 21px;
+      padding-top: 13px;
+      border-top: 1px solid var(--gris-line);
+    }
+
+    /* ═══ EMPTY / LOADING / TOAST ═════════════════════════════ */
+    .empty {
+      padding: 89px 21px;
+      text-align: center;
+      color: var(--gris);
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 17px;
+    }
+    .loading {
+      padding: 55px 21px;
+      text-align: center;
+      color: var(--gris);
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .loading::after {
+      content: '…';
+      animation: dots 1.4s infinite;
+    }
+    @keyframes dots {
+      0%, 20% { content: ''; }
+      40% { content: '.'; }
+      60% { content: '..'; }
+      80%, 100% { content: '...'; }
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 21px;
+      right: 21px;
+      padding: 13px 21px;
+      background: var(--encre);
+      color: var(--papier);
+      border-radius: var(--r);
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      box-shadow: 0 4px 12px rgba(26, 20, 16, 0.15);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: transform 0.3s, opacity 0.3s;
+      z-index: 200;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.success { background: var(--vert-anglais); }
+    .toast.error { background: var(--rouge); }
+
+    /* ═══ RESPONSIVE ══════════════════════════════════════════ */
+    @media (max-width: 768px) {
+      :root { --sidebar: 0; }
+      .sidebar { display: none; }
+      .app { grid-template-columns: 1fr; }
+      .main { padding: 13px 16px 55px; grid-column: 1; }
+      .view-title { font-size: 22px; }
+      .data-table th, .data-table td { padding: 6px 8px; font-size: 11px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ LOGIN SCREEN ═══════════════════════════════════════════ -->
+  <div class="login-screen" id="loginScreen">
+    <div class="login-card">
+      <div class="login-brand">
+        <span><em>CARNET</em></span>
+        <span class="login-dot"></span>
+      </div>
+      <div class="login-tag">ESPACE ADMIN</div>
+      <h1 class="login-title"><em>Connecte-toi</em></h1>
+      <p class="login-sub">Reçois un lien magique par email pour accéder à la console admin.</p>
+
+      <input type="email" class="login-input" id="loginEmail" placeholder="email@carnet.life" autocomplete="email">
+      <button class="btn-primary" id="loginBtn">Envoyer le lien magique</button>
+
+      <div class="login-status" id="loginStatus"></div>
+    </div>
+  </div>
+
+  <!-- ═══ APP ════════════════════════════════════════════════════ -->
+  <div class="app hidden" id="app">
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-brand">
+        <span><em>CARNET</em></span>
+        <span class="topbar-brand-dot"></span>
+        <span style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; color: var(--gris); margin-left: 13px;">ADMIN</span>
+      </div>
+      <div class="topbar-meta">
+        <span class="topbar-env" id="topbarEnv">PROD</span>
+        <span class="topbar-user" id="topbarUser">—</span>
+        <button class="btn-link" id="logoutBtn">Déconnexion</button>
+      </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-section">Vues</div>
+      <div class="sidebar-link active" data-view="dashboard">
+        <span>Dashboard</span>
+      </div>
+      <div class="sidebar-link" data-view="cars">
+        <span>Cars</span>
+        <span class="sidebar-count" id="navCarsCount">—</span>
+      </div>
+      <div class="sidebar-link" data-view="sources">
+        <span>Sources</span>
+        <span class="sidebar-count" id="navSourcesCount">—</span>
+      </div>
+      <div class="sidebar-link" data-view="donations">
+        <span>Donations</span>
+        <span class="sidebar-count" id="navDonationsCount">—</span>
+      </div>
+      <div class="sidebar-link" data-view="audit">
+        <span>Audit</span>
+      </div>
+      <div class="sidebar-section" style="margin-top: 34px;">Liens</div>
+      <a class="sidebar-link" href="https://supabase.com/dashboard" target="_blank" style="color: var(--gris);">
+        <span>Supabase ↗</span>
+      </a>
+      <a class="sidebar-link" href="https://github.com/Vinci75000/autoradar-scraper/actions" target="_blank" style="color: var(--gris);">
+        <span>GH Actions ↗</span>
+      </a>
+    </aside>
+
+    <!-- Main content -->
+    <main class="main">
+
+      <!-- ─── VIEW: DASHBOARD ─────────────────────────── -->
+      <div class="view" id="view-dashboard">
+        <div class="view-header">
+          <div class="view-title"><em>Dashboard</em></div>
+          <div class="view-meta" id="dashUpdated">—</div>
+        </div>
+
+        <div class="kpi-grid" id="kpiGrid">
+          <div class="loading">Chargement</div>
+        </div>
+
+        <div class="chart-box">
+          <div class="chart-title">Voitures ajoutées · 14 derniers jours</div>
+          <svg class="chart-svg" id="chartCars14d" viewBox="0 0 700 180" preserveAspectRatio="none"></svg>
+        </div>
+
+        <div class="two-col">
+          <div class="mini-table-box">
+            <div class="chart-title">Top sources (actives)</div>
+            <table class="mini-table" id="topSources">
+              <tr><td colspan="2" class="loading" style="border:none">Chargement</td></tr>
+            </table>
+          </div>
+          <div class="mini-table-box">
+            <div class="chart-title">Top brands (actives)</div>
+            <table class="mini-table" id="topBrands">
+              <tr><td colspan="2" class="loading" style="border:none">Chargement</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── VIEW: CARS ─────────────────────────── -->
+      <div class="view hidden" id="view-cars">
+        <div class="view-header">
+          <div class="view-title"><em>Voitures</em></div>
+          <div class="view-meta" id="carsCount">—</div>
+        </div>
+
+        <div class="filters">
+          <input type="search" id="filterSearch" placeholder="Recherche : marque, modèle, source…">
+          <span class="filter-label">Statut</span>
+          <select id="filterStatus">
+            <option value="active">Actives</option>
+            <option value="all">Toutes</option>
+            <option value="archived">Archivées</option>
+          </select>
+          <span class="filter-label">Tier</span>
+          <select id="filterTier">
+            <option value="all">Tous</option>
+            <option value="hyper">Hyper (≥1M€)</option>
+            <option value="super">Super (500k-1M€)</option>
+            <option value="luxury">Luxury (100k-500k€)</option>
+            <option value="premium">Premium (30k-100k€)</option>
+            <option value="standard">Standard (&lt;30k€)</option>
+          </select>
+          <span class="filter-label">Source</span>
+          <select id="filterSource">
+            <option value="all">Toutes</option>
+          </select>
+          <span class="filter-label">Tri</span>
+          <select id="filterSort">
+            <option value="created_at:desc">Plus récent</option>
+            <option value="created_at:asc">Plus ancien</option>
+            <option value="px:desc">Prix ↓</option>
+            <option value="px:asc">Prix ↑</option>
+            <option value="sc:desc">Score ↓</option>
+            <option value="sc:asc">Score ↑</option>
+          </select>
+          <button class="btn-ghost" id="btnRefreshCars">↻ Rafraîchir</button>
+          <button class="btn-ghost" id="btnExportCsv">↓ CSV</button>
+        </div>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="width: 1px"><input type="checkbox" id="selectAll"></th>
+                <th>Marque</th>
+                <th>Modèle</th>
+                <th>Année</th>
+                <th>Km</th>
+                <th>Prix</th>
+                <th>Score</th>
+                <th>Source</th>
+                <th>Statut</th>
+                <th>Ajoutée</th>
+                <th class="col-actions">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="carsBody">
+              <tr><td colspan="11" class="loading" style="border:none">Chargement</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pagination">
+          <div class="pagination-info" id="carsPaginationInfo">—</div>
+          <div class="pagination-controls">
+            <button class="btn-ghost" id="btnPrev" disabled>← Précédent</button>
+            <button class="btn-ghost" id="btnNext">Suivant →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── VIEW: SOURCES ─────────────────────────── -->
+      <div class="view hidden" id="view-sources">
+        <div class="view-header">
+          <div class="view-title"><em>Sources</em></div>
+          <div class="view-meta" id="sourcesCount">—</div>
+        </div>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Source</th>
+                <th>Total</th>
+                <th>Actives</th>
+                <th>Expirées</th>
+                <th>Score moy.</th>
+                <th>Prix moy.</th>
+                <th>Dernière vue</th>
+              </tr>
+            </thead>
+            <tbody id="sourcesBody">
+              <tr><td colspan="7" class="loading" style="border:none">Chargement</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ─── VIEW: DONATIONS ─────────────────────────── -->
+      <div class="view hidden" id="view-donations">
+        <div class="view-header">
+          <div class="view-title"><em>Donations</em></div>
+          <div class="view-meta" id="donationsCount">—</div>
+        </div>
+
+        <div class="kpi-grid" id="donKpis"></div>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Montant</th>
+                <th>Devise</th>
+                <th>Méthode</th>
+                <th>Statut</th>
+                <th>Wallet donateur</th>
+                <th>Tx hash</th>
+                <th>UUID Xaman</th>
+              </tr>
+            </thead>
+            <tbody id="donationsBody">
+              <tr><td colspan="8" class="loading" style="border:none">Chargement</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ─── VIEW: AUDIT ─────────────────────────── -->
+      <div class="view hidden" id="view-audit">
+        <div class="view-header">
+          <div class="view-title"><em>Audit log</em></div>
+          <div class="view-meta" id="auditCount">100 dernières actions</div>
+        </div>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Quand</th>
+                <th>Admin</th>
+                <th>Action</th>
+                <th>Cible</th>
+                <th>Détails</th>
+              </tr>
+            </thead>
+            <tbody id="auditBody">
+              <tr><td colspan="5" class="loading" style="border:none">Chargement</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ═══ MODAL CAR DETAIL ═══════════════════════════════════════ -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modalContent"></div>
+  </div>
+
+  <!-- ═══ TOAST ══════════════════════════════════════════════════ -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ════════════════════════════════════════════════════════════
+    //   CONFIGURATION
+    // ════════════════════════════════════════════════════════════
+    const SUPABASE_URL = 'https://qqbssqcuxllmtapqkmkz.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFxYnNzcWN1eGxsbXRhcHFrbWt6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3NDAwNTEsImV4cCI6MjA5MzMxNjA1MX0.OWPte8bsQvv02HmoAaLRJgYKlRPHVWAurtfhqjh3NPQ';
+    const PAGE_SIZE = 50;
+
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const State = {
+      session: null,
+      profile: null,
+      currentView: 'dashboard',
+      cars: { page: 0, rows: [], total: 0, filters: {} },
+      donations: [],
+      sources: [],
+      audit: []
+    };
+
+    // ════════════════════════════════════════════════════════════
+    //   AUTH
+    // ════════════════════════════════════════════════════════════
+    async function init() {
+      const { data: { session } } = await sb.auth.getSession();
+      if (!session) return showLogin();
+      await onAuth(session);
+    }
+
+    async function onAuth(session) {
+      State.session = session;
+      // Check admin role
+      const { data: profile, error } = await sb
+        .from('profiles')
+        .select('role, email')
+        .eq('id', session.user.id)
+        .single();
+      
+      if (error || !profile) {
+        showLoginStatus('Profil introuvable. Contacte un admin.', 'error');
+        return showLogin();
+      }
+      if (profile.role !== 'admin') {
+        showLoginStatus('Accès refusé. Ce compte n\'est pas administrateur.', 'error');
+        await sb.auth.signOut();
+        return showLogin();
+      }
+      State.profile = profile;
+      showApp();
+      logAudit('login', 'system', null, { email: profile.email });
+      loadDashboard();
+    }
+
+    function showLogin() {
+      document.getElementById('loginScreen').style.display = 'flex';
+      document.getElementById('app').classList.add('hidden');
+    }
+
+    function showApp() {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('app').classList.remove('hidden');
+      document.getElementById('topbarUser').textContent = State.profile.email || '—';
+      const env = location.hostname === 'carnet.life' ? 'PROD' : 'DEV';
+      const envEl = document.getElementById('topbarEnv');
+      envEl.textContent = env;
+      envEl.classList.toggle('dev', env === 'DEV');
+    }
+
+    function showLoginStatus(msg, type = '') {
+      const el = document.getElementById('loginStatus');
+      el.textContent = msg;
+      el.className = 'login-status show ' + type;
+    }
+
+    document.getElementById('loginBtn').addEventListener('click', async () => {
+      const email = document.getElementById('loginEmail').value.trim();
+      if (!email) return showLoginStatus('Saisis ton email.', 'error');
+      const btn = document.getElementById('loginBtn');
+      btn.disabled = true;
+      btn.textContent = 'Envoi…';
+      const { error } = await sb.auth.signInWithOtp({
+        email,
+        options: { emailRedirectTo: location.href }
+      });
+      btn.disabled = false;
+      btn.textContent = 'Envoyer le lien magique';
+      if (error) {
+        showLoginStatus(`Erreur : ${error.message}`, 'error');
+      } else {
+        showLoginStatus(`Lien envoyé à ${email}. Clique dessus pour te connecter.`);
+      }
+    });
+
+    document.getElementById('loginEmail').addEventListener('keypress', e => {
+      if (e.key === 'Enter') document.getElementById('loginBtn').click();
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+      if (!confirm('Se déconnecter de l\'admin ?')) return;
+      await logAudit('logout', 'system');
+      await sb.auth.signOut();
+      location.reload();
+    });
+
+    sb.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session && !State.session) {
+        onAuth(session);
+      }
+      if (event === 'SIGNED_OUT') {
+        State.session = null;
+        location.reload();
+      }
+    });
+
+    // ════════════════════════════════════════════════════════════
+    //   AUDIT LOG WRAPPER
+    // ════════════════════════════════════════════════════════════
+    async function logAudit(action, targetTable = null, targetId = null, details = null) {
+      try {
+        await sb.rpc('log_admin_action', {
+          p_action: action,
+          p_target_table: targetTable,
+          p_target_id: targetId ? String(targetId) : null,
+          p_details: details
+        });
+      } catch (e) {
+        console.warn('audit log failed', e);
+      }
+    }
+
+    // ════════════════════════════════════════════════════════════
+    //   ROUTING (sidebar nav)
+    // ════════════════════════════════════════════════════════════
+    document.querySelectorAll('.sidebar-link[data-view]').forEach(link => {
+      link.addEventListener('click', () => switchView(link.dataset.view));
+    });
+
+    function switchView(view) {
+      document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+      document.querySelector(`.sidebar-link[data-view="${view}"]`)?.classList.add('active');
+      document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
+      document.getElementById(`view-${view}`).classList.remove('hidden');
+      State.currentView = view;
+      if (view === 'dashboard') loadDashboard();
+      if (view === 'cars') loadCars();
+      if (view === 'sources') loadSources();
+      if (view === 'donations') loadDonations();
+      if (view === 'audit') loadAudit();
+    }
+
+    // ════════════════════════════════════════════════════════════
+    //   VIEW: DASHBOARD
+    // ════════════════════════════════════════════════════════════
+    async function loadDashboard() {
+      try {
+        const { data, error } = await sb.rpc('get_admin_kpis');
+        if (error) throw error;
+        renderKpis(data);
+        renderChart(data.cars_by_day_14d || []);
+        renderTopList('topSources', data.top_sources || [], 'source', 'cnt');
+        renderTopList('topBrands', data.top_brands || [], 'mk', 'cnt');
+        document.getElementById('dashUpdated').textContent = 
+          `Mis à jour ${new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}`;
+        // Update sidebar counts
+        document.getElementById('navCarsCount').textContent = fmtN(data.cars_active);
+        document.getElementById('navSourcesCount').textContent = data.sources_active;
+        document.getElementById('navDonationsCount').textContent = 
+          `${data.donations_count_signed}/${data.donations_count_signed + data.donations_count_pending}`;
+      } catch (e) {
+        document.getElementById('kpiGrid').innerHTML = `<div class="empty">Erreur : ${e.message}</div>`;
+        console.error(e);
+      }
+    }
+
+    function renderKpis(d) {
+      const grid = document.getElementById('kpiGrid');
+      grid.innerHTML = `
+        ${kpi('Voitures actives', fmtN(d.cars_active), 'accent', `+${d.cars_added_today} aujourd'hui`)}
+        ${kpi('Ajoutées (7j)', fmtN(d.cars_added_week), '', '')}
+        ${kpi('Score moyen', d.avg_score || '—', '', 'sur 100')}
+        ${kpi('Premium (>100k€)', fmtN(d.premium_count), '', `dont ${fmtN(d.premier_count)} >500k`)}
+        ${kpi('Hyper (>1M€)', fmtN(d.hyper_count), 'accent', '')}
+        ${kpi('Donations totales', fmtEur(d.donations_total_eur), 'accent', `${d.donations_count_signed} signed`)}
+        ${kpi('Sources actives', d.sources_active, '', '7 derniers jours')}
+        ${kpi('Marques', d.brands_active, '', '')}
+        ${kpi('Archivées', fmtN(d.cars_archived), '', 'cars_archive')}
+      `;
+    }
+
+    function kpi(label, value, cls = '', sub = '') {
+      return `
+        <div class="kpi-card">
+          <div class="kpi-label">${label}</div>
+          <div class="kpi-value ${cls}">${value}</div>
+          ${sub ? `<div class="kpi-sub">${sub}</div>` : ''}
+        </div>
+      `;
+    }
+
+    function renderChart(days) {
+      const svg = document.getElementById('chartCars14d');
+      if (!days || days.length === 0) {
+        svg.innerHTML = `<text x="350" y="90" text-anchor="middle" class="axis-label">Pas de données</text>`;
+        return;
+      }
+      const maxCnt = Math.max(...days.map(d => +d.cnt), 1);
+      const w = 700, h = 180;
+      const barW = (w - 60) / days.length - 4;
+      const innerH = h - 40;
+      
+      let html = '';
+      // Y axis labels (3 ticks)
+      for (let i = 0; i <= 3; i++) {
+        const y = 10 + (innerH * (1 - i / 3));
+        const v = Math.round(maxCnt * i / 3);
+        html += `<text x="40" y="${y + 4}" text-anchor="end" class="axis-label">${v}</text>`;
+        html += `<line x1="50" y1="${y}" x2="${w}" y2="${y}" stroke="rgba(26,20,16,0.04)" />`;
+      }
+      // Bars
+      days.forEach((d, i) => {
+        const x = 50 + i * ((w - 60) / days.length);
+        const barH = (+d.cnt / maxCnt) * innerH;
+        const y = innerH - barH + 10;
+        html += `<rect class="bar" x="${x}" y="${y}" width="${barW}" height="${barH}" rx="1">
+          <title>${d.day} : ${d.cnt}</title>
+        </rect>`;
+        // X axis label every other
+        if (i % 2 === 0) {
+          const label = d.day.slice(5).replace('-', '/');
+          html += `<text x="${x + barW/2}" y="${h - 4}" text-anchor="middle" class="axis-label">${label}</text>`;
+        }
+      });
+      svg.innerHTML = html;
+    }
+
+    function renderTopList(tableId, items, keyField, cntField) {
+      const tbl = document.getElementById(tableId);
+      if (!items || items.length === 0) {
+        tbl.innerHTML = '<tr><td colspan="2" style="color:var(--gris)">—</td></tr>';
+        return;
+      }
+      tbl.innerHTML = items.map(it => 
+        `<tr><td>${esc(it[keyField] || '?')}</td><td>${fmtN(it[cntField])}</td></tr>`
+      ).join('');
+    }
+
+    // ════════════════════════════════════════════════════════════
+    //   VIEW: CARS
+    // ════════════════════════════════════════════════════════════
+    async function loadCars() {
+      const body = document.getElementById('carsBody');
+      body.innerHTML = '<tr><td colspan="11" class="loading" style="border:none">Chargement</td></tr>';
+      
+      const f = State.cars.filters;
+      const [sortField, sortDir] = (document.getElementById('filterSort').value || 'created_at:desc').split(':');
+      const search = document.getElementById('filterSearch').value.trim();
+      const status = document.getElementById('filterStatus').value;
+      const tier = document.getElementById('filterTier').value;
+      const src = document.getElementById('filterSource').value;
+
+      let q = sb.from('cars').select('id, mk, mo, yr, km, px, sc, src, src_url, status, created_at, ow, fu, ge, ci, co, ve, ch', { count: 'exact' });
+      
+      if (status === 'active') q = q.eq('status', 'active');
+      else if (status === 'archived') q = q.neq('status', 'active');
+      
+      if (search) q = q.or(`mk.ilike.%${search}%,mo.ilike.%${search}%,src_url.ilike.%${search}%`);
+      if (src && src !== 'all') q = q.eq('src', src);
+      
+      if (tier !== 'all') {
+        const ranges = {
+          'hyper': [1000000, 99999999],
+          'super': [500000, 999999],
+          'luxury': [100000, 499999],
+          'premium': [30000, 99999],
+          'standard': [0, 29999]
+        };
+        const [min, max] = ranges[tier];
+        q = q.gte('px', min).lte('px', max);
+      }
+      
+      q = q.order(sortField, { ascending: sortDir === 'asc' });
+      q = q.range(State.cars.page * PAGE_SIZE, State.cars.page * PAGE_SIZE + PAGE_SIZE - 1);
+      
+      const { data, error, count } = await q;
+      if (error) {
+        body.innerHTML = `<tr><td colspan="11" class="empty">Erreur : ${error.message}</td></tr>`;
+        return;
+      }
+      
+      State.cars.rows = data || [];
+      State.cars.total = count || 0;
+      renderCarsTable();
+      
+      document.getElementById('carsCount').textContent = `${fmtN(count || 0)} résultats`;
+      document.getElementById('carsPaginationInfo').textContent = 
+        `Page ${State.cars.page + 1} sur ${Math.max(1, Math.ceil((count || 0) / PAGE_SIZE))}`;
+      document.getElementById('btnPrev').disabled = State.cars.page === 0;
+      document.getElementById('btnNext').disabled = (State.cars.page + 1) * PAGE_SIZE >= (count || 0);
+    }
+
+    function renderCarsTable() {
+      const body = document.getElementById('carsBody');
+      if (State.cars.rows.length === 0) {
+        body.innerHTML = '<tr><td colspan="11" class="empty">Aucune voiture ne correspond.</td></tr>';
+        return;
+      }
+      body.innerHTML = State.cars.rows.map(c => `
+        <tr data-id="${esc(c.id)}">
+          <td><input type="checkbox" class="row-check" data-id="${esc(c.id)}"></td>
+          <td><strong>${esc(c.mk || '?')}</strong></td>
+          <td class="col-wide">${esc(c.mo || '—')}</td>
+          <td>${c.yr || '—'}</td>
+          <td>${c.km != null ? fmtN(c.km) : '—'}</td>
+          <td>${c.px ? fmtEur(c.px) : '—'}</td>
+          <td>${c.sc != null ? scoreBadge(c.sc) : '—'}</td>
+          <td><span style="font-size:11px; color:var(--gris)">${esc(c.src || '—')}</span></td>
+          <td>${statusChip(c.status)}</td>
+          <td style="color:var(--gris); font-size:11px">${fmtDate(c.created_at)}</td>
+          <td class="col-actions">
+            <button class="action-btn" onclick="openCarDetail('${esc(c.id)}')">Voir</button>
+            <button class="action-btn" onclick="toggleCarStatus('${esc(c.id)}','${esc(c.status)}')">${c.status === 'active' ? 'Archiver' : 'Restaurer'}</button>
+            <button class="action-btn danger" onclick="deleteCar('${esc(c.id)}')">×</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    async function loadSourcesDropdown() {
+      const { data } = await sb.rpc('get_source_stats');
+      const sel = document.getElementById('filterSource');
+      sel.innerHTML = '<option value="all">Toutes</option>' +
+        (data || []).map(s => `<option value="${esc(s.source)}">${esc(s.source)} (${s.active})</option>`).join('');
+    }
+
+    // Filter listeners
+    ['filterSearch','filterStatus','filterTier','filterSource','filterSort'].forEach(id => {
+      document.getElementById(id).addEventListener('change', () => {
+        State.cars.page = 0;
+        loadCars();
+      });
+    });
+    document.getElementById('filterSearch').addEventListener('input', debounce(() => {
+      State.cars.page = 0;
+      loadCars();
+    }, 400));
+    document.getElementById('btnRefreshCars').addEventListener('click', loadCars);
+    document.getElementById('btnPrev').addEventListener('click', () => {
+      if (State.cars.page > 0) { State.cars.page--; loadCars(); }
+    });
+    document.getElementById('btnNext').addEventListener('click', () => {
+      State.cars.page++; loadCars();
+    });
+    document.getElementById('btnExportCsv').addEventListener('click', exportCsv);
+
+    // ─── Car actions ─────────────────────────────────────────
+    window.openCarDetail = async function(id) {
+      const car = State.cars.rows.find(c => c.id === id);
+      if (!car) return;
+      const overlay = document.getElementById('modalOverlay');
+      const content = document.getElementById('modalContent');
+      content.innerHTML = `
+        <div class="modal-header">
+          <div class="modal-title"><em>${esc(car.mk || '?')} ${esc(car.mo || '')}</em></div>
+          <button class="modal-close" onclick="closeModal()">×</button>
+        </div>
+        ${[
+          ['ID', car.id],
+          ['Marque', car.mk],
+          ['Modèle', car.mo],
+          ['Année', car.yr],
+          ['Kilométrage', car.km != null ? `${fmtN(car.km)} km` : '—'],
+          ['Prix', car.px ? fmtEur(car.px) : '—'],
+          ['Score', car.sc != null ? `${car.sc}/100` : '—'],
+          ['Carburant', car.fu],
+          ['Boîte', car.ge],
+          ['Ville', car.ci],
+          ['Pays', car.co],
+          ['Propriétaires', car.ow],
+          ['Source', car.src],
+          ['URL source', car.src_url ? `<a href="${esc(car.src_url)}" target="_blank">${esc(car.src_url)} ↗</a>` : '—'],
+          ['Statut', statusChip(car.status)],
+          ['Ajoutée', fmtDate(car.created_at, true)],
+          ['Verdict', car.ve],
+          ['Chips', car.ch ? `<pre>${esc(JSON.stringify(car.ch, null, 2))}</pre>` : '—']
+        ].map(([k, v]) => `
+          <div class="modal-row">
+            <div class="modal-label">${k}</div>
+            <div class="modal-value">${v || '—'}</div>
+          </div>
+        `).join('')}
+        <div class="modal-actions">
+          <button class="btn-ghost accent" onclick="toggleCarStatus('${esc(car.id)}','${esc(car.status)}')">${car.status === 'active' ? 'Archiver' : 'Restaurer'}</button>
+          <button class="btn-ghost danger" onclick="deleteCar('${esc(car.id)}')">Supprimer définitivement</button>
+          ${car.src_url ? `<a class="btn-ghost" href="${esc(car.src_url)}" target="_blank">Ouvrir source ↗</a>` : ''}
+        </div>
+      `;
+      overlay.classList.add('show');
+    };
+
+    window.closeModal = function() {
+      document.getElementById('modalOverlay').classList.remove('show');
+    };
+
+    document.getElementById('modalOverlay').addEventListener('click', e => {
+      if (e.target.id === 'modalOverlay') closeModal();
+    });
+
+    window.toggleCarStatus = async function(id, currentStatus) {
+      const newStatus = currentStatus === 'active' ? 'archived_manual' : 'active';
+      const action = newStatus === 'active' ? 'Restaurer' : 'Archiver';
+      if (!confirm(`${action} cette voiture ?`)) return;
+      
+      const { error } = await sb.from('cars').update({ status: newStatus }).eq('id', id);
+      if (error) return toast(`Erreur : ${error.message}`, 'error');
+      
+      await logAudit('toggle_status', 'cars', id, { from: currentStatus, to: newStatus });
+      toast(`${action} OK`, 'success');
+      closeModal();
+      loadCars();
+    };
+
+    window.deleteCar = async function(id) {
+      if (!confirm('Supprimer définitivement cette voiture ? Cette action est irréversible.')) return;
+      // FK delete order: data_lineage → car_fingerprints → cars
+      try {
+        await sb.from('data_lineage').delete().eq('entity_id', id);
+        await sb.from('car_fingerprints').delete().eq('car_id', id);
+        const { error } = await sb.from('cars').delete().eq('id', id);
+        if (error) throw error;
+        await logAudit('delete', 'cars', id);
+        toast('Supprimée', 'success');
+        closeModal();
+        loadCars();
+      } catch (e) {
+        toast(`Erreur : ${e.message}`, 'error');
+      }
+    };
+
+    async function exportCsv() {
+      const rows = State.cars.rows;
+      if (rows.length === 0) return toast('Rien à exporter', 'error');
+      const cols = ['id','mk','mo','yr','km','px','sc','src','status','created_at','src_url'];
+      const csv = [
+        cols.join(','),
+        ...rows.map(r => cols.map(c => `"${String(r[c] || '').replace(/"/g, '""')}"`).join(','))
+      ].join('\n');
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `carnet-cars-${new Date().toISOString().slice(0,10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+      await logAudit('export_csv', 'cars', null, { count: rows.length });
+      toast(`${rows.length} lignes exportées`, 'success');
+    }
+
+    // ════════════════════════════════════════════════════════════
+    //   VIEW: SOURCES
+    // ════════════════════════════════════════════════════════════
+    async function loadSources() {
+      const body = document.getElementById('sourcesBody');
+      body.innerHTML = '<tr><td colspan="7" class="loading" style="border:none">Chargement</td></tr>';
+      
+      const { data, error } = await sb.rpc('get_source_stats');
+      if (error) {
+        body.innerHTML = `<tr><td colspan="7" class="empty">Erreur : ${error.message}</td></tr>`;
+        return;
+      }
+      
+      if (!data || data.length === 0) {
+        body.innerHTML = '<tr><td colspan="7" class="empty">Aucune source.</td></tr>';
+        return;
+      }
+      
+      document.getElementById('sourcesCount').textContent = `${data.length} sources`;
+      body.innerHTML = data.map(s => `
+        <tr>
+          <td><strong>${esc(s.source || '?')}</strong></td>
+          <td>${fmtN(s.total)}</td>
+          <td><span class="chip chip-active">${fmtN(s.active)}</span></td>
+          <td><span style="color:var(--gris)">${fmtN(s.archived_via_wash || 0)}</span></td>
+          <td>${s.avg_score != null ? scoreBadge(s.avg_score) : '—'}</td>
+          <td>${s.avg_price ? fmtEur(s.avg_price) : '—'}</td>
+          <td style="color:var(--gris); font-size:11px">${fmtDate(s.last_seen)}</td>
+        </tr>
+      `).join('');
+    }
+
+    // ════════════════════════════════════════════════════════════
+    //   VIEW: DONATIONS
+    // ════════════════════════════════════════════════════════════
+    async function loadDonations() {
+      const body = document.getElementById('donationsBody');
+      body.innerHTML = '<tr><td colspan="8" class="loading" style="border:none">Chargement</td></tr>';
+      
+      const { data, error } = await sb.from('donations').select('*').order('created_at', { ascending: false }).limit(200);
+      if (error) {
+        body.innerHTML = `<tr><td colspan="8" class="empty">Erreur : ${error.message}</td></tr>`;
+        return;
+      }
+      
+      const total = data.filter(d => d.status === 'signed').reduce((s, d) => s + Number(d.amount_eur || 0), 0);
+      const signed = data.filter(d => d.status === 'signed').length;
+      const pending = data.filter(d => d.status === 'pending').length;
+      const expired = data.filter(d => d.status === 'expired').length;
+      
+      document.getElementById('donKpis').innerHTML = `
+        ${kpi('Total signé', fmtEur(total), 'accent', `${signed} dons`)}
+        ${kpi('En attente', pending, '', 'pending')}
+        ${kpi('Expirés', expired, '', '')}
+        ${kpi('Total transactions', data.length, '', 'tous statuts')}
+      `;
+      
+      document.getElementById('donationsCount').textContent = `${data.length} entries`;
+      
+      if (data.length === 0) {
+        body.innerHTML = '<tr><td colspan="8" class="empty">Aucune donation pour le moment. <em>On compte sur la tribu.</em></td></tr>';
+        return;
+      }
+      
+      body.innerHTML = data.map(d => `
+        <tr>
+          <td style="font-size:11px">${fmtDate(d.created_at, true)}</td>
+          <td><strong>${d.amount_eur ? fmtEur(d.amount_eur) : '—'}</strong></td>
+          <td>${esc(d.currency || '?')}</td>
+          <td><span style="color:var(--gris); font-size:11px">${esc(d.method || '?')}</span></td>
+          <td><span class="chip chip-${d.status}">${esc(d.status || '?')}</span></td>
+          <td style="font-family:var(--mono); font-size:10px; color:var(--gris)">${truncate(d.donor_wallet_address, 14)}</td>
+          <td style="font-family:var(--mono); font-size:10px; color:var(--gris)">${truncate(d.tx_hash, 14)}</td>
+          <td style="font-family:var(--mono); font-size:10px; color:var(--gris)">${truncate(d.xaman_uuid, 12)}</td>
+        </tr>
+      `).join('');
+    }
+
+    // ════════════════════════════════════════════════════════════
+    //   VIEW: AUDIT
+    // ════════════════════════════════════════════════════════════
+    async function loadAudit() {
+      const body = document.getElementById('auditBody');
+      body.innerHTML = '<tr><td colspan="5" class="loading" style="border:none">Chargement</td></tr>';
+      
+      const { data, error } = await sb.from('admin_audit_log').select('*').order('created_at', { ascending: false }).limit(100);
+      if (error) {
+        body.innerHTML = `<tr><td colspan="5" class="empty">Erreur : ${error.message}</td></tr>`;
+        return;
+      }
+      
+      if (data.length === 0) {
+        body.innerHTML = '<tr><td colspan="5" class="empty">Aucune action enregistrée.</td></tr>';
+        return;
+      }
+      
+      body.innerHTML = data.map(a => `
+        <tr>
+          <td style="font-size:11px">${fmtDate(a.created_at, true)}</td>
+          <td>${esc(a.admin_email || '?')}</td>
+          <td><strong>${esc(a.action)}</strong></td>
+          <td>${a.target_table ? `<span class="chip chip-active">${esc(a.target_table)}${a.target_id ? '/'+truncate(a.target_id,12) : ''}</span>` : '—'}</td>
+          <td style="font-family:var(--mono); font-size:10px; color:var(--gris); max-width:300px; overflow:hidden; text-overflow:ellipsis">${a.details ? esc(JSON.stringify(a.details).slice(0, 100)) : '—'}</td>
+        </tr>
+      `).join('');
+    }
+
+    // ════════════════════════════════════════════════════════════
+    //   UTILS
+    // ════════════════════════════════════════════════════════════
+    function esc(s) {
+      if (s == null) return '';
+      return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+    function fmtN(n) {
+      if (n == null) return '—';
+      return Number(n).toLocaleString('fr-FR');
+    }
+    function fmtEur(n) {
+      if (n == null) return '—';
+      return Number(n).toLocaleString('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+    }
+    function fmtDate(s, withTime) {
+      if (!s) return '—';
+      const d = new Date(s);
+      const opts = withTime 
+        ? { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }
+        : { day: '2-digit', month: '2-digit', year: '2-digit' };
+      return d.toLocaleString('fr-FR', opts);
+    }
+    function truncate(s, n) {
+      if (!s) return '—';
+      return s.length > n ? s.slice(0, n) + '…' : s;
+    }
+    function statusChip(s) {
+      if (s === 'active') return '<span class="chip chip-active">active</span>';
+      return `<span class="chip chip-archived">${esc(s || '?')}</span>`;
+    }
+    function scoreBadge(s) {
+      const cls = s >= 80 ? 'high' : s >= 50 ? '' : 'low';
+      return `<span class="score-badge ${cls}">${s}</span>`;
+    }
+    function debounce(fn, ms) {
+      let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
+    }
+    function toast(msg, type = '') {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.className = 'toast show ' + type;
+      setTimeout(() => el.className = 'toast', 2800);
+    }
+
+    // ════════════════════════════════════════════════════════════
+    //   BOOT
+    // ════════════════════════════════════════════════════════════
+    init().then(() => {
+      if (State.session) loadSourcesDropdown();
+    });
+  </script>
+</body>
+</html>

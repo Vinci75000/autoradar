@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Support · Carnet</title>
-  <meta name="description" content="Une équipe humaine pour t'accompagner. Carnet répond.">
+  <title>Manuel de support · CARNET</title>
+  <meta name="description" content="Une équipe humaine pour t'accompagner. On répond.">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <style>
     :root {
@@ -75,6 +75,15 @@
       color: var(--encre);
       margin-bottom: 55px;
     }
+    .meta {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      color: var(--gris);
+      margin-bottom: 55px;
+      padding-bottom: 21px;
+      border-bottom: 1px solid rgba(26, 20, 16, 0.08);
+    }
     h2 {
       font-family: var(--mono);
       font-size: 12px;
@@ -129,6 +138,25 @@
       font-style: italic;
       color: var(--vert-anglais);
     }
+    .aside {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 14px;
+      color: var(--gris);
+      margin-top: -8px;
+      margin-bottom: 21px;
+      line-height: 1.6;
+    }
+    .aside a {
+      color: var(--gris);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(107, 93, 79, 0.32);
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .aside a:hover {
+      color: var(--orange-polo);
+      border-bottom-color: var(--orange-polo);
+    }
     .divider {
       height: 1px;
       background: rgba(26, 20, 16, 0.08);
@@ -165,14 +193,17 @@
 <body>
   <div class="container">
     <a href="/" class="wordmark">
-      <span><em>Carnet</em></span>
+      <span><em>CARNET</em></span>
       <span class="wordmark-dot"></span>
     </a>
 
-    <div class="tag">SUPPORT</div>
+    <div class="tag">MANUEL DE SUPPORT</div>
     <h1><em>On répond.</em></h1>
-    <p class="lead">Une équipe humaine, pas un bot. On lit chaque message et on répond dans la journée.</p>
+    <p class="lead">Une équipe humaine, pas un bot. On lit chaque message et on répond sous 7 jours, en général 48 heures.</p>
 
+    <div class="meta">DERNIÈRE MISE À JOUR : 12 MAI 2026 · VERSION 1.0</div>
+
+    <h2>1. Comment nous joindre</h2>
     <div class="contact-card">
       <div class="contact-row">
         <span class="contact-label">Email</span>
@@ -180,27 +211,46 @@
       </div>
       <div class="contact-row">
         <span class="contact-label">Délai de réponse</span>
-        <span class="contact-value">Sous 24 heures, du lundi au vendredi.</span>
+        <span class="contact-value">Sous 7 jours. En général 48 heures.</span>
+      </div>
+      <div class="contact-row">
+        <span class="contact-label">Le week-end</span>
+        <span class="contact-value"><em>Rien de sûr, entre les rallies et les track-days…</em></span>
       </div>
     </div>
 
-    <h2>Ce qu'on peut faire pour toi</h2>
-    <p>Une question sur ton garage. Une voiture que tu cherches qu'on n'a pas. Une suggestion. Une annonce qui devrait être là, ou qui ne devrait plus l'être. Un bug à signaler. Un retour sur ta première transaction on-chain.</p>
-    <p>On accueille tout, sans filtre, avec sérieux.</p>
+    <h2>2. Ce qu'on peut faire pour toi</h2>
+    <p>Une question sur ton Garage. Une voiture que tu cherches qu'on n'a pas. Un concessionnaire à ajouter que tu connais proche de chez toi. Une suggestion. Une annonce qui devrait être là, ou qui ne devrait plus l'être. Un bug à signaler. Un retour sur ta première transaction <em>on-chain</em>.</p>
+    <p>On accueille tout, sans filtre, avec sérieux, <em>la majorité du temps</em>.</p>
 
-    <h2>Pour les vendeurs</h2>
-    <p>Si tu vends une voiture qui a sa place sur Carnet, écris-nous avec le lien de l'annonce. Notre équipe vérifie, et si la voiture mérite, elle entre dans l'app dans les 48 heures.</p>
+    <h2>3. Pour proposer une voiture</h2>
+    <p>Si tu vends une voiture qui a sa place sur CARNET, écris-nous avec le lien de l'annonce. Un premier filtrage automatique passe la voiture dans notre référentiel (catégorie, état, score), puis notre équipe valide. Si la voiture mérite, elle entre dans l'app dans les 48 heures.</p>
+    <p>Si on ne la retient pas, on te dit pourquoi. <em>Pas de réponse fantôme.</em></p>
 
-    <h2>Pour les questions on-chain</h2>
-    <p>Wallet, NFT Vehicle Certificate, transactions XRP ou RLUSD, escrow : on accompagne. Aucune question n'est <em>"bête"</em>, le sujet est nouveau pour beaucoup. On prend le temps.</p>
+    <h2>4. Pour les questions on-chain</h2>
+    <p>Wallet, NFT Vehicle Certificate, transactions XRP ou RLUSD, comptes de dépôt programmables : on accompagne. Aucune question n'est <em>« bête »</em> — le sujet est nouveau pour beaucoup, et CARNET est conçu pour rendre tout ça accessible. On prend le temps.</p>
+    <p class="aside">Pour creuser la technologie sous-jacente : <a href="https://www.ripple.com" target="_blank" rel="noopener">ripple.com</a></p>
+    <p>Pour rappel : CARNET ne détient jamais tes fonds, ne stocke jamais ta seed phrase, et ne te demandera <strong>jamais</strong> de partager ta clé privée. Si quelqu'un te le demande en se faisant passer pour nous, c'est une arnaque. <em>Sois vigilant.</em></p>
+
+    <h2>5. Pour signaler un bug</h2>
+    <p>Décris-nous ce que tu as fait, ce que tu attendais, ce qui s'est passé. Une capture d'écran aide énormément. Écris à <a href="mailto:bugs@carnet.life">bugs@carnet.life</a>. On corrige vite. <em>Merci d'avance.</em></p>
+
+    <h2>6. Pour signaler un abus</h2>
+    <p>Annonce frauduleuse, comportement déplacé d'un autre utilisateur, contenu problématique : écris-nous à <a href="mailto:contact@carnet.life">contact@carnet.life</a> avec « abus » en objet. On traite en priorité. <em>On retire sous 24 heures ouvrées.</em></p>
+
+    <h2>7. Pour les questions juridiques</h2>
+    <p>Conditions d'utilisation, RGPD, propriété intellectuelle : voir notre <a href="/terms">Manuel d'utilisation</a> et notre <a href="/privacy">Manuel de confidentialité</a>. Si quelque chose n'est pas clair, écris-nous à <a href="mailto:privacy@carnet.life">privacy@carnet.life</a>. <em>CARNET est représentée par <a href="https://www.csbc-avocats.com" target="_blank" rel="noopener">www.csbc-avocats.com</a>, Maître S. Boufenara, Associé fondateur.</em></p>
+
+    <h2>8. Pour soutenir CARNET</h2>
+    <p>CARNET est porté par une association loi 1901 à but non lucratif. Si l'app te sert, soutiens-nous : <a href="/">depuis l'app</a>, en XRP ou RLUSD via Xaman. <em>Merci d'avance.</em> On compte sur toi.</p>
 
     <div class="divider"></div>
 
-    <p style="font-style: italic; color: var(--gris); font-size: 15px;">Carnet est un projet indépendant. Une équipe humaine qui aime les voitures et qui scrute le marché pour toi. Chaque message compte.</p>
+    <p style="font-style: italic; color: var(--gris); font-size: 15px;">CARNET est un projet indépendant. Une équipe humaine qui aime les voitures et qui scrute le marché pour toi. Pour toute question, écris-nous à <a href="mailto:contact@carnet.life">contact@carnet.life</a>. On répond.</p>
 
     <div class="footer">
       <div class="footer-line"></div>
-      <em>Carnet — A record of every record.</em>
+      <em>CARNET — THE record of every record.</em>
       <div class="footer-links">
         <a href="/">Accueil</a> · <a href="/terms">Conditions</a> · <a href="/privacy">Confidentialité</a>
       </div>
