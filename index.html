@@ -5577,8 +5577,8 @@ removeFav = function(carId) {
 /* ── Cars: load from DB if available ── */
 (async () => {
   if (!_sb) return;
-  const { data } = await _sb.from('cars_with_production').select('*')
-    .eq('status', 'active').order('production_confidence', { ascending: false, nullsFirst: false }).order('sc', { ascending: false }).limit(200);
+  const { data } = await _sb.from('cars').select('*')
+    .eq('status', 'active').order('sc', { ascending: false }).limit(200);
   if (data && data.length > 0) {
     C.length = 0;
     data.forEach(car => C.push({
