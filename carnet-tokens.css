@@ -1,0 +1,420 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   CARNET · Charte v8 canonical · Design tokens + composants base
+   ───────────────────────────────────────────────────────────────────────
+   Source unique de vérité pour la charte visuelle CARNET.
+   À importer en première position dans toute page :
+     <link rel="stylesheet" href="carnet-tokens.css" />
+
+   Palette : 5 couleurs strictes (Encre, Papier, Orange Polo, Vert anglais, Gris)
+   Typo    : Bodoni Moda (display) + Cormorant Garamond (editorial) + DM Mono (data)
+   Radius  : 2px partout (carré sobre, jamais rounded)
+   Spacing : Fibonacci 3/5/8/13/21/34/55/89 px
+   Version : v8.1 · 2026-05-14
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ─── Palette · 5 couleurs canoniques ─── */
+  --encre:         #1a1410;
+  --encre-soft:    #4a3d33;
+  --papier:        #faf6ef;
+  --papier-soft:   #f3ede1;
+  --papier-deep:   #ebe3d3;
+  --papier-bright: #fdf9f2;
+  --orange-polo:   #E85A1F;
+  --orange-soft:   rgba(232, 90, 31, 0.08);
+  --orange-line:   rgba(232, 90, 31, 0.25);
+  --vert-anglais:  #1F4D2F;
+  --vert-soft:     rgba(31, 77, 47, 0.08);
+  --gris:          #6b5d4f;
+  --gris-line:     rgba(26, 20, 16, 0.12);
+  --rouge:         #c2410c;
+  --rouge-soft:    rgba(194, 65, 12, 0.08);
+
+  /* ─── Typo · 3 familles ─── */
+  --display:    'Bodoni Moda', 'Cormorant Garamond', Georgia, serif;
+  --editorial:  'Cormorant Garamond', 'EB Garamond', Georgia, serif;
+  --mono:       'DM Mono', 'JetBrains Mono', ui-monospace, monospace;
+  --sans:       -apple-system, BlinkMacSystemFont, 'Inter', system-ui, sans-serif;
+
+  /* ─── Spacing Fibonacci ─── */
+  --s-1: 3px;  --s-2: 5px;  --s-3: 8px;  --s-4: 13px;
+  --s-5: 21px; --s-6: 34px; --s-7: 55px; --s-8: 89px;
+
+  /* ─── Radius foundational · 2px partout ─── */
+  --r: 2px;
+
+  /* ─── Layout ─── */
+  --max-w: 720px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   RESET minimal
+   ═══════════════════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--papier);
+  color: var(--encre);
+  font-family: var(--editorial);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection { background: var(--orange-soft); color: var(--encre); }
+
+img, svg { max-width: 100%; height: auto; }
+code, pre { font-family: var(--mono); font-size: 0.92em; }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   TYPOGRAPHY · utility classes
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Wordmark canonical : "CARNET" + point carré orange (jamais rond) */
+.wordmark {
+  font-family: var(--display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(56px, 11vw, 96px);
+  line-height: 1;
+  color: var(--encre);
+  letter-spacing: -0.02em;
+  margin: 0 0 var(--s-6) 0;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.dot-orange {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: var(--orange-polo);
+  border-radius: var(--r);  /* carré, jamais rond */
+  flex-shrink: 0;
+}
+
+/* Titres : Bodoni Moda italic */
+h1, h2, h3, .h1, .h2, .h3 {
+  font-family: var(--display);
+  font-style: italic;
+  font-weight: 500;
+  color: var(--encre);
+  letter-spacing: -0.01em;
+  margin: 0 0 var(--s-5) 0;
+}
+h1, .h1 { font-size: clamp(36px, 6vw, 56px); line-height: 1.1; }
+h2, .h2 { font-size: clamp(28px, 5vw, 40px); line-height: 1.15; }
+h3, .h3 { font-size: clamp(20px, 3vw, 26px); line-height: 1.2; margin-bottom: var(--s-3); }
+
+/* Body editorial */
+p {
+  font-family: var(--editorial);
+  font-weight: 400;
+  font-size: clamp(16px, 2vw, 19px);
+  line-height: 1.65;
+  color: var(--encre);
+  margin: 0 0 var(--s-5) 0;
+}
+p em { font-style: italic; color: var(--encre-soft); }
+p:last-child { margin-bottom: 0; }
+
+/* Blockquote patrimoniale */
+blockquote {
+  margin: var(--s-5) 0;
+  padding-left: var(--s-5);
+  border-left: 2px solid var(--orange-polo);
+  font-family: var(--editorial);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(17px, 2.2vw, 21px);
+  line-height: 1.6;
+  color: var(--encre);
+}
+
+/* Taglines hero */
+.tagline-major {
+  font-family: var(--editorial);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(26px, 4.5vw, 38px);
+  line-height: 1.2;
+  color: var(--encre);
+  margin: 0 0 var(--s-3) 0;
+}
+.tagline-minor {
+  font-family: var(--editorial);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(17px, 2.5vw, 22px);
+  line-height: 1.4;
+  color: var(--encre-soft);
+  margin: 0 0 var(--s-6) 0;
+}
+
+/* Eyebrow (chip metadata au-dessus des h2) */
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gris);
+  margin: 0 0 var(--s-4) 0;
+}
+
+/* Mono inline (pour data, hash, wallet) */
+.mono {
+  font-family: var(--mono);
+  font-size: 0.92em;
+  color: var(--encre-soft);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   LAYOUT containers
+   ═══════════════════════════════════════════════════════════════════════ */
+.container {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 var(--s-5);
+}
+.section-divider {
+  border: none;
+  border-top: 1px solid var(--gris-line);
+  margin: var(--s-7) 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   CTAs · primary + ghost
+   ═══════════════════════════════════════════════════════════════════════ */
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  margin-top: var(--s-5);
+}
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+  padding: var(--s-4) var(--s-5);
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: var(--r);
+  cursor: pointer;
+  border: 1px solid var(--encre);
+  transition: background 200ms ease, color 200ms ease, border-color 200ms ease;
+}
+.cta-primary {
+  background: var(--encre);
+  color: var(--papier);
+}
+.cta-primary:hover { background: var(--orange-polo); border-color: var(--orange-polo); }
+.cta-primary .dot {
+  display: inline-block;
+  width: 6px; height: 6px;
+  background: var(--orange-polo);
+  border-radius: var(--r);
+}
+.cta-primary:hover .dot { background: var(--papier); }
+.cta-ghost {
+  background: transparent;
+  color: var(--encre);
+  border-color: var(--gris-line);
+}
+.cta-ghost:hover { border-color: var(--encre); }
+.cta:focus-visible {
+  outline: 2px solid var(--orange-polo);
+  outline-offset: 3px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ACCESSIBILITY · skip link
+   ═══════════════════════════════════════════════════════════════════════ */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: var(--s-4);
+  background: var(--encre);
+  color: var(--papier);
+  padding: var(--s-3) var(--s-4);
+  font-family: var(--mono);
+  font-size: 12px;
+  border-radius: var(--r);
+  text-decoration: none;
+  z-index: 100;
+}
+.skip-link:focus { top: var(--s-4); }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ARCHETYPE CARDS (canonical, partageable mobile/desktop)
+   ═══════════════════════════════════════════════════════════════════════ */
+.archetype-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-4);
+}
+@media (min-width: 600px) {
+  .archetype-grid { grid-template-columns: 1fr 1fr; }
+}
+
+.archetype-card {
+  position: relative;
+  padding: var(--s-5);
+  background: var(--papier-bright);
+  border: 1px solid var(--gris-line);
+  border-radius: var(--r);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 200ms ease, background 200ms ease, transform 200ms ease;
+  -webkit-tap-highlight-color: transparent;
+  font: inherit;
+  color: inherit;
+  width: 100%;
+}
+.archetype-card:hover { border-color: var(--encre); }
+.archetype-card:focus-visible {
+  outline: 2px solid var(--orange-polo);
+  outline-offset: 3px;
+}
+.archetype-card.selected {
+  border-color: var(--orange-polo);
+  background: var(--orange-soft);
+}
+
+.archetype-chip {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gris);
+  margin-bottom: var(--s-3);
+}
+.archetype-card.selected .archetype-chip { color: var(--orange-polo); }
+
+.archetype-label {
+  font-family: var(--editorial);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 1.15;
+  color: var(--encre);
+  margin: 0 0 var(--s-3) 0;
+  letter-spacing: -0.005em;
+}
+.archetype-teaser {
+  font-family: var(--editorial);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--encre-soft);
+  margin: 0;
+}
+.archetype-tick {
+  position: absolute;
+  top: var(--s-4);
+  right: var(--s-4);
+  width: 18px;
+  height: 18px;
+  color: var(--orange-polo);
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+.archetype-card.selected .archetype-tick { opacity: 1; }
+
+/* Selection counter (compteur sous la grille) */
+.selection-counter {
+  margin-top: var(--s-5);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--gris);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-3) var(--s-4);
+}
+.selection-counter strong {
+  color: var(--orange-polo);
+  font-weight: 600;
+}
+.selection-counter .reset {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: var(--gris);
+  text-decoration: underline;
+  text-decoration-color: var(--gris-line);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.selection-counter .reset:hover { color: var(--encre); }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   FOOTER canonical
+   ═══════════════════════════════════════════════════════════════════════ */
+.carnet-footer {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: var(--s-7) var(--s-5) var(--s-8);
+  border-top: 1px solid var(--gris-line);
+}
+.footer-tagline {
+  font-family: var(--editorial);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 17px;
+  color: var(--encre);
+  margin: 0 0 var(--s-5) 0;
+}
+.footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3) var(--s-5);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin: 0 0 var(--s-5) 0;
+}
+.footer-nav a {
+  color: var(--gris);
+  text-decoration: none;
+  transition: color 200ms ease;
+}
+.footer-nav a:hover { color: var(--encre); }
+.footer-legal {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--gris);
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   RESPONSIVE tweaks · mobile
+   ═══════════════════════════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+  .container { padding: 0 var(--s-4); }
+  .archetype-card { padding: var(--s-4); }
+  blockquote { padding-left: var(--s-4); }
+}

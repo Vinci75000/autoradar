@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="Les 8 archétypes Carnet — Collectionneur, Flippeur, Track Rat, Bâtisseur, Enthousiaste, Pilote, Mondain, Mousquetaire. Trouve les tiens. Un humain peut en être plusieurs à la fois." />
+  <meta name="theme-color" content="#faf6ef" />
+
+  <title>CARNET · Les 8 archétypes</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,400;1,500;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="carnet-tokens.css" />
+
+  <style>
+    /* ───── Page-specific layout ───── */
+    main {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: var(--s-8) var(--s-5);
+    }
+    section { padding-block: var(--s-7); border-top: 1px solid var(--gris-line); }
+    section:first-of-type { border-top: none; padding-top: 0; }
+
+    /* ───── Hero brief ───── */
+    .hero { padding-top: var(--s-3); padding-bottom: var(--s-7); border-top: none; }
+
+    /* ───── Sélecteur 8 cards en haut ───── */
+    .selector { margin-top: var(--s-5); }
+
+    /* ───── Archétype profil détaillé ───── */
+    .archetype-detail {
+      padding: var(--s-6) 0;
+      border-top: 1px solid var(--gris-line);
+      scroll-margin-top: var(--s-5);
+    }
+    .archetype-detail:first-of-type { border-top: none; }
+    .archetype-detail .chip-row {
+      display: flex;
+      align-items: center;
+      gap: var(--s-3);
+      margin-bottom: var(--s-3);
+    }
+    .archetype-detail .chip {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--orange-polo);
+    }
+    .archetype-detail .verb {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: var(--gris);
+    }
+    .archetype-detail h2 {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: clamp(32px, 5.5vw, 46px);
+      line-height: 1.05;
+      margin: 0 0 var(--s-5) 0;
+    }
+    .archetype-detail .teaser {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(18px, 2.5vw, 22px);
+      line-height: 1.4;
+      color: var(--encre-soft);
+      margin: 0 0 var(--s-5) 0;
+    }
+    .archetype-detail .long {
+      font-family: var(--editorial);
+      font-weight: 400;
+      font-size: clamp(16px, 2vw, 19px);
+      line-height: 1.7;
+      color: var(--encre);
+      margin: 0;
+    }
+    .archetype-detail .long p {
+      margin: 0 0 var(--s-4) 0;
+    }
+    .archetype-detail .long p:last-child { margin-bottom: 0; }
+
+    /* Toggle button "Je m'y reconnais" intégré au détail */
+    .archetype-detail .actions {
+      margin-top: var(--s-5);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--s-3);
+      align-items: center;
+    }
+    .toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-3);
+      padding: var(--s-3) var(--s-4);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      background: transparent;
+      color: var(--encre);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      cursor: pointer;
+      transition: all 200ms ease;
+    }
+    .toggle-btn:hover { border-color: var(--encre); }
+    .toggle-btn.active {
+      background: var(--encre);
+      color: var(--papier);
+      border-color: var(--encre);
+    }
+    .toggle-btn .tick {
+      display: inline-block;
+      width: 12px; height: 12px;
+      border: 1px solid var(--gris);
+      border-radius: var(--r);
+      transition: background 200ms ease, border-color 200ms ease;
+    }
+    .toggle-btn.active .tick {
+      background: var(--orange-polo);
+      border-color: var(--orange-polo);
+    }
+    .toggle-btn:focus-visible {
+      outline: 2px solid var(--orange-polo);
+      outline-offset: 3px;
+    }
+
+    /* ───── Tables comparatives ───── */
+    .comparison-section { margin-top: var(--s-5); }
+    .comparison-section h3 {
+      margin-top: var(--s-5);
+      margin-bottom: var(--s-3);
+    }
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: var(--s-3);
+      font-family: var(--editorial);
+      font-size: 15px;
+    }
+    .comparison-table th,
+    .comparison-table td {
+      padding: var(--s-3) var(--s-3);
+      text-align: left;
+      border-bottom: 1px solid var(--gris-line);
+      vertical-align: top;
+    }
+    .comparison-table th {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gris);
+      border-bottom: 1px solid var(--encre);
+    }
+    .comparison-table td em {
+      font-style: italic;
+      color: var(--encre-soft);
+    }
+    .comparison-table tr:last-child td { border-bottom: none; }
+
+    /* ───── Back nav ───── */
+    .back-nav {
+      margin-bottom: var(--s-5);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .back-nav a {
+      color: var(--gris);
+      text-decoration: none;
+      transition: color 200ms ease;
+    }
+    .back-nav a:hover { color: var(--encre); }
+  </style>
+</head>
+
+<body>
+  <a href="#contenu" class="skip-link">Aller au contenu</a>
+
+  <main id="contenu">
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         HERO BRIEF
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="hero" aria-labelledby="hero-title">
+      <p class="back-nav"><a href="discover.html">← Retour à Discover</a></p>
+
+      <h1 class="wordmark" id="hero-title">
+        CARNET<span class="dot-orange" aria-hidden="true"></span>
+      </h1>
+      <p class="tagline-major"><em>Les 8 archétypes.</em></p>
+      <p class="tagline-minor"><em>Trouve les tiens. Un humain peut en être plusieurs.</em></p>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SÉLECTEUR 8 CARDS (multi-select)
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="selector" aria-labelledby="selector-title">
+      <p class="eyebrow">Sélection rapide</p>
+      <h2 id="selector-title"><em>Lesquels te ressemblent ?</em></h2>
+
+      <p>
+        Clique pour sélectionner ceux qui te parlent. Tu peux en choisir plusieurs — c'est même
+        recommandé. Ta sélection se sauvegarde automatiquement.
+      </p>
+
+      <div class="archetype-grid" id="selector-grid" role="group" aria-label="Sélection multiple des archétypes">
+        <!-- généré dynamiquement par JS -->
+      </div>
+
+      <p class="selection-counter" aria-live="polite">
+        <span id="counter-text">Aucun archétype sélectionné pour l'instant.</span>
+        <button class="reset" type="button" id="reset-btn" hidden>Tout désélectionner</button>
+      </p>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         8 ARCHÉTYPES DÉTAILLÉS (textes longs)
+         ═══════════════════════════════════════════════════════════════ -->
+    <section aria-labelledby="details-title">
+      <p class="eyebrow">En profondeur</p>
+      <h2 id="details-title"><em>Les huit, un par un.</em></h2>
+
+      <p>
+        Chacun est un angle d'approche du même objet — la voiture. Aucun n'est meilleur qu'un
+        autre. Aucun n'épuise une personne. La plupart d'entre nous tiennent deux ou trois
+        archétypes à la fois, selon le moment, l'humeur, l'âge, la voiture qu'on a sous la main.
+      </p>
+
+      <!-- Détails générés dynamiquement par JS depuis carnet-archetypes.js -->
+      <div id="details-container"></div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         DIFFÉRENCIATIONS PROPRES (tables comparatives)
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="comparison-section" aria-labelledby="comparison-title">
+      <p class="eyebrow">Différenciations propres</p>
+      <h2 id="comparison-title"><em>Ne pas confondre.</em></h2>
+
+      <p>
+        Trois paires d'archétypes se ressemblent en surface mais divergent en posture. Les
+        distinguer aide à se reconnaître plus précisément.
+      </p>
+
+      <h3>Le Pilote vs Le Mousquetaire</h3>
+      <p>Tous deux aiment la route ouverte. La différence est dans la compagnie et la cause.</p>
+      <table class="comparison-table" aria-label="Comparaison Pilote vs Mousquetaire">
+        <thead>
+          <tr>
+            <th>Critère</th>
+            <th>Le Pilote</th>
+            <th>Le Mousquetaire</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><em>Compagnie</em></td><td>Solitaire</td><td>En bande</td></tr>
+          <tr><td><em>Vitesse</em></td><td>Modérée patrimoniale</td><td>Pousse pour la cause</td></tr>
+          <tr><td><em>Vibe</em></td><td>Contemplative, sensorielle</td><td>Fougueuse, collective</td></tr>
+          <tr><td><em>Cadre</em></td><td>Aucun, juste la route</td><td>Rallye organisé, caritatif</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Le Track Rat vs Le Mousquetaire</h3>
+      <p>Tous deux poussent fort. La différence est dans le lieu et la posture.</p>
+      <table class="comparison-table" aria-label="Comparaison Track Rat vs Mousquetaire">
+        <thead>
+          <tr>
+            <th>Critère</th>
+            <th>Le Track Rat</th>
+            <th>Le Mousquetaire</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><em>Lieu</em></td><td>Circuit fermé</td><td>Route ouverte (rallye)</td></tr>
+          <tr><td><em>Posture</em></td><td>Compétition individuelle</td><td>Solidarité collective</td></tr>
+          <tr><td><em>Modifications</em></td><td>Perf assumée</td><td>Voiture patrimoniale entretenue</td></tr>
+          <tr><td><em>Cause</em></td><td>Performance personnelle</td><td>Œuvre caritative</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Le Collectionneur vs Le Mondain vs Le Bâtisseur</h3>
+      <p>Trois rapports à la voiture comme objet. Le geste foundational est différent dans chaque cas.</p>
+      <table class="comparison-table" aria-label="Comparaison Collectionneur vs Mondain vs Bâtisseur">
+        <thead>
+          <tr>
+            <th>Critère</th>
+            <th>Collectionneur</th>
+            <th>Mondain</th>
+            <th>Bâtisseur</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><em>Geste</em></td><td>Conserver</td><td>Exposer</td><td>Modifier</td></tr>
+          <tr><td><em>État voiture</em></td><td>D'origine</td><td>D'origine soigné</td><td>Modifié assumé</td></tr>
+          <tr><td><em>Public</em></td><td>Discret, intime</td><td>Social, mondain</td><td>Pairs, atelier</td></tr>
+          <tr><td><em>Valeur</em></td><td>Authenticité</td><td>Élégance</td><td>Singularité</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         CTA RETOUR
+         ═══════════════════════════════════════════════════════════════ -->
+    <section aria-labelledby="continue-title">
+      <p class="eyebrow">La suite</p>
+      <h2 id="continue-title"><em>Avec tes archétypes, l'archive te parle autrement.</em></h2>
+
+      <p>
+        Une fois tes archétypes choisis, CARNET filtre, trie et te suggère les voitures qui
+        croisent ton regard. Tu peux ajuster ta sélection à tout moment — la voiture qu'on aime
+        à trente ans n'est pas toujours celle qu'on aime à cinquante.
+      </p>
+
+      <div class="cta-row">
+        <a href="discover.html" class="cta cta-primary">
+          <span class="dot" aria-hidden="true"></span>
+          Retour à Discover
+        </a>
+        <a href="#archive" class="cta cta-ghost">Voir l'archive filtrée</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════════════════════════ -->
+  <footer class="carnet-footer">
+    <p class="footer-tagline"><em>Une histoire de voitures.</em></p>
+
+    <nav class="footer-nav" aria-label="Pages utilitaires">
+      <a href="discover.html">Discover</a>
+      <a href="#archive">Archive</a>
+      <a href="launch.html">14·12·2026</a>
+      <a href="#about">À propos</a>
+      <a href="#privacy">Confidentialité</a>
+      <a href="#statutes">Statuts</a>
+      <a href="#transparency">Transparence</a>
+    </nav>
+
+    <p class="footer-legal">
+      CARNET · Association loi 1901 française non-lucrative familiale<br />
+      Wallet officiel&nbsp;: <code>rJBhnYvg5kq9PgWFZziEXu2EcdJfcq8WSU</code>
+    </p>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SCRIPTS · data module + interactions page
+       ═══════════════════════════════════════════════════════════════ -->
+  <script src="carnet-archetypes.js"></script>
+  <script>
+    'use strict';
+
+    (function () {
+      var C = window.CarnetArchetypes;
+      if (!C) {
+        console.error('CarnetArchetypes module not loaded — vérifie carnet-archetypes.js');
+        return;
+      }
+
+      var TICK_SVG =
+        '<svg class="archetype-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+          'stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+          '<polyline points="20 6 9 17 4 12"></polyline>' +
+        '</svg>';
+
+      var selected = C.loadProfiles();
+
+      /* ─────────────────────────────────────────────────────────────────
+         Sélecteur en haut (8 cards compactes)
+         ───────────────────────────────────────────────────────────────── */
+      function buildCard(profile, isSelected) {
+        var card = document.createElement('button');
+        card.type = 'button';
+        card.className = 'archetype-card' + (isSelected ? ' selected' : '');
+        card.setAttribute('role', 'switch');
+        card.setAttribute('aria-checked', isSelected ? 'true' : 'false');
+        card.setAttribute('aria-label', profile.label + ' — ' + profile.teaser);
+        card.setAttribute('data-archetype-id', profile.id);
+
+        card.innerHTML =
+          '<div class="archetype-chip">' + profile.chip + '</div>' +
+          '<h3 class="archetype-label"><em>' + profile.label + '</em></h3>' +
+          '<p class="archetype-teaser"><em>' + profile.teaser + '</em></p>' +
+          TICK_SVG;
+
+        card.addEventListener('click', function () {
+          toggleArchetype(profile.id);
+        });
+
+        return card;
+      }
+
+      function renderSelector() {
+        var grid = document.getElementById('selector-grid');
+        if (!grid) return;
+        grid.innerHTML = '';
+        C.COLLECTOR_PROFILES.forEach(function (p) {
+          grid.appendChild(buildCard(p, selected.indexOf(p.id) !== -1));
+        });
+      }
+
+      /* ─────────────────────────────────────────────────────────────────
+         Détails 8 archétypes (textes longs, ancrés par id)
+         ───────────────────────────────────────────────────────────────── */
+      function renderDetails() {
+        var container = document.getElementById('details-container');
+        if (!container) return;
+
+        C.COLLECTOR_PROFILES.forEach(function (p) {
+          var article = document.createElement('article');
+          article.className = 'archetype-detail';
+          article.id = 'archetype-' + p.id;
+          article.setAttribute('data-archetype-id', p.id);
+
+          // Long text peut contenir des paragraphes séparés par \n\n
+          var paragraphs = p.long.split('\n\n').map(function (txt) {
+            return '<p>' + txt + '</p>';
+          }).join('');
+
+          article.innerHTML =
+            '<div class="chip-row">' +
+              '<span class="chip">' + p.chip + '</span>' +
+              '<span class="verb">' + p.verb + '</span>' +
+            '</div>' +
+            '<h2><em>' + p.label + '</em></h2>' +
+            '<p class="teaser"><em>' + p.teaser + '</em></p>' +
+            '<div class="long">' + paragraphs + '</div>' +
+            '<div class="actions">' +
+              '<button class="toggle-btn" type="button" data-archetype-id="' + p.id + '" ' +
+                'aria-pressed="' + (selected.indexOf(p.id) !== -1 ? 'true' : 'false') + '">' +
+                '<span class="tick" aria-hidden="true"></span>' +
+                '<span class="toggle-label">' +
+                  (selected.indexOf(p.id) !== -1 ? 'Sélectionné' : 'Je m\u2019y reconnais') +
+                '</span>' +
+              '</button>' +
+            '</div>';
+
+          container.appendChild(article);
+        });
+
+        // Activer les boutons "Je m'y reconnais"
+        container.querySelectorAll('.toggle-btn').forEach(function (btn) {
+          if (selected.indexOf(btn.dataset.archetypeId) !== -1) {
+            btn.classList.add('active');
+          }
+          btn.addEventListener('click', function () {
+            toggleArchetype(btn.dataset.archetypeId);
+          });
+        });
+      }
+
+      /* ─────────────────────────────────────────────────────────────────
+         Toggle (sync entre sélecteur + boutons détails + persistence)
+         ───────────────────────────────────────────────────────────────── */
+      function toggleArchetype(id) {
+        var idx = selected.indexOf(id);
+        if (idx === -1) {
+          selected.push(id);
+        } else {
+          selected.splice(idx, 1);
+        }
+        C.saveProfiles(selected);
+        syncUI();
+      }
+
+      function syncUI() {
+        // Sélecteur cards en haut
+        document.querySelectorAll('#selector-grid .archetype-card').forEach(function (card) {
+          var id = card.dataset.archetypeId;
+          var isSel = selected.indexOf(id) !== -1;
+          card.classList.toggle('selected', isSel);
+          card.setAttribute('aria-checked', isSel ? 'true' : 'false');
+        });
+
+        // Toggle buttons dans les détails
+        document.querySelectorAll('.toggle-btn').forEach(function (btn) {
+          var id = btn.dataset.archetypeId;
+          var isSel = selected.indexOf(id) !== -1;
+          btn.classList.toggle('active', isSel);
+          btn.setAttribute('aria-pressed', isSel ? 'true' : 'false');
+          var label = btn.querySelector('.toggle-label');
+          if (label) label.textContent = isSel ? 'Sélectionné' : 'Je m\u2019y reconnais';
+        });
+
+        updateCounter();
+      }
+
+      function updateCounter() {
+        var counterText = document.getElementById('counter-text');
+        var resetBtn = document.getElementById('reset-btn');
+        if (!counterText || !resetBtn) return;
+
+        var n = selected.length;
+        if (n === 0) {
+          counterText.textContent = 'Aucun archétype sélectionné pour l\u2019instant.';
+          resetBtn.hidden = true;
+        } else if (n === 1) {
+          counterText.innerHTML = 'Tu as sélectionné <strong>1</strong> archétype.';
+          resetBtn.hidden = false;
+        } else {
+          counterText.innerHTML = 'Tu as sélectionné <strong>' + n + '</strong> archétypes.';
+          resetBtn.hidden = false;
+        }
+      }
+
+      /* ─────────────────────────────────────────────────────────────────
+         Init
+         ───────────────────────────────────────────────────────────────── */
+      function init() {
+        renderSelector();
+        renderDetails();
+        updateCounter();
+
+        var resetBtn = document.getElementById('reset-btn');
+        if (resetBtn) {
+          resetBtn.addEventListener('click', function () {
+            selected = [];
+            C.saveProfiles(selected);
+            syncUI();
+          });
+        }
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
+  </script>
+</body>
+</html>
