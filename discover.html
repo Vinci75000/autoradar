@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="CARNET · Préserver, documenter, transmettre le patrimoine automobile européen. Association loi 1901 française non-lucrative familiale. Une histoire de voitures, pour les générations actuelles et celles à venir." />
+  <meta name="theme-color" content="#faf6ef" />
+
+  <title>CARNET · Discover</title>
+
+  <!-- Google Fonts (chargement asynchrone respectueux) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,400;1,500;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    /* ─────────────────────────────────────────────────────────────────
+       CARNET — Charte v8 canonical
+       Palette : 5 couleurs strictes
+       Typo    : Bodoni Moda (display) + Cormorant Garamond (editorial) + DM Mono (data)
+       Radius  : 2px partout
+       ───────────────────────────────────────────────────────────────── */
+    :root {
+      /* Palette */
+      --encre:        #1a1410;
+      --encre-soft:   #4a3d33;
+      --papier:       #faf6ef;
+      --papier-soft:  #f3ede1;
+      --papier-deep:  #ebe3d3;
+      --papier-bright:#fdf9f2;
+      --orange-polo:  #E85A1F;
+      --orange-soft:  rgba(232, 90, 31, 0.08);
+      --vert-anglais: #1F4D2F;
+      --vert-soft:    rgba(31, 77, 47, 0.08);
+      --gris:         #6b5d4f;
+      --gris-line:    rgba(26, 20, 16, 0.12);
+
+      /* Typo */
+      --display:    'Bodoni Moda', 'Cormorant Garamond', Georgia, serif;
+      --editorial:  'Cormorant Garamond', 'EB Garamond', Georgia, serif;
+      --mono:       'DM Mono', 'JetBrains Mono', ui-monospace, monospace;
+      --sans:       -apple-system, BlinkMacSystemFont, 'Inter', system-ui, sans-serif;
+
+      /* Spacing Fibonacci */
+      --s-1: 3px;  --s-2: 5px;  --s-3: 8px;  --s-4: 13px;
+      --s-5: 21px; --s-6: 34px; --s-7: 55px; --s-8: 89px;
+
+      /* Radius foundational */
+      --r: 2px;
+
+      /* Container */
+      --max-w: 720px;
+    }
+
+    /* ───────── Reset minimal */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        transition-duration: 0.001ms !important;
+      }
+    }
+
+    body {
+      margin: 0;
+      background: var(--papier);
+      color: var(--encre);
+      font-family: var(--editorial);
+      font-size: 17px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    ::selection { background: var(--orange-soft); color: var(--encre); }
+
+    /* ───────── Layout containers */
+    main {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: var(--s-8) var(--s-5);
+    }
+    section {
+      padding-block: var(--s-7);
+      border-top: 1px solid var(--gris-line);
+    }
+    section:first-of-type { border-top: none; padding-top: 0; }
+    section + section { margin-top: 0; }
+
+    /* ───────── Wordmark */
+    .wordmark {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: clamp(56px, 11vw, 96px);
+      line-height: 1;
+      color: var(--encre);
+      letter-spacing: -0.02em;
+      margin: 0 0 var(--s-6) 0;
+      display: inline-flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .dot-orange {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      background: var(--orange-polo);
+      border-radius: var(--r); /* carré, jamais rond */
+      flex-shrink: 0;
+    }
+
+    /* ───────── Typography utilities */
+    h1, h2, h3 {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 500;
+      color: var(--encre);
+      letter-spacing: -0.01em;
+      margin: 0 0 var(--s-5) 0;
+    }
+    h2 { font-size: clamp(28px, 5vw, 40px); line-height: 1.15; }
+    h3 { font-size: clamp(20px, 3vw, 26px); line-height: 1.2; margin-bottom: var(--s-3); }
+
+    p {
+      font-family: var(--editorial);
+      font-weight: 400;
+      font-size: clamp(16px, 2vw, 19px);
+      line-height: 1.65;
+      color: var(--encre);
+      margin: 0 0 var(--s-5) 0;
+    }
+    p em { font-style: italic; color: var(--encre-soft); }
+    p:last-child { margin-bottom: 0; }
+
+    blockquote {
+      margin: var(--s-5) 0;
+      padding-left: var(--s-5);
+      border-left: 2px solid var(--orange-polo);
+      font-family: var(--editorial);
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(17px, 2.2vw, 21px);
+      line-height: 1.6;
+      color: var(--encre);
+    }
+
+    .tagline-major {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(26px, 4.5vw, 38px);
+      line-height: 1.2;
+      color: var(--encre);
+      margin: 0 0 var(--s-3) 0;
+    }
+    .tagline-minor {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(17px, 2.5vw, 22px);
+      line-height: 1.4;
+      color: var(--encre-soft);
+      margin: 0 0 var(--s-6) 0;
+    }
+
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gris);
+      margin: 0 0 var(--s-4) 0;
+    }
+
+    /* ───────── Hero */
+    .hero {
+      padding-top: var(--s-3);
+      padding-bottom: var(--s-7);
+      border-top: none;
+    }
+
+    /* ───────── Archetype cards */
+    .archetype-section .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--s-4);
+      margin-top: var(--s-5);
+    }
+    @media (min-width: 600px) {
+      .archetype-section .grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .archetype-card {
+      position: relative;
+      padding: var(--s-5);
+      background: var(--papier-bright);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      cursor: pointer;
+      text-align: left;
+      transition: border-color 200ms ease, background 200ms ease, transform 200ms ease;
+      -webkit-tap-highlight-color: transparent;
+      font: inherit;
+      color: inherit;
+      width: 100%;
+    }
+    .archetype-card:hover {
+      border-color: var(--encre);
+      background: var(--papier-bright);
+    }
+    .archetype-card:focus-visible {
+      outline: 2px solid var(--orange-polo);
+      outline-offset: 3px;
+    }
+    .archetype-card.selected {
+      border-color: var(--orange-polo);
+      background: var(--orange-soft);
+    }
+    .archetype-chip {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gris);
+      margin-bottom: var(--s-3);
+    }
+    .archetype-card.selected .archetype-chip { color: var(--orange-polo); }
+
+    .archetype-label {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 24px;
+      line-height: 1.15;
+      color: var(--encre);
+      margin: 0 0 var(--s-3) 0;
+      letter-spacing: -0.005em;
+    }
+    .archetype-teaser {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-weight: 300;
+      font-size: 15px;
+      line-height: 1.5;
+      color: var(--encre-soft);
+      margin: 0;
+    }
+    .archetype-tick {
+      position: absolute;
+      top: var(--s-4);
+      right: var(--s-4);
+      width: 18px;
+      height: 18px;
+      color: var(--orange-polo);
+      opacity: 0;
+      transition: opacity 200ms ease;
+    }
+    .archetype-card.selected .archetype-tick { opacity: 1; }
+
+    /* ───────── Selection counter */
+    .selection-counter {
+      margin-top: var(--s-5);
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      color: var(--gris);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--s-3) var(--s-4);
+    }
+    .selection-counter strong {
+      color: var(--orange-polo);
+      font-weight: 600;
+    }
+    .selection-counter .reset {
+      background: none;
+      border: none;
+      padding: 0;
+      font: inherit;
+      color: var(--gris);
+      text-decoration: underline;
+      text-decoration-color: var(--gris-line);
+      text-underline-offset: 3px;
+      cursor: pointer;
+    }
+    .selection-counter .reset:hover { color: var(--encre); }
+
+    /* ───────── CTAs */
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--s-3);
+      margin-top: var(--s-5);
+    }
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-3);
+      padding: var(--s-4) var(--s-5);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: var(--r);
+      cursor: pointer;
+      transition: background 200ms ease, color 200ms ease, border-color 200ms ease;
+      border: 1px solid var(--encre);
+    }
+    .cta-primary {
+      background: var(--encre);
+      color: var(--papier);
+    }
+    .cta-primary:hover { background: var(--orange-polo); border-color: var(--orange-polo); }
+    .cta-primary .dot {
+      display: inline-block;
+      width: 6px; height: 6px;
+      background: var(--orange-polo);
+      border-radius: var(--r);
+    }
+    .cta-primary:hover .dot { background: var(--papier); }
+    .cta-ghost {
+      background: transparent;
+      color: var(--encre);
+      border-color: var(--gris-line);
+    }
+    .cta-ghost:hover { border-color: var(--encre); }
+    .cta:focus-visible {
+      outline: 2px solid var(--orange-polo);
+      outline-offset: 3px;
+    }
+
+    /* ───────── Mission / "why now" 4 raisons */
+    .reasons {
+      display: grid;
+      gap: var(--s-5);
+      margin-top: var(--s-5);
+    }
+    .reason {
+      padding-left: var(--s-5);
+      border-left: 1px solid var(--gris-line);
+    }
+    .reason h3 {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 1.2;
+      margin: 0 0 var(--s-3) 0;
+    }
+    .reason p { margin: 0; font-size: 16px; }
+
+    /* ───────── Launch box */
+    .launch-box {
+      margin-top: var(--s-5);
+      padding: var(--s-6) var(--s-5);
+      background: var(--papier-soft);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      border-left: 3px solid var(--vert-anglais);
+    }
+    .launch-date {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      color: var(--vert-anglais);
+      margin: 0 0 var(--s-3) 0;
+    }
+    .launch-place {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 22px;
+      color: var(--encre);
+      margin: 0 0 var(--s-4) 0;
+    }
+
+    /* ───────── Footer */
+    footer {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: var(--s-7) var(--s-5) var(--s-8);
+      border-top: 1px solid var(--gris-line);
+    }
+    .footer-tagline {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-weight: 300;
+      font-size: 17px;
+      color: var(--encre);
+      margin: 0 0 var(--s-5) 0;
+    }
+    .footer-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--s-3) var(--s-5);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin: 0 0 var(--s-5) 0;
+    }
+    .footer-nav a {
+      color: var(--gris);
+      text-decoration: none;
+      transition: color 200ms ease;
+    }
+    .footer-nav a:hover { color: var(--encre); }
+    .footer-legal {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      color: var(--gris);
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    /* ───────── Skip link (accessibility) */
+    .skip-link {
+      position: absolute;
+      top: -100px;
+      left: var(--s-4);
+      background: var(--encre);
+      color: var(--papier);
+      padding: var(--s-3) var(--s-4);
+      font-family: var(--mono);
+      font-size: 12px;
+      border-radius: var(--r);
+      text-decoration: none;
+      z-index: 100;
+    }
+    .skip-link:focus { top: var(--s-4); }
+
+    /* ───────── Small screens tweaks */
+    @media (max-width: 480px) {
+      main { padding: var(--s-7) var(--s-4); }
+      section { padding-block: var(--s-6); }
+      .archetype-card { padding: var(--s-4); }
+      blockquote { padding-left: var(--s-4); }
+    }
+  </style>
+</head>
+
+<body>
+  <a href="#contenu" class="skip-link">Aller au contenu</a>
+
+  <main id="contenu">
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SECTION 1 — HERO
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="hero" aria-labelledby="hero-title">
+      <h1 class="wordmark" id="hero-title">
+        CARNET<span class="dot-orange" aria-hidden="true"></span>
+      </h1>
+      <p class="tagline-major"><em>Une histoire de voitures.</em></p>
+      <p class="tagline-minor"><em>Pour les générations actuelles et celles à venir.</em></p>
+
+      <div class="cta-row">
+        <a href="#archetypes" class="cta cta-primary">
+          <span class="dot" aria-hidden="true"></span>
+          Trouver tes archétypes
+        </a>
+        <a href="#mission" class="cta cta-ghost">En savoir plus</a>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SECTION 2 — MISSION
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="mission" aria-labelledby="mission-title">
+      <p class="eyebrow">Qu'est-ce que CARNET</p>
+      <h2 id="mission-title"><em>Préserver, documenter, transmettre.</em></h2>
+
+      <p>
+        CARNET est une association loi 1901 française. Non-lucrative. Familiale.
+        Trois fondateurs, aucun salaire, une mission.
+      </p>
+      <p>
+        Préserver, documenter, transmettre le patrimoine automobile européen — ses voitures,
+        ses lignées, ses palmarès, les Mémoires de celles et ceux qui les conduisent.
+      </p>
+      <blockquote>
+        Une voiture passe, mais son histoire reste. À condition qu'on prenne soin de l'écrire.
+      </blockquote>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SECTION 3 — COMMENT ÇA MARCHE
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="how" aria-labelledby="how-title">
+      <p class="eyebrow">Comment ça marche</p>
+      <h2 id="how-title"><em>Le carnet d'entretien, au registre européen.</em></h2>
+
+      <p>
+        Le carnet d'entretien existe depuis qu'existent les voitures. Tampons des concessionnaires,
+        factures de garagistes, photographies jaunies dans des chemises en carton. Un dossier
+        fragile, souvent dispersé, parfois perdu à la première succession.
+      </p>
+      <p>
+        CARNET reprend ce geste — l'archive patiente du propriétaire attentif — et le porte au
+        registre européen. Chaque voiture y trouve son Vehicle Certificate&nbsp;: signature
+        cryptographique triple, hash inscrit sur XRPL pour toujours, métadonnées préservées sur
+        IPFS perpétuel. Lignée propriétaires tracée transaction par transaction. Palmarès
+        vérifiés. Restaurations documentées, factures à l'appui. Mémoires écrites par celui ou
+        celle qui la conduit, dans la langue qu'elle ou il préfère.
+      </p>
+      <blockquote>
+        Ce qui était fragile devient transmissible.
+      </blockquote>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SECTION 4 — POUR QUI
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="for-whom" aria-labelledby="for-whom-title">
+      <p class="eyebrow">Pour qui</p>
+      <h2 id="for-whom-title"><em>Pour celles et ceux qui écrivent l'histoire.</em></h2>
+
+      <p>
+        CARNET s'adresse aux passionnés sérieux qui veulent écrire l'histoire — pas seulement
+        la consommer.
+      </p>
+      <p>
+        Celles et ceux qui considèrent que leur voiture n'est pas un objet de spéculation, mais
+        un fragment de patrimoine européen qu'on tient le temps d'une vie avant de le passer.
+        Celles et ceux qui prennent le temps de vérifier une provenance, qui photographient
+        leur restauration étape par étape, qui rangent leurs factures, qui racontent à leurs
+        enfants comment ils l'ont trouvée.
+      </p>
+      <blockquote>
+        CARNET n'est pas pour tout le monde. Et c'est tant mieux.
+      </blockquote>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SECTION 5 — LES 8 ARCHÉTYPES
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="archetypes" class="archetype-section" aria-labelledby="archetypes-title">
+      <p class="eyebrow">Les 8 archétypes Carnet</p>
+      <h2 id="archetypes-title"><em>Trouve les tiens.</em></h2>
+
+      <p>
+        Un humain peut être plusieurs archétypes à la fois. La plupart le sont. Sélectionne
+        ceux qui te ressemblent — tu pourras les ajuster plus tard.
+      </p>
+
+      <div class="grid" role="group" aria-label="Sélection multiple des archétypes">
+        <!-- Cards générées dynamiquement par JS pour cohérence avec le data source -->
+      </div>
+
+      <p class="selection-counter" aria-live="polite">
+        <span id="counter-text">Aucun archétype sélectionné pour l'instant.</span>
+        <button class="reset" type="button" id="reset-btn" hidden>Tout désélectionner</button>
+      </p>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SECTION 6 — POURQUOI MAINTENANT
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="why-now" aria-labelledby="why-now-title">
+      <p class="eyebrow">Pourquoi maintenant</p>
+      <h2 id="why-now-title"><em>Quatre raisons, dans cet ordre.</em></h2>
+
+      <div class="reasons">
+        <article class="reason">
+          <h3>Premièrement, c'est l'heure.</h3>
+          <p>
+            Le patrimoine automobile européen vaut deux milliards d'euros de transactions par
+            an. Ses provenances restent contestées, ses palmarès non-vérifiés, ses lignées
+            perdues à chaque génération. On n'a plus le luxe d'attendre.
+          </p>
+        </article>
+
+        <article class="reason">
+          <h3>Deuxièmement, la révolution est en route.</h3>
+          <p>
+            XRPL fonctionne sans interruption depuis quatorze ans, certifié carbon-zero depuis
+            2020. L'EUDI Wallet européen entre en vigueur. Le RGPD a six ans. Pour la première
+            fois, les briques sont là — blockchain durable, identité souveraine, droits
+            utilisateurs structurels — pour bâtir une archive patrimoniale digne de ce nom.
+          </p>
+        </article>
+
+        <article class="reason">
+          <h3>Troisièmement, le patrimoine le mérite.</h3>
+          <p>
+            Une 911 de 1973 a traversé Mai 68, le premier choc pétrolier, la chute du mur,
+            l'euro, le numérique. Elle a vu cinq générations passer. Elle mérite mieux qu'une
+            fiche eBay et trois clichés flous sur un forum disparu. Elle mérite un carnet.
+          </p>
+        </article>
+
+        <article class="reason">
+          <h3>Quatrièmement, j'en avais besoin.</h3>
+          <p>
+            Founder story juste en-dessous. <a href="#founder" style="color: var(--orange-polo); text-decoration: underline; text-decoration-color: var(--gris-line); text-underline-offset: 3px;">Lire la suite →</a>
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SECTION 7 — FOUNDER STORY
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="founder" aria-labelledby="founder-title">
+      <p class="eyebrow">Founder story · Sly · #001</p>
+      <h2 id="founder-title"><em>Par procuration, puis pour de bon.</em></h2>
+
+      <p>
+        J'ai grandi avec les voitures sans en avoir autour de moi. Les posters au mur de la
+        chambre, les magazines lus jusqu'à la corde, les émissions du dimanche, les bandes-son
+        de films revues pour les changements de rapport. Mon enfance s'est faite par procuration
+        — celle des passionnés sans famille d'automobiles.
+      </p>
+
+      <p>
+        La première supercar que j'ai vue rouler, vraiment rouler, c'était à Monaco. J'avais
+        peut-être douze ans, mes grands-parents m'avaient emmené là-bas en vacances. Un
+        grondement quelque part en bas du virage, puis l'apparition. Je ne sais plus quel
+        modèle. Je sais que je l'ai regardée passer comme on regarde un événement. Les voitures
+        sont entrées dans ma vie ce jour-là, par les yeux et par les oreilles, et ne sont
+        jamais reparties.
+      </p>
+
+      <p>
+        Je suis resté observateur longtemps. À distance, par admiration. Puis à trente-six ans,
+        en rentrant en France après une petite dizaine d'années à San Francisco, j'ai acheté
+        ma première voiture pour de bon — une Mercedes-Benz E250 CGI signée Carlsson, 2011,
+        cinquante-cinq mille kilomètres. Un petit bijou. Je l'ai toujours, à parts égales avec
+        mon père. Elle est dans mon Garage, sur l'app — premier Vehicle Certificate enregistré,
+        première co-propriété multisig, première transmission patrimoniale inscrite. Cet objet
+        de fils devient l'objet de père et fils. C'est par elle que CARNET commence.
+      </p>
+
+      <p>
+        J'ai cherché un outil pour m'accompagner — un endroit où documenter, transmettre,
+        raconter. Les marketplaces vendent. Les forums dispersent. Les bases de données
+        enferment. Aucune ne préservait. Aucune ne respectait la voiture comme on respecte
+        un manuscrit.
+      </p>
+
+      <p>
+        Frustré, je m'y suis mis. Avec deux autres fondateurs. Sans salaire, sans tour de
+        table, sans pitch deck. Une association loi 1901, un wallet multisig 3/3, des dossiers
+        IPFS, une infrastructure XRPL et une mission civique.
+      </p>
+
+      <blockquote>
+        CARNET n'est pas un produit que j'aurais voulu vendre. C'est l'outil que j'aurais
+        voulu trouver — et que je construis pour toi, pour mes enfants, pour les passionnés
+        européens de 2126.
+      </blockquote>
+
+      <p>
+        Le 14 décembre 2026, mon père et moi viendrons avec elle à la Cité de l'Automobile de
+        Mulhouse. Elle sera le premier Vehicle Certificate du registre européen. Nous
+        signerons à deux wallets, et c'est ainsi que CARNET ouvrira ses portes — par une
+        transmission, pas par un lancement.
+      </p>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SECTION 8 — REJOINDRE CARNET
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="join" aria-labelledby="join-title">
+      <p class="eyebrow">Rejoindre CARNET</p>
+      <h2 id="join-title"><em>L'inscription est gratuite.</em></h2>
+
+      <p>
+        Aujourd'hui. Demain. Toujours. Pas de période d'essai, pas de plan premium, pas de
+        teasing. Tout est ouvert. Visualise l'archive. Lis les Mémoires. Trouve tes archétypes.
+        Si une voiture t'attend dans ton garage, enregistre son Vehicle Certificate quand tu
+        le sentiras.
+      </p>
+
+      <div class="cta-row">
+        <a href="#signup" class="cta cta-primary">
+          <span class="dot" aria-hidden="true"></span>
+          Inscription
+        </a>
+        <a href="#archive" class="cta cta-ghost">Voir l'archive</a>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SECTION 9 — ÉVÈNEMENT INAUGURAL
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="launch" aria-labelledby="launch-title">
+      <p class="eyebrow">Évènement inaugural</p>
+      <h2 id="launch-title"><em>Le 14 décembre 2026.</em></h2>
+
+      <div class="launch-box">
+        <p class="launch-date">14 · 12 · 2026</p>
+        <p class="launch-place"><em>Mulhouse — Cité de l'Automobile</em></p>
+
+        <p>
+          Big bang launch CARNET. Cent fondateurs reconnus, premier Vehicle Certificate Genesis
+          enregistré, première transmission patrimoniale inscrite sur ledger.
+        </p>
+        <p>
+          <em>Pas une conférence tech. Une cérémonie patrimoniale.</em>
+        </p>
+
+        <div class="cta-row">
+          <a href="#launch-details" class="cta cta-ghost">Programme détaillé</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════════════════════════ -->
+  <footer>
+    <p class="footer-tagline"><em>Une histoire de voitures.</em></p>
+
+    <nav class="footer-nav" aria-label="Pages utilitaires">
+      <a href="#about">À propos</a>
+      <a href="#privacy">Confidentialité</a>
+      <a href="#security">Sécurité</a>
+      <a href="#accessibility">Accessibilité</a>
+      <a href="#statutes">Statuts</a>
+      <a href="#transparency">Transparence</a>
+      <a href="#dpo">DPO</a>
+      <a href="#audit">Audit</a>
+      <a href="#code-of-conduct">Code de conduite</a>
+    </nav>
+
+    <p class="footer-legal">
+      CARNET · Association loi 1901 française non-lucrative familiale<br />
+      [Adresse siège] · [Numéro RNA]<br />
+      Hash IPFS statuts&nbsp;: [à générer au big bang launch 14 décembre 2026]<br />
+      Wallet officiel&nbsp;: <code>rJBhnYvg5kq9PgWFZziEXu2EcdJfcq8WSU</code>
+    </p>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       JAVASCRIPT — 8 archétypes data + persistence + interactions
+       ═══════════════════════════════════════════════════════════════ -->
+  <script>
+    'use strict';
+
+    /* ───────────────────────────────────────────────────────────────
+       Source canonique des 8 archétypes CARNET v6
+       À importer dans tout fichier de l'app (mobile, desktop, etc.)
+       ─────────────────────────────────────────────────────────────── */
+    const COLLECTOR_PROFILES = [
+      {
+        id: 'collector',
+        label: 'Le Collectionneur',
+        chip: 'COLLECTION',
+        teaser: 'Acquérir pour conserver. Provenance et rareté.'
+      },
+      {
+        id: 'flipper',
+        label: 'Le Flippeur',
+        chip: 'FLIP',
+        teaser: 'Acheter au bon prix, revendre au meilleur moment.'
+      },
+      {
+        id: 'track_rat',
+        label: 'Le Track Rat',
+        chip: 'CIRCUIT',
+        teaser: 'Le circuit, ton terrain. Pousser jusqu\u2019aux limites.'
+      },
+      {
+        id: 'builder',
+        label: 'Le B\u00e2tisseur',
+        chip: 'OUTLAW',
+        teaser: 'Fa\u00e7onner la voiture \u00e0 sa vision. Restomods, outlaws.'
+      },
+      {
+        id: 'enthusiast',
+        label: 'L\u2019Enthousiaste',
+        chip: 'D\u00c9TAIL',
+        teaser: 'Num\u00e9ros de ch\u00e2ssis, options d\u2019usine, s\u00e9ries sp\u00e9ciales.'
+      },
+      {
+        id: 'driver',
+        label: 'Le Pilote',
+        chip: 'ROUTE',
+        teaser: 'Conduire. Vraiment. Les kilom\u00e8tres sont une m\u00e9daille.'
+      },
+      {
+        id: 'mondain',
+        label: 'Le Mondain',
+        chip: 'DISPLAY',
+        teaser: 'Villa d\u2019Este, Chantilly. Exposer ce qui se contemple.'
+      },
+      {
+        id: 'mousquetaire',
+        label: 'Le Mousquetaire',
+        chip: 'RALLYE',
+        teaser: 'Un pour tous, tous pour un. Pousser pour servir.'
+      }
+    ];
+
+    /* ───────────────────────────────────────────────────────────────
+       Persistence
+       ─────────────────────────────────────────────────────────────── */
+    const STORAGE_KEYS = {
+      PROFILES: 'carnet:v1:profiles',
+      ONBOARDING_SEEN: 'carnet:v1:onboarding-seen'
+    };
+
+    /**
+     * Migration legacy IDs vers schéma v1.
+     * - non_driver : ancien Gardien (statique) → Mondain (DISPLAY merged)
+     * - social     : ancien Mondain RALLYE social → Mondain DISPLAY
+     *                NOTE : à valider cas par cas si users prod ; certains
+     *                voulaient peut-être Mousquetaire (route en bande caritative).
+     */
+    function migrateLegacyProfileIds(profiles) {
+      if (!Array.isArray(profiles)) return [];
+      const map = {
+        non_driver: 'mondain',
+        social: 'mondain'
+      };
+      return profiles.map(function (id) {
+        return map[id] || id;
+      });
+    }
+
+    function loadProfiles() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEYS.PROFILES);
+        if (!raw) return [];
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed)) return [];
+        // Migration + dedupe + filter valid IDs only
+        const validIds = new Set(COLLECTOR_PROFILES.map(function (p) { return p.id; }));
+        const migrated = migrateLegacyProfileIds(parsed);
+        return Array.from(new Set(migrated.filter(function (id) {
+          return validIds.has(id);
+        })));
+      } catch (e) {
+        // Storage indisponible (mode privé Safari, quota plein, etc.)
+        // Pas de logs alarmistes, dégradation gracieuse.
+        return [];
+      }
+    }
+
+    function saveProfiles(profiles) {
+      try {
+        localStorage.setItem(STORAGE_KEYS.PROFILES, JSON.stringify(profiles));
+      } catch (e) {
+        // Dégradation gracieuse.
+      }
+    }
+
+    /* ───────────────────────────────────────────────────────────────
+       Rendu + interactions
+       ─────────────────────────────────────────────────────────────── */
+    const TICK_SVG =
+      '<svg class="archetype-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+        '<polyline points="20 6 9 17 4 12"></polyline>' +
+      '</svg>';
+
+    function buildCard(profile, isSelected) {
+      const card = document.createElement('button');
+      card.type = 'button';
+      card.className = 'archetype-card' + (isSelected ? ' selected' : '');
+      card.setAttribute('role', 'switch');
+      card.setAttribute('aria-checked', isSelected ? 'true' : 'false');
+      card.setAttribute('aria-label', profile.label + ' — ' + profile.teaser);
+      card.dataset.archetypeId = profile.id;
+
+      card.innerHTML =
+        '<div class="archetype-chip">' + profile.chip + '</div>' +
+        '<h3 class="archetype-label"><em>' + profile.label + '</em></h3>' +
+        '<p class="archetype-teaser"><em>' + profile.teaser + '</em></p>' +
+        TICK_SVG;
+
+      return card;
+    }
+
+    function updateCounter(selected) {
+      const counterText = document.getElementById('counter-text');
+      const resetBtn = document.getElementById('reset-btn');
+      if (!counterText || !resetBtn) return;
+
+      const n = selected.length;
+      if (n === 0) {
+        counterText.textContent = 'Aucun archétype sélectionné pour l\u2019instant.';
+        resetBtn.hidden = true;
+      } else if (n === 1) {
+        counterText.innerHTML = 'Tu as sélectionné <strong>1</strong> archétype.';
+        resetBtn.hidden = false;
+      } else {
+        counterText.innerHTML = 'Tu as sélectionné <strong>' + n + '</strong> archétypes.';
+        resetBtn.hidden = false;
+      }
+    }
+
+    function init() {
+      const grid = document.querySelector('.archetype-section .grid');
+      if (!grid) return;
+
+      let selected = loadProfiles();
+
+      // Build all 8 cards
+      COLLECTOR_PROFILES.forEach(function (profile) {
+        const isSelected = selected.indexOf(profile.id) !== -1;
+        const card = buildCard(profile, isSelected);
+
+        card.addEventListener('click', function () {
+          const id = profile.id;
+          const idx = selected.indexOf(id);
+          if (idx === -1) {
+            selected.push(id);
+            card.classList.add('selected');
+            card.setAttribute('aria-checked', 'true');
+          } else {
+            selected.splice(idx, 1);
+            card.classList.remove('selected');
+            card.setAttribute('aria-checked', 'false');
+          }
+          saveProfiles(selected);
+          updateCounter(selected);
+        });
+
+        grid.appendChild(card);
+      });
+
+      // Reset button
+      const resetBtn = document.getElementById('reset-btn');
+      if (resetBtn) {
+        resetBtn.addEventListener('click', function () {
+          selected = [];
+          saveProfiles(selected);
+          document.querySelectorAll('.archetype-card.selected').forEach(function (el) {
+            el.classList.remove('selected');
+            el.setAttribute('aria-checked', 'false');
+          });
+          updateCounter(selected);
+        });
+      }
+
+      updateCounter(selected);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  </script>
+</body>
+</html>
