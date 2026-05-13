@@ -8356,6 +8356,8 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 </style>
   <!-- v6.0 : Supabase JS SDK pour connexion live à carnet.life DB -->
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <!-- Carnet archetypes module (8 archétypes canonical + persistence localStorage carnet:v1:profiles) -->
+  <script src="carnet-archetypes.js"></script>
 </head>
 <body>
 <div class="app">
@@ -11157,6 +11159,10 @@ function renderUserMenuSheet() {
         </div>
 
         <div class="user-menu-actions">
+          <a class="user-menu-item" href="archetypes.html" style="text-decoration:none;">
+            <span>Mes archétypes</span>
+            <span class="user-menu-chevron">→</span>
+          </a>
           <button class="user-menu-item" data-action="signOut">
             <span>Se déconnecter</span>
             <span class="user-menu-chevron">→</span>
