@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="CARNET ouvre ses portes le 14 décembre 2026 à la Cité de l'Automobile de Mulhouse. Cent fondateurs reconnus, premier Vehicle Certificate Genesis, première transmission patrimoniale inscrite sur ledger." />
+  <meta name="theme-color" content="#faf6ef" />
+
+  <title>CARNET · 14 décembre 2026 · Mulhouse</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,400;1,500;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="carnet-tokens.css" />
+
+  <style>
+    /* ───── Page layout ───── */
+    main {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: var(--s-8) var(--s-5);
+    }
+    section { padding-block: var(--s-7); border-top: 1px solid var(--gris-line); }
+    section:first-of-type { border-top: none; padding-top: 0; }
+
+    /* ───── Hero ───── */
+    .hero { padding-top: var(--s-3); padding-bottom: var(--s-7); border-top: none; }
+    .back-nav {
+      margin-bottom: var(--s-5);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .back-nav a { color: var(--gris); text-decoration: none; }
+    .back-nav a:hover { color: var(--encre); }
+
+    /* ───── Date hero massif ───── */
+    .date-hero {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: clamp(48px, 11vw, 96px);
+      line-height: 1;
+      color: var(--vert-anglais);
+      letter-spacing: -0.02em;
+      margin: 0 0 var(--s-4) 0;
+    }
+    .place-hero {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(22px, 3.5vw, 30px);
+      line-height: 1.3;
+      color: var(--encre);
+      margin: 0 0 var(--s-5) 0;
+    }
+    .place-hero strong {
+      font-weight: 500;
+      font-style: normal;
+      font-family: var(--display);
+      color: var(--encre);
+    }
+
+    /* ───── Programme horaire ───── */
+    .schedule {
+      margin-top: var(--s-5);
+      display: grid;
+      gap: var(--s-4);
+    }
+    .schedule-block {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: var(--s-5);
+      padding: var(--s-4) 0;
+      border-top: 1px solid var(--gris-line);
+    }
+    .schedule-block:first-child { border-top: 2px solid var(--encre); }
+    @media (max-width: 600px) {
+      .schedule-block { grid-template-columns: 1fr; gap: var(--s-2); }
+    }
+    .schedule-time {
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: var(--orange-polo);
+      padding-top: 2px;
+    }
+    .schedule-content h3 {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 22px;
+      line-height: 1.2;
+      margin: 0 0 var(--s-3) 0;
+      color: var(--encre);
+    }
+    .schedule-content p {
+      font-family: var(--editorial);
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--encre);
+      margin: 0 0 var(--s-3) 0;
+    }
+    .schedule-content p:last-child { margin-bottom: 0; }
+    .schedule-content em { font-style: italic; color: var(--encre-soft); }
+
+    .schedule-content ul {
+      margin: var(--s-3) 0;
+      padding-left: var(--s-5);
+      font-family: var(--editorial);
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--encre);
+    }
+    .schedule-content ul li { margin-bottom: var(--s-2); }
+
+    /* ───── Genesis Vehicle highlight box ───── */
+    .genesis-box {
+      margin-top: var(--s-5);
+      padding: var(--s-6) var(--s-5);
+      background: var(--papier-soft);
+      border: 1px solid var(--gris-line);
+      border-left: 3px solid var(--orange-polo);
+      border-radius: var(--r);
+    }
+    .genesis-box .vc-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--orange-polo);
+      margin: 0 0 var(--s-3) 0;
+    }
+    .genesis-box h3 {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 26px;
+      margin: 0 0 var(--s-4) 0;
+      color: var(--encre);
+    }
+    .genesis-box dl {
+      display: grid;
+      grid-template-columns: max-content 1fr;
+      gap: var(--s-2) var(--s-5);
+      margin: 0;
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+    .genesis-box dt {
+      color: var(--gris);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .genesis-box dd {
+      margin: 0;
+      color: var(--encre);
+      font-family: var(--editorial);
+      font-size: 15px;
+    }
+    .genesis-box dd em { font-style: italic; color: var(--encre-soft); }
+
+    /* ───── RSVP form (Founder Circle invité) ───── */
+    .rsvp-box {
+      margin-top: var(--s-5);
+      padding: var(--s-6) var(--s-5);
+      background: var(--papier-bright);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+    }
+    .rsvp-box label {
+      display: block;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gris);
+      margin-bottom: var(--s-2);
+    }
+    .rsvp-box input[type="text"],
+    .rsvp-box input[type="email"],
+    .rsvp-box textarea {
+      width: 100%;
+      padding: var(--s-3) var(--s-4);
+      font-family: var(--editorial);
+      font-size: 16px;
+      color: var(--encre);
+      background: var(--papier);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      margin-bottom: var(--s-4);
+      transition: border-color 200ms ease;
+    }
+    .rsvp-box input:focus,
+    .rsvp-box textarea:focus {
+      outline: none;
+      border-color: var(--encre);
+    }
+    .rsvp-box textarea { min-height: 80px; resize: vertical; }
+    .rsvp-note {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--gris);
+      margin: var(--s-3) 0 0 0;
+      line-height: 1.6;
+    }
+
+    /* ───── Press box ───── */
+    .press-box {
+      margin-top: var(--s-5);
+      padding: var(--s-5);
+      background: var(--papier-soft);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      font-family: var(--editorial);
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--encre);
+    }
+    .press-box strong {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gris);
+      display: block;
+      margin-bottom: var(--s-3);
+    }
+    .press-box a {
+      color: var(--encre);
+      text-decoration: underline;
+      text-decoration-color: var(--gris-line);
+      text-underline-offset: 3px;
+    }
+    .press-box a:hover { text-decoration-color: var(--encre); }
+
+    /* ───── Quote foundational ───── */
+    .quote-foundational {
+      margin: var(--s-7) 0;
+      padding: var(--s-6) var(--s-5);
+      border-top: 1px solid var(--gris-line);
+      border-bottom: 1px solid var(--gris-line);
+      font-family: var(--editorial);
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(18px, 2.5vw, 22px);
+      line-height: 1.6;
+      color: var(--encre);
+    }
+    .quote-foundational p { margin: 0 0 var(--s-4) 0; }
+    .quote-foundational p:last-child { margin-bottom: 0; color: var(--encre-soft); }
+  </style>
+</head>
+
+<body>
+  <a href="#contenu" class="skip-link">Aller au contenu</a>
+
+  <main id="contenu">
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         HERO
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="hero" aria-labelledby="hero-title">
+      <p class="back-nav"><a href="discover.html">← Retour à Discover</a></p>
+
+      <p class="eyebrow">Évènement inaugural</p>
+      <h1 class="date-hero" id="hero-title">14 · 12 · 2026</h1>
+      <p class="place-hero">
+        <em>Mulhouse</em> — <strong>Cité de l'Automobile</strong>
+      </p>
+
+      <p>
+        CARNET ouvre ses portes par une cérémonie patrimoniale. Cent fondateurs reconnus,
+        premier Vehicle Certificate Genesis enregistré, première transmission patrimoniale
+        inscrite sur ledger — devant le plus grand musée automobile du monde, dans la nef de
+        la collection Schlumpf.
+      </p>
+
+      <blockquote>
+        Par une transmission, pas par un lancement.
+      </blockquote>
+
+      <div class="cta-row">
+        <a href="#rsvp" class="cta cta-primary">
+          <span class="dot" aria-hidden="true"></span>
+          RSVP Founder Circle
+        </a>
+        <a href="#programme" class="cta cta-ghost">Voir le programme</a>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         POURQUOI MULHOUSE, POURQUOI CETTE DATE
+         ═══════════════════════════════════════════════════════════════ -->
+    <section aria-labelledby="why-title">
+      <p class="eyebrow">Pourquoi cette date, ce lieu</p>
+      <h2 id="why-title"><em>Une date qui salue. Un lieu qui force le respect.</em></h2>
+
+      <p>
+        <strong style="font-family: var(--display); font-style: italic; font-weight: 500;">Le 14 décembre 1900</strong>,
+        Léonce Girardot remporte le Paris-Roubaix-Paris au volant d'une Panhard. Première
+        grande course de l'ère moderne. CARNET ouvre ses portes cent vingt-six ans plus tard,
+        à la même date — pas pour copier, pour saluer.
+      </p>
+
+      <p>
+        Pas de timing commercial. Pas de Q4 black-friday-esque. Une date patrimoniale.
+      </p>
+
+      <p>
+        <strong style="font-family: var(--display); font-style: italic; font-weight: 500;">La Cité de l'Automobile de Mulhouse</strong>
+        abrite la plus grande collection automobile au monde — cinq cent vingt-huit voitures,
+        dix-sept mille mètres carrés, classée monument historique. Conservatoire du patrimoine
+        européen vivant. Le seul lieu en Europe à la hauteur de ce que CARNET veut commencer.
+      </p>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         PROGRAMME HORAIRE
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="programme" aria-labelledby="programme-title">
+      <p class="eyebrow">Programme · dimanche 14 décembre 2026</p>
+      <h2 id="programme-title"><em>De 13 heures au silence du soir.</em></h2>
+
+      <div class="schedule">
+
+        <article class="schedule-block">
+          <div class="schedule-time">13:00</div>
+          <div class="schedule-content">
+            <h3>Accueil</h3>
+            <p>
+              Ouverture des portes pour les cent Founder Circle reconnus, les Charter Members
+              invités, les bénévoles Master Validators, les partenaires patrimoniaux et la
+              presse patrimoniale européenne.
+            </p>
+            <p>
+              Aucun goodie bag startup. Un livret papier Hahnemühle remis à chaque invité —
+              statuts asso loi 1901, agenda cérémonie, huit archétypes, charte v8. Cent
+              exemplaires numérotés.
+            </p>
+          </div>
+        </article>
+
+        <article class="schedule-block">
+          <div class="schedule-time">13:30</div>
+          <div class="schedule-content">
+            <h3>Arrivée du Genesis Vehicle</h3>
+            <p>
+              La Mercedes-Benz E250 CGI signée Carlsson entre dans la nef principale, conduite
+              par Sylvain Chaillout (Founder #001). Christian Chaillout (Founder #002) assis
+              à droite.
+            </p>
+            <p>
+              Stationnement intérieur, espace dédié sous éclairage muséal calibré 3200 K, doux.
+              Pas d'annonce micro hyperbolique, pas de musique amplifiée. L'audience accueille
+              en silence, comme on accueille une œuvre.
+            </p>
+            <p>
+              <em>La voiture parle d'elle-même. Moteur qui s'éteint, portes qui claquent,
+              Christian et Sylvain descendent côte à côte.</em>
+            </p>
+          </div>
+        </article>
+
+        <article class="schedule-block">
+          <div class="schedule-time">14:00</div>
+          <div class="schedule-content">
+            <h3>Cérémonie inaugurale</h3>
+            <p>Trois discours brefs du directoire, trois à cinq minutes chacun.</p>
+            <ul>
+              <li>Président #001 (Sylvain) — <em>Pourquoi nous sommes là</em></li>
+              <li>Secrétaire #002 (Christian) — <em>Ce que CARNET préserve</em></li>
+              <li>Trésorier #003 — <em>Ce que CARNET engage</em></li>
+            </ul>
+            <p>
+              Lecture publique des extraits foundationnels des statuts asso loi 1901 : Article 2
+              (Objet), Article 7 (Directoire), Article 9 (Allocation 40/20/20/10/10), Article 12
+              (Dissolution).
+            </p>
+            <p>
+              <em>Voice institutionnelle sobre. Pas d'applaudissements provoqués. Pas de
+              standing ovation manufacturée.</em>
+            </p>
+          </div>
+        </article>
+
+        <article class="schedule-block">
+          <div class="schedule-time">14:30</div>
+          <div class="schedule-content">
+            <h3>Genesis Vehicle Certificate · triple validation publique</h3>
+            <p>
+              Le moment foundational. Sur écran de la nef, projection de l'interface CARNET en
+              live. Trois signatures inscrites sur XRPL en moins de soixante secondes.
+            </p>
+            <ul>
+              <li><strong>Validation organisateur</strong> — le représentant de la Cité de l'Automobile signe sur tablette wallet</li>
+              <li><strong>Validation Master Validator CARNET</strong> — le Founder #003 signe wallet</li>
+              <li><strong>Co-signature propriétaires multisig 2 sur 2</strong> — Sylvain et Christian, côte à côte, wallets Xaman, tap-tap simultané</li>
+            </ul>
+            <p>
+              Audience voit la transaction se finaliser sur XRPL en trois à cinq secondes. Hash
+              IPFS et hash XRPL projetés grande échelle.
+            </p>
+          </div>
+        </article>
+
+        <article class="schedule-block">
+          <div class="schedule-time">15:00</div>
+          <div class="schedule-content">
+            <h3>Première transmission symbolique</h3>
+            <p>
+              Sale Contract NFT atomic démontré en live entre Christian et Sylvain — cession
+              symbolique 50/50 vers 100/0 puis retour à 50/50. Démonstration technique
+              publique, pas de cession réelle.
+            </p>
+            <ul>
+              <li>Sale Contract NFT mint</li>
+              <li>Royalty 1,7 % split atomic visible — 1,6711 % asso CARNET, 0,0289 % first minter</li>
+              <li>Confirmation 3 à 5 secondes</li>
+              <li>Documentation IPFS perpétuelle</li>
+            </ul>
+            <blockquote>
+              Ceci est le premier acte de transmission inter-générations du registre européen.
+              Il est inscrit à jamais. La voiture est partie, elle est revenue. C'est ce que
+              CARNET fait — il rend ce qui circule, traçable.
+            </blockquote>
+          </div>
+        </article>
+
+        <article class="schedule-block">
+          <div class="schedule-time">15:30</div>
+          <div class="schedule-content">
+            <h3>Founder Circle SBT mint #001 — #100</h3>
+            <p>
+              Cent Soulbound Tokens XLS-20 Taxon 7 mintés en série, projetés grande échelle
+              pendant la lecture des noms.
+            </p>
+            <ul>
+              <li>#001 — Sylvain Chaillout, Président, propriétaire Genesis Vehicle co-owned</li>
+              <li>#002 — Christian Chaillout, Secrétaire, premier transmetteur inter-génération</li>
+              <li>#003 — Trésorier nommé</li>
+              <li>#004 à #100 — selon ordre cooptation (conservateurs patrimoine, partenaires institutionnels, ateliers restaurateurs, organisateurs événements)</li>
+            </ul>
+            <p>
+              <em>Pattern transgénérationnel proposé : encourager Founders à inscrire père,
+              mère, fils, fille en parallèle quand applicable. Maillage dès le launch.</em>
+            </p>
+            <p>Soulbound permanent. Reconnaissance perpétuelle.</p>
+          </div>
+        </article>
+
+        <article class="schedule-block">
+          <div class="schedule-time">16:00</div>
+          <div class="schedule-content">
+            <h3>Lecture de la première Mémoire</h3>
+            <p>
+              Sylvain lit à voix haute, devant le micro de la nef, la Mémoire qu'il a écrite
+              sur la Mercedes E250 CGI Carlsson. Cormorant Garamond imprimé Hahnemühle. Volume
+              modéré, voix claire.
+            </p>
+            <p>
+              Texte de mille cinq cents à deux mille mots, six à huit minutes de lecture.
+              Audio enregistré qualité conservation longue durée — FLAC 96 kHz / 24 bit, plus
+              WAV archive master.
+            </p>
+            <p>
+              <em>Christian reçoit en main propre l'exemplaire #001 du tirage papier Hahnemühle.
+              Cent exemplaires numérotés, un par Founder Circle.</em>
+            </p>
+            <p>Mémoire inscrite IPFS. Première du registre européen.</p>
+          </div>
+        </article>
+
+        <article class="schedule-block">
+          <div class="schedule-time">17:00</div>
+          <div class="schedule-content">
+            <h3>Annonce roadmap</h3>
+            <p>Voice sobre, pas hyperbolique.</p>
+            <ul>
+              <li><strong>Year 1</strong> (déc 2026 — déc 2027) — 1 000 à 3 000 Vehicle Certificates, 5 langues, 100 à 500 Mémoires</li>
+              <li><strong>Year 5</strong> (déc 2031) — 30 000 à 50 000 Certificates, 25-30 langues européennes, 50 000+ Mémoires</li>
+              <li><strong>Year 10</strong> (déc 2036, North Star) — 143 000 Certificates actifs, 27+ langues, 200 000+ Mémoires</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="schedule-block">
+          <div class="schedule-time">18:00</div>
+          <div class="schedule-content">
+            <h3>Cocktail patrimoine</h3>
+            <p>
+              Visite libre de la collection Schlumpf. Rencontres entre fondateurs, Charter
+              Members, partenaires institutionnels, presse. La Mercedes Genesis reste exposée
+              dans la nef principale toute la soirée.
+            </p>
+            <p>
+              Pas de commercial booth. Pas de pitch deck. Pas de business development corner.
+              Conversations patrimoniales libres.
+            </p>
+            <p>
+              <em>Photos officielles — photographe argentique noir et blanc, tirage Hahnemühle.
+              Pas de drone, pas de vidéo aftermovie startup. La sobriété est éditoriale.</em>
+            </p>
+          </div>
+        </article>
+
+        <article class="schedule-block">
+          <div class="schedule-time">20:00</div>
+          <div class="schedule-content">
+            <h3>Clôture</h3>
+            <p>
+              La Mercedes-Benz E250 CGI Carlsson repart de la Cité — mais cette fois conduite
+              par Christian, Sylvain à droite. Transmission incarnée jusque dans le geste de
+              quitter le bâtiment.
+            </p>
+            <p>
+              Pas de feu d'artifice, pas de drone show, pas de musique amplifiée. Le silence
+              de la nef après le départ.
+            </p>
+            <blockquote>
+              La cérémonie s'éteint comme elle a commencé — par le bruit modéré d'un moteur
+              qui démarre et s'éloigne.
+            </blockquote>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         GENESIS VEHICLE CERTIFICATE
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="genesis" aria-labelledby="genesis-title">
+      <p class="eyebrow">Genesis Vehicle Certificate</p>
+      <h2 id="genesis-title"><em>VC-001 — la première inscription.</em></h2>
+
+      <p>
+        Le Vehicle Certificate Genesis sert de référence canonique pour les cent quarante-deux
+        mille neuf cent quatre-vingt-dix-neuf suivants. Il ne peut pas être supprimé, archivé,
+        déprécié, modifié rétroactivement. Il est foundational, perpétuel, civilisationnel.
+      </p>
+
+      <div class="genesis-box">
+        <p class="vc-label">VC-001 · Genesis</p>
+        <h3><em>Mercedes-Benz E250 CGI Carlsson</em></h3>
+        <dl>
+          <dt>Marque</dt><dd>Mercedes-Benz</dd>
+          <dt>Modèle</dt><dd>E250 CGI Carlsson</dd>
+          <dt>Année</dt><dd>2011</dd>
+          <dt>Kilomètres</dt><dd>55 000</dd>
+          <dt>Tuner</dt><dd>Carlsson Autotechnik, Merzig (DE)</dd>
+          <dt>Carrosserie</dt><dd>Berline 4 portes</dd>
+          <dt>Moteur</dt><dd>1.8L L4 turbo, ~204 ch (signature Carlsson)</dd>
+          <dt>Transmission</dt><dd>7G-Tronic Plus automatique</dd>
+          <dt>État</dt><dd><em>Préservation, état proche d'origine</em></dd>
+          <dt>Co-propriété</dt><dd>multisig 2/2 — Sylvain Chaillout + Christian Chaillout, 50/50</dd>
+          <dt>Archétypes</dt><dd><em>Bâtisseur · Enthousiaste · Pilote</em></dd>
+        </dl>
+      </div>
+
+      <p>
+        Triple validation publique le 14 décembre 2026 à 14h30. Documentation IPFS perpétuelle.
+        Hash XRPL immutable. Métadonnées multilingues (FR, EN, IT, DE, NL). Accessibility WCAG
+        AA dès Year 1, AAA target Year 5.
+      </p>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         RSVP FOUNDER CIRCLE
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="rsvp" aria-labelledby="rsvp-title">
+      <p class="eyebrow">RSVP · Founder Circle</p>
+      <h2 id="rsvp-title"><em>Cent personnes. Identifiées par cooptation.</em></h2>
+
+      <p>
+        Le Founder Circle est fermé à cent personnes — numérotées #001 à #100 — soulbound,
+        permanent. Cooptation par les trois fondateurs ou par les Founders déjà reconnus.
+      </p>
+
+      <p>
+        Si tu reçois cette page, c'est qu'une cooptation t'a été proposée. Confirme ta présence
+        à la cérémonie inaugurale, ou décline. Aucun jugement, aucune pression. Une seule règle :
+        si tu réponds <em>oui</em>, tu viens. La cérémonie n'aura pas lieu deux fois.
+      </p>
+
+      <div class="rsvp-box">
+        <label for="rsvp-name">Ton nom complet</label>
+        <input
+          type="text"
+          id="rsvp-name"
+          name="name"
+          placeholder="Nom Prénom"
+          autocomplete="name"
+        />
+
+        <label for="rsvp-email">Email de contact</label>
+        <input
+          type="email"
+          id="rsvp-email"
+          name="email"
+          placeholder="toi@exemple.eu"
+          autocomplete="email"
+        />
+
+        <label for="rsvp-wallet">Wallet Xaman (optionnel pour Year -1)</label>
+        <input
+          type="text"
+          id="rsvp-wallet"
+          name="wallet"
+          placeholder="rXXXXXXXXXXXXX (sera demandé avant cérémonie)"
+        />
+
+        <label for="rsvp-message">Un mot, si tu veux</label>
+        <textarea
+          id="rsvp-message"
+          name="message"
+          placeholder="Ce que tu apportes à CARNET, ou rien — c'est libre."
+        ></textarea>
+
+        <div class="cta-row" style="margin-top: var(--s-4);">
+          <button class="cta cta-primary" type="button" id="rsvp-yes">
+            <span class="dot" aria-hidden="true"></span>
+            Je viens · le 14 décembre
+          </button>
+          <button class="cta cta-ghost" type="button" id="rsvp-no">Décliner avec respect</button>
+        </div>
+
+        <p class="rsvp-note">
+          Year -1 : ton RSVP est confidentiel, conservé chiffré. Wallet Xaman et signature
+          multisig demandés trois mois avant la cérémonie (septembre 2026). Logement Mulhouse
+          recommandations envoyées un mois avant. Aucune charge financière pour les Founders —
+          frais inclus dans l'allocation 10 % patrimoine.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         PRESSE PATRIMONIALE
+         ═══════════════════════════════════════════════════════════════ -->
+    <section aria-labelledby="press-title">
+      <p class="eyebrow">Presse</p>
+      <h2 id="press-title"><em>Patrimoniale uniquement.</em></h2>
+
+      <p>
+        Embargo levé à 20h00 le 14 décembre 2026, après clôture cérémonie. Documentation IPFS
+        et hash XRPL accessibles immédiatement.
+      </p>
+
+      <div class="press-box">
+        <strong>Médias invités</strong>
+        Petrolicious — Magneto Magazine — Octane Magazine — Klassiker (DE) — Ruoteclassiche (IT)
+        — Magazine des Sociétaires FFVE (FR) — Classic Driver (CH) — The Drive.
+      </div>
+
+      <p style="margin-top: var(--s-5);">
+        <em>Brief presse — voice sobre, factuelle. Pas de marketing. Information transparente.
+        Données chiffrées vérifiables. Cohérence avec mission civique.</em>
+      </p>
+
+      <p>
+        Contact presse : <code style="color: var(--encre);">press@carnet.life</code>
+      </p>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         VOICE FOUNDATIONAL DU LAUNCH
+         ═══════════════════════════════════════════════════════════════ -->
+    <section aria-labelledby="voice-title">
+      <p class="eyebrow">Voice du launch</p>
+      <h2 id="voice-title"><em>Pour les passionnés européens de 2126.</em></h2>
+
+      <div class="quote-foundational">
+        <p><em>CARNET commence ici, à Mulhouse, le 14 décembre 2026.</em></p>
+        <p><em>Pas comme startup tech. Pas comme marketplace. Pas comme platform Web3.</em></p>
+        <p>
+          <em>Comme association loi 1901 française non-lucrative familiale, dédiée préservation,
+          documentation, transmission patrimoine automobile européen — pour les générations
+          actuelles et celles à venir.</em>
+        </p>
+        <p>
+          <em>Voice sobre. Engagement structural. Transparence absolue. Mission civilisationnelle
+          transgénérationnelle.</em>
+        </p>
+        <p>
+          <em>Pour les passionnés européens d'aujourd'hui. Et pour les passionnés européens
+          de 2126.</em>
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         CTA RETOUR
+         ═══════════════════════════════════════════════════════════════ -->
+    <section aria-labelledby="back-title">
+      <p class="eyebrow">La suite</p>
+      <h2 id="back-title"><em>Avant le 14 décembre.</em></h2>
+
+      <p>
+        Sept mois nous séparent du grand jour. Pendant ce temps, CARNET continue de se
+        construire — partenariats Cité Mulhouse et constructeurs Heritage, formalisation
+        Founder #003 Trésorier, rédaction de la Mémoire Genesis, audit des statuts asso
+        loi 1901, finalisation EUDI Wallet integration.
+      </p>
+
+      <p>
+        Si tu veux suivre l'avancement, l'archive publique se construit en temps réel sur
+        <code style="color: var(--encre);">carnet.life</code> — Vehicle Certificates,
+        Mémoires, palmarès, lignées propriétaires. Pas de teasing. Tout est ouvert.
+      </p>
+
+      <div class="cta-row">
+        <a href="discover.html" class="cta cta-primary">
+          <span class="dot" aria-hidden="true"></span>
+          Retour à Discover
+        </a>
+        <a href="archetypes.html" class="cta cta-ghost">Les 8 archétypes</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════════════════════════ -->
+  <footer class="carnet-footer">
+    <p class="footer-tagline"><em>Une histoire de voitures.</em></p>
+
+    <nav class="footer-nav" aria-label="Pages utilitaires">
+      <a href="discover.html">Discover</a>
+      <a href="archetypes.html">Archétypes</a>
+      <a href="#archive">Archive</a>
+      <a href="#about">À propos</a>
+      <a href="#privacy">Confidentialité</a>
+      <a href="#statutes">Statuts</a>
+      <a href="#transparency">Transparence</a>
+    </nav>
+
+    <p class="footer-legal">
+      CARNET · Association loi 1901 française non-lucrative familiale<br />
+      [Adresse siège] · [Numéro RNA]<br />
+      Hash IPFS statuts&nbsp;: [à générer au big bang launch 14 décembre 2026]<br />
+      Wallet officiel&nbsp;: <code>rJBhnYvg5kq9PgWFZziEXu2EcdJfcq8WSU</code>
+    </p>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SCRIPT · RSVP form handlers (placeholder pour intégration backend)
+       ═══════════════════════════════════════════════════════════════ -->
+  <script>
+    'use strict';
+
+    (function () {
+      var STORAGE_KEY_RSVP = 'carnet:v1:rsvp-draft';
+
+      // Récupérer le draft RSVP en localStorage (Year -1, avant backend)
+      function loadDraft() {
+        try {
+          var raw = localStorage.getItem(STORAGE_KEY_RSVP);
+          if (!raw) return null;
+          return JSON.parse(raw);
+        } catch (e) {
+          return null;
+        }
+      }
+
+      function saveDraft(data) {
+        try {
+          localStorage.setItem(STORAGE_KEY_RSVP, JSON.stringify(data));
+        } catch (e) {
+          // Dégradation gracieuse
+        }
+      }
+
+      function getFormData() {
+        return {
+          name: (document.getElementById('rsvp-name') || {}).value || '',
+          email: (document.getElementById('rsvp-email') || {}).value || '',
+          wallet: (document.getElementById('rsvp-wallet') || {}).value || '',
+          message: (document.getElementById('rsvp-message') || {}).value || ''
+        };
+      }
+
+      function applyDraft(draft) {
+        if (!draft) return;
+        ['name', 'email', 'wallet', 'message'].forEach(function (k) {
+          var el = document.getElementById('rsvp-' + k);
+          if (el && draft[k]) el.value = draft[k];
+        });
+      }
+
+      // Auto-save sur chaque input (Year -1, avant backend Founder Circle)
+      function attachAutosave() {
+        ['name', 'email', 'wallet', 'message'].forEach(function (k) {
+          var el = document.getElementById('rsvp-' + k);
+          if (!el) return;
+          el.addEventListener('input', function () {
+            saveDraft(getFormData());
+          });
+        });
+      }
+
+      // Handlers RSVP buttons (placeholder — backend cooptation à intégrer Year -1)
+      function attachButtons() {
+        var yesBtn = document.getElementById('rsvp-yes');
+        var noBtn = document.getElementById('rsvp-no');
+
+        if (yesBtn) {
+          yesBtn.addEventListener('click', function () {
+            var data = getFormData();
+            if (!data.name || !data.email) {
+              alert('Merci de renseigner nom et email avant de confirmer.');
+              return;
+            }
+            saveDraft(Object.assign(data, { response: 'yes', timestamp: new Date().toISOString() }));
+            alert(
+              'RSVP enregistré localement.\n\n' +
+              'Year -1 : backend Founder Circle en cours d\u2019implémentation. ' +
+              'Le directoire te recontactera trois mois avant la cérémonie ' +
+              '(septembre 2026) pour formaliser ta signature multisig et ton wallet Xaman.'
+            );
+          });
+        }
+
+        if (noBtn) {
+          noBtn.addEventListener('click', function () {
+            var data = getFormData();
+            saveDraft(Object.assign(data, { response: 'no', timestamp: new Date().toISOString() }));
+            alert(
+              'Décliné avec respect.\n\n' +
+              'Ta cooptation reste valable pour les éditions futures (Year 2, Year 5). ' +
+              'Pas de jugement.'
+            );
+          });
+        }
+      }
+
+      function init() {
+        applyDraft(loadDraft());
+        attachAutosave();
+        attachButtons();
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
+  </script>
+</body>
+</html>
