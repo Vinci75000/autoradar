@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="CARNET — Association loi 1901 française non-lucrative familiale. Directoire 3/3 multisig, allocation 40/20/20/10/10, roadmap Year 1/5/10. Trois fondateurs, aucun salaire, une mission civique transgénérationnelle." />
+  <meta name="theme-color" content="#faf6ef" />
+
+  <title>CARNET · À propos</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,400;1,500;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="carnet-tokens.css" />
+
+  <style>
+    main {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: var(--s-8) var(--s-5);
+    }
+    section { padding-block: var(--s-7); border-top: 1px solid var(--gris-line); }
+    section:first-of-type { border-top: none; padding-top: 0; }
+
+    .hero { padding-top: var(--s-3); padding-bottom: var(--s-7); border-top: none; }
+    .back-nav {
+      margin-bottom: var(--s-5);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .back-nav a { color: var(--gris); text-decoration: none; }
+    .back-nav a:hover { color: var(--encre); }
+
+    /* ───── Directoire (3 cards horizontales) ───── */
+    .directoire {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--s-4);
+      margin-top: var(--s-5);
+    }
+    @media (min-width: 720px) {
+      .directoire { grid-template-columns: 1fr 1fr 1fr; }
+    }
+
+    .founder-card {
+      padding: var(--s-5);
+      background: var(--papier-bright);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+    }
+    .founder-card .id {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--orange-polo);
+      margin: 0 0 var(--s-3) 0;
+    }
+    .founder-card .role {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: var(--gris);
+      margin: 0 0 var(--s-3) 0;
+      text-transform: uppercase;
+    }
+    .founder-card h3 {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 22px;
+      line-height: 1.2;
+      margin: 0 0 var(--s-3) 0;
+      color: var(--encre);
+    }
+    .founder-card p {
+      font-family: var(--editorial);
+      font-size: 15px;
+      line-height: 1.55;
+      color: var(--encre);
+      margin: 0;
+    }
+    .founder-card .pending {
+      font-style: italic;
+      color: var(--encre-soft);
+    }
+
+    /* ───── Statuts (articles canonical) ───── */
+    .article-block {
+      padding: var(--s-4) 0;
+      border-top: 1px solid var(--gris-line);
+    }
+    .article-block:first-child { border-top: 2px solid var(--encre); }
+    .article-block .article-num {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--orange-polo);
+      margin: 0 0 var(--s-2) 0;
+    }
+    .article-block h3 {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 22px;
+      line-height: 1.2;
+      margin: 0 0 var(--s-3) 0;
+      color: var(--encre);
+    }
+    .article-block p {
+      font-family: var(--editorial);
+      font-size: 16px;
+      line-height: 1.65;
+      color: var(--encre);
+      margin: 0 0 var(--s-3) 0;
+    }
+    .article-block p:last-child { margin-bottom: 0; }
+
+    /* ───── Allocation 40/20/20/10/10 ───── */
+    .allocation-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: var(--s-5);
+      font-family: var(--editorial);
+    }
+    .allocation-table th,
+    .allocation-table td {
+      padding: var(--s-4) var(--s-3);
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--gris-line);
+    }
+    .allocation-table th {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gris);
+      border-bottom: 1px solid var(--encre);
+    }
+    .allocation-table td.pct {
+      font-family: var(--mono);
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--orange-polo);
+      width: 60px;
+      white-space: nowrap;
+    }
+    .allocation-table td.name {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 17px;
+      color: var(--encre);
+      width: 180px;
+    }
+    .allocation-table td.detail {
+      font-size: 15px;
+      line-height: 1.55;
+      color: var(--encre);
+    }
+    .allocation-table td.detail em {
+      font-style: italic;
+      color: var(--encre-soft);
+    }
+
+    /* ───── Roadmap timeline ───── */
+    .roadmap {
+      margin-top: var(--s-5);
+      display: grid;
+      gap: var(--s-5);
+    }
+    .roadmap-year {
+      padding: var(--s-5);
+      background: var(--papier-soft);
+      border: 1px solid var(--gris-line);
+      border-left: 3px solid var(--vert-anglais);
+      border-radius: var(--r);
+    }
+    .roadmap-year:nth-child(2) { border-left-color: var(--orange-polo); }
+    .roadmap-year:nth-child(3) { border-left-color: var(--encre); }
+    .roadmap-year .label {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gris);
+      margin: 0 0 var(--s-2) 0;
+    }
+    .roadmap-year h3 {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 26px;
+      line-height: 1.1;
+      margin: 0 0 var(--s-4) 0;
+      color: var(--encre);
+    }
+    .roadmap-year h3 .horizon {
+      font-family: var(--mono);
+      font-style: normal;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      color: var(--orange-polo);
+      display: block;
+      margin-bottom: var(--s-2);
+    }
+    .roadmap-year ul {
+      margin: 0;
+      padding-left: var(--s-5);
+      font-family: var(--editorial);
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--encre);
+    }
+    .roadmap-year ul li { margin-bottom: var(--s-2); }
+    .roadmap-year ul li em { font-style: italic; color: var(--encre-soft); }
+
+    /* ───── Stack / philosophy ───── */
+    .stack-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--s-4);
+      margin-top: var(--s-5);
+    }
+    @media (min-width: 600px) {
+      .stack-grid { grid-template-columns: 1fr 1fr; }
+    }
+    .stack-item {
+      padding: var(--s-4) var(--s-5);
+      background: var(--papier-bright);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+    }
+    .stack-item .label {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gris);
+      margin: 0 0 var(--s-2) 0;
+    }
+    .stack-item h3 {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 1.2;
+      margin: 0 0 var(--s-3) 0;
+      color: var(--encre);
+    }
+    .stack-item p {
+      font-family: var(--editorial);
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--encre);
+      margin: 0;
+    }
+    .stack-item p em { font-style: italic; color: var(--encre-soft); }
+
+    /* ───── Wallet info box ───── */
+    .wallet-box {
+      margin-top: var(--s-5);
+      padding: var(--s-5);
+      background: var(--papier-soft);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.7;
+      color: var(--encre);
+    }
+    .wallet-box .label {
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gris);
+      margin-bottom: var(--s-2);
+    }
+    .wallet-box code {
+      background: var(--papier);
+      padding: 2px 6px;
+      border-radius: var(--r);
+      color: var(--encre);
+      word-break: break-all;
+    }
+  </style>
+</head>
+
+<body>
+  <a href="#contenu" class="skip-link">Aller au contenu</a>
+
+  <main id="contenu">
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         HERO
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="hero" aria-labelledby="hero-title">
+      <p class="back-nav"><a href="discover.html">← Retour à Discover</a></p>
+
+      <p class="eyebrow">À propos de CARNET</p>
+      <h1 id="hero-title" class="wordmark">
+        CARNET<span class="dot-orange" aria-hidden="true"></span>
+      </h1>
+      <p class="tagline-major"><em>Trois fondateurs, aucun salaire, une mission.</em></p>
+      <p class="tagline-minor">
+        <em>Association loi 1901 française non-lucrative familiale.</em>
+      </p>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         DIRECTOIRE 3/3
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="directoire" aria-labelledby="directoire-title">
+      <p class="eyebrow">Directoire · multisig 3/3</p>
+      <h2 id="directoire-title"><em>Trois personnes. Trois signatures.</em></h2>
+
+      <p>
+        Toute décision engageante de CARNET requiert l'accord et la signature des trois
+        membres du directoire. Pas de pouvoir individuel sur les fonds, les statuts, ou les
+        engagements de l'association.
+      </p>
+
+      <div class="directoire">
+
+        <article class="founder-card">
+          <p class="id">Founder #001</p>
+          <p class="role">Président</p>
+          <h3><em>Sylvain Chaillout</em></h3>
+          <p>
+            Initiateur du projet. Architecte technique. Co-propriétaire de la Mercedes Genesis
+            VC-001 avec son père. Wallet Xaman 48 chiffres.
+          </p>
+        </article>
+
+        <article class="founder-card">
+          <p class="id">Founder #002</p>
+          <p class="role">Secrétaire</p>
+          <h3><em>Christian Chaillout</em></h3>
+          <p>
+            Père du Président. Co-propriétaire 50/50 de la Mercedes Genesis VC-001. Premier
+            transmetteur inter-génération du registre européen.
+          </p>
+        </article>
+
+        <article class="founder-card">
+          <p class="id">Founder #003</p>
+          <p class="role">Trésorier</p>
+          <h3 class="pending"><em>À nommer</em></h3>
+          <p class="pending">
+            Cooptation en cours, finalisation avant septembre 2026. Indépendant du noyau
+            familial pour garantir séparation des pouvoirs au directoire.
+          </p>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         STATUTS · articles foundationnaux
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="statuts" aria-labelledby="statuts-title">
+      <p class="eyebrow">Statuts asso loi 1901</p>
+      <h2 id="statuts-title"><em>Quatre articles foundationnaux.</em></h2>
+
+      <p>
+        Extraits canoniques. Les statuts complets seront déposés à la préfecture avant le 14
+        décembre 2026 et leur hash IPFS inscrit publiquement le jour de la cérémonie inaugurale.
+      </p>
+
+      <article class="article-block">
+        <p class="article-num">Article 2 · Objet</p>
+        <h3><em>Préserver, documenter, transmettre.</em></h3>
+        <p>
+          L'association CARNET a pour objet de préserver, documenter et transmettre le
+          patrimoine automobile européen — ses voitures, ses lignées propriétaires, ses
+          palmarès, les Mémoires écrites par celles et ceux qui les conduisent.
+        </p>
+        <p>
+          Cette mission est civique, transgénérationnelle, et explicitement non-lucrative. Elle
+          s'adresse aux passionnés européens d'aujourd'hui — et de 2126.
+        </p>
+      </article>
+
+      <article class="article-block">
+        <p class="article-num">Article 7 · Directoire</p>
+        <h3><em>Trois membres, signatures conjointes.</em></h3>
+        <p>
+          L'association est administrée par un directoire composé de trois membres — Président,
+          Secrétaire, Trésorier — qui ne perçoivent aucune rémunération directe au titre de
+          leurs fonctions. Seuls les frais réels engagés dans l'exercice de leur mandat
+          peuvent être remboursés, sur pièces justificatives.
+        </p>
+        <p>
+          Toute décision engageant les fonds, les statuts ou les engagements externes de
+          l'association requiert la signature conjointe des trois membres du directoire, via
+          wallet multisig 3 sur 3 inscrit sur XRPL.
+        </p>
+      </article>
+
+      <article class="article-block">
+        <p class="article-num">Article 9 · Allocation</p>
+        <h3><em>40 / 20 / 20 / 10 / 10.</em></h3>
+        <p>
+          Les ressources collectées par l'association — royalties Vehicle Certificates,
+          commissions auctions, donations, ventes boutique — sont allouées selon le cadre
+          indicatif suivant :
+        </p>
+        <p>
+          <em>40 % asso · 20 % infra · 20 % communauté · 10 % patrimoine · 10 % enfants.</em>
+        </p>
+        <p>
+          Le directoire peut ajuster ces pourcentages selon les nécessités opérationnelles,
+          dans la limite de plus ou moins 5 points par catégorie, et avec justification
+          publique annuelle lors de l'assemblée générale.
+        </p>
+      </article>
+
+      <article class="article-block">
+        <p class="article-num">Article 12 · Dissolution</p>
+        <h3><em>Allocation à une cause civique équivalente.</em></h3>
+        <p>
+          En cas de dissolution de l'association, les biens nets — fonds, archives, droits
+          patrimoniaux — seront alloués à une cause civique équivalente liée au patrimoine
+          automobile européen ou à l'éducation des enfants. En aucun cas ces biens ne pourront
+          revenir aux membres du directoire, à leurs héritiers, ou à des entités lucratives.
+        </p>
+        <p>
+          La décision de dissolution requiert un vote favorable des trois quarts des Founder
+          Circle réunis en assemblée extraordinaire.
+        </p>
+      </article>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         ALLOCATION DÉTAILLÉE
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="allocation" aria-labelledby="allocation-title">
+      <p class="eyebrow">Allocation · cadre indicatif</p>
+      <h2 id="allocation-title"><em>Où vont les fonds.</em></h2>
+
+      <p>
+        Pourcentages indicatifs, ajustables plus ou moins 5 points par catégorie selon
+        nécessités opérationnelles. Bilan public chaque année à l'assemblée générale.
+      </p>
+
+      <table class="allocation-table" aria-label="Allocation 40/20/20/10/10">
+        <thead>
+          <tr>
+            <th>%</th>
+            <th>Catégorie</th>
+            <th>Détail</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="pct">40</td>
+            <td class="name"><em>Asso</em></td>
+            <td class="detail">
+              Fonctionnement courant — frais juridiques (DPO externe, audit annuel
+              indépendant), assurances responsabilité civile, comptabilité asso loi 1901,
+              déclarations préfecture, bénévoles défraiements légitimes.
+              <em>Pas de salaires. Jamais.</em>
+            </td>
+          </tr>
+          <tr>
+            <td class="pct">20</td>
+            <td class="name"><em>Infra</em></td>
+            <td class="detail">
+              Infrastructure technique — Supabase Frankfurt, Cloudflare Workers, IPFS pinning
+              (Pinata, Web3.Storage), domaine carnet.life, certificats, monitoring.
+              <em>Lean by design. On reste malin tant qu'on peut.</em>
+            </td>
+          </tr>
+          <tr>
+            <td class="pct">20</td>
+            <td class="name"><em>Communauté</em></td>
+            <td class="detail">
+              Événements patrimoine, sponsorship rallyes caritatifs, partenariats musées,
+              cooptations nouveaux Founder Circle, traductions multilingues européennes.
+            </td>
+          </tr>
+          <tr>
+            <td class="pct">10</td>
+            <td class="name"><em>Patrimoine</em></td>
+            <td class="detail">
+              Acquisition Vehicle Certificates orphelins, restauration archives papier,
+              numérisation provenances historiques, partenariats conservatoires (Cité
+              Mulhouse, Schlumpf, Klassikstadt).
+            </td>
+          </tr>
+          <tr>
+            <td class="pct">10</td>
+            <td class="name"><em>Enfants</em></td>
+            <td class="detail">
+              Transmission inter-générations — événements automobiles avec enfants, éducation
+              patrimoine, lien intergénérationnel, lien inter-archétype. Boutique CARNET reverse
+              100 % de ses bénéfices nets ici, au-delà de cette allocation.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         GOUVERNANCE
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="gouvernance" aria-labelledby="gouvernance-title">
+      <p class="eyebrow">Gouvernance</p>
+      <h2 id="gouvernance-title"><em>Décisions inscrites, signatures ouvertes.</em></h2>
+
+      <p>
+        <strong style="font-family: var(--display); font-style: italic; font-weight: 500;">Assemblée générale annuelle.</strong>
+        Date libre, choisie par le directoire. Présence obligatoire uniquement pour les trois
+        membres du directoire. Charter Members et Founder Circle peuvent assister à distance,
+        compte rendu public sur IPFS perpétuel.
+      </p>
+
+      <p>
+        <strong style="font-family: var(--display); font-style: italic; font-weight: 500;">Cooptation Founder Circle.</strong>
+        Cent personnes maximum — numérotées #001 à #100, soulbound permanent. Cooptation par
+        les trois fondateurs initiaux, puis par les Founders déjà reconnus. Critères
+        explicites : engagement patrimoine européen, intégrité civique, expertise reconnue
+        dans un domaine pertinent (conservateur musée, restaurateur, organisateur événement,
+        journaliste patrimoine, collectionneur engagé).
+      </p>
+
+      <p>
+        <strong style="font-family: var(--display); font-style: italic; font-weight: 500;">Multisig 3 sur 3.</strong>
+        Wallet officiel de l'association est multisig 3/3 sur XRPL. Toute transaction —
+        paiement infra, donation reçue, royalty Vehicle Certificate, mint Sale Contract —
+        requiert trois signatures simultanées. Aucune signature individuelle ne peut engager
+        l'association.
+      </p>
+
+      <p>
+        <strong style="font-family: var(--display); font-style: italic; font-weight: 500;">Transparence absolue.</strong>
+        Toutes les transactions du wallet officiel CARNET sont publiques sur Bithomp. Tous les
+        Vehicle Certificates émis sont publiquement vérifiables. Toutes les Mémoires sont
+        publiquement lisibles (sauf opt-in privé explicite de leur auteur). Tous les bilans
+        annuels sont publiquement archivés sur IPFS perpétuel.
+      </p>
+
+      <div class="wallet-box">
+        <p class="label">Wallet officiel multisig 3/3 · CARNET asso</p>
+        <code>rJBhnYvg5kq9PgWFZziEXu2EcdJfcq8WSU</code>
+        <p style="margin: var(--s-3) 0 0 0; font-size: 11px; color: var(--gris);">
+          Vérifiable sur <a href="https://bithomp.com" style="color: var(--encre); text-decoration: underline; text-decoration-color: var(--gris-line);">bithomp.com</a>
+          · réseau XRPL · carbon-zero certifié depuis 2020.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         ROADMAP YEAR 1 / 5 / 10
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="roadmap" aria-labelledby="roadmap-title">
+      <p class="eyebrow">Roadmap</p>
+      <h2 id="roadmap-title"><em>Trois horizons. Une direction.</em></h2>
+
+      <p>
+        Pas de pitch deck, pas de hockey stick. Une roadmap patrimoniale qui prend le temps
+        qu'elle doit prendre, et qui se mesure en générations.
+      </p>
+
+      <div class="roadmap">
+
+        <article class="roadmap-year">
+          <p class="label">Court terme</p>
+          <h3>
+            <span class="horizon">Year 1 · décembre 2026 — décembre 2027</span>
+            <em>Fonder, valider, ouvrir.</em>
+          </h3>
+          <ul>
+            <li><strong>1 000 à 3 000</strong> Vehicle Certificates émis</li>
+            <li><strong>5 langues</strong> actives (FR, EN, IT, DE, NL)</li>
+            <li><strong>100 à 500</strong> Mémoires écrites</li>
+            <li>Founder Circle complet — 100 personnes #001 à #100</li>
+            <li>Premier audit indépendant + premier bilan public AG</li>
+            <li>Allocation estimée : <strong>50k€ à 200k€</strong></li>
+            <li><em>Partenariats Cité Mulhouse + Mercedes-Benz Heritage + Porsche Classic</em></li>
+          </ul>
+        </article>
+
+        <article class="roadmap-year">
+          <p class="label">Moyen terme</p>
+          <h3>
+            <span class="horizon">Year 5 · décembre 2031</span>
+            <em>Échelle, profondeur, légitimité.</em>
+          </h3>
+          <ul>
+            <li><strong>30 000 à 50 000</strong> Vehicle Certificates</li>
+            <li><strong>25 à 30 langues</strong> européennes</li>
+            <li><strong>50 000+</strong> Mémoires</li>
+            <li>WCAG 2.2 AAA target atteint</li>
+            <li>Archive partenaire perpétuel Cité Mulhouse formalisée</li>
+            <li>Allocation estimée : <strong>5M€ à 20M€/an</strong></li>
+            <li><em>Édition papier annuelle Mémoires sélectionnées, Hahnemühle Dalton Watson</em></li>
+          </ul>
+        </article>
+
+        <article class="roadmap-year">
+          <p class="label">North Star · long terme</p>
+          <h3>
+            <span class="horizon">Year 10 · décembre 2036</span>
+            <em>Archive civilisationnelle patrimoine européen.</em>
+          </h3>
+          <ul>
+            <li><strong>143 000</strong> Vehicle Certificates actifs</li>
+            <li><strong>27+ langues</strong> incluant minoritaires européennes</li>
+            <li><strong>200 000+</strong> Mémoires</li>
+            <li>Référence sectorielle européenne pour authentification provenance</li>
+            <li>Partenariats archives nationales (BNF, BSB, BNCF, KB, ÖNB)</li>
+            <li>Allocation estimée : <strong>190M€ à 380M€/an</strong></li>
+            <li><em>Vision 50-1000 ans — archive primaire patrimoine automobile européen 21ème siècle</em></li>
+          </ul>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         STACK · philosophie technique
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="stack" aria-labelledby="stack-title">
+      <p class="eyebrow">Stack · philosophie technique</p>
+      <h2 id="stack-title"><em>Choisi pour durer.</em></h2>
+
+      <p>
+        Chaque brique technique a été choisie pour résister à dix ans, idéalement plus. Pas
+        de mode passagère, pas de framework qui mourra dans dix-huit mois.
+      </p>
+
+      <div class="stack-grid">
+
+        <article class="stack-item">
+          <p class="label">Ledger</p>
+          <h3><em>XRPL</em></h3>
+          <p>
+            Quatorze ans sans interruption. Carbon-zero certifié 2020. Settlement 3 à 5
+            secondes. Standard XLS-20 NFT natif.
+            <em>Pas Ethereum (énergivore). Pas Solana (instable). XRPL.</em>
+          </p>
+        </article>
+
+        <article class="stack-item">
+          <p class="label">Identité</p>
+          <h3><em>EUDI Wallet</em></h3>
+          <p>
+            Wallet européen souverain. Selective disclosure. Conforme RGPD par construction.
+            <em>Pas de Sign-In-With-Google. Pas de Worldcoin. Souveraineté EU.</em>
+          </p>
+        </article>
+
+        <article class="stack-item">
+          <p class="label">Stockage perpétuel</p>
+          <h3><em>IPFS + Filecoin</em></h3>
+          <p>
+            Multi-pinning Pinata + Web3.Storage. Filecoin contract Year 5+. Archive partenaire
+            physique Cité Mulhouse.
+            <em>5 couches de redondance.</em>
+          </p>
+        </article>
+
+        <article class="stack-item">
+          <p class="label">Backend</p>
+          <h3><em>Supabase + Cloudflare</em></h3>
+          <p>
+            Supabase Frankfurt (PostgreSQL EU). Cloudflare Workers edge.
+            <em>Hébergé EU exclusivement. RGPD natif. Lean tant qu'on peut.</em>
+          </p>
+        </article>
+
+        <article class="stack-item">
+          <p class="label">Privacy</p>
+          <h3><em>RGPD foundational</em></h3>
+          <p>
+            Articles 13 à 22 implémentés structurellement. Self-service portal. DPO externe
+            indépendant. AIPD publique.
+            <em>Privacy by construction, pas by marketing.</em>
+          </p>
+        </article>
+
+        <article class="stack-item">
+          <p class="label">Accessibility</p>
+          <h3><em>WCAG 2.2 AA → AAA</em></h3>
+          <p>
+            AA Year 1, AAA target Year 5. EU Accessibility Act 2025 conforme. NVDA, JAWS,
+            VoiceOver, TalkBack testés.
+            <em>5 catégories de handicaps couvertes.</em>
+          </p>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         CONTACT
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="contact" aria-labelledby="contact-title">
+      <p class="eyebrow">Contact</p>
+      <h2 id="contact-title"><em>Joindre l'association.</em></h2>
+
+      <p>
+        CARNET est joignable par email. Pour Year -1, aucun téléphone, aucune adresse postale
+        publique. La permanence physique sera ouverte Year 2 dans un local à définir, après
+        l'AG inaugurale du 14 décembre 2026.
+      </p>
+
+      <ul style="list-style: none; padding: 0; margin: var(--s-5) 0; font-family: var(--editorial); font-size: 16px; line-height: 1.8;">
+        <li><strong style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gris);">Général</strong> · <code style="color: var(--encre);">contact@carnet.life</code></li>
+        <li><strong style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gris);">Presse</strong> · <code style="color: var(--encre);">press@carnet.life</code></li>
+        <li><strong style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gris);">DPO</strong> · <code style="color: var(--encre);">dpo@carnet.life</code></li>
+        <li><strong style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gris);">Founder Circle</strong> · <code style="color: var(--encre);">founders@carnet.life</code></li>
+        <li><strong style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gris);">Auth (magic link)</strong> · <code style="color: var(--encre);">auth@carnet.life</code></li>
+      </ul>
+
+      <div class="cta-row">
+        <a href="discover.html" class="cta cta-primary">
+          <span class="dot" aria-hidden="true"></span>
+          Retour à Discover
+        </a>
+        <a href="launch.html" class="cta cta-ghost">14·12·2026 Mulhouse</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════════════════════════ -->
+  <footer class="carnet-footer">
+    <p class="footer-tagline"><em>Une histoire de voitures.</em></p>
+
+    <nav class="footer-nav" aria-label="Pages utilitaires">
+      <a href="discover.html">Discover</a>
+      <a href="archetypes.html">Archétypes</a>
+      <a href="launch.html">14·12·2026</a>
+      <a href="about.html">À propos</a>
+      <a href="#privacy">Confidentialité</a>
+      <a href="#security">Sécurité</a>
+      <a href="#accessibility">Accessibilité</a>
+      <a href="#statutes">Statuts</a>
+      <a href="#transparency">Transparence</a>
+    </nav>
+
+    <p class="footer-legal">
+      CARNET · Association loi 1901 française non-lucrative familiale<br />
+      [Adresse siège] · [Numéro RNA à venir préfecture]<br />
+      Hash IPFS statuts&nbsp;: [à générer au big bang launch 14 décembre 2026]<br />
+      Wallet officiel multisig 3/3&nbsp;: <code>rJBhnYvg5kq9PgWFZziEXu2EcdJfcq8WSU</code>
+    </p>
+  </footer>
+
+</body>
+</html>
