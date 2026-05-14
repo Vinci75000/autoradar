@@ -17805,6 +17805,107 @@ function updateGarageFormStateDebug(){
   if(el) el.innerHTML = renderGarageFormStateDebug();
 }
 
+// ─── Lot 46 · le pont annonce → enchère (sens inverse) ───
+// Miroir de findMarketBridge : depuis une annonce en vente fixe,
+// cherche les ENCHÈRES du même modèle. Filtre status !== 'sold' :
+// une enchère close n'a aucune valeur actionnable depuis une annonce
+// — on ne propose que ce qui est encore jouable (live + upcoming).
+// Tri par hOffset croissant : la clôture la plus proche en tête.
+function findAuctionBridge(listing){
+  if(!listing) return [];
+  // Source : liveAuctions (DB) sinon mock AUCTIONS — démo = prod.
+  var pool = (State.liveAuctions && State.liveAuctions.length)
+    ? State.liveAuctions
+    : ((typeof AUCTIONS !== 'undefined') ? AUCTIONS : []);
+  if(!pool.length) return [];
+  var brand = String(listing.mk || '').trim().toLowerCase();
+  var model = String(listing.mo || '').trim().toLowerCase();
+  var year = parseInt(listing.yr, 10);
+  if(!brand || !model) return [];
+  function modelMatch(auctionModel){
+    var mm = String(auctionModel || '').trim().toLowerCase();
+    if(!mm) return false;
+    return mm.indexOf(model) !== -1 || model.indexOf(mm) !== -1;
+  }
+  var lvl1 = [], lvl2 = [];
+  for(var i = 0; i < pool.length; i++){
+    var au = pool[i];
+    // Seul l'actionnable : on écarte les enchères terminées.
+    if(au.status === 'sold') continue;
+    if(String(au.brand || '').trim().toLowerCase() !== brand) continue;
+    if(!modelMatch(au.model)) continue;
+    var ay = parseInt(au.year, 10);
+    var dy = (!isNaN(year) && !isNaN(ay)) ? Math.abs(year - ay) : 99;
+    if(dy <= 2) lvl1.push(au);
+    else if(dy <= 5) lvl2.push(au);
+  }
+  // Niveau 1 prioritaire ; à défaut niveau 2. Tri hOffset croissant
+  // (clôture / ouverture la plus proche d'abord), 3 max.
+  var picked = lvl1.length ? lvl1 : lvl2;
+  picked = picked.slice().sort(function(a, b){
+    return (parseFloat(a.hOffset) || 0) - (parseFloat(b.hOffset) || 0);
+  });
+  return picked.slice(0, 3);
+}
+
+// ─── Lot 46 · rendu du bloc pont annonce → enchère ───
+// Réutilise les classes .sheet-detail-bridge* du Lot 45 (aucun style
+// neuf). Renvoie '' si aucun match → bloc purement additif.
+function renderListingBridgeBlock(listing){
+  var matches = findAuctionBridge(listing);
+  if(!matches.length) return '';
+  var items = matches.map(function(au){
+    // Prix affiché : enchère actuelle si live, estimation sinon.
+    var priceTxt, priceLabel;
+    if(au.status === 'live' && (parseFloat(au.bidCurrent) || 0) > 0){
+      priceTxt = esc(fmtAuctionPrice(au.bidCurrent));
+      priceLabel = 'ench\u00e8re actuelle';
+    } else {
+      priceTxt = esc(fmtRange(au.estimateLow, au.estimateHigh));
+      priceLabel = 'estimation';
+    }
+    // Ligne temps : clôture (live) ou ouverture (upcoming).
+    var timeTxt = '';
+    if(typeof formatTimeLeft === 'function'){
+      var tl = formatTimeLeft(au.hOffset);
+      timeTxt = (au.status === 'live') ? ('cl\u00f4ture dans ' + tl) : ('ouverture dans ' + tl);
+    }
+    var src = esc(au.source || '');
+    var lot = au.lot ? (' \u00b7 ' + esc(au.lot)) : '';
+    return '<div class="sheet-detail-bridge-item" data-action="openAuction" data-auction="' + esc(au.id) + '">'
+      + '<div class="sheet-detail-bridge-item-main">'
+      + '<div class="sheet-detail-bridge-item-model">' + esc(au.model || '') + '</div>'
+      + '<div class="sheet-detail-bridge-item-meta">' + esc(au.year || '') + ' \u00b7 ' + src + lot
+      + (timeTxt ? ' \u00b7 ' + timeTxt : '') + '</div>'
+      + '</div>'
+      + '<div class="sheet-detail-bridge-item-price">'
+      + '<div class="sheet-detail-bridge-item-price-value">' + priceTxt + '</div>'
+      + '<div class="sheet-detail-bridge-item-price-delta" style="color:var(--gris)">' + priceLabel + '</div>'
+      + '</div>'
+      + '</div>';
+  }).join('');
+  // Voix CARNET temporelle : on prend la plus urgente (matches[0],
+  // déjà trié par hOffset croissant).
+  var first = matches[0];
+  var voice;
+  var firstSrc = esc(first.source || 'une maison de vente');
+  if(first.status === 'live'){
+    var tlLive = (typeof formatTimeLeft === 'function') ? formatTimeLeft(first.hOffset) : '';
+    voice = 'Une \u00e9quivalente est aux ench\u00e8res chez ' + firstSrc
+      + (tlLive ? ' \u2014 cl\u00f4ture dans ' + tlLive + '.' : '.');
+  } else {
+    var tlUp = (typeof formatTimeLeft === 'function') ? formatTimeLeft(first.hOffset) : '';
+    voice = 'Une \u00e9quivalente passe aux ench\u00e8res chez ' + firstSrc
+      + (tlUp ? ' \u2014 ouverture dans ' + tlUp + '.' : '.');
+  }
+  var label = matches.length === 1 ? 'Aussi aux ench\u00e8res' : 'Aussi aux ench\u00e8res \u00b7 ' + matches.length + ' lots';
+  return '<div class="sheet-detail-bridge">'
+    + '<div class="sheet-detail-bridge-label">' + label + '</div>'
+    + items
+    + '<div class="sheet-detail-bridge-voice">' + voice + '</div>'
+    + '</div>';
+}
+
 function renderListingSheet(l){
   if(!l) return '';
   const chips = Array.isArray(l.ch) ? l.ch : String(l.ch || '').split(/[·,]/).map(s => s.trim()).filter(Boolean);
@@ -17841,6 +17942,7 @@ function renderListingSheet(l){
         <div class="sheet-detail-row"><span class="sheet-detail-row-label">Marchand</span><span class="sheet-detail-row-value">${esc(l.src)}</span></div>
         <div class="sheet-detail-row"><span class="sheet-detail-row-label">Score CARNET</span><span class="sheet-detail-row-value">${l.sc} / 100</span></div>
       </div>
+      ${renderListingBridgeBlock(l)}
     </div>
     <div class="sheet-actions">
       <button class="sheet-btn primary full" data-action="viewListingExternal" data-id="${esc(l.id)}">Voir l'annonce sur ${esc(l.src)}</button>
