@@ -10224,6 +10224,40 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
    /LOT 17 (Phase α)
    ═══════════════════════════════════════════════════════════════════════ */
 
+/* ═══════════════════════════════════════════════════════════════════════
+   LOT 18 (Phase α) — CTA principal .new-alert-btn refonte φ
+   Aligne le CTA page-level sur le langage de boutons v5.4x (.sheet-btn).
+   Couleur encre noir conservée (présence page-level distincte du in-sheet).
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.new-alert-btn {
+  height: auto;
+  min-height: 55px;
+  padding: 17px 21px;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: opacity var(--duration-fast) ease,
+              background var(--duration-fast) ease,
+              transform var(--duration-fast) ease;
+}
+.new-alert-btn:active {
+  background: #0d0d0d;
+  opacity: 1;
+  transform: scale(0.985);
+}
+
+/* Le « + » conserve l'orange polo — lien chromatique avec la charte */
+.new-alert-plus {
+  font-size: 16px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   /LOT 18 (Phase α)
+   ═══════════════════════════════════════════════════════════════════════ */
+
 </style>
   <!-- v6.0 : Supabase JS SDK pour connexion live à carnet.life DB -->
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
