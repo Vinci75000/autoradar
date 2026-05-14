@@ -1,0 +1,414 @@
+#!/usr/bin/env python3
+"""
+CARNET · Lot 12 (Phase α) — Page Transparency
+
+Source        : Création d'une nouvelle page standalone transparency.html
+                (transparence financière + gouvernance Year -1) + lien
+                dans menu user dropdown d'index.html.
+
+Scope         : Page de transparence — différenciateur clé d'une asso
+                loi 1901 non lucrative. 10 sections :
+                  1. Notre statut juridique
+                  2. Gouvernance & bénévoles
+                  3. Sources de revenus
+                  4. Allocation budgétaire
+                  5. Wallet officiel XRPL (public + auditable)
+                  6. NFT XLS-20 & royalties
+                  7. Sous-traitants & fournisseurs
+                  8. Open source & code
+                  9. Comptes annuels
+                  10. Demande d'information
+
+Hors scope    : Publication comptes audités (Year 1 — 2027)
+                Rapport d'activité annuel (Year 1)
+                Statuts complets de l'asso en PDF (à venir)
+
+Pipeline du script (pattern Lot 9/10/11) :
+  - Étape A : créer/mettre à jour transparency.html (idempotence md5)
+  - Étape B : patcher index.html pour ajouter lien menu user
+
+Prérequis : Lot 11 (Phase α) appliqué
+Usage     :
+    python3 apply_transparency_lot12.py path/to/index.html
+    python3 apply_transparency_lot12.py path/to/index.html --dry-run
+"""
+
+import sys
+import hashlib
+import argparse
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).parent))
+from carnet_patch_lib import Patch, PatchSet, _Style
+
+
+# ═══════════════════════════════════════════════════════════════════════
+# PARTIE A — Contenu du fichier transparency.html
+# ═══════════════════════════════════════════════════════════════════════
+
+TRANSPARENCY_HTML = """<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CARNET · Transparence · finances et gouvernance</title>
+  <meta name="description" content="Transparence CARNET — d'où vient l'argent, où il va, qui décide. Asso loi 1901, wallet XRPL public auditable.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,400;1,500;1,600&family=Cormorant+Garamond:ital,wght@1,400;1,500;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="carnet-tokens.css">
+  <style>
+    body { margin: 0; font-family: var(--sans); background: var(--papier); color: var(--encre); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    a { color: var(--orange-polo); text-decoration: none; }
+    a:hover { text-decoration: underline; text-underline-offset: 3px; }
+    .topbar { padding: 14px 22px; border-bottom: 1px solid var(--gris-line); display: flex; justify-content: space-between; align-items: center; background: var(--papier); position: sticky; top: 0; z-index: 5; }
+    .topbar-wordmark { display: flex; gap: 7px; align-items: baseline; }
+    .topbar-dot { width: 7px; height: 7px; background: var(--orange-polo); border-radius: 1px; display: inline-block; }
+    .topbar-name { font-family: var(--display); font-style: italic; font-size: 18px; color: var(--encre); }
+    .topbar-back { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; color: var(--gris); text-transform: uppercase; }
+    .topbar-back:hover { color: var(--orange-polo); }
+    .ed-nav { display: flex; gap: 22px; padding: 10px 22px; border-bottom: 1px solid var(--gris-line); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .ed-nav a { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gris); white-space: nowrap; }
+    .ed-nav a:hover { color: var(--orange-polo); }
+    main { max-width: 700px; margin: 0 auto; padding: 40px 22px 80px; }
+    .hero-eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; color: var(--gris); text-transform: uppercase; margin: 0 0 12px 0; }
+    h1 { font-family: var(--display); font-style: italic; font-weight: 500; font-size: 48px; line-height: 0.95; letter-spacing: -0.015em; margin: 0 0 16px 0; color: var(--encre); }
+    .hero-sub { font-family: var(--editorial); font-style: italic; font-size: 17px; line-height: 1.5; color: var(--encre-soft); margin: 0 0 28px 0; }
+    .hero-meta { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; color: var(--gris); text-transform: uppercase; margin: 0; }
+    .toc { margin: 32px 0 40px; padding: 20px 22px; background: #FAFAF7; border: 1px solid var(--gris-line); border-radius: var(--r); }
+    .toc-title { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; color: var(--gris); text-transform: uppercase; margin: 0 0 12px 0; }
+    .toc ol { list-style: none; counter-reset: toc; padding: 0; margin: 0; column-count: 1; }
+    @media (min-width: 600px) { .toc ol { column-count: 2; column-gap: 28px; } }
+    .toc li { counter-increment: toc; padding: 4px 0; font-family: var(--editorial); font-style: italic; font-size: 15px; break-inside: avoid; }
+    .toc li::before { content: counter(toc, decimal-leading-zero) ". "; font-family: var(--mono); font-style: normal; font-size: 11px; color: var(--orange-polo); margin-right: 6px; }
+    .toc li a { color: var(--encre); }
+    .toc li a:hover { color: var(--orange-polo); text-decoration: none; }
+    section { margin: 0 0 40px 0; scroll-margin-top: 90px; }
+    .section-eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; color: var(--orange-polo); text-transform: uppercase; margin: 0 0 8px 0; }
+    h2 { font-family: var(--display); font-style: italic; font-weight: 500; font-size: 28px; line-height: 1.1; letter-spacing: -0.01em; margin: 0 0 14px 0; color: var(--encre); }
+    section p { font-size: 15px; line-height: 1.65; color: var(--encre-soft); margin: 0 0 14px 0; }
+    section p strong { color: var(--encre); font-weight: 600; }
+    section ul { padding-left: 0; list-style: none; margin: 0 0 14px 0; }
+    section ul li { position: relative; padding: 6px 0 6px 22px; font-size: 15px; line-height: 1.55; color: var(--encre-soft); }
+    section ul li::before { content: "·"; position: absolute; left: 8px; top: 6px; font-family: var(--mono); color: var(--orange-polo); }
+    section ul li strong { color: var(--encre); font-weight: 600; }
+    .callout { padding: 16px 18px; background: #FAFAF7; border-left: 3px solid var(--vert-anglais); border-radius: var(--r); margin: 14px 0; }
+    .callout p { margin: 0; font-family: var(--editorial); font-style: italic; font-size: 14px; color: var(--encre); }
+    code { font-family: var(--mono); font-size: 13px; background: #FAFAF7; padding: 1px 5px; border-radius: 2px; word-break: break-all; }
+    .wallet-card { padding: 22px; background: var(--encre); color: var(--papier); border-radius: var(--r); margin: 18px 0; }
+    .wallet-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; color: #9FE1CB; text-transform: uppercase; margin: 0 0 10px 0; }
+    .wallet-addr { font-family: var(--mono); font-size: 13px; color: var(--papier); background: rgba(244,241,234,0.1); padding: 10px 12px; border-radius: var(--r); display: block; margin: 0 0 14px 0; word-break: break-all; }
+    .wallet-links { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+    .wallet-links li { padding: 0; }
+    .wallet-links li::before { content: none; }
+    .wallet-links a { display: inline-block; padding: 6px 12px; background: rgba(159,225,203,0.1); border: 1px solid #9FE1CB; border-radius: var(--r); font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: #9FE1CB; }
+    .wallet-links a:hover { background: #9FE1CB; color: var(--encre); text-decoration: none; }
+    .alloc-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin: 14px 0; }
+    @media (min-width: 600px) { .alloc-grid { grid-template-columns: 1fr 1fr; } }
+    .alloc-card { padding: 16px 18px; background: #FAFAF7; border: 1px solid var(--gris-line); border-radius: var(--r); }
+    .alloc-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; color: var(--gris); text-transform: uppercase; margin: 0 0 6px 0; }
+    .alloc-title { font-family: var(--display); font-style: italic; font-size: 18px; color: var(--encre); margin: 0 0 6px 0; line-height: 1.2; }
+    .alloc-desc { font-family: var(--editorial); font-style: italic; font-size: 14px; color: var(--encre-soft); margin: 0; line-height: 1.4; }
+    footer { max-width: 700px; margin: 60px auto 0; padding: 32px 22px 80px; border-top: 1px solid var(--gris-line); }
+    .footer-meta { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; color: var(--gris); margin: 0 0 6px 0; }
+    .footer-contact { font-family: var(--editorial); font-style: italic; font-size: 15px; color: var(--encre-soft); margin: 0; }
+    .footer-contact a { color: var(--encre); border-bottom: 1px solid var(--gris-line); padding-bottom: 1px; }
+    .footer-contact a:hover { color: var(--orange-polo); border-bottom-color: var(--orange-polo); }
+    @media (min-width: 600px) { h1 { font-size: 60px; } h2 { font-size: 32px; } main { padding: 60px 32px 100px; } }
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <a href="index.html" class="topbar-wordmark" style="text-decoration:none;">
+    <span class="topbar-dot"></span>
+    <span class="topbar-name">CARNET</span>
+  </a>
+  <a href="index.html" class="topbar-back">← retour</a>
+</header>
+
+<nav class="ed-nav" aria-label="Navigation éditoriale">
+  <a href="discover.html">Discover</a>
+  <a href="archetypes.html">Archétypes</a>
+  <a href="launch.html">14·12·2026</a>
+  <a href="about.html">About</a>
+</nav>
+
+<main>
+
+  <p class="hero-eyebrow">Transparence financière et gouvernance</p>
+  <h1><em>Tout est ouvert.</em></h1>
+  <p class="hero-sub">CARNET est une association loi 1901 à but non lucratif. Aucun salarié, aucun dividende. L'argent qui rentre finance l'infrastructure et des événements automobiles avec des enfants. Voici exactement comment, et où vérifier.</p>
+  <p class="hero-meta">Version 1.0 · 14 mai 2026</p>
+
+  <div class="toc">
+    <p class="toc-title">Sommaire</p>
+    <ol>
+      <li><a href="#section-1">Notre statut juridique</a></li>
+      <li><a href="#section-2">Gouvernance et bénévoles</a></li>
+      <li><a href="#section-3">Sources de revenus</a></li>
+      <li><a href="#section-4">Allocation budgétaire</a></li>
+      <li><a href="#section-5">Wallet officiel XRPL</a></li>
+      <li><a href="#section-6">NFT XLS-20 et royalties</a></li>
+      <li><a href="#section-7">Sous-traitants</a></li>
+      <li><a href="#section-8">Open source</a></li>
+      <li><a href="#section-9">Comptes annuels</a></li>
+      <li><a href="#section-10">Demande d'information</a></li>
+    </ol>
+  </div>
+
+  <section id="section-1">
+    <p class="section-eyebrow">01 · Statut</p>
+    <h2>Notre statut juridique.</h2>
+    <p>L'<strong>Association Carnet</strong> est une association loi du 1<sup>er</sup> juillet 1901, déclarée en préfecture, <strong>à but non lucratif</strong>. Ses caractéristiques :</p>
+    <ul>
+      <li><strong>Aucun salarié</strong> — seulement des bénévoles.</li>
+      <li><strong>Aucune distribution de bénéfices</strong> — pas de dividendes, pas de stock-options.</li>
+      <li><strong>Aucun investisseur</strong> — pas de VC, pas d'actionnaires, pas de cap table.</li>
+      <li><strong>Excédents</strong> (si excédents il y a en fin d'exercice) entièrement réinvestis dans la mission.</li>
+    </ul>
+    <div class="callout">
+      <p>Acronymes officiels : <em>Carnet Automatisé Référentiel du Négoce Et de la Transparence</em> (FR) · <em>Curated Automotive Records Network for Exchange and Trust</em> (EN). La <em>Transparence</em> est dans le nom — cette page existe pour la prouver.</p>
+    </div>
+  </section>
+
+  <section id="section-2">
+    <p class="section-eyebrow">02 · Gouvernance</p>
+    <h2>Gouvernance et bénévoles.</h2>
+    <p>La gouvernance s'exerce conformément aux statuts de l'association :</p>
+    <ul>
+      <li><strong>Assemblée Générale annuelle</strong> — tous les membres votent les comptes, le rapport d'activité, et élisent le bureau.</li>
+      <li><strong>Bureau</strong> — président, trésorier, secrétaire, bénévoles élus à l'AG.</li>
+      <li><strong>Mandats limités dans le temps</strong> — pas de président à vie.</li>
+      <li><strong>PV des AG publiés</strong> sur demande (à <a href="mailto:auth@carnet.life">auth@carnet.life</a>) — politique de full disclosure interne.</li>
+    </ul>
+    <p>Les statuts complets seront mis à disposition en PDF à partir de la première AG ordinaire.</p>
+  </section>
+
+  <section id="section-3">
+    <p class="section-eyebrow">03 · Revenus</p>
+    <h2>Sources de revenus.</h2>
+    <p>CARNET n'a que <strong>deux</strong> sources de revenus, et c'est volontaire :</p>
+    <ul>
+      <li><strong>Donations utilisateurs en RLUSD</strong> — vous donnez ce que vous voulez, quand vous voulez. Tout passe par notre wallet officiel XRPL (voir section 5).</li>
+      <li><strong>Royalties sur cession de NFT XLS-20</strong> — chaque certificat de voiture émis génère <strong>1,7 %</strong> de royalties à l'asso lors d'une cession future (vente, donation, succession). Ce taux est inscrit on-chain dans le NFT lui-même, pas dans une promesse.</li>
+    </ul>
+    <p>Ce que nous ne faisons <strong>pas</strong> et ne ferons jamais :</p>
+    <ul>
+      <li>Pas de publicité.</li>
+      <li>Pas de vente de données.</li>
+      <li>Pas d'abonnement premium qui débloquerait des fonctionnalités essentielles. La passion automobile ne se paie pas en SaaS.</li>
+      <li>Pas de subvention publique conditionnée à un objectif commercial.</li>
+    </ul>
+  </section>
+
+  <section id="section-4">
+    <p class="section-eyebrow">04 · Allocation</p>
+    <h2>Allocation budgétaire.</h2>
+    <p>L'argent collecté est alloué selon deux postes clairs :</p>
+
+    <div class="alloc-grid">
+      <div class="alloc-card">
+        <p class="alloc-label">Poste 1 · ~50%</p>
+        <p class="alloc-title">Infrastructure</p>
+        <p class="alloc-desc">Hébergement (Supabase, Cloudflare, Vercel), nom de domaine, frais XRPL, API Claude pour le scoring. Tout ce qui fait tourner le service au quotidien.</p>
+      </div>
+      <div class="alloc-card">
+        <p class="alloc-label">Poste 2 · ~50%</p>
+        <p class="alloc-title">Événements automobiles avec enfants</p>
+        <p class="alloc-desc">Rassemblements ouverts à des enfants (orphelinats, familles modestes, hôpitaux) pour qu'ils découvrent des voitures qui les font rêver. C'est notre raison d'être au-delà du logiciel.</p>
+      </div>
+    </div>
+
+    <p>Cette répartition est indicative pour Year -1 et Year 1 (jusqu'à ce qu'on ait du recul). Elle sera ajustée selon les volumes réels et validée à chaque AG annuelle.</p>
+  </section>
+
+  <section id="section-5">
+    <p class="section-eyebrow">05 · Wallet</p>
+    <h2>Wallet officiel XRPL.</h2>
+    <p>Toutes les transactions financières de l'association passent par <strong>un seul wallet XRPL public</strong>. Toute l'activité est consultable en temps réel par n'importe qui, sans demander la permission à personne — c'est la nature du ledger XRPL.</p>
+
+    <div class="wallet-card">
+      <p class="wallet-label">Adresse officielle Association Carnet</p>
+      <code class="wallet-addr">rJBhnYvg5kq9PgWFZziEXu2EcdJfcq8WSU</code>
+      <ul class="wallet-links">
+        <li><a href="https://livenet.xrpl.org/accounts/rJBhnYvg5kq9PgWFZziEXu2EcdJfcq8WSU" target="_blank" rel="noopener">livenet.xrpl.org →</a></li>
+        <li><a href="https://bithomp.com/explorer/rJBhnYvg5kq9PgWFZziEXu2EcdJfcq8WSU" target="_blank" rel="noopener">bithomp.com →</a></li>
+        <li><a href="https://xrpscan.com/account/rJBhnYvg5kq9PgWFZziEXu2EcdJfcq8WSU" target="_blank" rel="noopener">xrpscan.com →</a></li>
+      </ul>
+    </div>
+
+    <p>Vous pouvez à tout moment vérifier :</p>
+    <ul>
+      <li>Le solde actuel du wallet (donations reçues + royalties reçues − dépenses effectuées).</li>
+      <li>L'historique complet de toutes les transactions, datées, avec leurs mémos.</li>
+      <li>Les NFT XLS-20 émis depuis ce wallet.</li>
+    </ul>
+  </section>
+
+  <section id="section-6">
+    <p class="section-eyebrow">06 · NFT</p>
+    <h2>NFT XLS-20 et royalties.</h2>
+    <p>Chaque voiture inscrite dans CARNET peut recevoir un <strong>certificat NFT XLS-20</strong> à la demande de son propriétaire. Ce certificat :</p>
+    <ul>
+      <li><strong>Atteste l'historique on-chain</strong> de la voiture — entretiens signés, ancien propriétaires, certificats provenance.</li>
+      <li><strong>Survit à CARNET</strong> — si l'asso disparaît demain, le NFT reste sur XRPL.</li>
+      <li><strong>Inscrit un taux de royalties de 1,7 %</strong> au profit de l'asso lors de cession future. Le taux est <strong>inscrit on-chain</strong> dans le standard XLS-20 — ce n'est pas une promesse contractuelle, c'est une règle technique enforceable.</li>
+    </ul>
+    <p>Le mint coûte environ <strong>0,01 XRP</strong> (frais réseau XRPL). Aucune commission CARNET au mint.</p>
+  </section>
+
+  <section id="section-7">
+    <p class="section-eyebrow">07 · Sous-traitants</p>
+    <h2>Sous-traitants et fournisseurs.</h2>
+    <p>Liste exhaustive des sous-traitants techniques et financiers de l'association :</p>
+    <ul>
+      <li><strong>Supabase GmbH</strong> (Allemagne) — base PostgreSQL, Auth, Storage. Plan free → Pro $25/mo à partir de ~50k utilisateurs actifs.</li>
+      <li><strong>Cloudflare Inc.</strong> (USA) — Workers + R2 + CDN. Plan free.</li>
+      <li><strong>Vercel Inc.</strong> (USA) — hébergement frontend. Plan hobby (free).</li>
+      <li><strong>Anthropic PBC</strong> (USA) — API Claude pour LLM scoring/extraction. Budget cible &lt;50€/mois.</li>
+      <li><strong>Xaman / xrpl-labs B.V.</strong> (Pays-Bas) — signature wallet XRPL. Plan Developer (free).</li>
+      <li><strong>XRPL Foundation</strong> — ledger public, frais réseau ~0,01 € par transaction.</li>
+      <li><strong>Private Email (NameCheap)</strong> — email transactionnel auth@carnet.life.</li>
+    </ul>
+    <p>Aucun de ces fournisseurs n'a de participation dans l'asso. Tous sont sélectionnés sur critère technique et coût.</p>
+  </section>
+
+  <section id="section-8">
+    <p class="section-eyebrow">08 · Code</p>
+    <h2>Open source.</h2>
+    <p>Le code de CARNET est actuellement <strong>source-visible</strong> mais pas encore officiellement open source — nous voulons stabiliser l'architecture avant de publier sous licence permissive.</p>
+    <p>Repos publics consultables :</p>
+    <ul>
+      <li><strong>autoradar</strong> (frontend) — <code>github.com/Vinci75000/autoradar</code></li>
+      <li><strong>autoradar-scraper</strong> (backend scraping + cron) — <code>github.com/Vinci75000/autoradar-scraper</code></li>
+    </ul>
+    <p>L'objectif Year 1 (2027) est de publier sous une licence type <strong>MIT</strong> ou <strong>Apache 2.0</strong> les composants stabilisés. Les contributions externes sont les bienvenues — écrivez à <a href="mailto:auth@carnet.life">auth@carnet.life</a> pour discuter de la modalité.</p>
+  </section>
+
+  <section id="section-9">
+    <p class="section-eyebrow">09 · Comptes</p>
+    <h2>Comptes annuels.</h2>
+    <p>Les comptes annuels de l'association sont préparés à la clôture de chaque exercice fiscal et présentés à l'AG annuelle pour validation.</p>
+    <ul>
+      <li><strong>Year -1 (2026)</strong> — exercice en cours. Comptes en cours d'établissement.</li>
+      <li><strong>Year 1 (2027)</strong> — premiers comptes complets publiés ici, format PDF, après validation AG.</li>
+      <li><strong>Year 2+</strong> — comptes audités par un commissaire aux comptes bénévole (à organiser).</li>
+    </ul>
+    <p>Les chiffres détaillés seront disponibles : recettes (donations + royalties), dépenses par poste, solde, soldes wallet XRPL début/fin d'exercice.</p>
+  </section>
+
+  <section id="section-10">
+    <p class="section-eyebrow">10 · Demande</p>
+    <h2>Demande d'information.</h2>
+    <p>Si vous avez une question précise sur les finances, la gouvernance, une transaction spécifique du wallet, ou tout autre sujet relevant de la transparence, écrivez à <a href="mailto:auth@carnet.life">auth@carnet.life</a> avec <strong>[TRANSPARENCE]</strong> en sujet.</p>
+    <p>Nous répondons sous <strong>15 jours ouvrés</strong>. Si la réponse demande à être documentée pour tous, nous l'ajoutons à cette page sous forme de FAQ.</p>
+  </section>
+
+</main>
+
+<footer>
+  <p class="footer-meta">CARNET · Association loi 1901 · à but non lucratif</p>
+  <p class="footer-contact">Contact transparence : <a href="mailto:auth@carnet.life">auth@carnet.life</a> (préfixe [TRANSPARENCE])</p>
+</footer>
+
+</body>
+</html>
+"""
+
+
+# ═══════════════════════════════════════════════════════════════════════
+# PARTIE B — Patch du menu user dropdown
+# Insertion entre "Accessibilité" (Lot 11) et "Se déconnecter"
+# ═══════════════════════════════════════════════════════════════════════
+
+PATCH_INDEX_ANCHOR = """          <a class="user-menu-item" href="accessibility.html" style="text-decoration:none;" data-lot11="accessibility">
+            <span>Accessibilité</span>
+            <span class="user-menu-chevron">→</span>
+          </a>
+          <button class="user-menu-item" data-action="signOut">"""
+
+PATCH_INDEX_REPLACEMENT = """          <a class="user-menu-item" href="accessibility.html" style="text-decoration:none;" data-lot11="accessibility">
+            <span>Accessibilité</span>
+            <span class="user-menu-chevron">→</span>
+          </a>
+          <a class="user-menu-item" href="transparency.html" style="text-decoration:none;" data-lot12="transparency">
+            <span>Transparence</span>
+            <span class="user-menu-chevron">→</span>
+          </a>
+          <button class="user-menu-item" data-action="signOut">"""
+
+PATCHSET_INDEX = PatchSet(
+    name="Lot 12 (Phase α) — lien Transparency dans menu user",
+    requires=[
+        'data-lot11="accessibility"',
+    ],
+    patches=[
+        Patch(
+            name="Lien Transparence dans user-menu",
+            anchor=PATCH_INDEX_ANCHOR,
+            replacement=PATCH_INDEX_REPLACEMENT,
+            idempotence_marker='data-lot12="transparency"',
+        ),
+    ],
+)
+
+
+# ═══════════════════════════════════════════════════════════════════════
+# PARTIE C — Helper idempotent
+# ═══════════════════════════════════════════════════════════════════════
+
+def _md5(text: str) -> str:
+    return hashlib.md5(text.encode('utf-8')).hexdigest()
+
+
+def ensure_transparency_file(index_path: Path, dry_run: bool = False) -> int:
+    target = index_path.parent / 'transparency.html'
+    expected_md5 = _md5(TRANSPARENCY_HTML)
+
+    print(f"\n{_Style.BOLD}► Lot 12 (Phase α) — Création / mise à jour transparency.html{_Style.RESET}")
+    print(f"  {_Style.GREY}Fichier : {target}{_Style.RESET}")
+
+    if target.exists():
+        current = target.read_text(encoding='utf-8')
+        if _md5(current) == expected_md5:
+            print(f"  {_Style.DIM}◇ transparency.html : déjà à jour (skip, md5 identique){_Style.RESET}")
+            return 0
+        if dry_run:
+            print(f"  {_Style.YELLOW}⚠ transparency.html existe avec contenu différent — sera mis à jour{_Style.RESET}")
+            return 0
+        backup_path = target.with_suffix('.html.before_lot12')
+        if not backup_path.exists():
+            backup_path.write_text(current, encoding='utf-8')
+            print(f"  {_Style.BLUE}▸ Backup{_Style.RESET} : {backup_path.name}")
+        target.write_text(TRANSPARENCY_HTML, encoding='utf-8')
+        print(f"  {_Style.GREEN}✓ transparency.html mis à jour ({len(TRANSPARENCY_HTML):,} chars){_Style.RESET}")
+        return 0
+
+    if dry_run:
+        print(f"  {_Style.YELLOW}⚠ transparency.html n'existe pas — sera créé ({len(TRANSPARENCY_HTML):,} chars){_Style.RESET}")
+        return 0
+    target.write_text(TRANSPARENCY_HTML, encoding='utf-8')
+    print(f"  {_Style.GREEN}✓ transparency.html créé ({len(TRANSPARENCY_HTML):,} chars){_Style.RESET}")
+    return 0
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Apply CARNET Lot 12 (Phase α) — Transparency page + menu lien")
+    parser.add_argument("file", type=Path, help="Path to index.html")
+    parser.add_argument("--dry-run", action="store_true", help="Validate without writing")
+    args = parser.parse_args()
+
+    if not args.file.exists():
+        print(f"Error: {args.file} not found")
+        return 1
+
+    rc_a = ensure_transparency_file(args.file, dry_run=args.dry_run)
+    if rc_a != 0:
+        return rc_a
+
+    return PATCHSET_INDEX.apply(args.file, dry_run=args.dry_run)
+
+
+if __name__ == "__main__":
+    sys.exit(main())
