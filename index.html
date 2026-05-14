@@ -40,8 +40,8 @@
 
   --s-1:4px;
   --s-2:8px;
-  --s-3:12px;
-  --s-4:16px;
+  --s-3:13px;  /* Lot 29 — réaligné sur Fibonacci (était 12px) */
+  --s-4:21px;  /* Lot 30 — réaligné sur Fibonacci (était 16px) */
   --s-5:20px;
   --s-6:24px;
   --s-7:32px;
@@ -206,7 +206,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 }
 
 /* ===== HERO ===== */
-.hero{padding:var(--s-6) var(--s-4) var(--s-3)}
+.hero{padding:var(--fib-5) var(--s-4) var(--s-3)} /* Lot 31 */
 .hero-tag{
   font-family:var(--mono);
   font-size:10px;
@@ -287,7 +287,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 .kpi-delta.neutral{color:var(--gris)}
 
 /* ===== CTA NOUVELLE ALERTE ===== */
-.new-alert-wrap{padding:0 var(--s-4) var(--s-5)}
+.new-alert-wrap{padding:0 var(--s-4) var(--fib-4)} /* Lot 31 */
 .new-alert-btn{
   width:100%;
   height:50px;
@@ -314,7 +314,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 }
 
 /* ===== SECTIONS ===== */
-.section{padding:0 var(--s-4);margin-bottom:var(--s-7)}
+.section{padding:0 var(--s-4);margin-bottom:var(--fib-5)} /* Lot 31 */
 .section-header{
   display:flex;
   align-items:baseline;
@@ -901,7 +901,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 .auction-detail-banner{
   background:var(--encre);
   color:var(--papier);
-  padding:var(--s-5);
+  padding:var(--fib-4); /* Lot 31 */
   border-radius:var(--r);
   margin-bottom:var(--s-4);
   text-align:center;
@@ -932,7 +932,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 
 /* ===== EMPTY STATE — pattern global app (Chunk 7.b) ===== */
 .empty-state{
-  padding:var(--s-6) var(--s-4);
+  padding:var(--fib-5) var(--s-4); /* Lot 31 */
   text-align:center;
   display:flex;
   flex-direction:column;
@@ -1037,7 +1037,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 .onboarding-panel{
   flex:0 0 100%;
   scroll-snap-align:center;
-  padding:var(--s-6) var(--s-4) var(--s-4);
+  padding:var(--fib-5) var(--s-4) var(--s-4); /* Lot 31 */
   display:flex;
   flex-direction:column;
   gap:var(--s-3);
@@ -1600,7 +1600,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 
 /* ===== TOAST CONTENT ===== */
 .toast-content{
-  padding:var(--s-5) var(--s-4) var(--s-4);
+  padding:var(--fib-4) var(--s-4) var(--s-4); /* Lot 31 */
   text-align:center;
 }
 .toast-text{
@@ -1683,7 +1683,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   flex:1;
   min-height:0;
   overflow-y:auto;
-  padding:var(--s-5) var(--s-4) var(--s-5);
+  padding:var(--fib-4) var(--s-4) var(--fib-4); /* Lot 31 */
   -webkit-overflow-scrolling:touch;
 }
 .builder-step-title{
@@ -1702,7 +1702,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   font-size:var(--t-md);
   color:var(--encre-soft);
   line-height:1.35;
-  margin-bottom:var(--s-5);
+  margin-bottom:var(--fib-4); /* Lot 31 */
 }
 .builder-types{display:flex;flex-direction:column;gap:var(--s-2)}
 .builder-type-card{
@@ -1832,7 +1832,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   color:var(--gris);
   line-height:1.2;
 }
-.builder-axis-section{margin-bottom:var(--s-7)}
+.builder-axis-section{margin-bottom:var(--fib-5)} /* Lot 31 */
 .builder-axis-section:last-child{margin-bottom:0}
 .builder-axis-label{
   font-family:var(--mono);
@@ -2339,7 +2339,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   background:var(--encre);
   color:var(--papier-bright);
   border-radius:var(--r);
-  padding:var(--s-5) var(--s-4);
+  padding:var(--fib-4) var(--s-4); /* Lot 31 */
   display:flex;
   flex-direction:column;
   align-items:center;
