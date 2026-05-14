@@ -2,3 +2,14 @@
 *.before_*
 index.html.before_*
 index.bak.*.html
+node_modules/
+.env
+.env.local
+*.log
+.vercel
+_archives/
+*.bak
+
+# CARNET patch backups (auto-générés)
+frontend/*.before_*
+frontend/index.html.bak.*
