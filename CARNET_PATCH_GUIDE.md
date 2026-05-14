@@ -157,10 +157,10 @@ git push origin main
 
 ## ⚠️ Leçons — bugs récurrents et comment les éviter
 
-> Cette section capitalise les bugs rencontrés sur les Lots 1.1 → 22.
+> Cette section capitalise les bugs rencontrés sur les Lots 1.1 → 34.
 > Chacun est apparu **plusieurs fois** avant d'être systématisé. Les lire **avant** d'écrire un patch fait gagner un cycle entier.
 
-### Leçon 1 — Anchor 2-bornes (le bug le plus fréquent · 7 occurrences)
+### Leçon 1 — Anchor 2-bornes (le bug le plus fréquent · 8 occurrences)
 
 **Symptôme** : au re-run, le framework signale `état hybride (marker présent + anchor encore là)` et refuse d'écrire.
 
@@ -188,7 +188,7 @@ Post-patch   :  "AAA\n\nZZZ" n'existe plus en continu → anchor cassée → pro
 
 **Fix d'un patch déjà bugué** : étendre l'anchor pour inclure une borne (la ligne/le commentaire qui suit ou précède immédiatement le point d'insertion). Le fichier déjà patché reste **valide** — le bug n'est que dans le script, pas dans le résultat. Après fix, re-tester l'idempotence des deux côtés : (a) sur le fichier déjà patché → doit skip, (b) from-scratch sur le backup → doit produire le même md5.
 
-*Occurrences : Lots 3, 4, 14 (JS-1), 17, 21 (CSS-1), 24 (JS-2), 23 (JS-7). Le garde-fou v1.1 rend cette leçon auto-appliquée.*
+*Occurrences : Lots 3, 4, 14 (JS-1), 17, 21 (CSS-1), 24 (JS-2), 23 (JS-7), 25 (JS-4). Le garde-fou v1.1 rend cette leçon auto-appliquée — il a chopé JS-7 (Lot 23) et JS-4 (Lot 25) à l'instanciation, avant le moindre dry-run.*
 
 ### Leçon 2 — Raw strings pour les escapes Unicode
 
@@ -298,6 +298,35 @@ Puis ne s'appuyer que sur les champs confirmés. Préférer un champ universel (
 
 *Occurrence : Lot 24 (fullServiceHistory/serviceUpToDate inexistants → bascule sur spec/chassis).*
 
+### Leçon 10 — Vérifier l'indentation RÉELLE du fichier, pas la supposée
+
+**Symptôme** : `ANCHOR NOT FOUND` sur un patch dont le texte semble pourtant exact à la lecture.
+
+**Cause** : l'anchor a été écrite avec une indentation *supposée* (4 espaces, 8 espaces…) qui ne correspond pas à l'indentation *réelle* du fichier. Une anchor est un match exact caractère par caractère — un espace de trop ou de moins et elle ne matche pas.
+
+Cas vécu : au Lot 33, 7 anchors `NOT FOUND` d'un coup — j'avais écrit les anchors en 8 espaces, le fichier était en 6. Au Lot 31, 8 anchors `NOT FOUND` — j'avais supposé une structure `.selecteur{\n    padding` indentée à 4, le fichier était en 2.
+
+**Fix** : avant d'écrire une anchor multi-lignes, vérifier l'indentation réelle au caractère près :
+```bash
+sed -n '<ligne>p' index.html | cat -A          # montre les espaces et le $ de fin
+sed -n '<ligne>p' index.html | od -c | head -3 # octet par octet, sans ambiguïté
+```
+Copier l'indentation telle qu'elle est, pas telle qu'on l'imagine. Le `view` du fichier donne aussi l'indentation exacte — s'y fier plutôt qu'à la mémoire d'une structure « habituelle ».
+
+*Occurrences : Lot 31 (4 espaces supposés, 2 réels), Lot 33 (8 supposés, 6 réels).*
+
+### Leçon 11 — Un audit peut légitimement conclure « RAS »
+
+**Principe** : quand un lot est un *audit* (vérifier que quelque chose fonctionne / est cohérent), le résultat honnête est parfois « tout est sain, aucun patch nécessaire ». Il ne faut pas forcer un patch pour « livrer quelque chose ».
+
+Cas vécu : l'audit des animations (après les Lots 28-34) cherchait des durées aberrantes, des keyframes orphelins, l'absence de `prefers-reduced-motion`. Résultat : 19 keyframes tous définis ET utilisés, durées cohérentes, `prefers-reduced-motion` déjà couvert globalement. Les « durées aberrantes » soupçonnées (`0ms`, `8s`, `720s`) étaient des **faux positifs de grep** — `0ms` = `animation-delay` du 1er élément d'une cascade (correct), `8s`/`720s` capturés hors contexte animation.
+
+**Fix** : présenter le constat « RAS » comme un résultat à part entière, avec la preuve de ce qui a été vérifié. Forcer un patch cosmétique sur du code déjà sain irait contre « robuste » et « debug together, don't rewrite ». Un audit qui conclut « c'est bon » a fait son travail.
+
+**Corollaire** — se méfier de ses propres `grep` larges : un motif comme `[0-9]+s` capture `0.15s` comme `15s`, et `1.618` n'est pas une durée. Toujours vérifier le *contexte* d'un résultat suspect avant de conclure à un bug.
+
+*Occurrence : audit animations post-Lot 34 (conclu sain, aucun lot produit).*
+
 ---
 
 ## Conventions
@@ -379,7 +408,7 @@ Calibrer sur une classe dont on connaît le niveau (ex. `.sheet-btn` est au nive
 
 ## Roadmap des lots CARNET
 
-### Lots livrés · 1.1 → 22 (tous sur `main`)
+### Lots livrés · 1.1 → 34 (tous sur `main`)
 
 | Lot | Phase | Domaine | Marker / fichier |
 |---|---|---|---|
@@ -408,18 +437,35 @@ Calibrer sur une classe dont on connaît le niveau (ex. `.sheet-btn` est au nive
 | 22 | α | Form components — unification des ticks (`.tick` canonique) | `Lot 22 — .tick` |
 | 23 | α | Migration archétypes legacy (`non_driver`→`mondain`, `social`→`mousquetaire`) + migration localStorage | `Lot 23 — non_driver→mondain` |
 | 24 | α | Refonte `inferCarArchetypes` — faisceau large, 8 avatars recalés, multi-match assumé | `Lot 24 — faisceau large` |
+| 25 | α | Refonte drag-to-close de la sheet (garde anti-scroll, résistance, backdrop sync, Escape, race close) | `Lot 25 — drag-to-close refondu` |
+| 26 | α | Câblage des 10 boutons muets du parcours Garage (feedback honnête, plus aucun bouton mort) | `Lot 26 — handlers des sections Garage en construction` |
+| 27 | α | Nettoyage 2 handlers morts (`openAuction`/`viewSource` définis 2×, piège ordre de définition) | `Lot 27 — openAuction : définition unique plus bas` |
+| 28 | α | Tokens Fibonacci + échelle typo √φ + ratios φ posés dans `:root` (fondation géométrie sacrée) | `Géométrie sacrée — tokens Fibonacci` |
+| 29 | α | Réalignement `--s-3` 12→13px sur Fibonacci (réalignement global du token) | `Lot 29 — réaligné sur Fibonacci` |
+| 30 | α | Réalignement `--s-4` 16→21px sur Fibonacci (réalignement global, calc() vérifiés) | `Lot 30 — réaligné sur Fibonacci` |
+| 31 | α | Migration `--s-5/6/7` → `--fib-*` sélecteur par sélecteur (11 décisions contextuelles) | `Lot 31 */` |
+| 32 | α | Réalignement échelle typo `--t-md/lg/xl/2xl` sur √φ | `Lot 32 — réaligné sur √φ` |
+| 33 | α | Ratios φ — 7 `aspect-ratio` migrés de `1.618` en dur vers `var(--phi)` | `Lot 33 */` |
+| 34 | α | Nettoyage — retrait des tokens `--s-5/6/7/8` (0 usage, clôture convergence géométrie) | `Lot 34 — échelle linéaire retirée` |
 
 **Plan refonte mobile v5+ φ : 7/7 lots livrés** (Hero+KPI · TabBar · Boutons · Sheets détail · Sheets création · Empty states+banners · Form components).
 
 **Système archétypes** (Lots 14, 23, 24) : IDs alignés sur `carnet-archetypes.js` (Discover v1.0), inférence en faisceau large cohérente avec l'ADN réel de chaque avatar.
 
+**Audit du parcours user (Lots 25-27)** : système Sheet refondu (drag-to-close fluide), surface d'action vérifiée de bout en bout (10 boutons muets câblés, 2 handlers morts retirés). Le parcours fonctionne, plus de bouton mort, plus de code mort piégeux.
+
+**Convergence géométrie sacrée (Lots 28-34)** : `:root` 100% conforme à la doctrine Carnet. Espacements en suite de Fibonacci, échelle typo en steps √φ, ratios via `var(--phi)`. Méthode : tokens `--fib-*` posés d'abord (Lot 28), puis convergence par paliers de risque croissant — réalignement global des tokens à petit delta (Lots 29-30), migration sélecteur par sélecteur des gros deltas (Lots 31-33), nettoyage des tokens orphelins (Lot 34). Aucune échelle linéaire active, aucun `1.618` en dur.
+
+**Audit animations (post-Lot 34)** : conclu sain — 19 keyframes tous définis et utilisés, durées cohérentes, `prefers-reduced-motion` couvert. Aucun lot produit (cf. Leçon 11).
+
 ### Pistes pour la suite
 
 | Domaine | Notes |
 |---|---|
-| Convergence index unique | Greffer auth + publier + filtres sur la lignée mobile-first v6.18 |
+| Renommage `--s-3/--s-4` → `--fib-3/--fib-4` | Cosmétique — 118 sites à toucher pour un gain de cohérence de nommage. Leur *valeur* est déjà juste. Non prioritaire. |
 | Phase 2 — Vue Enchères frontend | Tab Enchères 3 sections LIVE / UPCOMING / SOLD |
-| Audit visuel complet | Revue des 24 lots en local / prod |
+| Famille A — overlays démo | Co-pilote / TrackDay / Gumball : boutons internes muets, mais overlays non atteignables hors console. Câbler ou retirer si jamais shippés. |
+| Refactor `Sheet.render()` | 6 `render*` nichées dans la méthode — dette de structure interne, non visible user, risque élevé (déplacer ~640 lignes). |
 
 ---
 
@@ -459,4 +505,4 @@ index.html.bak.*
 
 ---
 
-*CARNET · Patch Pattern v2.1 · 2026-05-14 · couvre les Lots 1.1 → 24 · carnet_patch_lib v1.1*
+*CARNET · Patch Pattern v2.2 · 2026-05-14 · couvre les Lots 1.1 → 34 · carnet_patch_lib v1.1*
