@@ -157,7 +157,7 @@ git push origin main
 
 ## ⚠️ Leçons — bugs récurrents et comment les éviter
 
-> Cette section capitalise les bugs rencontrés sur les Lots 1.1 → 34.
+> Cette section capitalise les bugs rencontrés sur les Lots 1.1 → 42.
 > Chacun est apparu **plusieurs fois** avant d'être systématisé. Les lire **avant** d'écrire un patch fait gagner un cycle entier.
 
 ### Leçon 1 — Anchor 2-bornes (le bug le plus fréquent · 8 occurrences)
@@ -327,6 +327,41 @@ Cas vécu : l'audit des animations (après les Lots 28-34) cherchait des durées
 
 *Occurrence : audit animations post-Lot 34 (conclu sain, aucun lot produit).*
 
+### Leçon 12 — Le marker d'idempotence doit être unique AU PATCH, pas juste au fichier
+
+**Symptôme** : le garde-fou signale un « état hybride » — le `idempotence_marker` est trouvé dans le fichier ET l'anchor aussi. Le patch refuse de s'appliquer alors qu'il n'a jamais tourné.
+
+**Cause** : le `idempotence_marker` doit identifier qu'**un patch précis** a été appliqué. S'il est trop générique, il matche du contenu qu'un *autre* patch du même lot vient d'écrire. Cas vécu au Lot 38 : trois patches migraient `color:#9FE1CB` vers `color:var(--vert-vivant-clair)` dans des sélecteurs différents. Les markers étaient construits sur le motif `letter-spacing:... color:var(--vert-vivant-clair)...` — mais ce motif devenait identique dès qu'un des patches s'appliquait, donc les suivants croyaient être déjà faits.
+
+**Fix** : le marker doit embarquer quelque chose de **propre au patch** — typiquement le sélecteur CSS, ou un fragment de contexte qui n'existe nulle part ailleurs. Pour le Lot 38, la solution a été d'inclure le sélecteur dans l'anchor ET le marker : `.copilote-tsd-label{ ... color:var(--vert-vivant-clair)` au lieu du motif générique. Règle : si deux patches d'un lot transforment la même chose dans des endroits différents, leurs markers doivent contenir ce qui les distingue (le « où »), pas seulement ce qu'ils produisent (le « quoi »).
+
+*Occurrence : Lot 38 (3 patches `--vert-vivant-clair` en état hybride).*
+
+### Leçon 13 — Ordre des remplacements : jamais introduire une définition avant d'avoir fini les remplacements de sa valeur
+
+**Symptôme** : après un lot de migration couleur, une variable CSS se retrouve définie circulairement — `--papier-pur:var(--papier-pur);`. Le CSS ne résout pas, la variable est invalide, tous ses usages tombent sur le fallback.
+
+**Cause** : le script ajoutait la définition `--papier-pur:#FAFAF7;` au `:root` **avant** de lancer le remplacement global `#FAFAF7` → `var(--papier-pur)`. Le remplacement attrapait donc aussi sa propre définition fraîchement posée. Le signal qui a mis la puce à l'oreille : le rapport disait « 17 occurrences migrées » alors que 16 étaient attendues — la 17e était la définition elle-même (cf. Leçon 11, le chiffre suspect).
+
+**Fix** : dans un script de migration en masse, l'ordre est **valeurs d'abord, définitions en dernier**. On migre tous les usages en dur d'une couleur, PUIS on introduit la variable dans `:root`. Ainsi la définition n'existe pas encore au moment du remplacement, elle ne peut pas être attrapée. Règle générale : une opération qui *introduit* la cible d'un remplacement doit toujours venir après le remplacement, jamais avant.
+
+*Occurrence : Lot 42 (`--papier-pur` circulaire, détecté par le compte 17≠16, restauré + corrigé).*
+
+### Leçon 14 — Migration en masse : « remplacement ciblé + vérification de comptes » est une alternative légitime aux `Patch()` anchrés
+
+**Quand** : un lot doit faire la **même** transformation, à l'identique, sur beaucoup d'occurrences — typiquement migrer une couleur en dur vers une variable (`#D5D0C4` → `var(--gris-line)`, 13×). Les occurrences sont souvent des lignes courtes et répétées (`  background:#D5D0C4;` apparaît 3×) : impossible de leur donner des anchors uniques sans embarquer un gros contexte arbitraire.
+
+**La méthode** : plutôt que N `Patch()` anchrés ingérables, un script qui fait un `str.replace()` ciblé, encadré de garde-fous :
+- **Chaîne exacte** — on remplace `#D5D0C4` (CSS, non quoté) ou `'#1A1A18'` (JS, quoté) selon le contexte, ce qui isole naturellement CSS vs JS sans toucher l'autre.
+- **Vérification stricte des comptes** — le script connaît le nombre d'occurrences attendu pour chaque couleur. Si le compte réel diverge, il **échoue sans écrire**. C'est le filet qui remplace l'unicité d'anchor.
+- **Préservation explicite** — les lignes à ne pas toucher (définitions `:root`, valeurs de données JS hors scope) sont listées et exclues nommément.
+- **Idempotence par comptage** — si 0 occurrence à migrer, skip propre.
+- **Backup automatique** avant écriture, comme un `Patch()` classique.
+
+Ce n'est pas un contournement du framework — c'est le bon outil quand la transformation n'a aucune décision contextuelle. Un `Patch()` anchré sert à modifier *un endroit précis* ; un remplacement ciblé sert à appliquer *une règle uniforme*. Les deux ont leur place. Conserver ces scripts de migration au même endroit que les `apply_*.py` classiques.
+
+*Occurrences : Lots 40 (gris CSS), 41 (hex JS), 42 (intrus légers) — chacun un script de remplacement ciblé.*
+
 ---
 
 ## Conventions
@@ -408,7 +443,7 @@ Calibrer sur une classe dont on connaît le niveau (ex. `.sheet-btn` est au nive
 
 ## Roadmap des lots CARNET
 
-### Lots livrés · 1.1 → 34 (tous sur `main`)
+### Lots livrés · 1.1 → 42 (tous sur `main`)
 
 | Lot | Phase | Domaine | Marker / fichier |
 |---|---|---|---|
@@ -447,6 +482,14 @@ Calibrer sur une classe dont on connaît le niveau (ex. `.sheet-btn` est au nive
 | 32 | α | Réalignement échelle typo `--t-md/lg/xl/2xl` sur √φ | `Lot 32 — réaligné sur √φ` |
 | 33 | α | Ratios φ — 7 `aspect-ratio` migrés de `1.618` en dur vers `var(--phi)` | `Lot 33 */` |
 | 34 | α | Nettoyage — retrait des tokens `--s-5/6/7/8` (0 usage, clôture convergence géométrie) | `Lot 34 — échelle linéaire retirée` |
+| 35 | α | Charte v9 — pose des 4 variables sémantiques dans `:root` (audit couleur : nommer ce qui existe en dur) | `Charte v9` |
+| 36 | α | Charte v9 — ajout `--vert-vivant-clair` (version claire du vert de service, fonds sombres) | `--vert-vivant-clair` |
+| 37 | α | Charte v9 — migration `--orange-polo-dark` (6 usages `:active` en dur → variable) | `--orange-polo-dark` |
+| 38 | α | Charte v9 — migration `--vert-vivant-clair` (11 usages `#9FE1CB` overlays → variable) | `Lot 38` |
+| 39 | α | Charte v9 — couleurs de catégorie (`--accent-rarete`, `--ambre-warning` nommées, `#B8761F` rattaché à `--or`) | `Lot 39` |
+| 40 | α | Hygiène couleur — gris CSS en dur → variables (`#D5D0C4`→`--gris-line`, `#6B655B`→`--gris`) | `before_lot_40` |
+| 41 | α | Hygiène couleur — hex JS (couleurs d'avatars) → variables de charte | `before_lot_41` |
+| 42 | α | Hygiène couleur — intrus légers + `--encre-dark`/`--papier-pur` (clôture, zéro hex en dur) | `--encre-dark` |
 
 **Plan refonte mobile v5+ φ : 7/7 lots livrés** (Hero+KPI · TabBar · Boutons · Sheets détail · Sheets création · Empty states+banners · Form components).
 
@@ -457,6 +500,8 @@ Calibrer sur une classe dont on connaît le niveau (ex. `.sheet-btn` est au nive
 **Convergence géométrie sacrée (Lots 28-34)** : `:root` 100% conforme à la doctrine Carnet. Espacements en suite de Fibonacci, échelle typo en steps √φ, ratios via `var(--phi)`. Méthode : tokens `--fib-*` posés d'abord (Lot 28), puis convergence par paliers de risque croissant — réalignement global des tokens à petit delta (Lots 29-30), migration sélecteur par sélecteur des gros deltas (Lots 31-33), nettoyage des tokens orphelins (Lot 34). Aucune échelle linéaire active, aucun `1.618` en dur.
 
 **Audit animations (post-Lot 34)** : conclu sain — 19 keyframes tous définis et utilisés, durées cohérentes, `prefers-reduced-motion` couvert. Aucun lot produit (cf. Leçon 11).
+
+**Charte v9 — couleurs (Lots 35-42)** : `:root` passe de ~12 à 19 variables de couleur, et l'app entière est tokenisée — zéro hex en dur dans les modules, le CSS et le JS (seuls subsistent les 4 hex normatifs du logo Google et le `<meta theme-color>`). Méthode en deux temps : d'abord nommer les couleurs **sémantiques et de catégorie** qui existaient déjà en dur dans les modules (Lots 35-39 : `--rouge-alerte`, `--brun-enchere`, `--vert-vivant` + `-clair`, `--orange-polo-dark`, `--accent-rarete`, `--ambre-warning`) ; puis l'**hygiène** — migrer les usages en dur de couleurs qui avaient déjà leur variable (Lots 40-42 : gris CSS, hex JS d'avatars, intrus légers + `--encre-dark`/`--papier-pur`). Principe directeur : l'audit n'a pas inventé de couleurs, il a rangé celles que le développement avait créées au fil des modules. Changer une teinte = une ligne. Base saine pour l'impression (Genesis VC-001) et un futur dark mode.
 
 ### Pistes pour la suite
 
@@ -505,4 +550,4 @@ index.html.bak.*
 
 ---
 
-*CARNET · Patch Pattern v2.2 · 2026-05-14 · couvre les Lots 1.1 → 34 · carnet_patch_lib v1.1*
+*CARNET · Patch Pattern v2.3 · 2026-05-14 · couvre les Lots 1.1 → 42 · carnet_patch_lib v1.1*
