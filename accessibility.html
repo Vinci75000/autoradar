@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CARNET · Accessibilité · déclaration et engagements</title>
+  <meta name="description" content="Déclaration d'accessibilité CARNET — état de conformité WCAG 2.2 AA, limitations connues, comment signaler un problème.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,400;1,500;1,600&family=Cormorant+Garamond:ital,wght@1,400;1,500;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="carnet-tokens.css">
+  <style>
+    body { margin: 0; font-family: var(--sans); background: var(--papier); color: var(--encre); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    a { color: var(--orange-polo); text-decoration: none; }
+    a:hover { text-decoration: underline; text-underline-offset: 3px; }
+    .topbar { padding: 14px 22px; border-bottom: 1px solid var(--gris-line); display: flex; justify-content: space-between; align-items: center; background: var(--papier); position: sticky; top: 0; z-index: 5; }
+    .topbar-wordmark { display: flex; gap: 7px; align-items: baseline; }
+    .topbar-dot { width: 7px; height: 7px; background: var(--orange-polo); border-radius: 1px; display: inline-block; }
+    .topbar-name { font-family: var(--display); font-style: italic; font-size: 18px; color: var(--encre); }
+    .topbar-back { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; color: var(--gris); text-transform: uppercase; }
+    .topbar-back:hover { color: var(--orange-polo); }
+    .ed-nav { display: flex; gap: 22px; padding: 10px 22px; border-bottom: 1px solid var(--gris-line); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .ed-nav a { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gris); white-space: nowrap; }
+    .ed-nav a:hover { color: var(--orange-polo); }
+    main { max-width: 700px; margin: 0 auto; padding: 40px 22px 80px; }
+    .hero-eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; color: var(--gris); text-transform: uppercase; margin: 0 0 12px 0; }
+    h1 { font-family: var(--display); font-style: italic; font-weight: 500; font-size: 48px; line-height: 0.95; letter-spacing: -0.015em; margin: 0 0 16px 0; color: var(--encre); }
+    .hero-sub { font-family: var(--editorial); font-style: italic; font-size: 17px; line-height: 1.5; color: var(--encre-soft); margin: 0 0 28px 0; }
+    .hero-meta { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; color: var(--gris); text-transform: uppercase; margin: 0; }
+    .status-banner { margin: 28px 0; padding: 18px 22px; background: #FAFAF7; border: 1px solid var(--gris-line); border-radius: var(--r); }
+    .status-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; color: var(--orange-polo); text-transform: uppercase; margin: 0 0 6px 0; }
+    .status-text { font-family: var(--editorial); font-style: italic; font-size: 16px; line-height: 1.4; color: var(--encre); margin: 0; }
+    .toc { margin: 32px 0 40px; padding: 20px 22px; background: #FAFAF7; border: 1px solid var(--gris-line); border-radius: var(--r); }
+    .toc-title { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; color: var(--gris); text-transform: uppercase; margin: 0 0 12px 0; }
+    .toc ol { list-style: none; counter-reset: toc; padding: 0; margin: 0; column-count: 1; }
+    @media (min-width: 600px) { .toc ol { column-count: 2; column-gap: 28px; } }
+    .toc li { counter-increment: toc; padding: 4px 0; font-family: var(--editorial); font-style: italic; font-size: 15px; break-inside: avoid; }
+    .toc li::before { content: counter(toc, decimal-leading-zero) ". "; font-family: var(--mono); font-style: normal; font-size: 11px; color: var(--orange-polo); margin-right: 6px; }
+    .toc li a { color: var(--encre); }
+    .toc li a:hover { color: var(--orange-polo); text-decoration: none; }
+    section { margin: 0 0 40px 0; scroll-margin-top: 90px; }
+    .section-eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; color: var(--orange-polo); text-transform: uppercase; margin: 0 0 8px 0; }
+    h2 { font-family: var(--display); font-style: italic; font-weight: 500; font-size: 28px; line-height: 1.1; letter-spacing: -0.01em; margin: 0 0 14px 0; color: var(--encre); }
+    section p { font-size: 15px; line-height: 1.65; color: var(--encre-soft); margin: 0 0 14px 0; }
+    section p strong { color: var(--encre); font-weight: 600; }
+    section ul { padding-left: 0; list-style: none; margin: 0 0 14px 0; }
+    section ul li { position: relative; padding: 6px 0 6px 22px; font-size: 15px; line-height: 1.55; color: var(--encre-soft); }
+    section ul li::before { content: "·"; position: absolute; left: 8px; top: 6px; font-family: var(--mono); color: var(--orange-polo); }
+    section ul li strong { color: var(--encre); font-weight: 600; }
+    .callout { padding: 16px 18px; background: #FAFAF7; border-left: 3px solid var(--vert-anglais); border-radius: var(--r); margin: 14px 0; }
+    .callout.is-warning { border-left-color: var(--orange-polo); }
+    .callout p { margin: 0; font-family: var(--editorial); font-style: italic; font-size: 14px; color: var(--encre); }
+    kbd { font-family: var(--mono); font-size: 12px; background: var(--encre); color: var(--papier); padding: 2px 6px; border-radius: 2px; }
+    footer { max-width: 700px; margin: 60px auto 0; padding: 32px 22px 80px; border-top: 1px solid var(--gris-line); }
+    .footer-meta { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; color: var(--gris); margin: 0 0 6px 0; }
+    .footer-contact { font-family: var(--editorial); font-style: italic; font-size: 15px; color: var(--encre-soft); margin: 0; }
+    .footer-contact a { color: var(--encre); border-bottom: 1px solid var(--gris-line); padding-bottom: 1px; }
+    .footer-contact a:hover { color: var(--orange-polo); border-bottom-color: var(--orange-polo); }
+    @media (min-width: 600px) { h1 { font-size: 60px; } h2 { font-size: 32px; } main { padding: 60px 32px 100px; } }
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <a href="index.html" class="topbar-wordmark" style="text-decoration:none;">
+    <span class="topbar-dot"></span>
+    <span class="topbar-name">CARNET</span>
+  </a>
+  <a href="index.html" class="topbar-back">← retour</a>
+</header>
+
+<nav class="ed-nav" aria-label="Navigation éditoriale">
+  <a href="discover.html">Discover</a>
+  <a href="archetypes.html">Archétypes</a>
+  <a href="launch.html">14·12·2026</a>
+  <a href="about.html">About</a>
+</nav>
+
+<main>
+
+  <p class="hero-eyebrow">Déclaration d'accessibilité</p>
+  <h1><em>Pour tous, vraiment.</em></h1>
+  <p class="hero-sub">La passion automobile ne discrimine pas. CARNET doit être utilisable par tout passionné — celui qui voit, celui qui n'entend pas, celui qui navigue au clavier, celui qui s'aide d'un lecteur d'écran.</p>
+  <p class="hero-meta">Version 1.0 · 14 mai 2026</p>
+
+  <div class="status-banner">
+    <p class="status-label">État actuel · partiellement conforme</p>
+    <p class="status-text">CARNET vise WCAG 2.2 AA. Year -1 — nous sommes en construction active. La page Affût, la page Garage et les pages éditoriales (Discover, Archétypes, Launch, About, Privacy, Sécurité, cette page, Transparence) sont raisonnablement accessibles. Les modes plein écran (Co-pilote rallye, Track Day, Gumball Convoy) sont en cours d'audit.</p>
+  </div>
+
+  <div class="toc">
+    <p class="toc-title">Sommaire</p>
+    <ol>
+      <li><a href="#section-1">Notre engagement</a></li>
+      <li><a href="#section-2">État de conformité</a></li>
+      <li><a href="#section-3">Méthodologie</a></li>
+      <li><a href="#section-4">Aides à la navigation</a></li>
+      <li><a href="#section-5">Limitations connues</a></li>
+      <li><a href="#section-6">Améliorations prévues</a></li>
+      <li><a href="#section-7">Signaler un problème</a></li>
+      <li><a href="#section-8">Voies de recours</a></li>
+      <li><a href="#section-9">Mises à jour</a></li>
+    </ol>
+  </div>
+
+  <section id="section-1">
+    <p class="section-eyebrow">01 · Engagement</p>
+    <h2>Notre engagement.</h2>
+    <p>L'<strong>Association Carnet</strong> s'engage à rendre son service en ligne accessible à toutes et à tous, conformément à l'article 47 de la loi française n°2005-102 du 11 février 2005, et au-delà du strict cadre légal — par conviction.</p>
+    <p>Une voiture, c'est un souvenir, un projet, parfois un héritage. Personne ne devrait être exclu de pouvoir en tenir le carnet à cause d'un site mal foutu.</p>
+  </section>
+
+  <section id="section-2">
+    <p class="section-eyebrow">02 · Conformité</p>
+    <h2>État de conformité.</h2>
+    <p>CARNET se conforme <strong>partiellement</strong> au référentiel WCAG 2.2 niveau AA. Nous publierons un état de conformité formel après notre premier audit externe, prévu pour Year 1 (courant 2027).</p>
+    <p>En Year -1, voici notre auto-évaluation :</p>
+    <ul>
+      <li><strong>Conforme</strong> : structure sémantique HTML5, hiérarchie de titres, contrastes texte sur la charte v8 (papier/encre/orange polo), liens en couleur distincte + soulignement au survol, formulaires labellisés, focus visible au clavier sur la plupart des éléments.</li>
+      <li><strong>Partiellement conforme</strong> : attributs ARIA présents sur les composants critiques (modals, dropdowns) mais pas exhaustifs ; navigation clavier fluide sur le flux principal mais avec des trous sur les sheets de création.</li>
+      <li><strong>Non conforme à ce stade</strong> : les 3 modes plein écran (Co-pilote rallye TSD, Track Day, Gumball Convoy) n'ont pas encore été audités. Pas de version "haut contraste" alternative. Pas de version simplifiée du contenu.</li>
+    </ul>
+  </section>
+
+  <section id="section-3">
+    <p class="section-eyebrow">03 · Méthode</p>
+    <h2>Méthodologie d'évaluation.</h2>
+    <p>L'auto-évaluation actuelle s'appuie sur :</p>
+    <ul>
+      <li><strong>Tests automatisés</strong> : axe DevTools de Deque Systems, Lighthouse de Chrome, validation HTML W3C.</li>
+      <li><strong>Tests manuels au clavier</strong> : navigation complète au <kbd>Tab</kbd> et <kbd>Maj</kbd>+<kbd>Tab</kbd> sur les flux principaux.</li>
+      <li><strong>Tests avec lecteur d'écran</strong> : VoiceOver (macOS / iOS) sur les pages éditoriales.</li>
+      <li><strong>Audit externe</strong> : <em>prévu pour Year 1 (2027)</em> — agence spécialisée RGAA / WCAG.</li>
+    </ul>
+  </section>
+
+  <section id="section-4">
+    <p class="section-eyebrow">04 · Aides</p>
+    <h2>Aides à la navigation.</h2>
+    <ul>
+      <li><strong>Navigation au clavier</strong> : <kbd>Tab</kbd> pour avancer, <kbd>Maj</kbd>+<kbd>Tab</kbd> pour revenir, <kbd>Entrée</kbd> pour activer un lien ou bouton, <kbd>Échap</kbd> pour fermer un menu ou un overlay.</li>
+      <li><strong>Zoom navigateur</strong> : le site reste utilisable jusqu'à 200% de zoom (jusqu'à 400% sur la plupart des sections).</li>
+      <li><strong>Contraste</strong> : ratio texte/fond minimum 4,5:1 sur le contenu courant, 3:1 sur les gros titres et éléments décoratifs (WCAG AA).</li>
+      <li><strong>Lien de retour</strong> : un bouton <em>← retour</em> en haut à droite ramène à l'accueil depuis toutes les pages éditoriales.</li>
+      <li><strong>Tailles de texte</strong> : tout le texte courant en unités relatives (rem/em), zoom du navigateur respecté.</li>
+    </ul>
+  </section>
+
+  <section id="section-5">
+    <p class="section-eyebrow">05 · Limitations</p>
+    <h2>Limitations connues.</h2>
+    <p>Soyons honnêtes sur ce qui ne marche pas encore parfaitement :</p>
+    <ul>
+      <li><strong>Modes plein écran rallye / track day / convoy</strong> : conçus pour usage smartphone tenu en main pendant un événement. Pas encore d'audit lecteur d'écran. Si vous voulez utiliser CARNET pendant un rallye et que vous avez besoin de support spécifique, écrivez-nous on adaptera.</li>
+      <li><strong>Sheets de création</strong> (ajouter une voiture, créer une alerte) : navigation clavier améliorable, certains champs n'ont pas encore d'attributs <code>aria-describedby</code> pour les hints contextuels.</li>
+      <li><strong>Reel du convoy</strong> (carrousel horizontal de stories) : n'est pas encore arrowed pour navigation clavier directe.</li>
+      <li><strong>Cartes interactives futures</strong> (Tribu géographique) : pas encore implémentées, mais l'accessibilité sera traitée dès la conception et pas en rattrapage.</li>
+      <li><strong>Pas de version "easy read"</strong> simplifiée du contenu éditorial.</li>
+    </ul>
+    <div class="callout is-warning">
+      <p>Cette liste n'est pas exhaustive. Si vous rencontrez un obstacle non listé, c'est précieux qu'on le sache — voir section 7.</p>
+    </div>
+  </section>
+
+  <section id="section-6">
+    <p class="section-eyebrow">06 · Roadmap</p>
+    <h2>Améliorations prévues.</h2>
+    <ul>
+      <li><strong>Year 1 (2027)</strong> : audit externe complet RGAA 4.1, refonte ARIA des sheets de création, navigation clavier sur les 3 modes plein écran, état de conformité formel publié.</li>
+      <li><strong>Year 1+</strong> : mode "haut contraste" alternatif optionnel.</li>
+      <li><strong>Year 2+</strong> : audit lecteur d'écran exhaustif (JAWS, NVDA en plus de VoiceOver), version simplifiée du contenu éditorial.</li>
+    </ul>
+  </section>
+
+  <section id="section-7">
+    <p class="section-eyebrow">07 · Signaler</p>
+    <h2>Signaler un problème.</h2>
+    <p>Si vous rencontrez un obstacle d'accessibilité, écrivez à <a href="mailto:auth@carnet.life">auth@carnet.life</a> avec <strong>[A11Y]</strong> en sujet. Précisez :</p>
+    <ul>
+      <li>La page ou la fonctionnalité concernée.</li>
+      <li>Votre matériel et logiciel d'assistance (lecteur d'écran, navigateur, OS).</li>
+      <li>Ce que vous essayiez de faire et ce qui a bloqué.</li>
+    </ul>
+    <p>Nous répondons sous <strong>10 jours ouvrés</strong> et nous corrigeons dès que techniquement possible. Si la correction prend du temps, on vous propose un contournement.</p>
+  </section>
+
+  <section id="section-8">
+    <p class="section-eyebrow">08 · Recours</p>
+    <h2>Voies de recours.</h2>
+    <p>Si vous estimez ne pas avoir obtenu de réponse satisfaisante de notre part :</p>
+    <ul>
+      <li><strong>Défenseur des droits</strong> · saisine directe en ligne sur <a href="https://www.defenseurdesdroits.fr">defenseurdesdroits.fr</a> · ou par courrier : Défenseur des droits · Libre réponse 71120 · 75342 Paris CEDEX 07.</li>
+      <li><strong>Délégué territorial</strong> du Défenseur des droits dans votre région — la liste est sur le même site.</li>
+    </ul>
+  </section>
+
+  <section id="section-9">
+    <p class="section-eyebrow">09 · Versions</p>
+    <h2>Mises à jour de cette déclaration.</h2>
+    <p>Cette déclaration sera revue à chaque audit majeur ou modification structurelle du site. La prochaine mise à jour majeure est prévue après l'audit externe Year 1 (2027).</p>
+    <p>Version actuelle : <strong>1.0 du 14 mai 2026</strong>. L'historique des versions est disponible sur demande à <a href="mailto:auth@carnet.life">auth@carnet.life</a>.</p>
+  </section>
+
+</main>
+
+<footer>
+  <p class="footer-meta">CARNET · Association loi 1901 · à but non lucratif</p>
+  <p class="footer-contact">Contact accessibilité : <a href="mailto:auth@carnet.life">auth@carnet.life</a> (préfixe [A11Y])</p>
+</footer>
+
+</body>
+</html>
