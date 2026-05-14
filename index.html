@@ -22799,6 +22799,57 @@ function renderCopiloteOverlay(){
   `;
 }
 
+// ─── Lot 13 (Phase α refactor) — CarnetOverlay factory ─────────────────
+// Composant réutilisable pour créer un mode plein écran avec ouverture/
+// fermeture standardisée. Utilisé par les Lots 14+. Les Lots 5/6/7
+// conservent leurs propres window.CARNET_X_DEMO indépendants.
+//
+// Convention :
+//   - L'élément overlay reçoit la classe `.carnet-overlay`.
+//   - Toute interaction avec un élément `data-action="closeOverlay"`
+//     déclenche la fermeture (pas besoin d'un handler manuel par mode).
+//   - Le body scroll est verrouillé pendant l'ouverture, restauré à la
+//     fermeture.
+//
+// Usage type pour un nouveau mode (Lot 14+) :
+//   window.CARNET_FOO_DEMO = CarnetOverlay.create(
+//     'carnet-foo-overlay',
+//     function() { return renderFooContent(); }
+//   );
+//   CARNET_FOO_DEMO.open();   // ouvre
+//   CARNET_FOO_DEMO.close();  // ferme (ou clic sur [data-action=closeOverlay])
+//
+window.CarnetOverlay = {
+  create: function(overlayId, renderFn) {
+    return {
+      open: function() {
+        let overlay = document.getElementById(overlayId);
+        if (!overlay) {
+          overlay = document.createElement('div');
+          overlay.id = overlayId;
+          overlay.className = 'carnet-overlay';
+          document.body.appendChild(overlay);
+          overlay.addEventListener('click', function(e) {
+            const closeBtn = e.target.closest('[data-action="closeOverlay"]');
+            if (closeBtn) {
+              overlay.setAttribute('hidden', '');
+              document.body.style.overflow = '';
+            }
+          });
+        }
+        overlay.innerHTML = renderFn();
+        overlay.removeAttribute('hidden');
+        document.body.style.overflow = 'hidden';
+      },
+      close: function() {
+        const overlay = document.getElementById(overlayId);
+        if (overlay) overlay.setAttribute('hidden', '');
+        document.body.style.overflow = '';
+      }
+    };
+  }
+};
+
 // API démo accessible via console — Migré Lot 13b-1 vers CarnetOverlay factory
 window.CARNET_COPILOTE_DEMO = CarnetOverlay.create('carnet-copilote-overlay', renderCopiloteOverlay);
 // ─── /Lot 5 helpers ──────────────────────────────────────────────────
@@ -23345,56 +23396,7 @@ function renderGarageTribuSection(){
 // ─── /Lot 8 helpers ──────────────────────────────────────────────────
 
 
-// ─── Lot 13 (Phase α refactor) — CarnetOverlay factory ─────────────────
-// Composant réutilisable pour créer un mode plein écran avec ouverture/
-// fermeture standardisée. Utilisé par les Lots 14+. Les Lots 5/6/7
-// conservent leurs propres window.CARNET_X_DEMO indépendants.
-//
-// Convention :
-//   - L'élément overlay reçoit la classe `.carnet-overlay`.
-//   - Toute interaction avec un élément `data-action="closeOverlay"`
-//     déclenche la fermeture (pas besoin d'un handler manuel par mode).
-//   - Le body scroll est verrouillé pendant l'ouverture, restauré à la
-//     fermeture.
-//
-// Usage type pour un nouveau mode (Lot 14+) :
-//   window.CARNET_FOO_DEMO = CarnetOverlay.create(
-//     'carnet-foo-overlay',
-//     function() { return renderFooContent(); }
-//   );
-//   CARNET_FOO_DEMO.open();   // ouvre
-//   CARNET_FOO_DEMO.close();  // ferme (ou clic sur [data-action=closeOverlay])
-//
-window.CarnetOverlay = {
-  create: function(overlayId, renderFn) {
-    return {
-      open: function() {
-        let overlay = document.getElementById(overlayId);
-        if (!overlay) {
-          overlay = document.createElement('div');
-          overlay.id = overlayId;
-          overlay.className = 'carnet-overlay';
-          document.body.appendChild(overlay);
-          overlay.addEventListener('click', function(e) {
-            const closeBtn = e.target.closest('[data-action="closeOverlay"]');
-            if (closeBtn) {
-              overlay.setAttribute('hidden', '');
-              document.body.style.overflow = '';
-            }
-          });
-        }
-        overlay.innerHTML = renderFn();
-        overlay.removeAttribute('hidden');
-        document.body.style.overflow = 'hidden';
-      },
-      close: function() {
-        const overlay = document.getElementById(overlayId);
-        if (overlay) overlay.setAttribute('hidden', '');
-        document.body.style.overflow = '';
-      }
-    };
-  }
-};
+// ─── Lot 13 (Phase α refactor) — CarnetOverlay factory : déplacée en amont (Lot 52 fix hoist) ───
 // ─── /Lot 13 (Phase α refactor) ────────────────────────────────────────
 
 

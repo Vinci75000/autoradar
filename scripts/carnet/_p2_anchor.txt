@@ -1,0 +1,10 @@
+data-action="copiloteAlert">
+        <span class="carnet-overlay-action-icon">\u26a0</span>
+        Signaler
+      </button>
+    </div>
+  `;
+}
+
+// API démo accessible via console — Migré Lot 13b-1 vers CarnetOverlay factory
+window.CARNET_COPILOTE_DEMO = CarnetOverlay.create('carnet-copilote-overlay', renderCopiloteOverlay);
