@@ -25,6 +25,21 @@
   --vert-anglais:#1F4D2F;
   --or:#BA7517;
 
+  /* ─────────────────────────────────────────────────────────────
+     Charte v9 — couleurs sémantiques (Lot 35)
+     L'audit a montré que ces couleurs existaient déjà, codées en
+     dur dans les modules. On les NOMME ici ; les Lots 36-39
+     migreront les usages en dur vers ces variables.
+     · --vert-anglais reste la couleur de MARQUE (grands aplats).
+     · --vert-vivant est la couleur de SERVICE (succès, positif) —
+       elle cohabite avec le vert anglais, elle ne le remplace pas.
+     ───────────────────────────────────────────────────────────── */
+  --vert-vivant:#257226;       /* succès, positif (fond clair) — Pantone 2273 C */
+  --vert-vivant-clair:#9FE1CB; /* succès, positif (fond sombre) — Lot 36 */
+  --rouge-alerte:#9C2A2A;      /* négatif, danger — 27 usages en dur à migrer */
+  --brun-enchere:#6B4F1F;      /* univers Enchères — 10 usages en dur à migrer */
+  --orange-polo-dark:#D24C12;  /* orange Polo état :active — 6 usages en dur à migrer */
+
   --display:'Bodoni Moda','Times New Roman',serif;
   --editorial:'Cormorant Garamond','Georgia',serif;
   --sans:'Plus Jakarta Sans',-apple-system,system-ui,sans-serif;
@@ -2446,7 +2461,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 @keyframes badge-close-fade{
   0%{background:var(--orange-polo); transform:scale(1)}
   30%{background:var(--orange-polo); transform:scale(1.08)}
-  60%{background:#9c2a2a; transform:scale(1)}
+  60%{background:var(--rouge-alerte); transform:scale(1)}
   100%{background:var(--encre); transform:scale(1)}
 }
 .auction-card.just-closed-card{
@@ -3265,7 +3280,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
       background: rgba(232, 90, 31, 0.04);
     }
     .sale-status-block.auction {
-      border-color: #6b4f1f;
+      border-color: var(--brun-enchere);
       background: rgba(107, 79, 31, 0.05);
     }
     .sale-status-top {
@@ -3282,7 +3297,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
       font-weight: 600;
     }
     .sale-status-block.auction .sale-status-chip {
-      color: #6b4f1f;
+      color: var(--brun-enchere);
     }
     .sale-status-days {
       font-family: var(--mono);
@@ -3291,7 +3306,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
       font-weight: 600;
     }
     .sale-status-block.auction .sale-status-days {
-      color: #6b4f1f;
+      color: var(--brun-enchere);
     }
     .sale-status-price {
       font-family: var(--editorial);
@@ -3355,7 +3370,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
       z-index: 1;
     }
     .garage-card-sale-badge.auction {
-      background: #6b4f1f;
+      background: var(--brun-enchere);
     }
 
     /* Garage summary "En vente" line */
@@ -3761,13 +3776,13 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
     .sheet-detail-opp.opp-big-win, .sheet-detail-opp.opp-win { color: var(--vert-anglais); }
     .sheet-detail-opp.opp-win-light { color: var(--vert-anglais); opacity: 0.7; }
     .sheet-detail-opp.opp-flat { color: var(--gris); }
-    .sheet-detail-opp.opp-loss-light { color: #9c2a2a; opacity: 0.7; }
-    .sheet-detail-opp.opp-loss, .sheet-detail-opp.opp-big-loss { color: #9c2a2a; }
+    .sheet-detail-opp.opp-loss-light { color: var(--rouge-alerte); opacity: 0.7; }
+    .sheet-detail-opp.opp-loss, .sheet-detail-opp.opp-big-loss { color: var(--rouge-alerte); }
     .sheet-detail-opp.reserve-met { color: var(--vert-anglais); }
     .sheet-detail-opp.reserve-pending { color: var(--orange-polo); }
     .sheet-detail-opp.opp-upcoming { color: var(--orange-polo); }
     .sheet-detail-opp.delta-above { color: var(--vert-anglais); }
-    .sheet-detail-opp.delta-below { color: #9c2a2a; }
+    .sheet-detail-opp.delta-below { color: var(--rouge-alerte); }
     .sheet-detail-opp.delta-within { color: var(--gris); }
     .sheet-detail-label {
       font-family: var(--mono);
@@ -4054,8 +4069,8 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
     .match-card-opp.opp-big-win, .match-card-opp.opp-win { color: var(--vert-anglais); }
     .match-card-opp.opp-win-light { color: var(--vert-anglais); opacity: 0.7; }
     .match-card-opp.opp-flat { color: var(--gris); }
-    .match-card-opp.opp-loss-light { color: #9c2a2a; opacity: 0.7; }
-    .match-card-opp.opp-loss, .match-card-opp.opp-big-loss { color: #9c2a2a; }
+    .match-card-opp.opp-loss-light { color: var(--rouge-alerte); opacity: 0.7; }
+    .match-card-opp.opp-loss, .match-card-opp.opp-big-loss { color: var(--rouge-alerte); }
     .match-card-label {
       font-family: var(--mono);
       font-size: 9px;
@@ -4495,7 +4510,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
       line-height: 1;
     }
     .garage-card-delta.positive { color: var(--vert-anglais); }
-    .garage-card-delta.negative { color: #9c2a2a; }
+    .garage-card-delta.negative { color: var(--rouge-alerte); }
     .garage-card-delta.flat { color: var(--gris); }
     .garage-card-label {
       font-family: var(--mono);
@@ -4519,8 +4534,8 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
     }
     .garage-card-voice.voice-big-win em { color: var(--vert-anglais); }
     .garage-card-voice.voice-win em { color: var(--vert-anglais); opacity: 0.85; }
-    .garage-card-voice.voice-loss em { color: #9c2a2a; }
-    .garage-card-voice.voice-big-loss em { color: #9c2a2a; }
+    .garage-card-voice.voice-loss em { color: var(--rouge-alerte); }
+    .garage-card-voice.voice-big-loss em { color: var(--rouge-alerte); }
     .garage-card-voice.voice-flat em { color: var(--gris); }
 
     /* Spacing entre cards : 34px fib (un peu plus généreux) */
@@ -4625,7 +4640,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
       letter-spacing: 0.03em;
     }
     .valuation-delta.up { color: var(--vert-anglais); }
-    .valuation-delta.down { color: #9c2a2a; }
+    .valuation-delta.down { color: var(--rouge-alerte); }
     .valuation-delta.flat { color: var(--gris); }
     .valuation-hint {
       padding: 10px 14px;
@@ -5261,7 +5276,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
     .dashboard-auction-banner {
       padding: var(--s-3) var(--s-2);
       background: rgba(107, 79, 31, 0.08);
-      border: 1px solid #6b4f1f;
+      border: 1px solid var(--brun-enchere);
       border-radius: 2px;
       text-align: center;
       margin-bottom: var(--s-2);
@@ -5270,7 +5285,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
       font-family: var(--mono);
       font-size: 9px;
       letter-spacing: 0.12em;
-      color: #6b4f1f;
+      color: var(--brun-enchere);
       margin-bottom: 4px;
     }
     .dashboard-auction-banner-value {
@@ -5371,7 +5386,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
       border-radius: 2px;
     }
     .dashboard-bid.leading {
-      border-color: #6b4f1f;
+      border-color: var(--brun-enchere);
       background: rgba(107, 79, 31, 0.04);
     }
     .dashboard-bid-left {
@@ -5386,7 +5401,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
       color: var(--encre);
     }
     .dashboard-bid.leading .dashboard-bid-amount {
-      color: #6b4f1f;
+      color: var(--brun-enchere);
       font-weight: 500;
     }
     .dashboard-bid-from {
@@ -5610,14 +5625,14 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
     /* My auction card */
     .auction-card-mine {
       position: relative;
-      border-color: #6b4f1f !important;
+      border-color: var(--brun-enchere) !important;
     }
     .auction-card-mine-badge {
       position: absolute;
       top: 8px;
       right: 8px;
       padding: 3px 8px;
-      background: #6b4f1f;
+      background: var(--brun-enchere);
       color: var(--papier);
       font-family: var(--mono);
       font-size: 9px;
@@ -5863,8 +5878,8 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
       border: 1px solid var(--orange-polo) !important;
     }
     .sheet-btn.primary:active {
-      background: #d24c12 !important;
-      border-color: #d24c12 !important;
+      background: var(--orange-polo-dark) !important;
+      border-color: var(--orange-polo-dark) !important;
       opacity: 1 !important;
     }
 
@@ -5905,8 +5920,8 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
     /* DANGER : bordeaux */
     .sheet-btn.danger {
       background: transparent !important;
-      border: 1px solid #9c2a2a !important;
-      color: #9c2a2a !important;
+      border: 1px solid var(--rouge-alerte) !important;
+      color: var(--rouge-alerte) !important;
     }
     .sheet-btn.danger:active {
       background: rgba(156, 42, 42, 0.06) !important;
@@ -6043,8 +6058,8 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
       border-color: var(--orange-polo) !important;
     }
     .empty-state-cta.primary:active {
-      background: #d24c12 !important;
-      border-color: #d24c12 !important;
+      background: var(--orange-polo-dark) !important;
+      border-color: var(--orange-polo-dark) !important;
     }
 
 
@@ -6078,7 +6093,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
       background-color: rgba(31, 77, 47, 0.04);
     }
     .banner.banner-danger {
-      border-left-color: #9c2a2a;
+      border-left-color: var(--rouge-alerte);
       background-color: rgba(156, 42, 42, 0.04);
     }
     .banner-tag {
@@ -6093,7 +6108,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
     .banner.banner-info .banner-tag { color: var(--encre); }
     .banner.banner-warning .banner-tag { color: var(--orange-polo); }
     .banner.banner-success .banner-tag { color: var(--vert-anglais); }
-    .banner.banner-danger .banner-tag { color: #9c2a2a; }
+    .banner.banner-danger .banner-tag { color: var(--rouge-alerte); }
     .banner-title {
       font-family: var(--display);
       font-style: italic;
@@ -6129,7 +6144,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
     .banner.banner-info .banner-cta { color: var(--encre); }
     .banner.banner-warning .banner-cta { color: var(--orange-polo); }
     .banner.banner-success .banner-cta { color: var(--vert-anglais); }
-    .banner.banner-danger .banner-cta { color: #9c2a2a; }
+    .banner.banner-danger .banner-cta { color: var(--rouge-alerte); }
 
     /* Lot 21 — modifiers : .banner devient le système unique réutilisable.
        .is-dashed   : bordure pointillée tout-autour (remplace le border-left)
@@ -6141,7 +6156,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
     .banner.is-dashed.banner-info    { border-color: var(--encre); }
     .banner.is-dashed.banner-warning { border-color: var(--orange-polo); }
     .banner.is-dashed.banner-success { border-color: var(--vert-anglais); }
-    .banner.is-dashed.banner-danger  { border-color: #9c2a2a; }
+    .banner.is-dashed.banner-danger  { border-color: var(--rouge-alerte); }
     .banner.is-clickable {
       cursor: pointer;
       transition: background-color var(--duration-fast) ease;
@@ -6212,7 +6227,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
     .form-input.error,
     .form-textarea.error,
     .form-select.error {
-      border-color: #9c2a2a;
+      border-color: var(--rouge-alerte);
       background: rgba(156, 42, 42, 0.02);
     }
     .form-input::placeholder,
@@ -6238,7 +6253,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
       font-style: italic;
       font-size: 12px;
       line-height: 1.4;
-      color: #9c2a2a;
+      color: var(--rouge-alerte);
       margin-top: 3px;
     }
 
@@ -6980,8 +6995,8 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
     }
     .confirm-icon.tone-danger {
       background: rgba(156, 42, 42, 0.06);
-      border-color: #9c2a2a;
-      color: #9c2a2a;
+      border-color: var(--rouge-alerte);
+      color: var(--rouge-alerte);
     }
     .confirm-icon.tone-warning {
       background: rgba(232, 90, 31, 0.06);
@@ -7006,7 +7021,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
       text-transform: uppercase;
       line-height: 1.4;
     }
-    .confirm-tag.tone-danger { color: #9c2a2a; }
+    .confirm-tag.tone-danger { color: var(--rouge-alerte); }
     .confirm-tag.tone-warning { color: var(--orange-polo); }
     .confirm-tag.tone-success { color: var(--vert-anglais); }
     .confirm-title {
@@ -8685,7 +8700,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   font-family:var(--mono);
   font-size:9px;
   letter-spacing:0.18em;
-  color:#9FE1CB;
+  color:var(--vert-vivant-clair); /* Lot 38 */
   text-transform:uppercase;
   margin:0 0 8px 0;
 }
@@ -8699,7 +8714,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   flex:1;
   font-family:var(--mono);
   font-size:10px;
-  color:#9FE1CB;
+  color:var(--vert-vivant-clair); /* Lot 38 */
   letter-spacing:0.04em;
 }
 .garage-coowned-share .garage-circle-avatar{ border-color:var(--encre); }
@@ -8716,7 +8731,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 .garage-coowned-chip{
   font-family:var(--mono);
   font-size:9px;
-  color:#9FE1CB;
+  color:var(--vert-vivant-clair); /* Lot 38 */
   padding:4px 8px;
   background:rgba(159,225,203,0.1);
   border-radius:var(--r);
@@ -9009,13 +9024,13 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   font-family:var(--mono);
   font-size:9px;
   letter-spacing:0.18em;
-  color:#9FE1CB;
+  color:var(--vert-vivant-clair); /* Lot 38 */
   text-transform:uppercase;
 }
 .copilote-tsd-target{
   font-family:var(--mono);
   font-size:9px;
-  color:#9FE1CB;
+  color:var(--vert-vivant-clair); /* Lot 38 */
   letter-spacing:0.04em;
 }
 .copilote-tsd-cols{
@@ -9040,7 +9055,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   margin-top:2px;
   color:var(--papier);
 }
-.copilote-tsd-col-value.is-positive{ color:#9FE1CB; }
+.copilote-tsd-col-value.is-positive{ color:var(--vert-vivant-clair); } /* Lot 38 */
 .copilote-tsd-col-value.is-negative{ color:var(--orange-polo); }
 
 /* Odomètre + ETA — 2 cards papier-soft */
@@ -9195,7 +9210,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 
 /* Migré Lot 13b-2 — overlay/close/header utilisent .carnet-overlay-* générique */
 /* Extension Lot 13b-2 : .is-positive promu au composant générique (utile pour tous modes) */
-.carnet-overlay-header-right .is-positive{ color:#9FE1CB; }
+.carnet-overlay-header-right .is-positive{ color:var(--vert-vivant-clair); } /* Lot 38 */
 
 /* Chronos hero — 2 cols grid (meilleur tour + tour précédent) */
 .trackday-chronos{ padding:24px 24px 14px; }
@@ -9620,7 +9635,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 .garage-tax-meta{
   font-family:var(--mono);
   font-size:11px;
-  color:#9FE1CB;
+  color:var(--vert-vivant-clair); /* Lot 38 */
   letter-spacing:0.03em;
   margin:0;
 }
@@ -9858,7 +9873,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   font-family: var(--mono);
   font-size: 9px;
   letter-spacing: 0.18em;
-  color: #9FE1CB;
+  color: var(--vert-vivant-clair); /* Lot 38 */
   text-transform: uppercase;
   margin: 0;
 }
@@ -9879,7 +9894,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 }
 .carnet-overlay-header-live {
   font-size: 9px;
-  color: #9FE1CB;
+  color: var(--vert-vivant-clair); /* Lot 38 */
   letter-spacing: 0.04em;
   margin-top: 2px;
 }
@@ -10083,7 +10098,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   font-family: var(--mono);
   font-size: 9px;
   letter-spacing: 0.18em;
-  color: #9FE1CB;
+  color: var(--vert-vivant-clair); /* Lot 38 */
   text-transform: uppercase;
 }
 .kpi-card.is-hero .kpi-value {
@@ -10273,7 +10288,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   background: var(--orange-polo);
 }
 .new-alert-btn:active {
-  background: #d24c12;
+  background: var(--orange-polo-dark);
 }
 .new-alert-plus {
   color: var(--papier-bright);
@@ -10305,7 +10320,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
               transform var(--duration-fast) ease;
 }
 .builder-cta:active:not(:disabled) {
-  background: #d24c12;
+  background: var(--orange-polo-dark);
   opacity: 1;
   transform: scale(0.985);
 }
@@ -17353,7 +17368,7 @@ function renderAuctionSheet(a){
 function renderWatchedSheet(w){
   if(!w) return '';
   const trendIcon = w.trend === 'up' ? '↗' : w.trend === 'down' ? '↘' : '→';
-  const trendColor = w.trend === 'up' ? 'var(--vert-anglais)' : w.trend === 'down' ? '#9c2a2a' : 'var(--gris)';
+  const trendColor = w.trend === 'up' ? 'var(--vert-anglais)' : w.trend === 'down' ? 'var(--rouge-alerte)' : 'var(--gris)';
   return `
     <div class="sheet-handle-area" data-sheet-drag>
       <div class="sheet-handle"></div>
@@ -17873,7 +17888,7 @@ function renderGarageCarSheet(c){
       ` : `
         <button class="sheet-btn full" data-action="listForSale" data-id="${esc(c.id)}" style="border-color:var(--orange-polo);color:var(--orange-polo);font-weight:500">Mettre en vente</button>
       `}
-      <button class="sheet-btn ghost full" data-action="removeFromGarage" data-id="${esc(c.id)}" style="color:#9c2a2a">Retirer du Garage</button>
+      <button class="sheet-btn ghost full" data-action="removeFromGarage" data-id="${esc(c.id)}" style="color:var(--rouge-alerte)">Retirer du Garage</button>
     </div>
   `;
 }
@@ -18189,13 +18204,13 @@ function renderSoldDetailSheet(carId){
   if(d.mode === 'listing' && d.askingPrice){
     const diff = (d.soldPrice || 0) - d.askingPrice;
     const sign = diff >= 0 ? '+' : '−';
-    const color = diff >= 0 ? 'var(--vert-anglais)' : '#9c2a2a';
+    const color = diff >= 0 ? 'var(--vert-anglais)' : 'var(--rouge-alerte)';
     priceContext = `<div style="font-family:var(--editorial);font-style:italic;font-size:11px;color:${color};margin-top:4px">${sign} ${esc(fmtPrice(Math.abs(diff)))} vs prix demandé (${esc(fmtPrice(d.askingPrice))})</div>`;
   } else if(d.mode === 'auction' && d.estimateLow){
     const inRange = d.soldPrice >= d.estimateLow && d.soldPrice <= (d.estimateHigh || d.estimateLow * 2);
     const above = d.soldPrice > (d.estimateHigh || 0);
     const label = inRange ? 'Dans l\u2019estimation' : (above ? 'Au-dessus de l\u2019estimation' : 'Sous l\u2019estimation basse');
-    const color = above ? 'var(--vert-anglais)' : (inRange ? 'var(--gris)' : '#9c2a2a');
+    const color = above ? 'var(--vert-anglais)' : (inRange ? 'var(--gris)' : 'var(--rouge-alerte)');
     priceContext = `<div style="font-family:var(--editorial);font-style:italic;font-size:11px;color:${color};margin-top:4px">${esc(label)} · ${esc(fmtPrice(d.estimateLow))} – ${esc(fmtPrice(d.estimateHigh || 0))}</div>`;
   }
   const photoCount = (car.photos || []).length;
@@ -18459,7 +18474,7 @@ function renderManageListingSheet(carId){
   const askingPrice = d.askingPrice || 0;
   const marketDelta = askingPrice - dash.marketAvg;
   const marketDeltaPercent = dash.marketAvg > 0 ? Math.round((marketDelta / dash.marketAvg) * 100) : 0;
-  const marketColor = Math.abs(marketDeltaPercent) <= 5 ? 'var(--vert-anglais)' : (marketDeltaPercent > 0 ? '#9c2a2a' : 'var(--orange-polo)');
+  const marketColor = Math.abs(marketDeltaPercent) <= 5 ? 'var(--vert-anglais)' : (marketDeltaPercent > 0 ? 'var(--rouge-alerte)' : 'var(--orange-polo)');
   const marketLabel = Math.abs(marketDeltaPercent) <= 5 ? 'aligné marché' : (marketDeltaPercent > 0 ? `${marketDeltaPercent}% au-dessus marché` : `${Math.abs(marketDeltaPercent)}% sous marché`);
   return `
     <div class="sheet-handle-area" data-sheet-drag>
@@ -22822,7 +22837,7 @@ function renderGaragePage(){
   const delta = totalValue - totalPaid;
   const deltaPercent = totalPaid > 0 ? ((delta / totalPaid) * 100) : 0;
   const deltaSign = delta >= 0 ? '+' : '−';
-  const deltaColor = delta >= 0 ? 'var(--vert-anglais)' : '#9c2a2a';
+  const deltaColor = delta >= 0 ? 'var(--vert-anglais)' : 'var(--rouge-alerte)';
   // KPI lifetime ventes
   const lifetimeSalesTotal = soldCars.reduce((acc, c) => acc + (c.saleData?.soldPrice || 0), 0);
 
