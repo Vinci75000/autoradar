@@ -2984,14 +2984,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
     .onboarding-profile-card.selected .onboarding-profile-chip {
       color: var(--orange-polo);
     }
-    .onboarding-profile-tick {
-      font-family: var(--sans);
-      font-size: 13px;
-      color: var(--orange-polo);
-      line-height: 1;
-      min-width: 13px;
-      text-align: right;
-    }
+    /* Lot 22 — .onboarding-profile-tick retiré : migré vers .tick canonique */
     .onboarding-profile-label {
       font-family: var(--editorial);
       font-style: italic;
@@ -3047,14 +3040,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
     .profile-card.selected .profile-card-chip {
       color: var(--orange-polo);
     }
-    .profile-card-tick {
-      font-family: var(--sans);
-      font-size: 14px;
-      color: var(--orange-polo);
-      line-height: 1;
-      min-width: 14px;
-      text-align: right;
-    }
+    /* Lot 22 — .profile-card-tick retiré : migré vers .tick canonique */
     .profile-card-title {
       font-family: var(--editorial);
       font-style: italic;
@@ -3918,13 +3904,8 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
     .profile-card-text {
       font-size: 14px !important; line-height: 1.5 !important;
     }
-    .profile-card-tick {
-      font-family: var(--display) !important;
-      font-style: italic !important;
-      font-size: 22px !important;
-      color: var(--orange-polo);
-      min-width: 22px !important;
-    }
+    /* Lot 22 — 2e définition .profile-card-tick (override v5.x !important)
+       retirée : migré vers .tick canonique. */
 
     /* ═══════════════════════════════════════════════════════════
        Cards Affût refonte φ + Fibonacci (v5.39)
@@ -5460,12 +5441,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
       border-color: var(--orange-polo);
       background: rgba(232, 90, 31, 0.06);
     }
-    .tuner-cat-tick {
-      width: 14px;
-      font-size: 12px;
-      color: var(--orange-polo);
-      font-weight: 600;
-    }
+    /* Lot 22 — .tuner-cat-tick retiré : migré vers .tick canonique */
 
     /* Tuner badge dans sale-status-block et autres displays */
     .tuner-badge-block {
@@ -6143,8 +6119,14 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 
 
     /* ─────────────────────────────────────────────────────────
-       FORM COMPONENTS — base unifiée
-       
+       FORM COMPONENTS — base unifiée (système-cible)
+
+       Système générique charte v8, RÉSERVÉ aux nouveaux formulaires
+       hors-garage. Le form Ajout voiture utilise .garage-form-* (déjà
+       refondu v5.x, 67 usages — ne pas migrer, risque élevé / 0 gain).
+       Ce bloc n'est pas du code mort : c'est le système à utiliser
+       pour tout futur form. .form-tick = rangée-checkbox box+label.
+
        Usage : <div class="form-field">
                  <label class="form-label">Marque</label>
                  <input class="form-input" type="text" placeholder="..." />
@@ -6224,6 +6206,26 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
       line-height: 1.4;
       color: #9c2a2a;
       margin-top: 3px;
+    }
+
+    /* ─────────────────────────────────────────────────────────
+       Lot 22 — .tick : glyphe ✓ canonique (composant unique)
+       Remplace .tuner-cat-tick / .profile-card-tick /
+       .onboarding-profile-tick — c'était le même composant sous
+       3 noms. Simple span dont le contenu est ✓ ou vide.
+       Usage : <span class="tick">${isOn ? '✓' : ''}</span>
+       (à distinguer de .form-tick = rangée-checkbox box+label,
+        et de .garage-condition-tick = checkbox carrée in-situ)
+       ───────────────────────────────────────────────────────── */
+    .tick {
+      font-family: var(--sans);
+      font-size: 14px;
+      line-height: 1;
+      color: var(--orange-polo);
+      min-width: 14px;
+      text-align: right;
+      flex-shrink: 0;
+      user-select: none;
     }
 
     /* Tick / Checkbox stylisé */
@@ -10687,8 +10689,8 @@ const COLLECTOR_PROFILES = [
   { id: 'builder',    label: 'Le M\u00e9cano',          chip: 'OUTLAW',     teaser: "Pr\u00e9parations, restomods, outlaws. Build not bought.",                        text: "Fa\u00e7onner ses voitures \u00e0 sa vision. Pr\u00e9parations, restomods, outlaws. Build not bought." },
   { id: 'enthusiast', label: 'Le Sp\u00e9cialiste des Specs', chip: 'D\u00c9TAIL', teaser: "Num\u00e9ros de ch\u00e2ssis, options usine, s\u00e9ries sp\u00e9ciales.", text: "Num\u00e9ros de ch\u00e2ssis, options d\u2019usine, s\u00e9ries sp\u00e9ciales, options uniques. La cr\u00e8me-de-la-cr\u00e8me." },
   { id: 'driver',     label: 'Le Gros Rouleur',          chip: 'ROUTE',      teaser: "Conduire. Vraiment. Les kilom\u00e8tres sont une m\u00e9daille.",                  text: "Conduire. Vraiment. Les kilom\u00e8tres sont une m\u00e9daille." },
-  { id: 'non_driver', label: 'Le Gardien de Mus\u00e9e', chip: 'DISPLAY',    teaser: "Acqu\u00e9rir, contempler, prot\u00e9ger. Garage ou salon.",                       text: "Acqu\u00e9rir, contempler, prot\u00e9ger, que ce soit dans son garage ou son salon." },
-  { id: 'social',     label: 'Le Social',               chip: 'RALLYE',     teaser: "Gumballers et autres aficionados de rallies. Voyager, socialiser.",                text: "Gumballers et autres aficionados de rallies. Voyager, socialiser, \u2026 bien manger, pas toujours." }
+  { id: 'mondain',    label: 'Le Mondain',               chip: 'DISPLAY',    teaser: "Villa d\u2019Este, Chantilly. Exposer ce qui se contemple.",                       text: "Sortir la voiture pour qu\u2019elle soit vue dans son meilleur cadre. Concours d\u2019\u00e9l\u00e9gance, pelouses anglaises, tweed, gentleman. Elle roule peu \u2014 elle se contemple. La voiture comme \u0153uvre dont on est le commissaire d\u2019exposition." },
+  { id: 'mousquetaire', label: 'Le Mousquetaire',        chip: 'RALLYE',     teaser: "Un pour tous, tous pour un. Pousser pour servir.",                                text: "Rouler en bande, jamais seul. Rallyes caritatifs, historiques, Gumball, courses de c\u00f4te, courses d\u2019orientation. L\u2019itin\u00e9raire compte autant que la voiture. Plus extr\u00eame dans l\u2019ADN \u2014 et au bout de la route, souvent une \u0153uvre \u00e0 servir." }
 ];
 
 const ONBOARDING_PANELS = [
@@ -14080,7 +14082,7 @@ function renderProfileOnboardingBanner(){
     <div class="banner banner-warning is-dashed is-clickable" data-action="openSelectProfile">
       <div class="banner-tag">CONSEIL CARNET</div>
       <h3 class="banner-title">D\u00e9finis ton profil de collectionneur.</h3>
-      <p class="banner-text">CARNET adapte ses conseils \u00e0 ta fa\u00e7on de vivre ta passion. Le pilote, le b\u00e2tisseur, le gardien \u2014 ils ne re\u00e7oivent pas les m\u00eames suggestions.</p>
+      <p class="banner-text">CARNET adapte ses conseils \u00e0 ta fa\u00e7on de vivre ta passion. Le pilote, le b\u00e2tisseur, le mondain \u2014 ils ne re\u00e7oivent pas les m\u00eames suggestions.</p>
       <button class="banner-cta">D\u00e9finir mon profil \u2192</button>
     </div>
   `;
@@ -14674,23 +14676,23 @@ const PROFILE_ADVICE = {
     'vintage': "Les sorties deviennent des événements. Plus tu la roules avec respect, plus elle s'apprécie — auprès de toi comme du marché.",
     'oldtimer': "Conduite occasionnelle, conservation premium. Quelques rallyes par an suffisent à entretenir l'âme et la cote."
   },
-  'non_driver': {
-    label: 'Gardien',
-    'new': "Stockage qualitatif dès maintenant : climat, lumière, mouvement périodique. C'est ce qui distingue dans 20 ans.",
-    'mature': "Phase d'attente assumée. La voiture dort, tu protèges. Patience récompensée à long terme.",
-    'bottom': "Tu y es presque. 5-10 ans de plus avant la remontée. Garde la conservation impeccable.",
-    'collector_entry': "Ton travail commence à payer. L'auto conservée à 0 km vaut significativement plus que celle qui a roulé. Continue.",
-    'vintage': "Valorisation maximale. Une voiture conservée comme musée vaut le double d'un exemplaire qui a vécu.",
-    'oldtimer': "Pièce de musée. Tu as fait ce qu'il fallait. Le marché viendra à toi."
-  },
-  'social': {
+  'mondain': {
     label: 'Mondain',
-    'new': "Sors-la, montre-la. Les belles photos et la présence en rallye créent une histoire — qui devient un argument de vente plus tard.",
-    'mature': "Phase visible. Concours d'élégance, sortie en clubs, presse spécialisée. Construis sa notoriété.",
-    'bottom': "Tes apparitions valorisent la voiture au-delà de la moyenne du marché. Tiens le rythme.",
-    'collector_entry': "L'auto a une réputation maintenant. Les acheteurs cherchent les exemplaires connus. Photographe pro, dossier complet.",
-    'vintage': "Pedigree d'événements = pedigree de marché. Un Pebble Beach, un Villa d'Este, ça vaut +20% facile.",
-    'oldtimer': "Voiture historique. Sa carrière publique devient son CV. Plus elle a brillé, plus elle vaut."
+    'new': "Stockage qualitatif dès maintenant : climat, lumière, mouvement périodique. C'est ce qui distingue sur une pelouse de concours dans 20 ans.",
+    'mature': "Phase d'exposition assumée. La voiture se montre, tu la prépares. Chaque sortie est un événement soigné.",
+    'bottom': "Tu y es presque. 5-10 ans de plus avant la remontée. Garde la présentation impeccable, le pedigree d'événements se construit.",
+    'collector_entry': "Ton travail commence à payer. L'auto conservée à 0 km, au pedigree d'expositions, vaut significativement plus. Continue.",
+    'vintage': "Valorisation maximale. Une voiture conservée comme œuvre, montrée dans les bons cadres, vaut le double d'un exemplaire qui a vécu sans être vu.",
+    'oldtimer': "Pièce de musée. Villa d'Este, Chantilly, Pebble Beach — sa carrière d'expositions est son CV. Le marché viendra à toi."
+  },
+  'mousquetaire': {
+    label: 'Mousquetaire',
+    'new': "Sors-la, engage-la. Les rallyes caritatifs et historiques dès maintenant créent une histoire — kilomètres vécus, causes servies, qui deviennent un argument plus tard.",
+    'mature': "Phase d'engagement. Mille Miglia, Tour Auto, Gumball, courses de côte — l'itinéraire fait la légende. Roule en bande, sers.",
+    'bottom': "Tes rallyes valorisent la voiture au-delà de la moyenne du marché : une auto qui a vécu en convoi, fiable, préparée. Tiens le rythme.",
+    'collector_entry': "L'auto a un pedigree d'épreuves maintenant. Les acheteurs cherchent les exemplaires qui ont roulé fort et bien. Dossier complet, photos de route.",
+    'vintage': "Pedigree de rallyes = pedigree de marché. Une Mille Miglia, un Tour Auto, une cause servie — ça vaut +20% et ça se raconte.",
+    'oldtimer': "Voiture historique. Sa carrière d'épreuves devient son CV. Plus elle a servi et brillé en convoi, plus elle vaut."
   }
 };
 
@@ -17516,7 +17518,7 @@ function renderGarageTunerSection(){
             const isOn = cats.indexOf(c.id) !== -1;
             return `
               <button type="button" class="tuner-cat-chip ${isOn ? 'selected' : ''}" data-action="toggleGarageTunerCat" data-cat="${esc(c.id)}">
-                <span class="tuner-cat-tick">${isOn ? '\u2713' : ''}</span>
+                <span class="tick">${isOn ? '\u2713' : ''}</span>
                 <span>${esc(c.label)}</span>
               </button>
             `;
@@ -18391,7 +18393,7 @@ function renderTunerSection(car, formState, changeAction){
             const isOn = categories.indexOf(cat.id) !== -1;
             return `
               <button class="tuner-cat-chip ${isOn ? 'selected' : ''}" data-action="toggleTunerCategory" data-form="${esc(changeAction === 'saleListingFormChange' ? 'listing' : 'auction')}" data-cat="${esc(cat.id)}">
-                <span class="tuner-cat-tick">${isOn ? '✓' : ''}</span>
+                <span class="tick">${isOn ? '✓' : ''}</span>
                 <span>${esc(cat.label)}</span>
               </button>
             `;
@@ -18852,7 +18854,7 @@ function renderSelectProfileSheet(){
             <button class="profile-card ${isOn ? 'selected' : ''}" data-action="toggleProfile" data-id="${esc(p.id)}">
               <div class="profile-card-top">
                 <span class="profile-card-chip">${esc(p.chip)}</span>
-                <span class="profile-card-tick">${isOn ? '✓' : ''}</span>
+                <span class="tick">${isOn ? '✓' : ''}</span>
               </div>
               <div class="profile-card-title">${esc(p.label)}</div>
               <div class="profile-card-text">${esc(p.text)}</div>
@@ -18965,7 +18967,7 @@ function renderOnboardingSheet(){
             <button class="onboarding-profile-card ${isOn ? 'selected' : ''}" data-action="toggleProfile" data-id="${esc(p.id)}">
               <div class="onboarding-profile-row">
                 <span class="onboarding-profile-chip">${esc(p.chip)}</span>
-                <span class="onboarding-profile-tick">${isOn ? '✓' : ''}</span>
+                <span class="tick">${isOn ? '✓' : ''}</span>
               </div>
               <div class="onboarding-profile-label">${esc(p.label)}</div>
               <div class="onboarding-profile-teaser">${esc(p.teaser)}</div>
@@ -22533,7 +22535,10 @@ window.CarnetOverlay = {
 // + collector + enthusiast).
 //
 // IDs cohérents avec COLLECTOR_PROFILES : collector, flipper, track_rat,
-// builder, enthusiast, driver, non_driver, social.
+// builder, enthusiast, driver, mondain, mousquetaire.
+// (Lot 23 — non_driver→mondain, social→mousquetaire : alignement Discover v1.0)
+// (Lot 24 — inférence en faisceau large : multi-match assumé, le filtre
+//  aide sans exclure. Une voiture a plusieurs usages possibles.)
 function inferCarArchetypes(car){
   if(!car) return [];
   const set = new Set();
@@ -22544,53 +22549,99 @@ function inferCarArchetypes(car){
   const km = car.km || 0;
   const cote = car.cote || 0;
 
-  // Track Rat — voitures circuit
-  if(/\bgt3\b|\bgt2\b|\bcup\b|trophy|\brs\b|sport evo|black series|caterham|lotus|bac mono|ktm x-bow|radical|porsche r\b|\b911 r\b|cayman gt4|m4 csl/i.test(fullName)){
+  // ─────────────────────────────────────────────────────────────
+  // Lot 24 — faisceau large : chaque avatar = plusieurs signaux
+  // indépendants, un seul suffit. Multi-match assumé (une voiture a
+  // plusieurs usages possibles). Le filtre AIDE, il n'EXCLUT pas.
+  // Champs lus : brand/model/year/km/cote/trend/chassis/spec/tuner/fresh.
+  // ─────────────────────────────────────────────────────────────
+  const spec = (car.spec || '').toLowerCase();
+  const hasChassis = !!(car.chassis && String(car.chassis).trim());
+  const hasTuner = !!(car.tuner && String(car.tuner).trim());
+
+  // Track Rat — voiture pensée pour le circuit
+  if(/\bgt3\b|\bgt2\b|\bgt4\b|\bcup\b|trophy|\brs\b|sport evo|black series|caterham|\blotus\b|bac mono|ktm x-bow|radical|\b911 r\b|cayman gt4|m4 csl|clubsport|track ?pack|nürburgring|nurburgring|scuderia|pista|speciale|competizione/i.test(fullName)){
+    set.add('track_rat');
+  }
+  if(/circuit|piste|track|chrono|cage|harnais/i.test(spec)){
     set.add('track_rat');
   }
 
-  // Builder / Outlaw — préparateurs et restomods
-  if(/singer|brabus|mansory|\bruf\b|alpina|liberty walk|restomod|tuner|wide ?body|hennessey|gunther werks|tuthill/i.test(fullName)){
+  // Builder / Outlaw — préparée, restomod, signature de préparateur
+  if(/singer|brabus|mansory|\bruf\b|alpina|liberty walk|restomod|wide ?body|hennessey|gunther werks|tuthill|emory|kaege|theon|tuthill|outlaw|backdate/i.test(fullName)){
+    set.add('builder');
+  }
+  if(hasTuner){
+    set.add('builder');
+  }
+  if(/préparation|restomod|outlaw|backdate|swap|upgrade/i.test(spec)){
     set.add('builder');
   }
 
-  // Driver / Gros rouleur — kilométrage élevé, breaks, berlines GT
-  if(km > 100000){
+  // Driver / Gros rouleur — kilomètres au compteur, grand tourisme
+  if(km > 80000){
     set.add('driver');
   }
-  if(/\bs-class\b|7 ?series|panamera|continental|ghost|phantom|maybach|\bcls\b|break|estate|wagon|touring|avant|sportwagon|shooting brake/i.test(fullName)){
+  if(/\bs-class\b|7 ?series|panamera|continental|ghost|phantom|maybach|\bcls\b|break|estate|wagon|touring|avant|sportwagon|shooting brake|grand tourer|\bgt\b|quattroporte/i.test(fullName)){
     set.add('driver');
   }
 
-  // Non-Driver / Gardien — hypercars + low km, ou cote très élevée + low km
-  if(cote >= 500000 && km < 10000){
-    set.add('non_driver');
+  // Mondain — exposer ce qui se contemple : matching numbers,
+  // entretien constructeur, production confidentielle (<5000 ex.)
+  if(hasChassis){
+    set.add('mondain');
   }
-  if(/zonda|huayra|veyron|chiron|valkyrie|laferrari|918 spyder|p1|senna|jesko|tuatara|jewel|battista|nevera|evija|t.50|aventador svj|sf90|monza sp/i.test(fullName)){
-    set.add('non_driver');
+  if(/matching|numbers matching|historique complet|carnet complet|full service|première main|premiere main|restauration|concours|original|provenance|certificat/i.test(spec)){
+    set.add('mondain');
+  }
+  if(/\(\s?\d{1,4}\s?ex/i.test(spec)){
+    set.add('mondain');
+  }
+  if(/\bf40\b|\bf50\b|carrera gt|enzo|\b288 gto\b|miura|\b959\b|stratos|\bcsl\b|gullwing|\b250 gt\b|\bgto\b|delta integrale|\bgt2 rs\b|\bgt3 rs\b|sport evo|\b911 r\b|carrera rs|\bsl roadster\b|type 35|\bdb4\b|\bdb5\b/i.test(fullName)){
+    set.add('mondain');
+  }
+  if(cote >= 300000 && km < 30000){
+    set.add('mondain');
   }
 
-  // Collector — classics et valeurs de référence
-  if(year && year < 1990){
+  // Collector — classics, valeurs de référence, provenance documentée
+  if(year && year < 1995){
     set.add('collector');
   }
-  if(cote >= 200000){
+  if(cote >= 180000){
+    set.add('collector');
+  }
+  if(hasChassis || /historique|provenance|matching|original|certificat|carnet complet/i.test(spec)){
     set.add('collector');
   }
 
-  // Enthusiast — séries limitées, spécifications particulières
-  if(/limited|special|anniversary|jubilee|carrera gt|enzo|\bf50\b|\bf40\b|carrera rs|stradale|aperta|spyder|targa florio|speedster|gma|chassis|matching/i.test(fullName)){
+  // Enthusiast — séries spéciales, spécifications particulières
+  if(/limited|special|anniversary|jubilee|carrera gt|enzo|\bf50\b|\bf40\b|carrera rs|stradale|aperta|spyder|targa florio|speedster|\bgma\b|matching|\bcsl\b|\brs\b|edition|série limitée|serie limitee/i.test(fullName + ' ' + spec)){
+    set.add('enthusiast');
+  }
+  if(hasChassis){
     set.add('enthusiast');
   }
 
-  // Flipper — opportunité de revente (trend up)
+  // Flipper — opportunité de revente : tendance, fraîcheur d'annonce
   if(car.trend === 'up'){
     set.add('flipper');
   }
+  if(car.fresh){
+    set.add('flipper');
+  }
 
-  // Social / Rallye — supercars exotiques connues des Gumball
-  if(/aventador|huracan|sf90|\b296\b|\b812\b|720s|gt-r|\bgtr\b|amg gt|\bm8\b|\brs6\b|\brs7\b|gallardo|murcielago|diablo|countach|defender|g.?wagon|g 63|g63|urus/i.test(fullName)){
-    set.add('social');
+  // Mousquetaire — rouler, en bande, n'importe où : marque prestigieuse
+  // OU modèle iconique/d'exception, du caractère, capable de longs
+  // trajets. Volontairement large — le Gumball en Rolls ou en SVJ.
+  if(/ferrari|porsche|lamborghini|aston martin|maserati|mclaren|bentley|rolls.?royce|alpine|\blotus\b|jaguar|alfa romeo|bugatti|pagani|koenigsegg|amg|abarth|\btvr\b|de tomaso|lancia|shelby/i.test(brand)){
+    set.add('mousquetaire');
+  }
+  if(/\bgt\b|\brs\b|turbo|quattro|integrale|\bcup\b|stradale|veloce|\bgti\b|cooper s|\bsvj?\b|countach|miura|stratos|\b911\b|\bm3\b|\bm5\b|\be-type\b/i.test(fullName)){
+    set.add('mousquetaire');
+  }
+  if(hasTuner){
+    set.add('mousquetaire');
   }
 
   return Array.from(set);
@@ -23220,6 +23271,12 @@ function init(){
   if(persistedGarage !== null) State.garage = persistedGarage;
   const persistedProfiles = loadPersistedProfiles();
   if(persistedProfiles !== null) State.userProfiles = persistedProfiles;
+  // Lot 23 — migration IDs legacy : non_driver→mondain, social→mousquetaire.
+  // Un profil sauvegardé avant le Lot 23 est remappé au chargement (idempotent).
+  if(Array.isArray(State.userProfiles) && State.userProfiles.length){
+    const _archetypeRemap = { non_driver: 'mondain', social: 'mousquetaire' };
+    State.userProfiles = [...new Set(State.userProfiles.map(id => _archetypeRemap[id] || id))];
+  }
   // Migration v5 : s'assurer que toute voiture a services/photos/docs initialisés
   (State.garage || []).forEach(car => {
     if(!Array.isArray(car.services)) car.services = [];
