@@ -47,6 +47,42 @@
   --s-7:32px;
   --s-8:40px;
 
+  /* ─────────────────────────────────────────────────────────────
+     Géométrie sacrée — tokens Fibonacci + nombre d'or (Lot 28)
+     La doctrine Carnet : aucun magic number. Les espacements suivent
+     la suite de Fibonacci, l'échelle typo des steps √φ, les ratios
+     le nombre d'or. Les tokens --s-* / --t-* linéaires ci-dessus
+     restent le temps que les sections non encore refondues migrent
+     (A-iii, section par section). Les NOUVELLES refontes utilisent
+     les tokens ci-dessous — plus jamais de valeur en dur.
+     ───────────────────────────────────────────────────────────── */
+
+  /* Espacements — suite de Fibonacci stricte */
+  --fib-1:4px;
+  --fib-2:8px;
+  --fib-3:13px;
+  --fib-4:21px;
+  --fib-5:34px;
+  --fib-6:55px;
+  --fib-7:89px;
+  --fib-8:144px;
+
+  /* Échelle typographique — steps √φ depuis base 15px.
+     11 → 13 → 15 → 21 → 28 → 34 → 55 → 89.
+     Les paliers majeurs (34→55, 55→89) sont exactement φ. */
+  --t-fib-1:11px;
+  --t-fib-2:13px;
+  --t-fib-3:15px;
+  --t-fib-4:21px;
+  --t-fib-5:28px;
+  --t-fib-6:34px;
+  --t-fib-7:55px;
+  --t-fib-8:89px;
+
+  /* Nombre d'or — pour les ratios (grilles, aspect-ratio, proportions) */
+  --phi:1.618;
+  --phi-inv:0.618;
+
   --r:2px;
   --r-sheet:18px;
   --touch:44px;
@@ -12468,6 +12504,9 @@ const Sheet = {
       clearTimeout(this.toastTimerId);
       this.toastTimerId = null;
     }
+    // Invalide tout setTimeout de close() encore en vol — évite qu'il
+    // nile l'état de la sheet qu'on est en train d'ouvrir (race #5).
+    this._closeToken++;
     State.sheetView = view;
     State.sheetData = data;
     State.sheetOpen = true;
@@ -12481,6 +12520,7 @@ const Sheet = {
       }, 2500);
     }
   },
+  _closeToken: 0,
   close(){
     // Cancel pending toast auto-dismiss
     if(this.toastTimerId !== null){
@@ -12491,8 +12531,15 @@ const Sheet = {
     const sheet = document.querySelector('.sheet');
     sheet.classList.remove('open');
     sheet.style.transform = '';
-    document.querySelector('.sheet-backdrop').classList.remove('open');
+    const backdrop = document.querySelector('.sheet-backdrop');
+    backdrop.classList.remove('open');
+    backdrop.style.opacity = '';
+    // Token de session : si une sheet est rouverte avant la fin de la
+    // transition (340ms), open() incrémente le token et ce setTimeout
+    // devient caduc — il ne nilera pas l'état de la nouvelle sheet.
+    const token = ++this._closeToken;
     setTimeout(() => {
+      if(token !== this._closeToken) return;
       State.sheetView = null;
       State.sheetData = null;
     }, 340);
@@ -19076,7 +19123,9 @@ function navigateToKpiTarget(target){
 const Actions = {
   openAlert(id){ const a = State.alerts.find(x => x.id === id); if(a) Sheet.open('alert', a); },
   openMatch(id){ const m = State.matches.find(x => x.id === id); if(m) Sheet.open('match', m); },
-  openAuction(id){ const a = State.auctions.find(x => x.id === id); if(a) Sheet.open('auction', a); },
+  // Lot 27 — openAuction : définition unique plus bas (lit AUCTIONS,
+  // le catalogue complet). L'ancienne version qui lisait State.auctions
+  // (enchères suivies seulement) a été retirée — code mort dangereux.
   openWatched(id){ const w = State.watched.find(x => x.id === id); if(w) Sheet.open('watched', w); },
   openNewAlert(){ Builder.open(); },
   openAddWatched(){ Sheet.open('addWatched'); },
@@ -19486,7 +19535,9 @@ const Actions = {
   },
   followAuction(){ Sheet.close(); setTimeout(() => showToastFloat('Enchère ajoutée à tes enchères suivies.'), 340); },
   setReminders(){ Sheet.close(); setTimeout(() => showToastFloat('Rappels configurés : T-24 h, T-2 h, T-15 min.'), 340); },
-  viewSource(){ Sheet.close(); setTimeout(() => showToastFloat('Ouverture de la page d\u2019enchère\u2026'), 340); },
+  // Lot 27 — viewSource : définition unique plus bas (viewSource(id),
+  // toast personnalisé avec marque/modèle/source). L'ancienne version
+  // sans argument (toast générique) a été retirée — code mort.
   editReminders(){ Sheet.close(); setTimeout(() => showToastFloat('Rappels d\u2019enchère modifiés.'), 340); },
   stopFollowing(id){
     Sheet.close();
@@ -20757,6 +20808,45 @@ const Actions = {
         showToastFloat(`« ${c.brand} ${c.model} » retirée du Garage.`);
       }
     });
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  // Lot 26 — handlers des sections Garage en construction.
+  // Ces boutons étaient rendus dans la vraie page Garage mais sans
+  // handler → muets au clic (handleClick faisait un return silencieux).
+  // En attendant les écrans dédiés, chaque bouton donne un retour
+  // honnête plutôt que rien. Le jour où une feature est construite,
+  // on remplace son toast ici par l'ouverture du vrai écran.
+  // ─────────────────────────────────────────────────────────────
+  openAddDeadline(){
+    showToastFloat('Bient\u00f4t : CARNET veillera sur ses \u00e9ch\u00e9ances \u2014 contr\u00f4le technique, assurance, r\u00e9vision.');
+  },
+  openDeadline(){
+    showToastFloat('Le suivi des \u00e9ch\u00e9ances arrive. Chaque date importante, au bon moment.');
+  },
+  openCircle(){
+    showToastFloat('Les cercles arrivent \u2014 partager une voiture \u00e0 plusieurs, proprement.');
+  },
+  openInviteCircle(){
+    showToastFloat('Bient\u00f4t : inviter un cercle autour d\u2019une voiture, sans paperasse.');
+  },
+  openAllMemories(){
+    showToastFloat('Le carnet de souvenirs s\u2019\u00e9crit encore. Bient\u00f4t ouvert.');
+  },
+  openMemory(){
+    showToastFloat('Cette m\u00e9moire s\u2019ouvrira bient\u00f4t en grand \u2014 photos, r\u00e9cit, l\u2019instant complet.');
+  },
+  openLedgerHistory(){
+    showToastFloat('Le ledger se met en place \u2014 chaque d\u00e9pense partag\u00e9e, retra\u00e7able.');
+  },
+  openLedgerSettle(){
+    showToastFloat('Bient\u00f4t : r\u00e9gler une part en RLUSD, en trois secondes, \u00e0 sa juste valeur.');
+  },
+  openMarketOpps(){
+    showToastFloat('L\u2019aff\u00fbt personnalis\u00e9 arrive \u2014 le march\u00e9, filtr\u00e9 pour elle.');
+  },
+  openMintCertificate(){
+    showToastFloat('Le certificat on-chain se pr\u00e9pare. Sa provenance, grav\u00e9e pour de bon.');
   }
 };
 
@@ -23221,43 +23311,82 @@ function handleInput(e){
 }
 
 // ===== SHEET DRAG TO CLOSE =====
+// ─── Lot 25 — drag-to-close refondu : résistance, garde anti-scroll,
+//     backdrop synchronisé, fermeture à l'intention (distance OU vélocité).
 let dragStartY = 0;
+let dragStartT = 0;
 let dragging = false;
 let sheetEl = null;
-let sheetContentEl = null;
+let backdropEl = null;
+
+// Le drag ne s'arme QUE si le geste est légitime : soit on touche la
+// poignée (handle-area), soit le contenu scrollable est tout en haut
+// (scrollTop 0) — sinon le geste appartient au scroll, pas à la sheet.
+function _dragGestureAllowed(target){
+  if(target.closest('.sheet-handle-area')) return true;
+  const scroller = document.querySelector('.sheet .sheet-content, .sheet .sheet-content-detail');
+  if(scroller && scroller.scrollTop > 0) return false;
+  return true;
+}
 
 function handleDragStart(e){
   if(!State.sheetOpen) return;
   const target = e.target.closest('[data-sheet-drag]');
   if(!target) return;
+  if(!_dragGestureAllowed(e.target)) return;
   dragStartY = e.touches ? e.touches[0].clientY : e.clientY;
+  dragStartT = Date.now();
   dragging = true;
   sheetEl = document.querySelector('.sheet');
+  backdropEl = document.querySelector('.sheet-backdrop');
   sheetEl.style.transition = 'none';
+  if(backdropEl) backdropEl.style.transition = 'none';
 }
 
 function handleDragMove(e){
-  if(!dragging) return;
+  if(!dragging || !sheetEl) return;
   const y = e.touches ? e.touches[0].clientY : e.clientY;
-  const dy = y - dragStartY;
-  if(dy > 0){
-    sheetEl.style.transform = `translateY(${dy}px)`;
-    if(e.cancelable) e.preventDefault();
+  let dy = y - dragStartY;
+  if(dy <= 0){
+    // Borne haute stricte — on ne tire jamais la sheet au-dessus de sa place.
+    sheetEl.style.transform = '';
+    if(backdropEl) backdropEl.style.opacity = '';
+    return;
   }
+  // Résistance douce : suivi 1:1 jusqu'à 80px, puis courbe amortie.
+  const eased = dy <= 80 ? dy : 80 + (dy - 80) * 0.55;
+  sheetEl.style.transform = `translateY(${eased}px)`;
+  // Le backdrop s'estompe proportionnellement à la progression du geste.
+  if(backdropEl){
+    const h = sheetEl.offsetHeight || 1;
+    const progress = Math.min(eased / h, 1);
+    backdropEl.style.opacity = String(1 - progress * 0.85);
+  }
+  if(e.cancelable) e.preventDefault();
 }
 
 function handleDragEnd(e){
   if(!dragging) return;
   dragging = false;
+  if(!sheetEl){ return; }
   sheetEl.style.transition = '';
+  if(backdropEl) backdropEl.style.transition = '';
   const y = e.changedTouches ? e.changedTouches[0].clientY : e.clientY;
   const dy = y - dragStartY;
-  if(dy > 120){
+  const dt = Math.max(Date.now() - dragStartT, 1);
+  const velocity = dy / dt; // px/ms
+  const h = sheetEl.offsetHeight || 1;
+  // Ferme à l'intention : geste franc (vélocité) OU distance ≥ 25% hauteur.
+  const shouldClose = dy > 0 && (velocity > 0.55 || dy > h * 0.25);
+  if(shouldClose){
     Sheet.close();
   } else {
+    // Retour en place — la transition CSS reprend, glissé doux.
     sheetEl.style.transform = '';
+    if(backdropEl) backdropEl.style.opacity = '';
   }
   sheetEl = null;
+  backdropEl = null;
 }
 
 // ===== INIT =====
@@ -23317,6 +23446,10 @@ function init(){
   document.addEventListener('mousedown', handleDragStart);
   document.addEventListener('mousemove', handleDragMove);
   document.addEventListener('mouseup', handleDragEnd);
+  // Lot 25 — Escape ferme la sheet ouverte (standard desktop/clavier).
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape' && State.sheetOpen) Sheet.close();
+  });
 
   // Expose for debugging
   window.State = State;
