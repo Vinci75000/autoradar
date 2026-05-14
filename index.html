@@ -9922,6 +9922,89 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
    /LOT 13 (Phase α refactor)
    ═══════════════════════════════════════════════════════════════════════ */
 
+/* ═══════════════════════════════════════════════════════════════════════
+   LOT 14 (Phase α) — Filtre archétype Garage grid
+   ═══════════════════════════════════════════════════════════════════════ */
+.garage-archetype-filters {
+  display: flex;
+  gap: 8px;
+  padding: 14px 22px 6px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.garage-archetype-filters::-webkit-scrollbar { display: none; }
+
+.garage-archetype-filters-label {
+  flex-shrink: 0;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--gris);
+  text-transform: uppercase;
+  align-self: center;
+  padding-right: 4px;
+}
+
+.garage-archetype-chip {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border-radius: var(--r);
+  background: var(--papier);
+  border: 1px solid var(--gris-line);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--encre);
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+  white-space: nowrap;
+}
+.garage-archetype-chip:hover {
+  border-color: var(--orange-polo);
+}
+.garage-archetype-chip.is-active {
+  background: var(--encre);
+  color: var(--papier);
+  border-color: var(--encre);
+}
+.garage-archetype-chip-count {
+  font-size: 9px;
+  opacity: 0.6;
+  font-weight: 500;
+}
+.garage-archetype-chip.is-active .garage-archetype-chip-count {
+  opacity: 0.8;
+}
+.garage-archetype-empty-state {
+  padding: 28px 22px;
+  text-align: center;
+  font-family: var(--editorial);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--encre-soft);
+}
+.garage-archetype-empty-state-clear {
+  display: inline-block;
+  margin-top: 8px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--orange-polo);
+  cursor: pointer;
+  border-bottom: 1px solid var(--orange-polo);
+  padding-bottom: 1px;
+}
+/* ═══════════════════════════════════════════════════════════════════════
+   /LOT 14 (Phase α)
+   ═══════════════════════════════════════════════════════════════════════ */
+
 </style>
   <!-- v6.0 : Supabase JS SDK pour connexion live à carnet.life DB -->
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
@@ -18700,6 +18783,27 @@ const Actions = {
   signInWithGoogle(){ if(window.Auth) Auth.signInWithGoogle(); },
   signOut(){ if(window.Auth) Auth.signOut(); },
 
+  // ─── Lot 14 — toggle filtre archétype Garage ────────────────────────
+  toggleGarageArchetype(archetypeId){
+    if(!archetypeId) return;
+    State.garageArchetypeFilter = State.garageArchetypeFilter || [];
+    const idx = State.garageArchetypeFilter.indexOf(archetypeId);
+    if(idx >= 0){
+      State.garageArchetypeFilter.splice(idx, 1);
+    } else {
+      State.garageArchetypeFilter.push(archetypeId);
+    }
+    if(State.activeTab === 'garage' && typeof renderGaragePage === 'function'){
+      renderGaragePage();
+    }
+  },
+  clearGarageArchetypeFilter(){
+    State.garageArchetypeFilter = [];
+    if(State.activeTab === 'garage' && typeof renderGaragePage === 'function'){
+      renderGaragePage();
+    }
+  },
+
   cancelConfirm(){
     const opts = _pendingConfirm;
     _pendingConfirm = null;
@@ -22101,6 +22205,131 @@ window.CarnetOverlay = {
 // ─── /Lot 13 (Phase α refactor) ────────────────────────────────────────
 
 
+// ─── Lot 14 (Phase α) — Filtre archétype Garage ─────────────────────
+// inferCarArchetypes(car) : retourne array d'archetype IDs basé sur les
+// caractéristiques de la voiture. Multi-tag — une voiture peut matcher
+// plusieurs archétypes (ex: Porsche 911 R 2017 peu kilométrée → track_rat
+// + collector + enthusiast).
+//
+// IDs cohérents avec COLLECTOR_PROFILES : collector, flipper, track_rat,
+// builder, enthusiast, driver, non_driver, social.
+function inferCarArchetypes(car){
+  if(!car) return [];
+  const set = new Set();
+  const brand = (car.brand || '').toLowerCase();
+  const model = (car.model || '').toLowerCase();
+  const fullName = brand + ' ' + model;
+  const year = car.year || 0;
+  const km = car.km || 0;
+  const cote = car.cote || 0;
+
+  // Track Rat — voitures circuit
+  if(/\bgt3\b|\bgt2\b|\bcup\b|trophy|\brs\b|sport evo|black series|caterham|lotus|bac mono|ktm x-bow|radical|porsche r\b|\b911 r\b|cayman gt4|m4 csl/i.test(fullName)){
+    set.add('track_rat');
+  }
+
+  // Builder / Outlaw — préparateurs et restomods
+  if(/singer|brabus|mansory|\bruf\b|alpina|liberty walk|restomod|tuner|wide ?body|hennessey|gunther werks|tuthill/i.test(fullName)){
+    set.add('builder');
+  }
+
+  // Driver / Gros rouleur — kilométrage élevé, breaks, berlines GT
+  if(km > 100000){
+    set.add('driver');
+  }
+  if(/\bs-class\b|7 ?series|panamera|continental|ghost|phantom|maybach|\bcls\b|break|estate|wagon|touring|avant|sportwagon|shooting brake/i.test(fullName)){
+    set.add('driver');
+  }
+
+  // Non-Driver / Gardien — hypercars + low km, ou cote très élevée + low km
+  if(cote >= 500000 && km < 10000){
+    set.add('non_driver');
+  }
+  if(/zonda|huayra|veyron|chiron|valkyrie|laferrari|918 spyder|p1|senna|jesko|tuatara|jewel|battista|nevera|evija|t.50|aventador svj|sf90|monza sp/i.test(fullName)){
+    set.add('non_driver');
+  }
+
+  // Collector — classics et valeurs de référence
+  if(year && year < 1990){
+    set.add('collector');
+  }
+  if(cote >= 200000){
+    set.add('collector');
+  }
+
+  // Enthusiast — séries limitées, spécifications particulières
+  if(/limited|special|anniversary|jubilee|carrera gt|enzo|\bf50\b|\bf40\b|carrera rs|stradale|aperta|spyder|targa florio|speedster|gma|chassis|matching/i.test(fullName)){
+    set.add('enthusiast');
+  }
+
+  // Flipper — opportunité de revente (trend up)
+  if(car.trend === 'up'){
+    set.add('flipper');
+  }
+
+  // Social / Rallye — supercars exotiques connues des Gumball
+  if(/aventador|huracan|sf90|\b296\b|\b812\b|720s|gt-r|\bgtr\b|amg gt|\bm8\b|\brs6\b|\brs7\b|gallardo|murcielago|diablo|countach|defender|g.?wagon|g 63|g63|urus/i.test(fullName)){
+    set.add('social');
+  }
+
+  return Array.from(set);
+}
+
+// getGarageArchetypeCounts(cars) : retourne Map archetypeId → count.
+function getGarageArchetypeCounts(cars){
+  const counts = {};
+  (cars || []).forEach(c => {
+    const archs = inferCarArchetypes(c);
+    archs.forEach(a => { counts[a] = (counts[a] || 0) + 1; });
+  });
+  return counts;
+}
+
+// applyGarageArchetypeFilter(cars, activeFilters) : filtre OR.
+// Si activeFilters est vide, retourne cars inchangé.
+function applyGarageArchetypeFilter(cars, activeFilters){
+  if(!activeFilters || activeFilters.length === 0) return cars;
+  const filtersSet = new Set(activeFilters);
+  return (cars || []).filter(c => {
+    const archs = inferCarArchetypes(c);
+    return archs.some(a => filtersSet.has(a));
+  });
+}
+
+// renderGarageArchetypeFilters(archetypeCounts, activeFilters) : HTML chips.
+// Affiche uniquement les archétypes présents dans le garage (count > 0).
+function renderGarageArchetypeFilters(archetypeCounts, activeFilters){
+  const presentArchetypes = Object.keys(archetypeCounts).filter(id => archetypeCounts[id] > 0);
+  if(presentArchetypes.length === 0) return '';
+  // Tri : actifs d'abord, puis par count décroissant
+  const activeSet = new Set(activeFilters || []);
+  presentArchetypes.sort((a, b) => {
+    const aActive = activeSet.has(a) ? 1 : 0;
+    const bActive = activeSet.has(b) ? 1 : 0;
+    if(aActive !== bActive) return bActive - aActive;
+    return archetypeCounts[b] - archetypeCounts[a];
+  });
+  const chipsHtml = presentArchetypes.map(id => {
+    const profile = COLLECTOR_PROFILES.find(p => p.id === id);
+    if(!profile) return '';
+    const isActive = activeSet.has(id);
+    const count = archetypeCounts[id];
+    return `<button type="button"
+      class="garage-archetype-chip${isActive ? ' is-active' : ''}"
+      data-action="toggleGarageArchetype"
+      data-archetype="${esc(id)}"
+      aria-pressed="${isActive}">
+      <span>${esc(profile.chip)}</span>
+      <span class="garage-archetype-chip-count">${count}</span>
+    </button>`;
+  }).join('');
+  return `<div class="garage-archetype-filters" aria-label="Filtres par archétype">
+    <span class="garage-archetype-filters-label">Profil</span>
+    ${chipsHtml}
+  </div>`;
+}
+// ─── /Lot 14 helpers ─────────────────────────────────────────────────
+
 function renderGaragePage(){
   const m = document.querySelector('main.main');
   if(!m) return;
@@ -22115,6 +22344,17 @@ function renderGaragePage(){
   const soldCars = garage.filter(c => c.saleStatus === 'sold').sort((a, b) => {
     return (b.saleData?.soldAt || 0) - (a.saleData?.soldAt || 0);
   });
+  // Lot 14 — filtre archétype (s'applique aux 3 buckets vivants, pas aux archives)
+  const _archetypeFilters = State.garageArchetypeFilter || [];
+  const _archetypeCounts = getGarageArchetypeCounts([...activeCars, ...inSaleCars, ...wishlistCars]);
+  const _filteredActiveCars = applyGarageArchetypeFilter(activeCars, _archetypeFilters);
+  const _filteredInSaleCars = applyGarageArchetypeFilter(inSaleCars, _archetypeFilters);
+  const _filteredWishlistCars = applyGarageArchetypeFilter(wishlistCars, _archetypeFilters);
+  const _hasFilterMismatch = _archetypeFilters.length > 0
+    && _filteredActiveCars.length === 0
+    && _filteredInSaleCars.length === 0
+    && _filteredWishlistCars.length === 0
+    && (activeCars.length + inSaleCars.length + wishlistCars.length) > 0;
   // Calculs collection ACTIVE (n'inclut pas les vendues)
   const valuableCars = [...activeCars, ...inSaleCars]; // collection vivante
   const totalValue = valuableCars.reduce((acc, c) => acc + (c.cote || 0), 0);
@@ -22137,38 +22377,46 @@ function renderGaragePage(){
     const totalDocs = valuableCars.reduce((a,c) => a + (c.docsCount||0), 0);
     const totalPhotos = valuableCars.reduce((a,c) => a + (c.photosCount||0), 0);
 
-    // Section "Mes ventes actives" si applicable
-    const inSaleSection = inSaleCars.length > 0 ? `
+    // Section "Mes ventes actives" si applicable (Lot 14 — utilise version filtrée)
+    const inSaleSection = _filteredInSaleCars.length > 0 ? `
       <div class="garage-section-divider">
-        <span class="garage-section-divider-label">EN VENTE · ${inSaleCars.length}</span>
+        <span class="garage-section-divider-label">EN VENTE · ${_filteredInSaleCars.length}${_archetypeFilters.length > 0 && _filteredInSaleCars.length < inSaleCars.length ? ' / ' + inSaleCars.length : ''}</span>
       </div>
       <div class="garage-feed">
-        ${inSaleCars.map(renderGarageCard).join('')}
+        ${_filteredInSaleCars.map(renderGarageCard).join('')}
       </div>
     ` : '';
 
-    // Section "Collection" (cars sans sale en cours)
-    const collectionSection = activeCars.length > 0 ? `
-      ${inSaleCars.length > 0 ? `
+    // Section "Collection" (cars sans sale en cours) (Lot 14 — utilise version filtrée)
+    const collectionSection = _filteredActiveCars.length > 0 ? `
+      ${_filteredInSaleCars.length > 0 ? `
         <div class="garage-section-divider">
-          <span class="garage-section-divider-label">COLLECTION · ${activeCars.length}</span>
+          <span class="garage-section-divider-label">COLLECTION · ${_filteredActiveCars.length}${_archetypeFilters.length > 0 && _filteredActiveCars.length < activeCars.length ? ' / ' + activeCars.length : ''}</span>
         </div>
       ` : ''}
       <div class="garage-feed">
-        ${activeCars.map(renderGarageCard).join('')}
+        ${_filteredActiveCars.map(renderGarageCard).join('')}
       </div>
     ` : '';
 
-    // v6.15 : Section Wishlist (cars que l'user veut, pas encore acquises)
-    const wishlistSection = wishlistCars.length > 0 ? `
+    // v6.15 : Section Wishlist (Lot 14 — utilise version filtrée)
+    const wishlistSection = _filteredWishlistCars.length > 0 ? `
       <div class="garage-section-divider wishlist">
-        <span class="garage-section-divider-label">WISHLIST \u00b7 ${wishlistCars.length}</span>
-        <span class="garage-section-divider-meta">${wishlistCars.length > 1 ? 'voitures suivies' : 'voiture suivie'}</span>
+        <span class="garage-section-divider-label">WISHLIST \u00b7 ${_filteredWishlistCars.length}${_archetypeFilters.length > 0 && _filteredWishlistCars.length < wishlistCars.length ? ' / ' + wishlistCars.length : ''}</span>
+        <span class="garage-section-divider-meta">${_filteredWishlistCars.length > 1 ? 'voitures suivies' : 'voiture suivie'}</span>
       </div>
       <div class="garage-feed garage-feed-wishlist">
-        ${wishlistCars.map(renderGarageCard).join('')}
+        ${_filteredWishlistCars.map(renderGarageCard).join('')}
       </div>
       <div class="garage-wishlist-note">Les voitures que tu suis sans encore les posséder. Aucun dossier requis — juste un signet pour ne pas oublier.</div>
+    ` : '';
+
+    // Lot 14 — empty state si filtre trop strict
+    const archetypeEmptyState = _hasFilterMismatch ? `
+      <div class="garage-archetype-empty-state">
+        Aucune voiture ne matche ce filtre.<br>
+        <span class="garage-archetype-empty-state-clear" data-action="clearGarageArchetypeFilter">Tout afficher \u2192</span>
+      </div>
     ` : '';
 
     // Section "Archives — Vendues"
@@ -22205,6 +22453,8 @@ function renderGaragePage(){
       ${renderProfileOnboardingBanner()}
       ${(() => { const _c = findCarNeedingCompletion(); return _c ? renderCompletionBanner(_c) : ''; })()}
       ${renderGarageAdviceSection(activeCars)}
+      ${renderGarageArchetypeFilters(_archetypeCounts, _archetypeFilters)}
+      ${archetypeEmptyState}
       ${inSaleSection}
       ${collectionSection}
       ${wishlistSection}
@@ -22483,6 +22733,9 @@ function handleClick(e){
   if(action === 'toggleGarageTuner'){ Actions.toggleGarageTuner(t.dataset.name); return; }
   if(action === 'toggleGarageTunerCat'){ Actions.toggleGarageTunerCat(t.dataset.cat); return; }
   if(action === 'toggleGarageCondition'){ Actions.toggleGarageCondition(t.dataset.field); return; }
+  // Lot 14 — filtre archétype
+  if(action === 'toggleGarageArchetype'){ Actions.toggleGarageArchetype(t.dataset.archetype); return; }
+  if(action === 'clearGarageArchetypeFilter'){ Actions.clearGarageArchetypeFilter(); return; }
   // Sale flow
   if(action === 'chooseSaleMode'){ Actions.chooseSaleMode(t.dataset.id, t.dataset.mode); return; }
   if(action === 'saleAuctionFormChange' && t.dataset.value !== undefined){
