@@ -100,6 +100,30 @@ Le replacement contient :
 
 C'est mieux que de remplacer juste le point d'insertion : si quelqu'un fait `git revert` sur le résultat patché, l'anchor est restauré et le re-patch fonctionne.
 
+#### Pattern critique · anchor "rompue par insertion"
+
+L'anchor doit être **rompue par l'insertion** post-patch. Sinon, l'idempotence detection signale un faux état hybride et bloque les re-runs.
+
+**Correct** — anchor 2 bornes, insertion au milieu :
+
+```
+Anchor        :  "AAA\n\nZZZ"               ← 2 bornes avec gap
+Replacement   :  "AAA\n\n<NOUVEAU>\nZZZ"    ← injecté entre AAA et ZZZ
+Post-patch    :  l'anchor "AAA\n\nZZZ" n'existe plus continue
+                 → anchor_count == 0, marker present → état "appliqué" propre
+```
+
+**Incorrect** — anchor à une seule borne, ajout après :
+
+```
+Anchor        :  "AAA"                       ← une seule borne
+Replacement   :  "AAA\n<NOUVEAU>"            ← ajouté APRÈS l'anchor
+Post-patch    :  l'anchor "AAA" est toujours là tel quel
+                 → anchor_count == 1, marker present → faux "état hybride"
+```
+
+Si tu te retrouves en "état hybride" au re-run, c'est ce pattern qu'il faut corriger : étendre l'anchor pour qu'elle inclue le point d'insertion ET un caractère/ligne situé(e) après.
+
 ### Étape 4 · Choisir un idempotence_marker
 
 Un **marker** est un texte qui :
