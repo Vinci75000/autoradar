@@ -41,6 +41,8 @@
   --orange-polo-dark:#D24C12;  /* orange Polo état :active — 6 usages en dur à migrer */
   --accent-rarete:#8A4A8A;     /* catégorie : type d'alerte « rareté » — Lot 39 */
   --ambre-warning:#C8943A;     /* catégorie : sévérité « warning » — Lot 39 */
+  --encre-dark:#0D0D0D;        /* encre, état :active — pendant de --orange-polo-dark, Lot 42 */
+  --papier-pur:#FAFAF7;        /* le fond le plus clair, cartes sur crème — Lot 42 */
 
   --display:'Bodoni Moda','Times New Roman',serif;
   --editorial:'Cormorant Garamond','Georgia',serif;
@@ -142,7 +144,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 /* Desktop phone-frame look */
 @media (min-width:600px){
   body{
-    background:#0F0F0E;
+    background:var(--encre-dark);
     padding:24px 0;
   }
   .app{
@@ -150,7 +152,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
     height:calc(100dvh - 48px);
     max-height:920px;
     border-radius:36px;
-    box-shadow:0 24px 90px -16px rgba(0,0,0,0.6),0 0 0 8px #1F1F1D,0 0 0 9px #2C2C28;
+    box-shadow:0 24px 90px -16px rgba(0,0,0,0.6),0 0 0 8px var(--encre),0 0 0 9px var(--encre-soft);
   }
 }
 
@@ -8517,7 +8519,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   align-items:stretch;
   gap:12px;
   padding:12px 14px;
-  background:#FFFDF7;
+  background:var(--papier-pur);
   border:1px solid rgba(26,26,24,0.08);
   border-radius:var(--r);
 }
@@ -8626,7 +8628,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   align-items:center;
   gap:12px;
   padding:12px 14px;
-  background:#FAFAF7;
+  background:var(--papier-pur);
   border:1px solid var(--gris-line);
   border-radius:var(--r);
   cursor:pointer;
@@ -8650,7 +8652,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   font-family:var(--mono);
   font-size:10px;
   color:var(--papier);
-  border:2px solid #FAFAF7;
+  border:2px solid var(--papier-pur);
 }
 .garage-circle-avatar + .garage-circle-avatar{ margin-left:-8px; }
 .garage-circle-avatar.is-empty{
@@ -8775,7 +8777,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 /* Card individuel d'un ledger event */
 .garage-ledger-event{
   padding:22px 20px 24px;
-  background:#FAFAF7;
+  background:var(--papier-pur);
   border:1px solid var(--gris-line);
   border-radius:var(--r);
 }
@@ -9066,7 +9068,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 .copilote-odo-card{
   flex:1;
   padding:12px 14px;
-  background:#FAFAF7;
+  background:var(--papier-pur);
   border:1px solid var(--gris-line);
   border-radius:var(--r);
 }
@@ -9094,20 +9096,20 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   align-items:center;
   gap:12px;
   padding:12px 14px;
-  background:#FAFAF7;
+  background:var(--papier-pur);
   border-left:3px solid var(--vert-anglais);
   border-radius:var(--r);
 }
 .copilote-status-thumb{
   width:32px;
   height:32px;
-  background:#D5D0C4;
+  background:var(--gris-line);
   display:flex;
   align-items:center;
   justify-content:center;
   font-family:var(--display);
   font-style:italic;
-  color:#6B655B;
+  color:var(--gris);
   font-size:12px;
   border-radius:var(--r);
   flex-shrink:0;
@@ -9123,7 +9125,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 .copilote-status-meta{
   font-family:var(--mono);
   font-size:9px;
-  color:#6B655B;
+  color:var(--gris);
   letter-spacing:0.04em;
   margin:1px 0 0 0;
 }
@@ -9148,7 +9150,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 .copilote-participant{
   flex-shrink:0;
   padding:8px 10px;
-  background:#FAFAF7;
+  background:var(--papier-pur);
   border:1px solid var(--gris-line);
   border-radius:var(--r);
   min-width:90px;
@@ -9158,9 +9160,9 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   border-color:var(--orange-polo);
 }
 .copilote-participant.is-overflow{
-  background:#FAFAF7;
+  background:var(--papier-pur);
   border-style:dashed;
-  border-color:#D5D0C4;
+  border-color:var(--gris-line);
   min-width:60px;
   display:flex;
   align-items:center;
@@ -9197,7 +9199,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   letter-spacing:0.04em;
 }
 .copilote-participant-gap.is-ahead{ color:var(--vert-anglais); }
-.copilote-participant-gap.is-near{ color:#6B655B; }
+.copilote-participant-gap.is-near{ color:var(--gris); }
 .copilote-participant-gap.is-behind{ color:var(--or); }
 .copilote-participant.is-self .copilote-participant-gap{ color:var(--papier); }
 .copilote-participant-overflow-text{
@@ -9239,7 +9241,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   color:var(--encre);
   margin:0;
 }
-.trackday-chronos-time.is-prev{ color:#6B655B; }
+.trackday-chronos-time.is-prev{ color:var(--gris); }
 .trackday-chronos-delta{
   font-family:var(--mono);
   font-size:9px;
@@ -9297,12 +9299,12 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 }
 .trackday-pilot-row.is-last{ border-bottom:none; }
 .trackday-pilot-row.is-self{
-  background:#FAFAF7;
+  background:var(--papier-pur);
   margin:0 -22px;
   padding-left:22px;
   padding-right:22px;
 }
-.trackday-pilot-row.is-trailing{ color:#6B655B; }
+.trackday-pilot-row.is-trailing{ color:var(--gris); }
 .trackday-pilot-rank{ color:var(--gris); }
 .trackday-pilot-row.is-self .trackday-pilot-rank{
   color:var(--orange-polo);
@@ -9319,7 +9321,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   align-items:center;
   gap:10px;
   padding:10px 12px;
-  background:#FAFAF7;
+  background:var(--papier-pur);
   border-left:3px solid var(--vert-anglais);
   border-radius:var(--r);
 }
@@ -9384,12 +9386,12 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 .gumball-step-dot.is-current{ background:var(--orange-polo); }
 .gumball-step-dot.is-future{
   background:transparent;
-  border:1.5px solid #D5D0C4;
+  border:1.5px solid var(--gris-line);
 }
 .gumball-step-line{
   width:1px;
   flex:1;
-  background:#D5D0C4;
+  background:var(--gris-line);
   margin-top:4px;
 }
 .gumball-step:last-child .gumball-step-line{ display:none; }
@@ -9417,7 +9419,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 .gumball-step-meta{
   font-family:var(--mono);
   font-size:9px;
-  color:#6B655B;
+  color:var(--gris);
   letter-spacing:0.04em;
   margin:3px 0 0 0;
 }
@@ -9435,15 +9437,15 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   border-radius:var(--r);
   letter-spacing:0.04em;
   text-transform:uppercase;
-  border:1px solid #D5D0C4;
+  border:1px solid var(--gris-line);
   background:transparent;
   cursor:pointer;
   color:var(--gris);
 }
 .gumball-rsvp-chip.is-selected{
   color:var(--encre);
-  background:#FAFAF7;
-  border-color:#D5D0C4;
+  background:var(--papier-pur);
+  border-color:var(--gris-line);
 }
 
 /* Reel du convoy — horizontal scroll de stories */
@@ -9507,7 +9509,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 }
 .gumball-story.is-add{
   background:rgba(26,26,24,0.06);
-  border:1px dashed #D5D0C4;
+  border:1px dashed var(--gris-line);
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -9570,7 +9572,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 }
 .garage-memory-card{
   flex:0 0 220px;
-  background:#FAFAF7;
+  background:var(--papier-pur);
   border:1px solid var(--gris-line);
   border-radius:var(--r);
   overflow:hidden;
@@ -9583,7 +9585,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 .garage-memory-card:hover{ border-color:var(--encre); }
 .garage-memory-photo{
   aspect-ratio:1.6/1;
-  background:#D5D0C4;
+  background:var(--gris-line);
 }
 .garage-memory-body{ padding:12px; }
 .garage-memory-eyebrow{
@@ -9605,7 +9607,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 .garage-memory-meta{
   font-family:var(--mono);
   font-size:9px;
-  color:#6B655B;
+  color:var(--gris);
   letter-spacing:0.04em;
   margin:6px 0 0 0;
 }
@@ -9653,13 +9655,13 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   align-items:center;
   gap:12px;
   padding:11px 14px;
-  background:#FAFAF7;
+  background:var(--papier-pur);
   border:1px solid var(--gris-line);
   border-radius:var(--r);
 }
 .garage-chain-row.is-pending{
   border-style:dashed;
-  border-color:#D5D0C4;
+  border-color:var(--gris-line);
   cursor:pointer;
 }
 .garage-chain-row.is-pending:hover{ border-color:var(--orange-polo); }
@@ -9681,7 +9683,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 }
 .garage-chain-icon.is-pending{
   background:transparent;
-  border:1px solid #D5D0C4;
+  border:1px solid var(--gris-line);
   color:var(--gris);
 }
 .garage-chain-body{ flex:1; min-width:0; }
@@ -9695,12 +9697,12 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 }
 .garage-chain-row.is-pending .garage-chain-title{
   font-family:var(--editorial);
-  color:#6B655B;
+  color:var(--gris);
 }
 .garage-chain-meta{
   font-family:var(--mono);
   font-size:9px;
-  color:#6B655B;
+  color:var(--gris);
   letter-spacing:0.04em;
   margin:1px 0 0 0;
 }
@@ -9715,7 +9717,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 /* Section 4 — L'affût · pour toi (opportunité marché) */
 .garage-opp-card{
   padding:18px;
-  background:#FAFAF7;
+  background:var(--papier-pur);
   border:1px dashed var(--vert-anglais);
   border-radius:var(--r);
 }
@@ -9767,7 +9769,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 /* Section 5 — La tribu · près de toi */
 .garage-tribu-card{
   padding:18px 20px;
-  background:#FAFAF7;
+  background:var(--papier-pur);
   border:1px solid var(--gris-line);
   border-radius:var(--r);
 }
@@ -9785,7 +9787,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   justify-content:center;
   font-family:var(--mono);
   font-size:10px;
-  border:2px solid #FAFAF7;
+  border:2px solid var(--papier-pur);
 }
 .garage-tribu-avatar + .garage-tribu-avatar{ margin-left:-8px; }
 .garage-tribu-text{
@@ -9891,7 +9893,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   text-align: right;
   font-family: var(--mono);
   font-size: 11px;
-  color: #D5D0C4;
+  color: var(--gris-line);
   padding-right: 40px;
 }
 .carnet-overlay-header-live {
@@ -9906,8 +9908,8 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 1px;
-  background: #D5D0C4;
-  border-top: 1px solid #D5D0C4;
+  background: var(--gris-line);
+  border-top: 1px solid var(--gris-line);
   position: sticky;
   bottom: 0;
 }
@@ -9930,7 +9932,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   justify-content: center;
   gap: 2px;
 }
-.carnet-overlay-action:hover { background: #FAFAF7; }
+.carnet-overlay-action:hover { background: var(--papier-pur); }
 .carnet-overlay-action.is-alert { color: var(--orange-polo); }
 .carnet-overlay-action.is-primary { color: var(--vert-anglais); }
 .carnet-overlay-action[disabled] { opacity: 0.4; cursor: not-allowed; }
@@ -10094,7 +10096,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 }
 .kpi-card.is-hero:active {
   transform: scale(0.985);
-  background: #0d0d0d;
+  background: var(--encre-dark);
 }
 .kpi-card.is-hero .kpi-label {
   font-family: var(--mono);
@@ -10267,7 +10269,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
               transform var(--duration-fast) ease;
 }
 .new-alert-btn:active {
-  background: #0d0d0d;
+  background: var(--encre-dark);
   opacity: 1;
   transform: scale(0.985);
 }
@@ -21602,9 +21604,9 @@ window.CARNET_CIRCLES_MOCK = window.CARNET_CIRCLES_MOCK || {
       id: 'family',
       name: 'Famille',
       members: [
-        { initial: 'P', color: '#1A1A18' },
-        { initial: 'L', color: '#1F4D2F' },
-        { initial: 'M', color: '#BA7517' }
+        { initial: 'P', color: 'var(--encre)' },
+        { initial: 'L', color: 'var(--vert-anglais)' },
+        { initial: 'M', color: 'var(--or)' }
       ],
       memberCount: 3,
       shareDescription: '4 voitures partag\u00e9es',
@@ -21614,10 +21616,10 @@ window.CARNET_CIRCLES_MOCK = window.CARNET_CIRCLES_MOCK || {
       id: 'close_friends',
       name: 'Amis proches',
       members: [
-        { initial: 'J', color: '#E85A1F' },
-        { initial: 'T', color: '#1A1A18' },
-        { initial: 'R', color: '#1F4D2F' },
-        { initial: '+3', color: '#6B655B', isMore: true }
+        { initial: 'J', color: 'var(--orange-polo)' },
+        { initial: 'T', color: 'var(--encre)' },
+        { initial: 'R', color: 'var(--vert-anglais)' },
+        { initial: '+3', color: 'var(--gris)', isMore: true }
       ],
       memberCount: 6,
       shareDescription: '47 souvenirs partag\u00e9s',
@@ -21638,8 +21640,8 @@ window.CARNET_CIRCLES_MOCK = window.CARNET_CIRCLES_MOCK || {
     enabled: true,
     label: 'Co-owned · multi-sig XLS-20',
     members: [
-      { initial: 'S', color: '#E85A1F' },
-      { initial: 'P', color: '#1F4D2F' }
+      { initial: 'S', color: 'var(--orange-polo)' },
+      { initial: 'P', color: 'var(--vert-anglais)' }
     ],
     shareText: '50 / 50 · ton p\u00e8re et toi',
     description: '<em>Ferrari F355 GTS \u00b7 1998.</em> Co-acquise mars 2024. Cession n\u00e9cessite double signature.',
@@ -21652,7 +21654,7 @@ function renderGarageCircleAvatar(member){
     return '<div class="garage-circle-avatar is-empty">\u2a00</div>';
   }
   const cls = member.isMore ? 'garage-circle-avatar is-more' : 'garage-circle-avatar';
-  return `<div class="${cls}" style="background:${esc(member.color || '#1A1A18')}">${esc(member.initial)}</div>`;
+  return `<div class="${cls}" style="background:${esc(member.color || 'var(--encre)')}">${esc(member.initial)}</div>`;
 }
 
 function renderGarageCircleRow(circle){
@@ -21738,7 +21740,7 @@ window.CARNET_LEDGER_MOCK = window.CARNET_LEDGER_MOCK || {
           who: 'P\u00e8re',
           role: 'a r\u00e9gl\u00e9 l\u2019atelier',
           initial: 'P',
-          color: '#1F4D2F',
+          color: 'var(--vert-anglais)',
           meta: 'Carte pro \u00b7 14 ao\u00fbt \u00b7 justificatif sign\u00e9',
           amount_eur: 33200,
           status: 'paid',
@@ -21748,7 +21750,7 @@ window.CARNET_LEDGER_MOCK = window.CARNET_LEDGER_MOCK || {
           who: 'Toi',
           role: 'ta part due',
           initial: 'S',
-          color: '#E85A1F',
+          color: 'var(--orange-polo)',
           meta: 'Quote-part NFT #0856 \u00b7 50%',
           amount_eur: 16600,
           status: 'due',
@@ -21795,7 +21797,7 @@ function renderGarageLedgerSplitRow(s){
   const cls = s.status === 'due' ? 'garage-ledger-split-row is-due' : 'garage-ledger-split-row';
   return `
     <div class="${cls}">
-      <div class="garage-ledger-split-avatar" style="background:${esc(s.color || '#1A1A18')}">${esc(s.initial)}</div>
+      <div class="garage-ledger-split-avatar" style="background:${esc(s.color || 'var(--encre)')}">${esc(s.initial)}</div>
       <div class="garage-ledger-split-content">
         <div class="garage-ledger-split-name"><em>${esc(s.who)} \u00b7 ${esc(s.role)}</em></div>
         <div class="garage-ledger-split-meta">${esc(s.meta)}</div>
@@ -21894,10 +21896,10 @@ window.CARNET_COPILOTE_MOCK = window.CARNET_COPILOTE_MOCK || {
     meta: 'Temp\u00e9rature 92\u00b0 \u00b7 pression bonne \u00b7 124 478 km'
   },
   participants: [
-    { initial: 'M', name: 'Marc',    color: '#1A1A18', gap_label: '+2,1 km devant',  gap_class: 'is-ahead'  },
-    { initial: 'A', name: 'Antoine', color: '#1F4D2F', gap_label: '+0,4 km',         gap_class: 'is-near'   },
-    { initial: 'S', name: 'Toi',     color: '#1A1A18', gap_label: 'point ref.',      gap_class: '', isSelf: true },
-    { initial: 'J', name: 'Julien',  color: '#BA7517', gap_label: '\u20131,8 km derri\u00e8re', gap_class: 'is-behind' }
+    { initial: 'M', name: 'Marc',    color: 'var(--encre)', gap_label: '+2,1 km devant',  gap_class: 'is-ahead'  },
+    { initial: 'A', name: 'Antoine', color: 'var(--vert-anglais)', gap_label: '+0,4 km',         gap_class: 'is-near'   },
+    { initial: 'S', name: 'Toi',     color: 'var(--encre)', gap_label: 'point ref.',      gap_class: '', isSelf: true },
+    { initial: 'J', name: 'Julien',  color: 'var(--or)', gap_label: '\u20131,8 km derri\u00e8re', gap_class: 'is-behind' }
   ],
   participants_overflow: 3,
   participants_total: 7
@@ -22438,10 +22440,10 @@ window.CARNET_DASHBOARD_MOCK = window.CARNET_DASHBOARD_MOCK || {
   },
   tribu: {
     avatars: [
-      { initial: 'M', color: '#1A1A18' },
-      { initial: 'A', color: '#1F4D2F' },
-      { initial: 'J', color: '#E85A1F' },
-      { initial: '+9', color: '#BA7517' }
+      { initial: 'M', color: 'var(--encre)' },
+      { initial: 'A', color: 'var(--vert-anglais)' },
+      { initial: 'J', color: 'var(--orange-polo)' },
+      { initial: '+9', color: 'var(--or)' }
     ],
     text: '12 collectionneurs CARNET \u00e0 moins de 50 km. Rassemblement \u00ab Aircooled Sunday \u00bb le 21 septembre.',
     rsvp: [
@@ -22550,7 +22552,7 @@ function renderGarageMarketOppsSection(){
 }
 
 function renderGarageTribuAvatar(a){
-  return `<div class="garage-tribu-avatar" style="background:${esc(a.color || '#1A1A18')}">${esc(a.initial)}</div>`;
+  return `<div class="garage-tribu-avatar" style="background:${esc(a.color || 'var(--encre)')}">${esc(a.initial)}</div>`;
 }
 
 function renderGarageTribuRsvp(r){
