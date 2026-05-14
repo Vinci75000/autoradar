@@ -38,7 +38,10 @@ Convention de naming :
   apply_<feature_slug>_lot<N>.py
   Ex : apply_garage_alpha_lot2.py, apply_ledger_events_lot4.py
 
-Version : 1.0 · 2026-05-14
+Version : 1.1 · 2026-05-14
+  v1.1 — garde-fou anti anchor "1-borne" dans Patch.__post_init__ :
+         lève ValueError si le replacement commence/finit par l'anchor
+         (Leçon 1 du PATCH_GUIDE, 6 occurrences historiques).
 """
 
 from dataclasses import dataclass, field
@@ -97,6 +100,33 @@ class Patch:
                 f"Patch '{self.name}' : idempotence_marker absent du replacement "
                 f"— skip idempotent ne pourra jamais détecter l'état appliqué."
             )
+        # Garde-fou anti anchor "1-borne" (Leçon 1 du PATCH_GUIDE — 6 occurrences
+        # historiques : Lots 3, 4, 14, 17, 21, 24). Si le replacement commence
+        # OU finit par le texte exact de l'anchor, alors l'anchor d'origine
+        # survit intacte post-patch → au re-run : marker présent + anchor encore
+        # là = "état hybride", le patch n'est pas idempotent.
+        # Une anchor valide est "2-bornes" : le contenu inséré la ROMPT — donc
+        # l'anchor apparaît au milieu du replacement, entourée de texte neuf
+        # des deux côtés (ou est transformée, pas juste préfixe/suffixe).
+        if self.replacement != self.anchor:
+            if self.replacement.startswith(self.anchor):
+                raise ValueError(
+                    f"Patch '{self.name}' : anchor 1-borne — le replacement COMMENCE "
+                    f"par le texte exact de l'anchor, puis ajoute du contenu après. "
+                    f"L'anchor d'origine survivra intacte → état hybride au re-run.\n"
+                    f"    Fix : étendre l'anchor avec une BORNE BASSE (la ligne/le "
+                    f"commentaire qui suit le point d'insertion), pour que "
+                    f"l'insertion la rompe. Voir Leçon 1 du CARNET_PATCH_GUIDE."
+                )
+            if self.replacement.endswith(self.anchor):
+                raise ValueError(
+                    f"Patch '{self.name}' : anchor 1-borne — le replacement FINIT "
+                    f"par le texte exact de l'anchor, avec du contenu neuf seulement "
+                    f"avant. L'anchor d'origine survivra intacte → état hybride au "
+                    f"re-run.\n"
+                    f"    Fix : étendre l'anchor avec une BORNE HAUTE (la ligne qui "
+                    f"précède le point d'insertion). Voir Leçon 1 du CARNET_PATCH_GUIDE."
+                )
 
     def is_applied(self, content: str) -> bool:
         return self.idempotence_marker in content

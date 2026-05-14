@@ -160,7 +160,7 @@ git push origin main
 > Cette section capitalise les bugs rencontrés sur les Lots 1.1 → 22.
 > Chacun est apparu **plusieurs fois** avant d'être systématisé. Les lire **avant** d'écrire un patch fait gagner un cycle entier.
 
-### Leçon 1 — Anchor 2-bornes (le bug le plus fréquent · 6 occurrences)
+### Leçon 1 — Anchor 2-bornes (le bug le plus fréquent · 7 occurrences)
 
 **Symptôme** : au re-run, le framework signale `état hybride (marker présent + anchor encore là)` et refuse d'écrire.
 
@@ -184,9 +184,11 @@ Replacement  :  "AAA\n\n<NOUVEAU>\nZZZ"     (injecté ENTRE AAA et ZZZ)
 Post-patch   :  "AAA\n\nZZZ" n'existe plus en continu → anchor cassée → propre
 ```
 
-**Fix d'un patch déjà bugué** : étendre l'anchor pour inclure une borne basse (la ligne / le commentaire qui suit immédiatement le point d'insertion). Le fichier déjà patché reste **valide** — le bug n'est que dans le script, pas dans le résultat. Après fix, re-tester l'idempotence des deux côtés : (a) sur le fichier déjà patché → doit skip, (b) from-scratch sur le backup → doit produire le même md5.
+**🛡️ Garde-fou automatique (carnet_patch_lib v1.1)** : depuis la v1.1, `Patch.__post_init__` **lève une `ValueError` à l'instanciation** si le `replacement` commence ou finit par le texte exact de l'`anchor`. Le bug est attrapé avant même de toucher le fichier — au moment où le script `apply_xxx.py` est importé. C'est la 7e occurrence (JS-7 du Lot 23) qui a justifié de coder le filet plutôt que de seulement le documenter. Si le garde-fou lève : étendre l'anchor avec la borne manquante (basse si le replacement commençait par l'anchor, haute s'il finissait par).
 
-*Occurrences : Lots 3, 4, 14 (JS-1), 17, 21 (CSS-1).*
+**Fix d'un patch déjà bugué** : étendre l'anchor pour inclure une borne (la ligne/le commentaire qui suit ou précède immédiatement le point d'insertion). Le fichier déjà patché reste **valide** — le bug n'est que dans le script, pas dans le résultat. Après fix, re-tester l'idempotence des deux côtés : (a) sur le fichier déjà patché → doit skip, (b) from-scratch sur le backup → doit produire le même md5.
+
+*Occurrences : Lots 3, 4, 14 (JS-1), 17, 21 (CSS-1), 24 (JS-2), 23 (JS-7). Le garde-fou v1.1 rend cette leçon auto-appliquée.*
 
 ### Leçon 2 — Raw strings pour les escapes Unicode
 
@@ -263,6 +265,39 @@ Trois pièges zsh ont mordu pendant le projet, **tous évitables avec les guille
 
 **Règle par défaut** : guillemets simples pour tout message de commit. Pas d'échappement à retenir, pas d'accent perdu.
 
+### Leçon 8 — Chevauchement d'anchor entre 2 patches d'un même lot
+
+**Symptôme** : un dry-run passe à `N-1/N`, un patch affiche `ANCHOR NOT FOUND` alors que son anchor existait bien dans le fichier de départ.
+
+**Cause** : deux patches du même PatchSet ont des anchors qui se **chevauchent**. Les patches s'appliquent **séquentiellement** — le patch A transforme une zone que le patch B utilisait comme borne. Quand B s'exécute, sa borne a déjà été réécrite par A → introuvable.
+
+Cas vécu : au Lot 23, JS-3 patchait le bloc `'non_driver'` de `PROFILE_ADVICE` en incluant `'social': {` comme **borne basse**. Mais JS-4 patchait justement le bloc `'social'` — dont l'anchor commençait par `'social': {`. JS-3 transformait `'social': {` → `'mousquetaire': {`, donc JS-4 ne trouvait plus rien.
+
+**Fix** : si deux zones à patcher sont **adjacentes ou imbriquées**, ne pas les traiter en 2 patches — les **fusionner en un seul patch** qui couvre les deux d'un tenant. Une anchor continue, pas de chevauchement possible. C'est aussi plus lisible.
+
+**Prévention** : avant d'écrire un lot multi-patches, lister les zones touchées et vérifier qu'aucune borne d'un patch n'est dans la zone réécrite par un autre.
+
+*Occurrence : Lot 23 (JS-3/JS-4 fusionnés).*
+
+### Leçon 9 — Vérifier qu'un champ existe sur l'objet avant de s'en servir
+
+**Symptôme** : une logique conditionnelle (filtre, inférence, affichage) ne se déclenche jamais, ou se déclenche toujours — comme si la condition était `undefined`.
+
+**Cause** : le code lit un champ qui n'existe pas sur l'objet à ce stade du cycle de vie. Les objets du fichier ne sont pas uniformes : un objet `car` du tableau `GARAGE` n'a pas les mêmes champs qu'un `car` après la migration v5, ou qu'un `car` issu d'un listing scrapé.
+
+Cas vécu : au Lot 24, le premier jet de `inferCarArchetypes` s'appuyait sur `car.fullServiceHistory` et `car.serviceUpToDate` — qui **n'existent pas** sur les objets `GARAGE` (ils sont initialisés ailleurs, plus tard). La logique aurait été morte. Le vrai signal disponible était `car.spec` (texte libre riche) et `car.chassis`.
+
+**Fix** : avant d'utiliser `car.X` dans une nouvelle logique, vérifier que `X` existe **sur les objets réels** concernés :
+```bash
+# Lister tous les champs réellement présents sur un objet GARAGE
+sed -n '<début>,<fin>p' index.html | grep -oE "^\s+[a-zA-Z]+:"
+# Et tous les car.X lus dans le code
+grep -oE "car\.[a-zA-Z]+" index.html | sort -u
+```
+Puis ne s'appuyer que sur les champs confirmés. Préférer un champ universel (`spec`, `brand`, `model`, `year`, `km`) à un champ conditionnel.
+
+*Occurrence : Lot 24 (fullServiceHistory/serviceUpToDate inexistants → bascule sur spec/chassis).*
+
 ---
 
 ## Conventions
@@ -308,6 +343,8 @@ Privilégier les patches **additifs** quand c'est possible : ajouter une classe 
 | `Prérequis manquant : marker 'XXX' absent` | `requires` pointe vers un nom de PatchSet, pas un marker réel | Leçon 5 — mettre un `idempotence_marker` réel |
 | Patch « réussit » mais style pas appliqué | Double définition CSS, la 2e en `!important` | Leçon 6 — `grep` toutes les définitions |
 | `ANCHOR NOT FOUND` sur du JS avec `\u...` | String Python interprète l'escape | Leçon 2 — raw string ou `\\u` |
+| `ValueError: anchor 1-borne` à l'import du script | Le garde-fou v1.1 a détecté un replacement qui commence/finit par l'anchor | Leçon 1 — étendre l'anchor avec la borne manquante. Le bug est attrapé avant écriture, c'est voulu |
+| `ANCHOR NOT FOUND` sur un vieux lot ré-exécuté seul | Un lot récent a réécrit la zone (ex. Lot 24 vs Lot 23) | Attendu — séquence ordonnée. Le from-scratch dans l'ordre fonctionne |
 
 ---
 
@@ -369,16 +406,20 @@ Calibrer sur une classe dont on connaît le niveau (ex. `.sheet-btn` est au nive
 | 20 | α | Sheets création — flow Nouvelle alerte (builder) refonte φ | `LOT 20 (Phase α)` |
 | 21 | α | Unification système banner (`.banner` générique vivant + modifiers) | `Lot 21 — modifiers` |
 | 22 | α | Form components — unification des ticks (`.tick` canonique) | `Lot 22 — .tick` |
+| 23 | α | Migration archétypes legacy (`non_driver`→`mondain`, `social`→`mousquetaire`) + migration localStorage | `Lot 23 — non_driver→mondain` |
+| 24 | α | Refonte `inferCarArchetypes` — faisceau large, 8 avatars recalés, multi-match assumé | `Lot 24 — faisceau large` |
 
 **Plan refonte mobile v5+ φ : 7/7 lots livrés** (Hero+KPI · TabBar · Boutons · Sheets détail · Sheets création · Empty states+banners · Form components).
+
+**Système archétypes** (Lots 14, 23, 24) : IDs alignés sur `carnet-archetypes.js` (Discover v1.0), inférence en faisceau large cohérente avec l'ADN réel de chaque avatar.
 
 ### Pistes pour la suite
 
 | Domaine | Notes |
 |---|---|
-| Migration legacy archetype IDs | `non_driver` + `social` → `mondain` dans `COLLECTOR_PROFILES` (index.html utilise encore les IDs legacy) |
 | Convergence index unique | Greffer auth + publier + filtres sur la lignée mobile-first v6.18 |
 | Phase 2 — Vue Enchères frontend | Tab Enchères 3 sections LIVE / UPCOMING / SOLD |
+| Audit visuel complet | Revue des 24 lots en local / prod |
 
 ---
 
@@ -404,10 +445,11 @@ Si le run B ne reproduit pas exactement le run A, ou si un re-run modifie le fic
 ## Maintenance long terme
 
 - Tous les scripts vivent dans `scripts/carnet/`, **jamais** dans `/tmp/`.
-- `carnet_patch_lib.py` est versionné — si tu changes son API, bump version + adapter les scripts.
+- `carnet_patch_lib.py` est versionné — si tu changes son API, bump version + adapter les scripts. **Version actuelle : v1.1** (garde-fou anti anchor 1-borne — Leçon 1 auto-appliquée).
 - Signature : `run_cli(PATCHSET)` prend **un seul argument**.
 - Les fichiers `.before_<lot>` sont des backups automatiques, **gitignorés**.
 - Quand un lot est en prod 3+ mois sans rollback, son script peut être archivé dans `scripts/carnet/archive/`.
+- **Lots qui réécrivent une zone entière** (ex. Lot 24 refait tout `inferCarArchetypes`) : ils remplacent les patches plus anciens qui touchaient cette zone. Un script ancien peut alors afficher `ANCHOR NOT FOUND` s'il est ré-exécuté seul sur un fichier déjà au lot récent — c'est attendu (séquence ordonnée), pas un bug. Le from-scratch dans l'ordre reste la référence.
 
 `.gitignore` (patterns **relatifs** au dossier où vit le `.gitignore`) :
 ```
@@ -417,4 +459,4 @@ index.html.bak.*
 
 ---
 
-*CARNET · Patch Pattern v2.0 · 2026-05-14 · couvre les Lots 1.1 → 22*
+*CARNET · Patch Pattern v2.1 · 2026-05-14 · couvre les Lots 1.1 → 24 · carnet_patch_lib v1.1*
