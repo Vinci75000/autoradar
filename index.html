@@ -3852,37 +3852,9 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
     /* ═══════════════════════════════════════════════════════════
        Onboarding profil + conseil CARNET (v5.40)
        ═══════════════════════════════════════════════════════════ */
-    .profile-onboarding-banner {
-      background: var(--papier-bright);
-      border: 1px dashed var(--orange-polo);
-      border-radius: var(--r);
-      padding: 21px;
-      margin-bottom: 21px;
-      cursor: pointer;
-      transition: background var(--duration-fast) ease;
-    }
-    .profile-onboarding-banner:active { background: rgba(232, 90, 31, 0.04); }
-    .profile-onboarding-tag {
-      font-family: var(--mono);
-      font-size: 9px; letter-spacing: 0.16em;
-      color: var(--orange-polo); font-weight: 600;
-      text-transform: uppercase; margin-bottom: 8px;
-    }
-    .profile-onboarding-title {
-      font-family: var(--display); font-style: italic; font-weight: 500;
-      font-size: 22px; line-height: 1.15;
-      color: var(--encre); margin: 0 0 8px 0; letter-spacing: -0.005em;
-    }
-    .profile-onboarding-text {
-      font-family: var(--editorial); font-style: italic;
-      font-size: 14px; line-height: 1.5;
-      color: var(--gris); margin: 0 0 13px 0;
-    }
-    .profile-onboarding-cta {
-      font-family: var(--mono);
-      font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
-      color: var(--orange-polo); text-transform: uppercase;
-    }
+    /* Lot 21 — bloc .profile-onboarding-* retiré : migré vers le système
+       .banner générique (banner-warning is-dashed is-clickable). Le seul
+       langage de banner contextuel-cliquable est désormais .banner. */
     .advice-feed { display: flex; flex-direction: column; gap: var(--s-2); margin-bottom: 21px; }
     .advice-card {
       display: flex; flex-direction: column;
@@ -6148,6 +6120,26 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
     .banner.banner-warning .banner-cta { color: var(--orange-polo); }
     .banner.banner-success .banner-cta { color: var(--vert-anglais); }
     .banner.banner-danger .banner-cta { color: #9c2a2a; }
+
+    /* Lot 21 — modifiers : .banner devient le système unique réutilisable.
+       .is-dashed   : bordure pointillée tout-autour (remplace le border-left)
+       .is-clickable: tout le banner est tappable (curseur + feedback :active) */
+    .banner.is-dashed {
+      border-left: none;
+      border: 1px dashed var(--gris-line);
+    }
+    .banner.is-dashed.banner-info    { border-color: var(--encre); }
+    .banner.is-dashed.banner-warning { border-color: var(--orange-polo); }
+    .banner.is-dashed.banner-success { border-color: var(--vert-anglais); }
+    .banner.is-dashed.banner-danger  { border-color: #9c2a2a; }
+    .banner.is-clickable {
+      cursor: pointer;
+      transition: background-color var(--duration-fast) ease;
+    }
+    .banner.is-clickable:active { background-color: var(--papier-soft); }
+    .banner.is-clickable.banner-warning:active { background-color: rgba(232, 90, 31, 0.07); }
+    .banner.is-clickable.banner-success:active { background-color: rgba(31, 77, 47, 0.07); }
+    .banner.is-clickable.banner-danger:active  { background-color: rgba(156, 42, 42, 0.07); }
 
 
     /* ─────────────────────────────────────────────────────────
@@ -14082,12 +14074,14 @@ function getTunerBoost(tunerName, categories){
 // ─── Onboarding profil (v5.40) ─────────────────────────────────────
 function renderProfileOnboardingBanner(){
   if((State.userProfiles || []).length > 0) return '';
+  // Lot 21 — migré vers le système .banner générique (variant warning,
+  // modifiers is-dashed + is-clickable). Plus de CSS .profile-onboarding-* dédié.
   return `
-    <div class="profile-onboarding-banner" data-action="openSelectProfile">
-      <div class="profile-onboarding-tag">CONSEIL CARNET</div>
-      <h3 class="profile-onboarding-title">D\u00e9finis ton profil de collectionneur.</h3>
-      <p class="profile-onboarding-text">CARNET adapte ses conseils \u00e0 ta fa\u00e7on de vivre ta passion. Le pilote, le b\u00e2tisseur, le gardien \u2014 ils ne re\u00e7oivent pas les m\u00eames suggestions.</p>
-      <div class="profile-onboarding-cta">D\u00e9finir mon profil \u2192</div>
+    <div class="banner banner-warning is-dashed is-clickable" data-action="openSelectProfile">
+      <div class="banner-tag">CONSEIL CARNET</div>
+      <h3 class="banner-title">D\u00e9finis ton profil de collectionneur.</h3>
+      <p class="banner-text">CARNET adapte ses conseils \u00e0 ta fa\u00e7on de vivre ta passion. Le pilote, le b\u00e2tisseur, le gardien \u2014 ils ne re\u00e7oivent pas les m\u00eames suggestions.</p>
+      <button class="banner-cta">D\u00e9finir mon profil \u2192</button>
     </div>
   `;
 }
