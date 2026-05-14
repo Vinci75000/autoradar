@@ -11,5 +11,5 @@ _archives/
 *.bak
 
 # CARNET patch backups (auto-générés)
-frontend/*.before_*
-frontend/index.html.bak.*
+*.before_*
+index.html.bak.*
