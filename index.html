@@ -5398,6 +5398,81 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
     }
     .dashboard-message:active { transform: scale(0.99); }
     .dashboard-message:hover { border-color: var(--orange-polo); }
+    /* ===== LOT 51 · VUE MESSAGE EN LECTURE ===== */
+    .message-sheet-meta {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 13px;
+      margin-bottom: 13px;
+    }
+    .message-sheet-from {
+      font-family: var(--editorial);
+      font-size: 17px;
+      color: var(--encre);
+    }
+    .message-sheet-date {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--gris);
+      flex-shrink: 0;
+    }
+    .message-sheet-status {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: var(--r);
+      margin-bottom: 13px;
+    }
+    .message-sheet-status.unread {
+      color: var(--orange-polo);
+      background: var(--orange-polo-soft);
+    }
+    .message-sheet-status.replied {
+      color: var(--vert-vivant);
+      background: var(--papier-soft);
+    }
+    .message-sheet-body {
+      font-family: var(--editorial);
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--encre);
+      padding: 16px;
+      background: var(--papier-soft);
+      border-radius: var(--r);
+    }
+    .message-sheet-offer {
+      margin-top: 13px;
+      padding: 13px 16px;
+      background: var(--encre);
+      border-radius: var(--r);
+    }
+    .message-sheet-offer-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--vert-vivant-clair);
+      margin-bottom: 4px;
+    }
+    .message-sheet-offer-value {
+      font-family: var(--editorial);
+      font-size: 21px;
+      color: var(--papier);
+    }
+    .message-sheet-note {
+      margin-top: 16px;
+      padding-top: 13px;
+      border-top: 1px solid var(--gris-line-soft);
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--gris);
+    }
     .dashboard-message.unread {
       border-left: 3px solid var(--orange-polo);
     }
@@ -11675,6 +11750,7 @@ const STORAGE_KEY_PREFIX = 'carnet:v1:';
 const STORAGE_KEYS = {
   ALERTS: STORAGE_KEY_PREFIX + 'alerts',
   WATCHED_AUCTIONS: STORAGE_KEY_PREFIX + 'watched-auctions',
+  WATCHED_MODELS: STORAGE_KEY_PREFIX + 'watched-models',
   BUILDER_DRAFT: STORAGE_KEY_PREFIX + 'builder-draft',
   ONBOARDING_SEEN: STORAGE_KEY_PREFIX + 'onboarding-seen',
   GARAGE: STORAGE_KEY_PREFIX + 'garage',
@@ -11722,6 +11798,13 @@ function safeStorageRemove(key){
 }
 function persistAlerts(){ safeStorageSet(STORAGE_KEYS.ALERTS, State.alerts || []); }
 function persistWatchedAuctions(){ safeStorageSet(STORAGE_KEYS.WATCHED_AUCTIONS, State.watchedAuctionIds || []); }
+// Lot 50 : persistance des modèles surveillés — même patron que les enchères suivies.
+function persistWatchedModels(){ safeStorageSet(STORAGE_KEYS.WATCHED_MODELS, State.watched || []); }
+function loadPersistedWatchedModels(){
+  const stored = safeStorageGet(STORAGE_KEYS.WATCHED_MODELS, null);
+  if(Array.isArray(stored)) return stored.filter(x => x && typeof x === 'object' && x.name);
+  return null;
+}
 function persistGarage(){ safeStorageSet(STORAGE_KEYS.GARAGE, State.garage || []); }
 
 // ─── v6.16 : Completion nudge state + helpers ───────────────────────
@@ -13384,6 +13467,7 @@ function renderUserMenuSheet() {
     else if(State.sheetView === 'match') html = renderMatchSheet(State.sheetData);
     else if(State.sheetView === 'auction') html = renderAuctionSheet(State.sheetData);
     else if(State.sheetView === 'watched') html = renderWatchedSheet(State.sheetData);
+    else if(State.sheetView === 'message') html = renderMessageSheet(State.sheetData);
     else if(State.sheetView === 'garageCar') html = renderGarageCarSheet(State.sheetData);
     else if(State.sheetView === 'listing') html = renderListingSheet(State.sheetData);
     else if(State.sheetView === 'addGarage') html = renderAddGarageSheet();
@@ -17763,6 +17847,50 @@ function renderWatchedSheet(w){
   `;
 }
 
+function renderMessageSheet(data){
+  // Lot 51 : vue message EN LECTURE. data = { msg, car }. Pas de champ
+  // de réponse — la messagerie bidirectionnelle est backend ; on ne
+  // simule pas un envoi qui ne partirait pas. On montre ce qu'on a,
+  // proprement, et on dit honnêtement ce qui arrive.
+  if(!data || !data.msg) return '';
+  const msg = data.msg;
+  const car = data.car || {};
+  const carName = [car.brand, car.model].filter(Boolean).join(' ') || 'cette annonce';
+  const statusCls = msg.status === 'replied' ? 'replied' : 'unread';
+  const statusLabel = msg.status === 'replied' ? 'D\u00e9j\u00e0 r\u00e9pondu' : 'Non lu';
+  const dateLabel = 'il y a ' + msg.daysAgo + ' j' + (msg.daysAgo > 1 ? 's' : '');
+  const offerBlock = msg.offer ? `
+        <div class="message-sheet-offer">
+          <div class="message-sheet-offer-label">Offre propos\u00e9e</div>
+          <div class="message-sheet-offer-value">${esc(fmtPrice(msg.offer))}</div>
+        </div>
+      ` : '';
+  return `
+    <div class="sheet-handle-area" data-sheet-drag>
+      <div class="sheet-handle"></div>
+    </div>
+    <div class="sheet-header">
+      <div>
+        <div class="sheet-tag">MESSAGE \u00b7 ${esc(carName)}</div>
+        <h2 class="sheet-title">${esc(msg.from)}</h2>
+      </div>
+      <button class="sheet-close" data-action="closeSheet" aria-label="Fermer">\u00d7</button>
+    </div>
+    <div class="sheet-content">
+      <div class="message-sheet-meta">
+        <span class="message-sheet-date">${esc(dateLabel)}</span>
+      </div>
+      <span class="message-sheet-status ${statusCls}">${esc(statusLabel)}</span>
+      <div class="message-sheet-body">${esc(msg.preview)}</div>
+      ${offerBlock}
+      <p class="message-sheet-note">La r\u00e9ponse in-app arrive avec le r\u00e9seau Carnet. En attendant, tu retrouves ${esc(msg.from)} et son message ici \u2014 rien ne se perd.</p>
+    </div>
+    <div class="sheet-actions">
+      <button class="sheet-btn primary" data-action="closeSheet">Fermer</button>
+    </div>
+  `;
+}
+
 function renderAddGarageSheet(){
   const f = GarageFormState;
   const valid = garageFormIsValid();
@@ -19396,13 +19524,14 @@ function renderAddWatchedSheet(){
       <button class="sheet-close" data-action="closeSheet" aria-label="Fermer">×</button>
     </div>
     <div class="sheet-content">
-      ${renderEmptyState({
-        title: "La recherche de modèle arrive bientôt",
-        text: "En attendant, crée une alerte MODÈLE depuis l'onglet À l'affût — tu recevras les détections au fil de l'eau."
-      })}
+      <p class="sheet-desc">Saisis le modèle que tu veux suivre. Tu verras sa cote évoluer et tu pourras y rattacher des alertes.</p>
+      <div class="add-watched-form">
+        <input type="text" class="garage-form-input" id="addWatchedNameInput"
+               placeholder="ex. Porsche 911 Carrera RS 2.7" autocomplete="off" />
+      </div>
     </div>
     <div class="sheet-actions">
-      <button class="sheet-btn primary" data-action="closeSheet">Fermer</button>
+      <button class="sheet-btn primary" data-action="saveWatchedModel">Surveiller ce modèle</button>
     </div>
   `;
 }
@@ -19596,6 +19725,37 @@ const Actions = {
   openWatched(id){ const w = State.watched.find(x => x.id === id); if(w) Sheet.open('watched', w); },
   openNewAlert(){ Builder.open(); },
   openAddWatched(){ Sheet.open('addWatched'); },
+  saveWatchedModel(){
+    // Lot 50 : crée un modèle surveillé depuis le champ texte libre,
+    // sur le même principe que le formulaire d'alerte (saisie libre).
+    const input = document.getElementById('addWatchedNameInput');
+    const name = input ? String(input.value || '').trim() : '';
+    if(!name){
+      showToastFloat('Saisis le nom d\u2019un mod\u00e8le \u00e0 surveiller.');
+      return;
+    }
+    if(!State.watched) State.watched = [];
+    // Évite le doublon exact (insensible à la casse).
+    const exists = State.watched.some(w => String(w.name || '').trim().toLowerCase() === name.toLowerCase());
+    if(exists){
+      showToastFloat('\u00ab ' + name + ' \u00bb est d\u00e9j\u00e0 dans tes mod\u00e8les surveill\u00e9s.');
+      Sheet.close();
+      return;
+    }
+    const watched = {
+      id: 'w' + Date.now(),
+      name: name,
+      alerts: 0,
+      cote: null,
+      trend: 'flat',
+      trendLabel: '\u00e0 suivre'
+    };
+    State.watched = [watched, ...State.watched];
+    persistWatchedModels();
+    Sheet.close();
+    setTimeout(() => showToastFloat('\u00ab ' + name + ' \u00bb ajout\u00e9 \u00e0 tes mod\u00e8les surveill\u00e9s.'), 340);
+    if(typeof renderAll === 'function') renderAll();
+  },
   closeSheet(){ Sheet.close(); },
 
   // ─── AUTH (Lot 1 — Sprint Convergence) ───────────────────────────
@@ -20943,11 +21103,10 @@ const Actions = {
     const dash = generateListingDashboard(c);
     const msg = dash.messages.find(m => m.id === messageId);
     if(!msg) return;
-    Sheet.close();
-    setTimeout(() => {
-      const offerLine = msg.offer ? ` \nOffre proposée : ${fmtPrice(msg.offer)}.` : '';
-      showToastFloat(`Conversation avec ${msg.from} \u2014 bientôt disponible.${offerLine}`);
-    }, 340);
+    // Lot 51 : ouvre la vue message en lecture (sheet d\u00e9di\u00e9e) au lieu
+    // d'un toast \u00e9ph\u00e9m\u00e8re. La sheet re\u00e7oit { msg, car } \u2014 les messages
+    // ne sont pas stock\u00e9s, ils sont reconstruits depuis la voiture.
+    Sheet.open('message', { msg: msg, car: c });
   },
   modifyAskingPrice(id){
     const c = (State.garage || []).find(x => x.id === id);
@@ -24017,6 +24176,9 @@ function init(){
   if(persistedAlerts !== null) State.alerts = persistedAlerts;
   const persistedWatched = loadPersistedWatchedAuctions();
   if(persistedWatched !== null) State.watchedAuctionIds = persistedWatched;
+  // Lot 50 : restaure les modèles surveillés persistés (sinon ils repartent du mock).
+  const persistedWatchedModels = loadPersistedWatchedModels();
+  if(persistedWatchedModels !== null) State.watched = persistedWatchedModels;
   const persistedGarage = loadPersistedGarage();
   if(persistedGarage !== null) State.garage = persistedGarage;
   const persistedProfiles = loadPersistedProfiles();
