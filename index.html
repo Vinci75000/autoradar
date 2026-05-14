@@ -17159,6 +17159,99 @@ const Builder = {
 };
 
 // ===== SHEET RENDERERS =====
+// ─── Lot 47 · l'alerte enchère ───
+// Croise une alerte de l'utilisateur avec les enchères en cours.
+// Ne traite QUE les alertes type === 'modele' : seules elles ont une
+// `rule` qui nomme un modèle précis. Les types criteres/rarete/
+// signal/ecr décrivent des critères abstraits — on ne fabrique pas
+// un faux match dessus. Filtre status !== 'sold' (seul l'actionnable,
+// comme le Lot 46). Tri hOffset croissant : clôture la plus proche
+// en tête.
+function findAuctionAlertMatch(alert){
+  if(!alert || alert.type !== 'modele') return [];
+  var rule = String(alert.rule || '').trim().toLowerCase();
+  if(!rule) return [];
+  // Source : liveAuctions (DB) sinon mock AUCTIONS — démo = prod.
+  var pool = (State.liveAuctions && State.liveAuctions.length)
+    ? State.liveAuctions
+    : ((typeof AUCTIONS !== 'undefined') ? AUCTIONS : []);
+  if(!pool.length) return [];
+  var found = [];
+  for(var i = 0; i < pool.length; i++){
+    var au = pool[i];
+    // Seul l'actionnable : on écarte les enchères terminées.
+    if(au.status === 'sold') continue;
+    var brand = String(au.brand || '').trim().toLowerCase();
+    var model = String(au.model || '').trim().toLowerCase();
+    if(!brand || !model) continue;
+    // On cherche l'enchère DANS la rule : la rule de l'utilisateur
+    // est en général plus longue et descriptive que brand+model.
+    if(rule.indexOf(brand) !== -1 && rule.indexOf(model) !== -1){
+      found.push(au);
+    }
+  }
+  // Tri hOffset croissant (clôture / ouverture la plus proche), 3 max.
+  found = found.slice().sort(function(a, b){
+    return (parseFloat(a.hOffset) || 0) - (parseFloat(b.hOffset) || 0);
+  });
+  return found.slice(0, 3);
+}
+
+// ─── Lot 47 · rendu du bloc alerte → enchère ───
+// Réutilise les classes .sheet-detail-bridge* du Lot 45 (aucun style
+// neuf). Renvoie '' si aucun match → bloc purement additif. Cas
+// ultra-fréquent (tous les types != modele) : '' silencieux.
+function renderAlertBridgeBlock(alert){
+  var matches = findAuctionAlertMatch(alert);
+  if(!matches.length) return '';
+  var items = matches.map(function(au){
+    var priceTxt, priceLabel;
+    if(au.status === 'live' && (parseFloat(au.bidCurrent) || 0) > 0){
+      priceTxt = esc(fmtAuctionPrice(au.bidCurrent));
+      priceLabel = 'ench\u00e8re actuelle';
+    } else {
+      priceTxt = esc(fmtRange(au.estimateLow, au.estimateHigh));
+      priceLabel = 'estimation';
+    }
+    var timeTxt = '';
+    if(typeof formatTimeLeft === 'function'){
+      var tl = formatTimeLeft(au.hOffset);
+      timeTxt = (au.status === 'live') ? ('cl\u00f4ture dans ' + tl) : ('ouverture dans ' + tl);
+    }
+    var src = esc(au.source || '');
+    var lot = au.lot ? (' \u00b7 ' + esc(au.lot)) : '';
+    return '<div class="sheet-detail-bridge-item" data-action="openAuction" data-auction="' + esc(au.id) + '">'
+      + '<div class="sheet-detail-bridge-item-main">'
+      + '<div class="sheet-detail-bridge-item-model">' + esc(au.model || '') + '</div>'
+      + '<div class="sheet-detail-bridge-item-meta">' + esc(au.year || '') + ' \u00b7 ' + src + lot
+      + (timeTxt ? ' \u00b7 ' + timeTxt : '') + '</div>'
+      + '</div>'
+      + '<div class="sheet-detail-bridge-item-price">'
+      + '<div class="sheet-detail-bridge-item-price-value">' + priceTxt + '</div>'
+      + '<div class="sheet-detail-bridge-item-price-delta" style="color:var(--gris)">' + priceLabel + '</div>'
+      + '</div>'
+      + '</div>';
+  }).join('');
+  // Voix CARNET : on prend la plus urgente (matches[0], déjà trié).
+  var first = matches[0];
+  var firstSrc = esc(first.source || 'une maison de vente');
+  var tl = (typeof formatTimeLeft === 'function') ? formatTimeLeft(first.hOffset) : '';
+  var voice;
+  if(first.status === 'live'){
+    voice = 'Ton alerte a une correspondance aux ench\u00e8res : ' + firstSrc
+      + (tl ? ' \u2014 cl\u00f4ture dans ' + tl + '.' : '.');
+  } else {
+    voice = 'Ton alerte a une correspondance \u00e0 venir aux ench\u00e8res : ' + firstSrc
+      + (tl ? ' \u2014 ouverture dans ' + tl + '.' : '.');
+  }
+  var label = matches.length === 1 ? 'Correspondance aux ench\u00e8res' : 'Correspondances aux ench\u00e8res \u00b7 ' + matches.length + ' lots';
+  return '<div class="sheet-detail-bridge">'
+    + '<div class="sheet-detail-bridge-label">' + label + '</div>'
+    + items
+    + '<div class="sheet-detail-bridge-voice">' + voice + '</div>'
+    + '</div>';
+}
+
 function renderAlertSheet(a){
   if(!a) return '';
   const statusText = a.paused ? 'En pause' : 'Active';
@@ -17191,6 +17284,7 @@ function renderAlertSheet(a){
           <span class="sheet-detail-row-value">${esc(statusText)}</span>
         </div>
       </div>
+      ${renderAlertBridgeBlock(a)}
     </div>
     <div class="sheet-actions grid-2">
       <button class="sheet-btn primary full" data-action="viewMatches" data-id="${esc(a.id)}">Voir les détectées (${a.matches})</button>
