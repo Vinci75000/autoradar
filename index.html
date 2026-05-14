@@ -817,31 +817,9 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   line-height:1.35;
   margin-bottom:var(--s-4);
 }
-.sheet-row{
-  display:flex;
-  align-items:baseline;
-  justify-content:space-between;
-  padding:var(--s-3) 0;
-  border-bottom:1px solid var(--gris-line-soft);
-  gap:var(--s-3);
-}
-.sheet-row:last-child{border-bottom:none}
-.sheet-row-label{
-  font-family:var(--mono);
-  font-size:10px;
-  color:var(--gris);
-  letter-spacing:0.12em;
-  text-transform:uppercase;
-  flex-shrink:0;
-}
-.sheet-row-value{
-  font-family:var(--editorial);
-  font-style:italic;
-  font-size:var(--t-base);
-  color:var(--encre);
-  text-align:right;
-  flex:1;
-}
+/* Lot 19-A — système legacy .sheet-row retiré : migré vers .sheet-detail-row
+   (Alert / Auction / Watched / Listing sheets). Langage unique des lignes
+   détail désormais : .sheet-detail-rows > .sheet-detail-row. */
 .sheet-section-label{
   font-family:var(--mono);
   font-size:10px;
@@ -10258,6 +10236,25 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
    /LOT 18 (Phase α)
    ═══════════════════════════════════════════════════════════════════════ */
 
+/* ═══════════════════════════════════════════════════════════════════════
+   LOT 18b (Phase α) — .new-alert-btn alignement couleur orange polo
+   Aligne strictement le CTA page-level sur .sheet-btn.primary v5.4x.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.new-alert-btn {
+  background: var(--orange-polo);
+}
+.new-alert-btn:active {
+  background: #d24c12;
+}
+.new-alert-plus {
+  color: var(--papier-bright);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   /LOT 18b (Phase α)
+   ═══════════════════════════════════════════════════════════════════════ */
+
 </style>
   <!-- v6.0 : Supabase JS SDK pour connexion live à carnet.life DB -->
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
@@ -16963,13 +16960,15 @@ function renderAlertSheet(a){
         <div class="auction-detail-time">${a.matches} voiture${a.matches === 1 ? '' : 's'}</div>
       </div>
       <p class="sheet-desc">${esc(a.meta)}</p>
-      <div class="sheet-row">
-        <span class="sheet-row-label">Type</span>
-        <span class="sheet-row-value">${esc(a.label)}</span>
-      </div>
-      <div class="sheet-row">
-        <span class="sheet-row-label">Statut</span>
-        <span class="sheet-row-value">${esc(statusText)}</span>
+      <div class="sheet-detail-rows">
+        <div class="sheet-detail-row">
+          <span class="sheet-detail-row-label">Type</span>
+          <span class="sheet-detail-row-value">${esc(a.label)}</span>
+        </div>
+        <div class="sheet-detail-row">
+          <span class="sheet-detail-row-label">Statut</span>
+          <span class="sheet-detail-row-value">${esc(statusText)}</span>
+        </div>
       </div>
     </div>
     <div class="sheet-actions grid-2">
@@ -17110,11 +17109,8 @@ function renderAuctionSheet(a){
       </div>
     `;
   }
-  // Activity stats
-  const activityRows = a.status === 'upcoming'
-    ? `<div class="sheet-row"><span class="sheet-row-label">Suiveurs</span><span class="sheet-row-value">${a.watching}</span></div>`
-    : `<div class="sheet-row"><span class="sheet-row-label">Enchères</span><span class="sheet-row-value">${a.bids}</span></div>
-       <div class="sheet-row"><span class="sheet-row-label">Suiveurs</span><span class="sheet-row-value">${a.watching}</span></div>`;
+  // Lot 19-A — activityRows (code mort jamais inséré) retiré : renderAuctionSheet
+  // a déjà ses lignes détail inline en .sheet-detail-row plus bas.
   // CTAs vary by status
   let ctas;
   if(a.status === 'sold'){
@@ -17274,17 +17270,19 @@ function renderWatchedSheet(w){
         <div class="auction-detail-time">${esc(fmtPrice(w.cote))}</div>
         <div style="font-family:var(--editorial);font-style:italic;font-size:var(--t-sm);color:${trendColor};margin-top:6px">${trendIcon} ${esc(w.trendLabel)}</div>
       </div>
-      <div class="sheet-row">
-        <span class="sheet-row-label">Alertes liées</span>
-        <span class="sheet-row-value">${w.alerts} alerte${w.alerts === 1 ? '' : 's'}</span>
-      </div>
-      <div class="sheet-row">
-        <span class="sheet-row-label">Tendance 12 mois</span>
-        <span class="sheet-row-value">${esc(w.trendLabel)}</span>
-      </div>
-      <div class="sheet-row">
-        <span class="sheet-row-label">Apparitions · 90 j</span>
-        <span class="sheet-row-value">3 occurrences</span>
+      <div class="sheet-detail-rows">
+        <div class="sheet-detail-row">
+          <span class="sheet-detail-row-label">Alertes liées</span>
+          <span class="sheet-detail-row-value">${w.alerts} alerte${w.alerts === 1 ? '' : 's'}</span>
+        </div>
+        <div class="sheet-detail-row">
+          <span class="sheet-detail-row-label">Tendance 12 mois</span>
+          <span class="sheet-detail-row-value">${esc(w.trendLabel)}</span>
+        </div>
+        <div class="sheet-detail-row">
+          <span class="sheet-detail-row-label">Apparitions · 90 j</span>
+          <span class="sheet-detail-row-value">3 occurrences</span>
+        </div>
       </div>
     </div>
     <div class="sheet-actions grid-2">
@@ -17521,13 +17519,17 @@ function renderListingSheet(l){
       </div>
       ${chips.length > 0 ? `<div class="listing-card-chips" style="margin-bottom:var(--s-2)">${chips.map(c => `<span class="listing-card-chip">${esc(c)}</span>`).join('')}</div>` : ''}
       <div class="sheet-section-label">DOSSIER</div>
-      <div class="sheet-row"><span class="sheet-row-label">Année</span><span class="sheet-row-value">${l.yr}</span></div>
-      <div class="sheet-row"><span class="sheet-row-label">Kilométrage</span><span class="sheet-row-value">${esc(fmtKm(l.km))}</span></div>
-      <div class="sheet-row"><span class="sheet-row-label">Verdict</span><span class="sheet-row-value">${esc(verdictLabel)}</span></div>
-      <div class="sheet-row"><span class="sheet-row-label">Localisation</span><span class="sheet-row-value">${esc(l.ci)}, ${esc(l.co)}</span></div>
+      <div class="sheet-detail-rows">
+        <div class="sheet-detail-row"><span class="sheet-detail-row-label">Année</span><span class="sheet-detail-row-value">${l.yr}</span></div>
+        <div class="sheet-detail-row"><span class="sheet-detail-row-label">Kilométrage</span><span class="sheet-detail-row-value">${esc(fmtKm(l.km))}</span></div>
+        <div class="sheet-detail-row"><span class="sheet-detail-row-label">Verdict</span><span class="sheet-detail-row-value">${esc(verdictLabel)}</span></div>
+        <div class="sheet-detail-row"><span class="sheet-detail-row-label">Localisation</span><span class="sheet-detail-row-value">${esc(l.ci)}, ${esc(l.co)}</span></div>
+      </div>
       <div class="sheet-section-label">SOURCE</div>
-      <div class="sheet-row"><span class="sheet-row-label">Marchand</span><span class="sheet-row-value">${esc(l.src)}</span></div>
-      <div class="sheet-row"><span class="sheet-row-label">Score CARNET</span><span class="sheet-row-value">${l.sc} / 100</span></div>
+      <div class="sheet-detail-rows">
+        <div class="sheet-detail-row"><span class="sheet-detail-row-label">Marchand</span><span class="sheet-detail-row-value">${esc(l.src)}</span></div>
+        <div class="sheet-detail-row"><span class="sheet-detail-row-label">Score CARNET</span><span class="sheet-detail-row-value">${l.sc} / 100</span></div>
+      </div>
     </div>
     <div class="sheet-actions">
       <button class="sheet-btn primary full" data-action="viewListingExternal" data-id="${esc(l.id)}">Voir l'annonce sur ${esc(l.src)}</button>
