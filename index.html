@@ -10255,6 +10255,67 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
    /LOT 18b (Phase α)
    ═══════════════════════════════════════════════════════════════════════ */
 
+/* ═══════════════════════════════════════════════════════════════════════
+   LOT 20 (Phase α) — Sheets création : flow Nouvelle alerte (builder)
+   Le form Ajout voiture (garage-form-*) est déjà refondu v5.x.
+   Ce lot aligne le builder : CTA langage v5.4x + typo step Fibonacci.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* .builder-cta — aligné langage boutons v5.4x + orange polo (cf. Lot 18b) */
+.builder-cta {
+  height: auto;
+  min-height: 55px;
+  padding: 17px 21px;
+  background: var(--orange-polo);
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: opacity var(--duration-fast) ease,
+              background var(--duration-fast) ease,
+              transform var(--duration-fast) ease;
+}
+.builder-cta:active:not(:disabled) {
+  background: #d24c12;
+  opacity: 1;
+  transform: scale(0.985);
+}
+/* disabled conservé tel quel (opacity 0.35) — la règle d'origine reste valide */
+
+/* La flèche passe en papier-bright — sinon « › » orange sur fond orange */
+.builder-cta-arrow {
+  color: var(--papier-bright);
+  font-size: 16px;
+}
+
+/* .builder-step-title / -sub — valeurs Fibonacci explicites (alignées hero Lot 16) */
+.builder-step-title {
+  font-size: 55px;
+  font-weight: 500;
+  line-height: 0.93;
+  letter-spacing: -0.025em;
+  margin-bottom: 13px;
+}
+.builder-step-sub {
+  font-size: 17px;
+  line-height: 1.45;
+  margin-bottom: 21px;
+}
+@media (min-width: 600px) {
+  .builder-step-title {
+    font-size: 72px;
+    line-height: 0.92;
+  }
+  .builder-step-sub {
+    font-size: 19px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   /LOT 20 (Phase α)
+   ═══════════════════════════════════════════════════════════════════════ */
+
 </style>
   <!-- v6.0 : Supabase JS SDK pour connexion live à carnet.life DB -->
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
