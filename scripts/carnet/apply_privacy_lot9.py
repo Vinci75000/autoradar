@@ -1,4 +1,57 @@
-<!DOCTYPE html>
+#!/usr/bin/env python3
+"""
+CARNET · Lot 9 (Phase α) — Page Privacy / RGPD
+
+Source        : Création d'une nouvelle page standalone privacy.html
+                (conforme RGPD article 13) + lien dans menu user dropdown
+                d'index.html.
+
+Scope         : Politique de confidentialité Year -1 obligatoire pour une
+                association loi 1901 collectant des données personnelles.
+                12 sections RGPD article 13 :
+                  1. Responsable de traitement
+                  2. Finalités
+                  3. Base légale
+                  4. Données collectées
+                  5. Destinataires
+                  6. Transferts hors UE
+                  7. Durée de conservation
+                  8. Vos droits
+                  9. Réclamation CNIL
+                  10. Cookies & trackers
+                  11. Décisions automatisées
+                  12. Mises à jour
+
+Hors scope    : Mécanisme d'export RGPD (téléchargement JSON) → Phase ε
+                Cookie banner consent UI → Phase ε si cookies non-essentiels
+                Page Security / Accessibility / Transparency → Lots 10/11/12
+
+Pipeline du script :
+  - Étape A : créer/mettre à jour privacy.html avec idempotence par md5
+  - Étape B : patcher index.html pour ajouter lien menu user (anchor-based)
+
+Prérequis : Lot 8 (Phase α) appliqué
+Usage     :
+    python3 apply_privacy_lot9.py path/to/index.html
+    python3 apply_privacy_lot9.py path/to/index.html --dry-run
+
+Note : le script crée privacy.html dans le même dossier que index.html.
+"""
+
+import sys
+import hashlib
+import argparse
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).parent))
+from carnet_patch_lib import Patch, PatchSet, _Style
+
+
+# ═══════════════════════════════════════════════════════════════════════
+# PARTIE A — Contenu du fichier privacy.html
+# ═══════════════════════════════════════════════════════════════════════
+
+PRIVACY_HTML = """<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
@@ -447,3 +500,120 @@
 
 </body>
 </html>
+"""
+
+
+# ═══════════════════════════════════════════════════════════════════════
+# PARTIE B — Patch du menu user dropdown dans index.html
+# ═══════════════════════════════════════════════════════════════════════
+
+PATCH_INDEX_ANCHOR = """          <a class="user-menu-item" href="archetypes.html" style="text-decoration:none;">
+            <span>Mes archétypes</span>
+            <span class="user-menu-chevron">→</span>
+          </a>
+          <button class="user-menu-item" data-action="signOut">"""
+
+PATCH_INDEX_REPLACEMENT = """          <a class="user-menu-item" href="archetypes.html" style="text-decoration:none;">
+            <span>Mes archétypes</span>
+            <span class="user-menu-chevron">→</span>
+          </a>
+          <a class="user-menu-item" href="privacy.html" style="text-decoration:none;" data-lot9="privacy">
+            <span>Confidentialité</span>
+            <span class="user-menu-chevron">→</span>
+          </a>
+          <button class="user-menu-item" data-action="signOut">"""
+
+PATCHSET_INDEX = PatchSet(
+    name="Lot 9 (Phase α) — lien Privacy dans menu user",
+    requires=[
+        "LOT 8 (Phase α) — Garage Dashboard Complet",
+    ],
+    patches=[
+        Patch(
+            name="Lien Confidentialité dans user-menu",
+            anchor=PATCH_INDEX_ANCHOR,
+            replacement=PATCH_INDEX_REPLACEMENT,
+            idempotence_marker='data-lot9="privacy"',
+        ),
+    ],
+)
+
+
+# ═══════════════════════════════════════════════════════════════════════
+# PARTIE C — Helper idempotent pour créer/mettre à jour privacy.html
+# ═══════════════════════════════════════════════════════════════════════
+
+def _md5(text: str) -> str:
+    return hashlib.md5(text.encode('utf-8')).hexdigest()
+
+
+def ensure_privacy_file(index_path: Path, dry_run: bool = False) -> int:
+    """
+    Crée ou met à jour privacy.html dans le même dossier qu'index.html.
+    Idempotent : si le fichier existe et a le bon contenu, skip silencieusement.
+    Retourne exit code (0 = OK).
+    """
+    privacy_path = index_path.parent / 'privacy.html'
+    expected_md5 = _md5(PRIVACY_HTML)
+
+    print(f"\n{_Style.BOLD}► Lot 9 (Phase α) — Création / mise à jour privacy.html{_Style.RESET}")
+    print(f"  {_Style.GREY}Fichier : {privacy_path}{_Style.RESET}")
+
+    if privacy_path.exists():
+        current = privacy_path.read_text(encoding='utf-8')
+        current_md5 = _md5(current)
+        if current_md5 == expected_md5:
+            print(f"  {_Style.DIM}◇ privacy.html : déjà à jour (skip, md5 identique){_Style.RESET}")
+            return 0
+        # Contenu différent → backup + écriture
+        if dry_run:
+            print(f"  {_Style.YELLOW}⚠ privacy.html existe avec contenu différent — sera mis à jour{_Style.RESET}")
+            print(f"    {_Style.GREY}Current md5  : {current_md5}{_Style.RESET}")
+            print(f"    {_Style.GREY}Expected md5 : {expected_md5}{_Style.RESET}")
+            return 0
+        backup_path = privacy_path.with_suffix('.html.before_lot9')
+        if not backup_path.exists():
+            backup_path.write_text(current, encoding='utf-8')
+            print(f"  {_Style.BLUE}▸ Backup{_Style.RESET} : {backup_path.name}")
+        privacy_path.write_text(PRIVACY_HTML, encoding='utf-8')
+        print(f"  {_Style.GREEN}✓ privacy.html mis à jour ({len(PRIVACY_HTML):,} chars){_Style.RESET}")
+        return 0
+
+    # Fichier inexistant
+    if dry_run:
+        print(f"  {_Style.YELLOW}⚠ privacy.html n'existe pas — sera créé ({len(PRIVACY_HTML):,} chars){_Style.RESET}")
+        return 0
+    privacy_path.write_text(PRIVACY_HTML, encoding='utf-8')
+    print(f"  {_Style.GREEN}✓ privacy.html créé ({len(PRIVACY_HTML):,} chars){_Style.RESET}")
+    return 0
+
+
+# ═══════════════════════════════════════════════════════════════════════
+# ENTRY POINT — pipeline en 2 étapes
+# ═══════════════════════════════════════════════════════════════════════
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Apply CARNET Lot 9 (Phase α) — Privacy page + menu lien",
+    )
+    parser.add_argument("file", type=Path, help="Path to index.html")
+    parser.add_argument("--dry-run", action="store_true",
+                        help="Validate without writing")
+    args = parser.parse_args()
+
+    if not args.file.exists():
+        print(f"Error: {args.file} not found")
+        return 1
+
+    # Étape A : créer/mettre à jour privacy.html
+    rc_a = ensure_privacy_file(args.file, dry_run=args.dry_run)
+    if rc_a != 0:
+        return rc_a
+
+    # Étape B : patcher index.html
+    rc_b = PATCHSET_INDEX.apply(args.file, dry_run=args.dry_run)
+    return rc_b
+
+
+if __name__ == "__main__":
+    sys.exit(main())
