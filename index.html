@@ -39,6 +39,8 @@
   --rouge-alerte:#9C2A2A;      /* négatif, danger — 27 usages en dur à migrer */
   --brun-enchere:#6B4F1F;      /* univers Enchères — 10 usages en dur à migrer */
   --orange-polo-dark:#D24C12;  /* orange Polo état :active — 6 usages en dur à migrer */
+  --accent-rarete:#8A4A8A;     /* catégorie : type d'alerte « rareté » — Lot 39 */
+  --ambre-warning:#C8943A;     /* catégorie : sévérité « warning » — Lot 39 */
 
   --display:'Bodoni Moda','Times New Roman',serif;
   --editorial:'Cormorant Garamond','Georgia',serif;
@@ -4117,8 +4119,8 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
     }
     .alert-card-type.modele { color: var(--orange-polo); }
     .alert-card-type.criteres { color: var(--vert-anglais); }
-    .alert-card-type.rarete { color: #8a4a8a; }
-    .alert-card-type.signal { color: #b8761f; }
+    .alert-card-type.rarete { color: var(--accent-rarete); }
+    .alert-card-type.signal { color: var(--or); }
     .alert-card-paused {
       font-family: var(--mono);
       font-size: 9px;
@@ -8526,7 +8528,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   flex-shrink:0;
 }
 .garage-deadline-bar.urgent{ background:var(--orange-polo); }
-.garage-deadline-bar.warning{ background:#C8943A; }
+.garage-deadline-bar.warning{ background:var(--ambre-warning); }
 .garage-deadline-bar.ok{ background:var(--vert-anglais); }
 .garage-deadline-content{ flex:1; min-width:0; }
 .garage-deadline-title-row{
