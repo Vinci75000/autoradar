@@ -10165,6 +10165,65 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
    /LOT 16 (Phase α)
    ═══════════════════════════════════════════════════════════════════════ */
 
+/* ═══════════════════════════════════════════════════════════════════════
+   LOT 17 (Phase α) — TabBar bottom refonte φ
+   Indicateur d'onglet actif = barre orange polo (signature CARNET).
+   Espacements Fibonacci : 5 / 8 / 21 / 55.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Hauteur Fibonacci (55) — surcharge directe, safe-area iOS préservée */
+.tabnav {
+  height: calc(55px + env(safe-area-inset-bottom, 0));
+}
+
+/* Item — espacements Fibonacci + position relative pour la barre active */
+.tabnav-item {
+  gap: 5px;
+  padding: 8px var(--s-2);
+  position: relative;
+}
+
+/* Barre indicateur d'onglet actif — signature orange polo, scaleX animée */
+.tabnav-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 21px;
+  height: 2px;
+  background: var(--orange-polo);
+  border-radius: 0 0 1px 1px;
+  transform: translateX(-50%) scaleX(0);
+  transform-origin: center;
+  transition: transform var(--duration-fast) ease;
+  pointer-events: none;
+}
+.tabnav-item.active::before {
+  transform: translateX(-50%) scaleX(1);
+}
+
+/* Icône — transition douce + feedback pressed (scale 0.92) */
+.tabnav-icon {
+  transition: opacity var(--duration-fast) ease, transform var(--duration-fast) ease;
+}
+.tabnav-item.active .tabnav-icon {
+  opacity: 1;
+}
+.tabnav-item:active .tabnav-icon {
+  opacity: 1;
+  transform: scale(0.92);
+}
+
+/* Label — l'onglet actif gagne un poil de poids pour ancrer le regard */
+.tabnav-item.active {
+  color: var(--encre);
+  font-weight: 700;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   /LOT 17 (Phase α)
+   ═══════════════════════════════════════════════════════════════════════ */
+
 </style>
   <!-- v6.0 : Supabase JS SDK pour connexion live à carnet.life DB -->
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
