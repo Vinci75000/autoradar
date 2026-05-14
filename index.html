@@ -2583,7 +2583,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   text-transform:uppercase;
   color:var(--gris);
 }
-.auction-card-reserve-met{color:var(--vert-anglais)}
+.auction-card-reserve-met{color:var(--vert-vivant)} /* Lot 43 */
 .auction-card-reserve-pending{color:var(--gris)}
 .auction-card-delta{
   font-family:var(--editorial);
@@ -2591,8 +2591,8 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   font-size:var(--t-sm);
   letter-spacing:-0.005em;
 }
-.auction-card-delta-positive{color:var(--vert-anglais)}
-.auction-card-delta-negative{color:var(--orange-polo)}
+.auction-card-delta-positive{color:var(--vert-vivant)} /* Lot 43 */
+.auction-card-delta-negative{color:var(--rouge-alerte)} /* Lot 43 */
 .auction-card-delta-neutral{color:var(--gris)}
 .auction-card-footer{
   display:flex;
@@ -3866,6 +3866,79 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
       line-height: 1.5;
       color: var(--encre);
       font-style: italic;
+    }
+    /* ===== LOT 45 · PONT ENCHÈRE → ANNONCE ===== */
+    .sheet-detail-bridge {
+      margin-top: 21px;
+      padding: 21px;
+      background: var(--papier-soft);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+    }
+    .sheet-detail-bridge-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      color: var(--gris);
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-bottom: 13px;
+    }
+    .sheet-detail-bridge-item {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 13px;
+      padding: 13px 0;
+      border-top: 1px solid var(--gris-line-soft);
+      cursor: pointer;
+    }
+    .sheet-detail-bridge-item:first-of-type {
+      border-top: none;
+    }
+    .sheet-detail-bridge-item:active {
+      opacity: 0.6;
+    }
+    .sheet-detail-bridge-item-main {
+      min-width: 0;
+    }
+    .sheet-detail-bridge-item-model {
+      font-family: var(--editorial);
+      font-size: 15px;
+      color: var(--encre);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .sheet-detail-bridge-item-meta {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--gris);
+      margin-top: 2px;
+    }
+    .sheet-detail-bridge-item-price {
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .sheet-detail-bridge-item-price-value {
+      font-family: var(--mono);
+      font-size: 15px;
+      color: var(--encre);
+    }
+    .sheet-detail-bridge-item-price-delta {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--vert-vivant);
+      margin-top: 2px;
+    }
+    .sheet-detail-bridge-voice {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 14px;
+      color: var(--gris);
+      margin-top: 13px;
+      padding-top: 13px;
+      border-top: 1px solid var(--gris-line-soft);
     }
     .sheet-actions-detail {
       display: flex;
@@ -12196,12 +12269,39 @@ function dbRowToListing(row) {
   };
 }
 
+// ─── Lot 44 : statut d'enchère robuste ─ dérivé de h_offset, pas du status figé ───
+// Le scraper écrit `auction.status` AU MOMENT du scrape : une valeur figée.
+// `h_offset` (heures signées jusqu'à la clôture) est la VÉRITÉ TEMPORELLE —
+// on s'en sert en priorité, `status` ne reste qu'un filet. Effet : une
+// enchère close bascule en SOLD toute seule, sans attendre le cron.
+function deriveAuctionStatus(a) {
+  a = a || {};
+  // Seuil upcoming/live en heures. = convention des mocks (live ≤ 3j, upcoming 3–7j).
+  // À aligner avec derive_status côté scraper si la convention y diffère.
+  const UPCOMING_THRESHOLD_H = 72;
+  // h_offset exploitable (number ou chaîne numérique) → on dérive.
+  let h = (typeof a.h_offset === 'number') ? a.h_offset : parseFloat(a.h_offset);
+  if (!isNaN(h)) {
+    if (h <= 0) return 'sold';                        // clôture passée
+    if (h > UPCOMING_THRESHOLD_H) return 'upcoming';  // clôture lointaine
+    return 'live';                                    // clôture proche → en direct
+  }
+  // Pas de h_offset → filet : on normalise le status brut du scraper.
+  const s = String(a.status || '').trim().toLowerCase();
+  if (['sold','ended','closed','finished','complete','completed','vendue','vendu'].indexOf(s) !== -1) return 'sold';
+  if (['upcoming','coming','scheduled','soon','future','prochainement','a venir','à venir'].indexOf(s) !== -1) return 'upcoming';
+  if (['live','active','open','running','ongoing','encours','en cours','en direct'].indexOf(s) !== -1) return 'live';
+  // Statut inconnu ET pas de h_offset → visible (jamais perdu) + signal scraper.
+  if (s) console.warn('[CARNET] Vue Enchères : statut "' + a.status + '" inconnu et sans h_offset — fallback "live". À corriger côté scraper.');
+  return 'live';
+}
+
 function dbRowToAuction(row) {
   // Phase 2 : row contient un champ JSONB `auction` avec lot, estimateLow, etc.
   const a = row.auction || {};
   return {
     id: row.id,
-    status: a.status || 'live',
+    status: deriveAuctionStatus(a),
     source: a.source || row.src || '',
     lot: a.lot || '',
     brand: row.mk || '',
@@ -17190,6 +17290,95 @@ function renderMatchSheet(m){
   `;
 }
 
+// ─── Lot 45 · le pont enchère → annonce ───
+// Croise une enchère avec les annonces en vente fixe (même table
+// `cars`, is_auction=false). Tout est déjà en mémoire : aucune
+// requête. Matching en 3 niveaux ; niveau 3 = rien (le silence est
+// plus crédible qu'un faux pont).
+function findMarketBridge(auction){
+  if(!auction) return [];
+  // Source : liveListings (DB) sinon mock LISTINGS — marche en démo
+  // comme en prod.
+  var pool = (State.liveListings && State.liveListings.length)
+    ? State.liveListings
+    : ((typeof LISTINGS !== 'undefined') ? LISTINGS : []);
+  if(!pool.length) return [];
+  var brand = String(auction.brand || '').trim().toLowerCase();
+  var model = String(auction.model || '').trim().toLowerCase();
+  var year = parseInt(auction.year, 10);
+  if(!brand || !model) return [];
+  function modelMatch(listingModel){
+    var mm = String(listingModel || '').trim().toLowerCase();
+    if(!mm) return false;
+    return mm.indexOf(model) !== -1 || model.indexOf(mm) !== -1;
+  }
+  var lvl1 = [], lvl2 = [];
+  for(var i = 0; i < pool.length; i++){
+    var l = pool[i];
+    if(String(l.mk || '').trim().toLowerCase() !== brand) continue;
+    if(!modelMatch(l.mo)) continue;
+    var ly = parseInt(l.yr, 10);
+    var dy = (!isNaN(year) && !isNaN(ly)) ? Math.abs(year - ly) : 99;
+    if(dy <= 2) lvl1.push(l);
+    else if(dy <= 5) lvl2.push(l);
+  }
+  // Niveau 1 prioritaire ; à défaut niveau 2. Tri prix croissant, 3 max.
+  var picked = lvl1.length ? lvl1 : lvl2;
+  picked = picked.slice().sort(function(a, b){
+    return (parseFloat(a.px) || 0) - (parseFloat(b.px) || 0);
+  });
+  return picked.slice(0, 3);
+}
+
+// ─── Lot 45 · rendu du bloc pont ───
+// Renvoie '' si aucun match → bloc purement additif, zéro régression
+// sur les fiches sans pont.
+function renderBridgeBlock(auction){
+  var matches = findMarketBridge(auction);
+  if(!matches.length) return '';
+  var estLow = parseFloat(auction.estimateLow) || 0;
+  var items = matches.map(function(l){
+    var px = parseFloat(l.px) || 0;
+    var kmTxt = l.km ? (String(l.km).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' km') : '\u2014';
+    // Signal "bon achat" : annonce sous l'estimation basse du lot.
+    var deltaTxt = '';
+    if(estLow > 0 && px > 0 && px < estLow){
+      var pct = Math.round((1 - px / estLow) * 100);
+      if(pct >= 1) deltaTxt = '<div class="sheet-detail-bridge-item-price-delta">\u2212' + pct + '% vs estimation</div>';
+    }
+    var priceTxt = px > 0 ? esc(fmtPrice(px)) : '\u2014';
+    return '<div class="sheet-detail-bridge-item" data-action="openListing" data-id="' + esc(l.id) + '">'
+      + '<div class="sheet-detail-bridge-item-main">'
+      + '<div class="sheet-detail-bridge-item-model">' + esc(l.mo || '') + '</div>'
+      + '<div class="sheet-detail-bridge-item-meta">' + esc(l.yr || '') + ' \u00b7 ' + kmTxt
+      + (l.src ? ' \u00b7 ' + esc(l.src) : '') + '</div>'
+      + '</div>'
+      + '<div class="sheet-detail-bridge-item-price">'
+      + '<div class="sheet-detail-bridge-item-price-value">' + priceTxt + '</div>'
+      + deltaTxt
+      + '</div>'
+      + '</div>';
+  }).join('');
+  // Voix CARNET : factuelle. Si la 1re annonce (la moins chère) bat
+  // l'estimation basse, on le dit chiffré ; sinon on situe la cote.
+  var voice;
+  var cheapest = matches[0];
+  var cheapestPx = parseFloat(cheapest.px) || 0;
+  if(estLow > 0 && cheapestPx > 0 && cheapestPx < estLow){
+    var bestPct = Math.round((1 - cheapestPx / estLow) * 100);
+    voice = 'Une \u00e9quivalente est en vente fixe \u00e0 ' + esc(fmtPrice(cheapestPx))
+      + ' \u2014 soit \u2212' + bestPct + '% sous l\u2019estimation basse de ce lot.';
+  } else {
+    voice = 'Le m\u00eame mod\u00e8le se n\u00e9gocie aussi hors ench\u00e8res. De quoi situer la cote.';
+  }
+  var label = matches.length === 1 ? 'Aussi sur le march\u00e9' : 'Aussi sur le march\u00e9 \u00b7 ' + matches.length + ' annonces';
+  return '<div class="sheet-detail-bridge">'
+    + '<div class="sheet-detail-bridge-label">' + label + '</div>'
+    + items
+    + '<div class="sheet-detail-bridge-voice">' + voice + '</div>'
+    + '</div>';
+}
+
 function renderAuctionSheet(a){
   if(!a) return '';
   const isWatched = (State.watchedAuctionIds || []).indexOf(a.id) !== -1;
@@ -17361,6 +17550,7 @@ function renderAuctionSheet(a){
           <div class="sheet-detail-voice-label">CONSEIL CARNET</div>
           <em>${voiceText}</em>
         </div>
+        ${renderBridgeBlock(a)}
       </div>
     </div>
     <div class="sheet-actions sheet-actions-detail">
