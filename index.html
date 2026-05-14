@@ -6802,6 +6802,70 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
       padding: 0 21px 21px !important;
     }
 
+    /* ===== LOT 48 · AUTORADAR AUCTION INDEX ===== */
+    .encheres-index {
+      margin: 0 0 21px;
+      padding: 21px;
+      background: var(--encre);
+      border-radius: var(--r);
+    }
+    .encheres-index-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      color: var(--vert-vivant-clair);
+      text-transform: uppercase;
+      margin-bottom: 13px;
+    }
+    .encheres-index-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 21px;
+    }
+    .encheres-index-stat {
+      flex: 1 1 40%;
+      min-width: 110px;
+    }
+    .encheres-index-stat-value {
+      font-family: var(--editorial);
+      font-size: 24px;
+      color: var(--papier);
+      line-height: 1.1;
+    }
+    .encheres-index-stat-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--gris-soft);
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .encheres-index-brands {
+      margin-top: 16px;
+      padding-top: 13px;
+      border-top: 1px solid var(--encre-soft);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .encheres-index-brands-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      color: var(--gris-soft);
+      text-transform: uppercase;
+      margin-right: 4px;
+    }
+    .encheres-index-brand-chip {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--papier);
+      background: var(--encre-soft);
+      border-radius: var(--r);
+      padding: 4px 10px;
+    }
+
     /* ─── Listings search input ─── */
     .listings-search {
       font-family: var(--sans) !important;
@@ -20037,18 +20101,31 @@ const Actions = {
     }
   },
   openAuction(id){
-    const a = AUCTIONS.find(x => x.id === id);
+    // Lot 49 : live-first (State.liveAuctions) puis fallback mock,
+    // comme openListing — sans ça une carte live serait muette.
+    let a = (State.liveAuctions || []).find(x => x.id === id);
+    if(!a) a = (typeof AUCTIONS !== 'undefined' ? AUCTIONS : []).find(x => x.id === id);
     if(!a) return;
     Sheet.open('auction', a);
   },
   viewSource(id){
-    const a = AUCTIONS.find(x => x.id === id);
+    // Lot 49 : live-first puis fallback mock.
+    let a = (State.liveAuctions || []).find(x => x.id === id);
+    if(!a) a = (typeof AUCTIONS !== 'undefined' ? AUCTIONS : []).find(x => x.id === id);
     if(!a) return;
     Sheet.close();
+    // Lot 49 : si l'enchère a un src_url réel (champ du contrat JSONB),
+    // on ouvre le lot chez la maison de vente. Sinon toast seul (mock,
+    // ou enchère sans lien) — pas de régression.
+    if(a.src_url){
+      window.open(a.src_url, '_blank', 'noopener,noreferrer');
+    }
     setTimeout(() => showToastFloat(`Ouverture de « ${a.brand} ${a.model} » sur ${a.source}\u2026`), 340);
   },
   toggleWatchAuction(id){
-    const a = AUCTIONS.find(x => x.id === id);
+    // Lot 49 : live-first puis fallback mock.
+    let a = (State.liveAuctions || []).find(x => x.id === id);
+    if(!a) a = (typeof AUCTIONS !== 'undefined' ? AUCTIONS : []).find(x => x.id === id);
     if(!a) return;
     if(!State.watchedAuctionIds) State.watchedAuctionIds = [];
     const idx = State.watchedAuctionIds.indexOf(id);
@@ -21559,6 +21636,146 @@ function renderAffutShell(){
   renderAll();
 }
 
+// ─── Lot 48 · l'AutoRadar Auction Index — calcul ───
+// Agrège les données enchères déjà en mémoire en une lecture du
+// marché. Ne réinvente rien : compte et synthétise. Chaque
+// indicateur porte son propre drapeau de disponibilité — un
+// indicateur sans assez de données n'est PAS calculé (pas de "0€"
+// trompeur, pas de % sur 2 ventes).
+var INDEX_MIN_AUCTIONS = 8;  // seuil global : sous ça, pas d'Index
+var INDEX_MIN_SOLD = 3;      // sous-seuil tension estimation
+function computeAuctionIndex(auctions){
+  var pool = Array.isArray(auctions) ? auctions : [];
+  var out = {
+    enough: pool.length >= INDEX_MIN_AUCTIONS,
+    total: pool.length
+  };
+  if(!out.enough) return out;
+  var live = [], upcoming = [], sold = [];
+  for(var i = 0; i < pool.length; i++){
+    var a = pool[i];
+    if(a.status === 'live') live.push(a);
+    else if(a.status === 'upcoming') upcoming.push(a);
+    else if(a.status === 'sold') sold.push(a);
+  }
+  // 1. Activité — toujours dispo si l'Index s'affiche.
+  out.activity = live.length + upcoming.length;
+  out.liveCount = live.length;
+  out.upcomingCount = upcoming.length;
+  // 2. Volume au marteau — sous-seuil : >= 1 vente sold.
+  if(sold.length >= 1){
+    var vol = 0;
+    for(var s = 0; s < sold.length; s++){
+      vol += parseFloat(sold[s].soldPrice) || parseFloat(sold[s].bidCurrent) || 0;
+    }
+    out.hammerVolume = vol;
+    out.soldCount = sold.length;
+  }
+  // 3. Tension estimation — sous-seuil : >= INDEX_MIN_SOLD ventes.
+  if(sold.length >= INDEX_MIN_SOLD){
+    var above = 0, counted = 0;
+    for(var t = 0; t < sold.length; t++){
+      var price = parseFloat(sold[t].soldPrice) || parseFloat(sold[t].bidCurrent) || 0;
+      var estHigh = parseFloat(sold[t].estimateHigh) || 0;
+      if(price > 0 && estHigh > 0){
+        counted++;
+        if(price > estHigh) above++;
+      }
+    }
+    if(counted >= INDEX_MIN_SOLD){
+      out.tensionPct = Math.round((above / counted) * 100);
+    }
+  }
+  // 4. Maison la plus active — sous-seuil : >= 3 enchères live+upcoming
+  //    avec source renseignée.
+  var activePool = live.concat(upcoming);
+  var srcCounts = {};
+  var srcTotal = 0;
+  for(var u = 0; u < activePool.length; u++){
+    var src = String(activePool[u].source || '').trim();
+    if(!src) continue;
+    srcCounts[src] = (srcCounts[src] || 0) + 1;
+    srcTotal++;
+  }
+  if(srcTotal >= 3){
+    var topSrc = '', topSrcN = 0;
+    for(var k in srcCounts){
+      if(srcCounts[k] > topSrcN){ topSrcN = srcCounts[k]; topSrc = k; }
+    }
+    if(topSrc){ out.topSource = topSrc; out.topSourceCount = topSrcN; }
+  }
+  // 5. Palmarès marques — sous-seuil : >= 3 enchères avec brand.
+  var brandCounts = {};
+  var brandTotal = 0;
+  for(var b = 0; b < pool.length; b++){
+    var brand = String(pool[b].brand || '').trim();
+    if(!brand) continue;
+    brandCounts[brand] = (brandCounts[brand] || 0) + 1;
+    brandTotal++;
+  }
+  if(brandTotal >= 3){
+    var brandArr = [];
+    for(var bk in brandCounts){ brandArr.push([bk, brandCounts[bk]]); }
+    brandArr.sort(function(x, y){ return y[1] - x[1]; });
+    out.topBrands = brandArr.slice(0, 3);
+  }
+  return out;
+}
+
+// ─── Lot 48 · l'AutoRadar Auction Index — rendu ───
+// Conditionnel : '' tant que la donnée est insuffisante (l'Index
+// surgit quand il a quelque chose à dire). Chaque indicateur est
+// affiché seulement si computeAuctionIndex l'a calculé.
+function renderAuctionIndex(auctions){
+  var ix = computeAuctionIndex(auctions);
+  if(!ix.enough) return '';
+  var stats = [];
+  // 1. Activité — toujours présent.
+  stats.push('<div class="encheres-index-stat">'
+    + '<div class="encheres-index-stat-value">' + ix.activity + '</div>'
+    + '<div class="encheres-index-stat-label">lots actifs \u00b7 ' + ix.liveCount
+    + ' en direct, ' + ix.upcomingCount + ' \u00e0 venir</div>'
+    + '</div>');
+  // 2. Volume au marteau.
+  if(typeof ix.hammerVolume === 'number'){
+    stats.push('<div class="encheres-index-stat">'
+      + '<div class="encheres-index-stat-value">' + esc(fmtPrice(ix.hammerVolume)) + '</div>'
+      + '<div class="encheres-index-stat-label">au marteau \u00b7 ' + ix.soldCount
+      + ' vente' + (ix.soldCount === 1 ? '' : 's') + ' r\u00e9cente' + (ix.soldCount === 1 ? '' : 's') + '</div>'
+      + '</div>');
+  }
+  // 3. Tension estimation.
+  if(typeof ix.tensionPct === 'number'){
+    stats.push('<div class="encheres-index-stat">'
+      + '<div class="encheres-index-stat-value">' + ix.tensionPct + '%</div>'
+      + '<div class="encheres-index-stat-label">adjug\u00e9es au-dessus de l\u2019estimation</div>'
+      + '</div>');
+  }
+  // 4. Maison la plus active.
+  if(ix.topSource){
+    stats.push('<div class="encheres-index-stat">'
+      + '<div class="encheres-index-stat-value" style="font-size:17px">' + esc(ix.topSource) + '</div>'
+      + '<div class="encheres-index-stat-label">maison la plus active \u00b7 ' + ix.topSourceCount + ' lots</div>'
+      + '</div>');
+  }
+  // 5. Palmarès marques.
+  var brandsRow = '';
+  if(ix.topBrands && ix.topBrands.length){
+    var chips = ix.topBrands.map(function(b){
+      return '<span class="encheres-index-brand-chip">' + esc(b[0]) + ' \u00b7 ' + b[1] + '</span>';
+    }).join('');
+    brandsRow = '<div class="encheres-index-brands">'
+      + '<span class="encheres-index-brands-label">Les plus pr\u00e9sentes</span>'
+      + chips
+      + '</div>';
+  }
+  return '<div class="encheres-index">'
+    + '<div class="encheres-index-label">L\u2019indice Carnet \u00b7 le march\u00e9 maintenant</div>'
+    + '<div class="encheres-index-grid">' + stats.join('') + '</div>'
+    + brandsRow
+    + '</div>';
+}
+
 function renderEncheresPage(){
   const m = document.querySelector('main.main');
   if(!m) return;
@@ -21605,6 +21822,7 @@ function renderEncheresPage(){
       <h1 class="hero-title">Le marché en direct.</h1>
       <p class="hero-sub">Bring a Trailer, RM Sotheby's, Artcurial, Bonhams, Gooding, Aguttes, Oldtimer Galerie — les enchères collector agrégées.</p>
     </section>
+    ${renderAuctionIndex(auctionsSource)}
     <div class="encheres-filter-bar">${filterChips}</div>
     ${myAuctions.length > 0 ? `
       <section class="section section-my-sales">
