@@ -33,10 +33,10 @@
   --t-xs:11px;
   --t-sm:13px;
   --t-base:15px;
-  --t-md:17px;
-  --t-lg:22px;
-  --t-xl:28px;
-  --t-2xl:36px;
+  --t-md:21px;   /* Lot 32 — réaligné sur √φ (était 17px) */
+  --t-lg:28px;   /* Lot 32 — réaligné sur √φ (était 22px) */
+  --t-xl:34px;   /* Lot 32 — réaligné sur √φ (était 28px) */
+  --t-2xl:55px;  /* Lot 32 — réaligné sur √φ, palier φ (était 36px) */
 
   --s-1:4px;
   --s-2:8px;
@@ -3654,7 +3654,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
     }
     .sheet-content-detail .car-thumb-hero {
       width: 100%;
-      aspect-ratio: 1.618 / 1;
+      aspect-ratio: var(--phi) / 1; /* Lot 33 */
       min-height: 0;
     }
     .sheet-close-floating {
@@ -3890,7 +3890,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
     }
     .advice-card:active { background: var(--papier-soft); }
     .advice-card .car-thumb-card {
-      width: 100%; height: auto; aspect-ratio: 1.618 / 1; min-height: 0;
+      width: 100%; height: auto; aspect-ratio: var(--phi) / 1; min-height: 0; /* Lot 33 */
     }
     .advice-card-body { padding: 21px; }
     .advice-card-tag {
@@ -3967,7 +3967,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
     .match-card .car-thumb-card {
       width: 100%;
       height: auto;
-      aspect-ratio: 1.618 / 1;
+      aspect-ratio: var(--phi) / 1; /* Lot 33 */
       min-height: 0;
     }
     .match-card-body {
@@ -4186,7 +4186,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
     .auction-card .car-thumb-card {
       width: 100%;
       height: auto;
-      aspect-ratio: 1.618 / 1;
+      aspect-ratio: var(--phi) / 1; /* Lot 33 */
       min-height: 0;
     }
     .auction-card-body {
@@ -4415,7 +4415,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
     .garage-card .car-thumb-card {
       width: 100%;
       height: auto;
-      aspect-ratio: 1.618 / 1;  /* golden ratio horizontal */
+      aspect-ratio: var(--phi) / 1;  /* Lot 33 — golden ratio horizontal */
       min-height: 0;
     }
     .garage-card-body {
@@ -6535,7 +6535,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
     .listing-card .car-thumb-card {
       width: 100%;
       height: auto;
-      aspect-ratio: 1.618 / 1;
+      aspect-ratio: var(--phi) / 1; /* Lot 33 */
       min-height: 0;
     }
     .listing-card-body {
@@ -7065,7 +7065,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
     }
     .skeleton-thumb {
       width: 100%;
-      aspect-ratio: 1.618 / 1;
+      aspect-ratio: var(--phi) / 1; /* Lot 33 */
       background: var(--papier-soft);
       animation: skeleton-pulse 1.6s ease-in-out infinite;
     }
