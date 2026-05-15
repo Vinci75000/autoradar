@@ -1,0 +1,82 @@
+name: Cote refresh nightly
+
+# ═══════════════════════════════════════════════════════════════════════════
+# CARNET · Cote refresh nightly cron
+# Déclenche refresh_cote_segments() chaque nuit à 01h UTC
+# (après dealers cron 00h UTC, avant yellow cron 04h UTC)
+# ═══════════════════════════════════════════════════════════════════════════
+
+on:
+  schedule:
+    - cron: '0 1 * * *'   # 01h UTC quotidien
+  workflow_dispatch:       # permet déclenchement manuel via GitHub UI
+
+jobs:
+  refresh_cote:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Trigger refresh_cote_segments()
+        id: refresh
+        env:
+          SUPABASE_URL:         ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: |
+          set -e
+          echo "→ Calling refresh_cote_segments() at $(date -u)"
+
+          RESPONSE=$(curl -sS --fail-with-body -X POST \
+            "$SUPABASE_URL/rest/v1/rpc/refresh_cote_segments" \
+            -H "apikey: $SUPABASE_SERVICE_KEY" \
+            -H "Authorization: Bearer $SUPABASE_SERVICE_KEY" \
+            -H "Content-Type: application/json" \
+            -H "Prefer: return=representation" \
+            -d '{}' \
+          )
+
+          echo "← Response:"
+          echo "$RESPONSE" | jq .
+
+          # Extract stats pour log lisible
+          UPDATED=$(echo "$RESPONSE"     | jq -r '.[0].segments_updated // 0')
+          SKIPPED=$(echo "$RESPONSE"     | jq -r '.[0].segments_skipped_low_sample // 0')
+          SNAPSHOTS=$(echo "$RESPONSE"   | jq -r '.[0].snapshots_created // 0')
+          SCANNED=$(echo "$RESPONSE"     | jq -r '.[0].cars_scanned // 0')
+          OUTLIERS=$(echo "$RESPONSE"    | jq -r '.[0].cars_filtered_outliers // 0')
+          DURATION=$(echo "$RESPONSE"    | jq -r '.[0].duration_ms // 0')
+
+          echo ""
+          echo "📊 Refresh stats:"
+          echo "  Segments updated:        $UPDATED"
+          echo "  Segments skipped (<5):   $SKIPPED"
+          echo "  Daily snapshots created: $SNAPSHOTS"
+          echo "  Cars scanned:            $SCANNED"
+          echo "  Outliers filtered (IQR): $OUTLIERS"
+          echo "  Duration:                ${DURATION}ms"
+
+          # Fail si rien n'a été mis à jour (anomalie)
+          if [ "$UPDATED" -lt 100 ]; then
+            echo "❌ Anomalie : seulement $UPDATED segments mis à jour, attendu > 100"
+            exit 1
+          fi
+
+          # Fail si trop lent (perf cible < 90s)
+          if [ "$DURATION" -gt 120000 ]; then
+            echo "⚠️ Perf dégradée : ${DURATION}ms > 120s. À investiguer."
+            # On ne fail pas hard — juste warning
+          fi
+
+          # Export pour summary
+          echo "segments_updated=$UPDATED"   >> $GITHUB_OUTPUT
+          echo "duration_ms=$DURATION"       >> $GITHUB_OUTPUT
+          echo "snapshots=$SNAPSHOTS"        >> $GITHUB_OUTPUT
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Cote refresh — $(date -u +'%Y-%m-%d %H:%M UTC')" >> $GITHUB_STEP_SUMMARY
+          echo ""                                                   >> $GITHUB_STEP_SUMMARY
+          echo "- **Segments updated** : ${{ steps.refresh.outputs.segments_updated }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Snapshots created** : ${{ steps.refresh.outputs.snapshots }}"        >> $GITHUB_STEP_SUMMARY
+          echo "- **Duration** : ${{ steps.refresh.outputs.duration_ms }}ms"             >> $GITHUB_STEP_SUMMARY
+          echo "- **Methodology** : v2.1"                                                >> $GITHUB_STEP_SUMMARY
