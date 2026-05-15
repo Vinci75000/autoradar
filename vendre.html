@@ -1,1079 +1,1622 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="description" content="CARNET · Vends ta voiture avec un dossier complet, une cote sourcée, un carnet d'entretien on-chain. Annonce certifiée CARNET, badge de confiance, contribution non-lucrative 8,8%." />
-  <meta name="theme-color" content="#faf6ef" />
-
-  <title>CARNET · Vendre · Annonce certifiée</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,400;1,500;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Mono:wght@400;500;600&display=swap"
-    rel="stylesheet"
-  />
-  <link rel="stylesheet" href="carnet-tokens.css" />
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vendre ta voiture · CARNET</title>
+  <meta name="description" content="Annonce premium ou enchère transparente. Commission CARNET 8.8% — 3.4x moins cher que Sotheby's. Infrastructure on-chain supérieure.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@1,6..96,400..900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap" rel="stylesheet">
+  
   <style>
-    main {
-      max-width: var(--max-w);
-      margin: 0 auto;
-      padding: var(--s-8) var(--s-5);
+    /* === RESET & BASE === */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-    section { padding-block: var(--s-7); border-top: 1px solid var(--gris-line); }
-    section:first-of-type { border-top: none; padding-top: 0; }
-    .hero { padding-top: var(--s-3); padding-bottom: var(--s-7); border-top: none; }
-
-    .back-nav {
-      margin-bottom: var(--s-5);
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
+    
+    :root {
+      /* Charte v8 couleurs */
+      --encre-noir: #1A1A1A;
+      --papier-creme-light: #F5F1E8;
+      --papier-creme-deep: #E8E0D0;
+      --orange-polo: #E85A1F;
+      --vert-anglais: #1F4D2F;
+      
+      /* Fonts */
+      --font-bodoni: 'Bodoni Moda', serif;
+      --font-cormorant: 'Cormorant Garamond', serif;
+      --font-dm-mono: 'DM Mono', monospace;
+      
+      /* Spacing Fibonacci */
+      --sp-8: 8px;
+      --sp-13: 13px;
+      --sp-21: 21px;
+      --sp-34: 34px;
+      --sp-55: 55px;
+      --sp-89: 89px;
+      
+      /* Radius */
+      --radius: 2px;
     }
-    .back-nav a { color: var(--gris); text-decoration: none; }
-    .back-nav a:hover { color: var(--encre); }
-
-    /* ───── Why-certified (3 raisons) ───── */
-    .why-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: var(--s-4);
-      margin-top: var(--s-5);
+    
+    body {
+      font-family: var(--font-cormorant);
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--encre-noir);
+      background: white;
+      -webkit-font-smoothing: antialiased;
     }
-    @media (min-width: 600px) {
-      .why-grid { grid-template-columns: 1fr 1fr 1fr; }
-    }
-    .why-card {
-      padding: var(--s-5);
-      background: var(--papier-bright);
-      border: 1px solid var(--gris-line);
-      border-radius: var(--r);
-    }
-    .why-card .num {
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      color: var(--orange-polo);
-      margin: 0 0 var(--s-3) 0;
-    }
-    .why-card h3 {
-      font-family: var(--display);
+    
+    /* === TYPOGRAPHY === */
+    h1, h2, h3 {
+      font-family: var(--font-bodoni);
       font-style: italic;
-      font-size: 20px;
-      margin: 0 0 var(--s-3) 0;
+      font-weight: 400;
       line-height: 1.2;
     }
-    .why-card p {
-      font-family: var(--editorial);
-      font-size: 15px;
-      line-height: 1.55;
-      margin: 0;
-    }
-
-    /* ───── Wizard ───── */
-    .wizard {
-      margin-top: var(--s-6);
-      background: var(--papier-bright);
-      border: 1px solid var(--gris-line);
-      border-radius: var(--r);
-      padding: var(--s-6) var(--s-5);
-    }
-    .step-indicator {
-      display: flex;
-      gap: var(--s-2);
-      margin-bottom: var(--s-5);
-      font-family: var(--mono);
-      font-size: 9px;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--gris);
-      overflow-x: auto;
-    }
-    .step-indicator span {
-      flex: 1;
-      min-width: 50px;
-      padding-bottom: var(--s-2);
-      border-bottom: 2px solid var(--gris-line);
-      white-space: nowrap;
-      text-align: center;
-    }
-    .step-indicator span.active {
-      color: var(--orange-polo);
-      border-bottom-color: var(--orange-polo);
-    }
-    .step-indicator span.done {
-      color: var(--encre);
-      border-bottom-color: var(--encre);
-    }
-
-    .step { display: none; }
-    .step.active { display: block; }
-
-    .field { margin-bottom: var(--s-5); }
-    .field label {
-      display: block;
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--gris);
-      margin-bottom: var(--s-3);
-    }
-    .field input,
-    .field select,
-    .field textarea {
-      width: 100%;
-      padding: var(--s-4);
-      font-family: var(--editorial);
-      font-size: 17px;
-      background: var(--papier);
-      border: 1px solid var(--gris-line);
-      border-radius: var(--r);
-      color: var(--encre);
-      -webkit-appearance: none;
-      appearance: none;
-      resize: vertical;
-    }
-    .field input:focus,
-    .field select:focus,
-    .field textarea:focus {
-      outline: none;
-      border-color: var(--encre);
-    }
-    .field textarea { min-height: 120px; font-family: var(--editorial); }
-    .field select {
-      background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%231a1410' stroke-width='1.5'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right var(--s-4) center;
-      padding-right: var(--s-7);
-    }
-    .field-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--s-4);
-    }
-    @media (max-width: 480px) {
-      .field-row { grid-template-columns: 1fr; }
-    }
-    .field-hint {
-      margin-top: var(--s-2);
-      font-family: var(--editorial);
-      font-style: italic;
+    
+    h1 { font-size: clamp(36px, 5vw, 56px); margin-bottom: var(--sp-21); }
+    h2 { font-size: clamp(28px, 4vw, 42px); margin-bottom: var(--sp-21); }
+    h3 { font-size: clamp(22px, 3vw, 32px); margin-bottom: var(--sp-13); }
+    
+    p { margin-bottom: var(--sp-21); }
+    
+    .mono {
+      font-family: var(--font-dm-mono);
       font-size: 14px;
-      color: var(--encre-soft);
+      letter-spacing: 0.02em;
     }
-
-    /* ───── Photos uploader ───── */
-    .photo-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: var(--s-3);
+    
+    /* === LAYOUT === */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 var(--sp-34);
     }
-    @media (max-width: 480px) {
-      .photo-grid { grid-template-columns: repeat(3, 1fr); }
+    
+    section {
+      padding: var(--sp-89) 0;
     }
-    .photo-slot {
-      aspect-ratio: 1 / 1;
-      background: var(--papier);
-      border: 2px dashed var(--gris-line);
-      border-radius: var(--r);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: border-color 200ms ease, background 200ms ease;
-      position: relative;
-      overflow: hidden;
+    
+    section:nth-child(even) {
+      background: var(--papier-creme-light);
     }
-    .photo-slot:hover { border-color: var(--encre); }
-    .photo-slot.filled {
-      border-style: solid;
-      border-color: var(--orange-polo);
-      background: var(--orange-soft);
+    
+    /* === HEADER === */
+    header {
+      padding: var(--sp-21) 0;
+      border-bottom: 1px solid var(--papier-creme-deep);
+      position: sticky;
+      top: 0;
+      background: white;
+      z-index: 100;
     }
-    .photo-slot .plus {
-      font-family: var(--display);
-      font-size: 36px;
-      font-style: italic;
-      color: var(--gris);
-    }
-    .photo-slot.filled .plus { display: none; }
-    .photo-slot .check {
-      font-family: var(--mono);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      color: var(--orange-polo);
-      display: none;
-      text-align: center;
-    }
-    .photo-slot.filled .check { display: block; }
-    .photo-slot small {
-      position: absolute;
-      bottom: 4px;
-      left: 0; right: 0;
-      text-align: center;
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: 0.1em;
-      color: var(--gris);
-      text-transform: uppercase;
-    }
-    .photo-slot.filled small { color: var(--orange-polo); }
-
-    /* ───── Cote box (step 3) ───── */
-    .cote-box {
-      padding: var(--s-6) var(--s-5);
-      background: var(--vert-soft);
-      border: 1px solid rgba(31, 77, 47, 0.25);
-      border-radius: var(--r);
-      text-align: center;
-      margin-bottom: var(--s-5);
-    }
-    .cote-box .label {
-      font-family: var(--mono);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--vert-anglais);
-      margin: 0 0 var(--s-3) 0;
-    }
-    .cote-box .range {
-      font-family: var(--display);
-      font-style: italic;
-      font-weight: 500;
-      font-size: clamp(28px, 6vw, 44px);
-      color: var(--vert-anglais);
-      margin: 0 0 var(--s-2) 0;
-      letter-spacing: -0.02em;
-      line-height: 1.1;
-    }
-    .cote-box p {
-      font-family: var(--editorial);
-      font-style: italic;
-      font-size: 15px;
-      color: var(--encre);
-      margin: 0;
-    }
-
-    /* ───── Carnet checklist ───── */
-    .carnet-list {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: var(--s-3);
-      margin-top: var(--s-3);
-    }
-    .carnet-row {
-      display: flex;
-      align-items: center;
-      gap: var(--s-4);
-      padding: var(--s-4);
-      background: var(--papier);
-      border: 1px solid var(--gris-line);
-      border-radius: var(--r);
-      cursor: pointer;
-      transition: border-color 200ms ease;
-    }
-    .carnet-row:hover { border-color: var(--encre); }
-    .carnet-row.checked {
-      border-color: var(--orange-polo);
-      background: var(--orange-soft);
-    }
-    .carnet-row .tick {
-      width: 18px;
-      height: 18px;
-      border: 1px solid var(--gris);
-      border-radius: var(--r);
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--mono);
-      font-size: 14px;
-      color: var(--papier);
-    }
-    .carnet-row.checked .tick {
-      background: var(--orange-polo);
-      border-color: var(--orange-polo);
-    }
-    .carnet-row.checked .tick::after { content: '✓'; }
-    .carnet-row .label {
-      font-family: var(--editorial);
-      font-size: 16px;
-      line-height: 1.4;
-    }
-    .carnet-row .label small {
-      display: block;
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--gris);
-      margin-top: 2px;
-    }
-
-    /* ───── Recap (step 6) ───── */
-    .recap {
-      padding: var(--s-5);
-      background: var(--papier);
-      border: 1px solid var(--gris-line);
-      border-radius: var(--r);
-      margin-bottom: var(--s-5);
-    }
-    .recap-row {
-      display: grid;
-      grid-template-columns: 130px 1fr;
-      gap: var(--s-3);
-      padding: var(--s-3) 0;
-      border-top: 1px solid var(--gris-line);
-    }
-    .recap-row:first-child { border-top: none; padding-top: 0; }
-    .recap-row .k {
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--gris);
-    }
-    .recap-row .v {
-      font-family: var(--editorial);
-      font-size: 16px;
-      color: var(--encre);
-    }
-    .recap-row .v em { font-style: italic; }
-
-    .badge-cert {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--s-3);
-      padding: var(--s-3) var(--s-4);
-      background: var(--encre);
-      color: var(--papier);
-      border-radius: var(--r);
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      margin-top: var(--s-5);
-    }
-    .badge-cert .dot {
-      width: 6px; height: 6px;
-      background: var(--orange-polo);
-      border-radius: var(--r);
-    }
-
-    /* ───── Buttons ───── */
-    .wizard-nav {
-      display: flex;
-      gap: var(--s-3);
-      margin-top: var(--s-6);
-    }
-    .btn-step {
-      flex: 1;
-      padding: var(--s-4);
-      font-family: var(--mono);
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      border: 1px solid var(--encre);
-      border-radius: var(--r);
-      cursor: pointer;
-      transition: background 200ms ease;
-    }
-    .btn-next { background: var(--encre); color: var(--papier); }
-    .btn-next:hover { background: var(--orange-polo); border-color: var(--orange-polo); }
-    .btn-back {
-      background: transparent;
-      color: var(--encre);
-      border-color: var(--gris-line);
-      flex: 0 0 auto;
-      padding: var(--s-4) var(--s-5);
-    }
-    .btn-back:hover { border-color: var(--encre); }
-
-    .price-display {
-      font-family: var(--display);
-      font-style: italic;
-      font-weight: 500;
-      font-size: clamp(36px, 8vw, 56px);
-      color: var(--orange-polo);
-      text-align: center;
-      letter-spacing: -0.02em;
-      line-height: 1;
-      margin: var(--s-5) 0;
-    }
-    .price-slider {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 100%;
-      height: 4px;
-      background: var(--gris-line);
-      border-radius: var(--r);
-      outline: none;
-      margin: var(--s-4) 0;
-    }
-    .price-slider::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 22px;
-      height: 22px;
-      background: var(--encre);
-      border-radius: var(--r);
-      cursor: pointer;
-    }
-    .price-slider::-moz-range-thumb {
-      width: 22px;
-      height: 22px;
-      background: var(--encre);
-      border-radius: var(--r);
-      cursor: pointer;
-      border: none;
-    }
-    .price-marks {
+    
+    header .container {
       display: flex;
       justify-content: space-between;
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.08em;
-      color: var(--gris);
-      margin-top: var(--s-2);
+      align-items: center;
     }
-
-    /* Confirm step */
-    .confirm-hero {
+    
+    .logo {
+      font-family: var(--font-bodoni);
+      font-style: italic;
+      font-size: 24px;
+      color: var(--encre-noir);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .logo-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--orange-polo);
+      border-radius: 50%;
+    }
+    
+    nav {
+      display: flex;
+      gap: var(--sp-34);
+    }
+    
+    nav a {
+      font-family: var(--font-dm-mono);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--encre-noir);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    
+    nav a:hover {
+      color: var(--orange-polo);
+    }
+    
+    /* === BUTTONS === */
+    .btn {
+      font-family: var(--font-dm-mono);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: var(--sp-21) var(--sp-34);
+      border-radius: var(--radius);
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.2s;
       text-align: center;
-      padding: var(--s-7) var(--s-5);
-      background: var(--vert-soft);
-      border: 2px solid var(--vert-anglais);
-      border-radius: var(--r);
-      margin-bottom: var(--s-5);
     }
-    .confirm-icon {
-      font-family: var(--display);
-      font-style: italic;
-      font-size: clamp(60px, 12vw, 88px);
-      color: var(--vert-anglais);
-      line-height: 1;
-      margin: 0 0 var(--s-3) 0;
+    
+    .btn-primary {
+      background: var(--orange-polo);
+      color: white;
     }
-    .confirm-title {
-      font-family: var(--display);
+    
+    .btn-primary:hover {
+      background: #d04d15;
+    }
+    
+    .btn-secondary {
+      background: transparent;
+      color: var(--orange-polo);
+      border: 1px solid var(--orange-polo);
+    }
+    
+    .btn-secondary:hover {
+      background: var(--orange-polo);
+      color: white;
+    }
+    
+    /* === HERO === */
+    .hero {
+      text-align: center;
+      padding: var(--sp-89) 0 var(--sp-55);
+    }
+    
+    .hero-subtitle {
+      font-family: var(--font-dm-mono);
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--orange-polo);
+      margin-bottom: var(--sp-13);
+    }
+    
+    .hero-desc {
+      max-width: 700px;
+      margin: 0 auto var(--sp-55);
+      font-size: 19px;
+      line-height: 1.7;
+    }
+    
+    /* === SPLIT PATH === */
+    .split-path {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--sp-34);
+      margin-top: var(--sp-55);
+    }
+    
+    .path-card {
+      background: white;
+      border: 1px solid var(--papier-creme-deep);
+      border-radius: var(--radius);
+      padding: var(--sp-55);
+      text-align: center;
+      transition: all 0.3s;
+    }
+    
+    .path-card:hover {
+      border-color: var(--orange-polo);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+    
+    .path-icon {
+      font-size: 48px;
+      margin-bottom: var(--sp-21);
+    }
+    
+    .path-title {
+      font-family: var(--font-bodoni);
       font-style: italic;
+      font-size: 28px;
+      margin-bottom: var(--sp-13);
+    }
+    
+    .path-subtitle {
+      font-size: 16px;
+      color: #666;
+      margin-bottom: var(--sp-21);
+    }
+    
+    .path-price {
+      font-family: var(--font-dm-mono);
+      font-size: 24px;
+      color: var(--orange-polo);
+      margin-bottom: var(--sp-34);
+    }
+    
+    /* === PRICING CARDS === */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--sp-34);
+      margin-top: var(--sp-55);
+    }
+    
+    .pricing-card {
+      background: white;
+      border: 1px solid var(--papier-creme-deep);
+      border-radius: var(--radius);
+      padding: var(--sp-55) var(--sp-34);
+      position: relative;
+    }
+    
+    .pricing-card.featured {
+      border-color: var(--orange-polo);
+      border-width: 2px;
+    }
+    
+    .pricing-badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--orange-polo);
+      color: white;
+      padding: 4px 13px;
+      border-radius: var(--radius);
+      font-family: var(--font-dm-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    .pricing-tier {
+      font-family: var(--font-dm-mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--orange-polo);
+      margin-bottom: var(--sp-8);
+    }
+    
+    .pricing-amount {
+      font-family: var(--font-dm-mono);
+      font-size: 36px;
+      margin-bottom: var(--sp-21);
+    }
+    
+    .pricing-features {
+      list-style: none;
+      margin-bottom: var(--sp-34);
+    }
+    
+    .pricing-features li {
+      padding: var(--sp-8) 0;
+      border-bottom: 1px solid var(--papier-creme-light);
+      font-size: 16px;
+    }
+    
+    .pricing-features li:last-child {
+      border-bottom: none;
+    }
+    
+    /* === COMPARISON TABLE === */
+    .comparison-table {
+      width: 100%;
+      margin-top: var(--sp-55);
+      border-collapse: collapse;
+      background: white;
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    
+    .comparison-table thead {
+      background: var(--encre-noir);
+      color: white;
+    }
+    
+    .comparison-table th,
+    .comparison-table td {
+      padding: var(--sp-21);
+      text-align: left;
+      border-bottom: 1px solid var(--papier-creme-deep);
+    }
+    
+    .comparison-table th {
+      font-family: var(--font-dm-mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
       font-weight: 500;
-      font-size: clamp(24px, 4vw, 32px);
-      color: var(--encre);
-      margin: 0 0 var(--s-3) 0;
-      line-height: 1.2;
     }
-    .confirm-sub {
-      font-family: var(--editorial);
+    
+    .comparison-table td {
+      font-family: var(--font-dm-mono);
+      font-size: 16px;
+    }
+    
+    .comparison-table tr:hover {
+      background: var(--papier-creme-light);
+    }
+    
+    .comparison-table .highlight {
+      background: rgba(232, 90, 31, 0.1);
+      font-weight: 500;
+    }
+    
+    .comparison-multiple {
+      color: #999;
+      font-size: 14px;
+    }
+    
+    /* === CHIPS === */
+    .chips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--sp-21);
+      margin-top: var(--sp-34);
+    }
+    
+    .chip {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-13);
+      padding: var(--sp-13) var(--sp-21);
+      background: white;
+      border: 1px solid var(--papier-creme-deep);
+      border-radius: var(--radius);
+      font-size: 15px;
+    }
+    
+    .chip-icon {
+      font-size: 20px;
+    }
+    
+    .chip.success .chip-icon { color: var(--vert-anglais); }
+    .chip.error .chip-icon { color: #999; }
+    
+    /* === WIZARD === */
+    .wizard {
+      max-width: 800px;
+      margin: var(--sp-55) auto 0;
+      background: white;
+      border: 1px solid var(--papier-creme-deep);
+      border-radius: var(--radius);
+      padding: var(--sp-55);
+    }
+    
+    .wizard-steps {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: var(--sp-55);
+      position: relative;
+    }
+    
+    .wizard-steps::before {
+      content: '';
+      position: absolute;
+      top: 20px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--papier-creme-deep);
+      z-index: 0;
+    }
+    
+    .wizard-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--sp-8);
+      position: relative;
+      z-index: 1;
+      background: white;
+      padding: 0 var(--sp-8);
+    }
+    
+    .wizard-step-number {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--papier-creme-deep);
+      color: var(--encre-noir);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-dm-mono);
+      font-size: 16px;
+      font-weight: 500;
+    }
+    
+    .wizard-step.active .wizard-step-number {
+      background: var(--orange-polo);
+      color: white;
+    }
+    
+    .wizard-step.completed .wizard-step-number {
+      background: var(--vert-anglais);
+      color: white;
+    }
+    
+    .wizard-step-label {
+      font-family: var(--font-dm-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      text-align: center;
+    }
+    
+    .wizard-content {
+      min-height: 300px;
+    }
+    
+    .wizard-field {
+      margin-bottom: var(--sp-34);
+    }
+    
+    .wizard-label {
+      display: block;
+      font-family: var(--font-dm-mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: var(--sp-8);
+    }
+    
+    .wizard-input,
+    .wizard-select,
+    .wizard-textarea {
+      width: 100%;
+      padding: var(--sp-13) var(--sp-21);
+      border: 1px solid var(--papier-creme-deep);
+      border-radius: var(--radius);
+      font-family: var(--font-cormorant);
+      font-size: 16px;
+      transition: border-color 0.2s;
+    }
+    
+    .wizard-input:focus,
+    .wizard-select:focus,
+    .wizard-textarea:focus {
+      outline: none;
+      border-color: var(--orange-polo);
+    }
+    
+    .wizard-textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+    
+    .wizard-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: var(--sp-55);
+    }
+    
+    /* === BREAKDOWN === */
+    .breakdown {
+      background: var(--papier-creme-light);
+      border-left: 3px solid var(--orange-polo);
+      padding: var(--sp-34);
+      margin: var(--sp-34) 0;
+      border-radius: var(--radius);
+    }
+    
+    .breakdown-title {
+      font-family: var(--font-dm-mono);
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: var(--sp-21);
+    }
+    
+    .breakdown-tree {
+      font-family: var(--font-dm-mono);
+      font-size: 15px;
+      line-height: 2;
+    }
+    
+    .breakdown-tree div {
+      padding-left: var(--sp-21);
+    }
+    
+    .breakdown-amount {
+      color: var(--orange-polo);
+      font-weight: 500;
+    }
+    
+    /* === NFT PREVIEW === */
+    .nft-preview {
+      background: var(--papier-creme-light);
+      border: 2px solid var(--orange-polo);
+      border-radius: var(--radius);
+      padding: var(--sp-34);
+      margin: var(--sp-34) 0;
+      font-family: var(--font-dm-mono);
+      font-size: 14px;
+      line-height: 2;
+    }
+    
+    .nft-preview-title {
+      font-weight: 500;
+      margin-bottom: var(--sp-21);
+      font-size: 16px;
+    }
+    
+    .nft-preview-field {
+      display: flex;
+      gap: var(--sp-13);
+    }
+    
+    .nft-preview-label {
+      color: #666;
+      min-width: 140px;
+    }
+    
+    .nft-preview-value {
+      color: var(--encre-noir);
+      font-weight: 500;
+    }
+    
+    /* === FLOW VISUAL === */
+    .flow-visual {
+      background: white;
+      border: 1px solid var(--papier-creme-deep);
+      border-radius: var(--radius);
+      padding: var(--sp-55);
+      margin: var(--sp-55) 0;
+    }
+    
+    .flow-step {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-21);
+      margin-bottom: var(--sp-34);
+      padding-bottom: var(--sp-34);
+      border-bottom: 1px solid var(--papier-creme-light);
+    }
+    
+    .flow-step:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    
+    .flow-step-icon {
+      flex-shrink: 0;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--papier-creme-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+    
+    .flow-step-content h4 {
+      font-family: var(--font-dm-mono);
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: var(--sp-8);
+    }
+    
+    .flow-step-content p {
+      font-size: 16px;
+      margin-bottom: 0;
+    }
+    
+    /* === QUOTE === */
+    .quote {
+      max-width: 800px;
+      margin: var(--sp-89) auto;
+      text-align: center;
+    }
+    
+    .quote-text {
+      font-family: var(--font-cormorant);
       font-style: italic;
-      font-size: 17px;
-      color: var(--encre-soft);
-      margin: 0;
+      font-size: 24px;
+      line-height: 1.7;
+      color: var(--encre-noir);
+      margin-bottom: var(--sp-34);
+    }
+    
+    /* === PROJECTION === */
+    .projection-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: var(--sp-34);
+      margin-top: var(--sp-34);
+    }
+    
+    .projection-item {
+      text-align: center;
+      padding: var(--sp-34);
+      background: white;
+      border: 1px solid var(--papier-creme-deep);
+      border-radius: var(--radius);
+    }
+    
+    .projection-label {
+      font-family: var(--font-dm-mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #666;
+      margin-bottom: var(--sp-8);
+    }
+    
+    .projection-value {
+      font-family: var(--font-dm-mono);
+      font-size: 28px;
+      color: var(--orange-polo);
+      font-weight: 500;
+    }
+    
+    .projection-desc {
+      font-size: 14px;
+      color: #666;
+      margin-top: var(--sp-8);
+    }
+    
+    /* === CTA SECTION === */
+    .cta-section {
+      text-align: center;
+      padding: var(--sp-89) 0;
+      background: var(--papier-creme-light);
+    }
+    
+    .cta-buttons {
+      display: flex;
+      gap: var(--sp-21);
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: var(--sp-55);
+    }
+    
+    /* === FOOTER === */
+    footer {
+      background: var(--encre-noir);
+      color: white;
+      padding: var(--sp-55) 0 var(--sp-34);
+    }
+    
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--sp-55);
+      margin-bottom: var(--sp-55);
+    }
+    
+    .footer-section h4 {
+      font-family: var(--font-dm-mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: var(--sp-21);
+      font-style: normal;
+    }
+    
+    .footer-section ul {
+      list-style: none;
+    }
+    
+    .footer-section li {
+      margin-bottom: var(--sp-8);
+    }
+    
+    .footer-section a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 15px;
+      transition: color 0.2s;
+    }
+    
+    .footer-section a:hover {
+      color: var(--orange-polo);
+    }
+    
+    .footer-bottom {
+      padding-top: var(--sp-34);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      text-align: center;
+      font-size: 14px;
+      color: rgba(255,255,255,0.5);
+    }
+    
+    /* === RESPONSIVE === */
+    @media (max-width: 768px) {
+      .container {
+        padding: 0 var(--sp-21);
+      }
+      
+      section {
+        padding: var(--sp-55) 0;
+      }
+      
+      nav {
+        display: none;
+      }
+      
+      .split-path,
+      .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .wizard {
+        padding: var(--sp-34);
+      }
+      
+      .wizard-steps {
+        flex-wrap: wrap;
+        gap: var(--sp-21);
+      }
+      
+      .wizard-actions {
+        flex-direction: column;
+        gap: var(--sp-13);
+      }
+      
+      .comparison-table {
+        font-size: 12px;
+      }
+      
+      .comparison-table th,
+      .comparison-table td {
+        padding: var(--sp-13);
+      }
+      
+      .cta-buttons {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: var(--sp-34);
+      }
     }
   </style>
 </head>
-
 <body>
-  <a href="#contenu" class="skip-link">Aller au contenu</a>
+  <!-- === HEADER === -->
+  <header>
+    <div class="container">
+      <a href="/" class="logo">
+        Carnet
+        <span class="logo-dot"></span>
+      </a>
+      <nav>
+        <a href="/affut.html">Affût</a>
+        <a href="/cote.html">Cote</a>
+        <a href="/vendre.html">Vendre</a>
+        <a href="/discover.html">Discover</a>
+      </nav>
+    </div>
+  </header>
 
-  <main id="contenu">
-
-    <!-- ═══════════════════════════════════════════════════════════════
-         HERO
-         ═══════════════════════════════════════════════════════════════ -->
-    <section class="hero" aria-labelledby="hero-title">
-      <p class="back-nav"><a href="index.html">← Retour à l'accueil</a></p>
-
-      <p class="eyebrow">Annonce certifiée CARNET</p>
-      <h1 id="hero-title"><em>Vends-la</em><br />avec un dossier qui se tient.</h1>
-      <p class="tagline-minor">
-        <em>Une annonce CARNET, c'est une voiture, une cote sourcée, un carnet d'entretien
-        on-chain et un badge de confiance. Pas trois clichés flous et une description Google
-        Translate.</em>
+  <!-- === PASSE 1 — HERO + SPLIT PATH === -->
+  <section class="hero">
+    <div class="container">
+      <parameter name="hero-subtitle">Vendre ta voiture</div>
+      <h1>Deux voies. Transparence totale.<br/>Infrastructure on-chain.</h1>
+      <p class="hero-desc">
+        Annonce premium pour visibilité contrôlée, ou enchère transparente pour vente rapide. 
+        Commission CARNET <strong>8.8%</strong> (7.1% + 1.7%) — 3.4x moins cher que Sotheby's.
       </p>
-    </section>
-
-    <!-- ═══════════════════════════════════════════════════════════════
-         POURQUOI CERTIFIÉE
-         ═══════════════════════════════════════════════════════════════ -->
-    <section aria-labelledby="why-title">
-      <p class="eyebrow">La différence</p>
-      <h2 id="why-title"><em>Pourquoi certifiée change tout.</em></h2>
-
-      <p>
-        Sur le marché européen de la voiture passion, le doute tue les transactions. Cote
-        opaque, kilométrage douteux, historique flou. CARNET règle les trois.
-      </p>
-
-      <div class="why-grid">
-        <div class="why-card">
-          <p class="num">01</p>
-          <h3><em>Cote sourcée</em></h3>
-          <p>
-            Fourchette CARNET calculée sur 24 268 véhicules vivants. L'acheteur voit d'où sort
-            le prix. Pas besoin de négocier dans le brouillard.
+      
+      <div class="split-path">
+        <div class="path-card">
+          <div class="path-icon">📋</div>
+          <div class="path-title">Annonce premium</div>
+          <div class="path-subtitle">Mise en avant 30-90 jours</div>
+          <div class="path-price">17-42€</div>
+          <p style="font-size: 15px; color: #666; margin-bottom: 34px;">
+            7 photos + vidéo 60sec<br/>
+            Description 1500 caractères<br/>
+            Mini-cote contextuelle<br/>
+            Notification users
           </p>
+          <a href="#wizard-annonce" class="btn btn-primary">Publier une annonce</a>
         </div>
-        <div class="why-card">
-          <p class="num">02</p>
-          <h3><em>Carnet on-chain</em></h3>
-          <p>
-            Historique d'entretien hashé sur XRPL. Factures, kilométrage relevé, interventions
-            documentées. L'acheteur peut vérifier, l'asso garantit l'antériorité.
+        
+        <div class="path-card">
+          <div class="path-icon">🔨</div>
+          <div class="path-title">Enchère</div>
+          <div class="path-subtitle">Vente aux enchères</div>
+          <div class="path-price">8.8%</div>
+          <p style="font-size: 15px; color: #666; margin-bottom: 34px;">
+            7.1% commission vendeur<br/>
+            1.7% commission acheteur<br/>
+            Settlement immédiat<br/>
+            Anti-shill cryptographique
           </p>
-        </div>
-        <div class="why-card">
-          <p class="num">03</p>
-          <h3><em>Badge de confiance</em></h3>
-          <p>
-            <em>« Annonce certifiée CARNET »</em>. Pas un label qu'on achète. Un dossier qu'on
-            vérifie, un véhicule qui passe — ou ne passe pas — l'admission.
-          </p>
+          <a href="#wizard-enchere" class="btn btn-secondary">Inscrire en enchère</a>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- ═══════════════════════════════════════════════════════════════
-         WIZARD
-         ═══════════════════════════════════════════════════════════════ -->
-    <section aria-labelledby="wizard-title">
-      <p class="eyebrow">Publication</p>
-      <h2 id="wizard-title"><em>Six étapes. Compte trente minutes.</em></h2>
-
-      <div class="wizard" id="wizard">
-
-        <div class="step-indicator" aria-hidden="true">
-          <span id="ind-1" class="active">01 · Voiture</span>
-          <span id="ind-2">02 · Photos</span>
-          <span id="ind-3">03 · Cote</span>
-          <span id="ind-4">04 · Carnet</span>
-          <span id="ind-5">05 · Prix</span>
-          <span id="ind-6">06 · Publier</span>
+  <!-- === PASSE 2 — PRICING CARDS === -->
+  <section>
+    <div class="container">
+      <div style="text-align: center; margin-bottom: 55px;">
+        <h2>Tarification. Sans surprise.</h2>
+        <p style="max-width: 600px; margin: 0 auto;">
+          Tous les frais affichés avant l'action. Pas de petits caractères. Pas de surprise post-publication.
+        </p>
+      </div>
+      
+      <h3 style="margin-top: 55px;">Particulier</h3>
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <div class="pricing-tier">Gratuit</div>
+          <div class="pricing-amount">0€</div>
+          <ul class="pricing-features">
+            <li>1 annonce à la fois</li>
+            <li>3 photos</li>
+            <li>Description 280 caractères</li>
+            <li>Position organique</li>
+            <li>Visibilité standard</li>
+          </ul>
+          <a href="#wizard-annonce" class="btn btn-secondary" style="width: 100%;">Publier</a>
         </div>
+        
+        <div class="pricing-card featured">
+          <div class="pricing-badge">Populaire</div>
+          <div class="pricing-tier">Premium 30j</div>
+          <div class="pricing-amount">17€</div>
+          <ul class="pricing-features">
+            <li>7 photos + vidéo 60sec</li>
+            <li>Description 1500 caractères</li>
+            <li>Section "Histoire de la voiture"</li>
+            <li>Mini-cote contextuelle</li>
+            <li>Notification users segment</li>
+            <li>Position boost dédiée</li>
+          </ul>
+          <a href="#wizard-annonce" class="btn btn-primary" style="width: 100%;">Publier premium</a>
+        </div>
+        
+        <div class="pricing-card">
+          <div class="pricing-tier">Premium 60j</div>
+          <div class="pricing-amount">28€</div>
+          <ul class="pricing-features">
+            <li>Toutes features Premium 30j</li>
+            <li>Durée 60 jours</li>
+            <li>Économie 6€ vs 2×30j</li>
+          </ul>
+          <a href="#wizard-annonce" class="btn btn-secondary" style="width: 100%;">Publier 60j</a>
+        </div>
+        
+        <div class="pricing-card">
+          <div class="pricing-tier">Premium 90j</div>
+          <div class="pricing-amount">42€</div>
+          <ul class="pricing-features">
+            <li>Toutes features Premium 30j</li>
+            <li>Durée 90 jours</li>
+            <li>Économie 9€ vs 3×30j</li>
+          </ul>
+          <a href="#wizard-annonce" class="btn btn-secondary" style="width: 100%;">Publier 90j</a>
+        </div>
+      </div>
+      
+      <h3 style="margin-top: 89px;">Concessionnaire</h3>
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <div class="pricing-tier">Standard</div>
+          <div class="pricing-amount">28€<span style="font-size: 16px; color: #666;">/mois</span></div>
+          <ul class="pricing-features">
+            <li>8 annonces actives/mois</li>
+            <li>Toutes features premium</li>
+            <li>7 photos + vidéo 60sec</li>
+            <li>Dashboard basique</li>
+            <li>Stats visibilité</li>
+          </ul>
+          <a href="#" class="btn btn-secondary" style="width: 100%;">S'abonner</a>
+        </div>
+        
+        <div class="pricing-card featured">
+          <div class="pricing-badge">Recommandé</div>
+          <div class="pricing-tier">Pro</div>
+          <div class="pricing-amount">42€<span style="font-size: 16px; color: #666;">/mois</span></div>
+          <ul class="pricing-features">
+            <li>28 annonces actives/mois</li>
+            <li>Toutes features premium</li>
+            <li>7 photos + vidéo 60sec</li>
+            <li>Dashboard avancé + analytics</li>
+            <li>Badge "Concessionnaire vérifié"</li>
+            <li>Support prioritaire</li>
+          </ul>
+          <a href="#" class="btn btn-primary" style="width: 100%;">S'abonner Pro</a>
+        </div>
+        
+        <div class="pricing-card" style="border-color: var(--vert-anglais); border-width: 2px;">
+          <div class="pricing-tier" style="color: var(--vert-anglais);">Charter Member</div>
+          <div class="pricing-amount" style="color: var(--vert-anglais);">Gratuit</div>
+          <ul class="pricing-features">
+            <li>Illimité annonces</li>
+            <li>Badge éditorial</li>
+            <li>Reconnaissance communauté</li>
+            <li>Sur invitation uniquement</li>
+            <li>Ultra-sélectif (5-10 max)</li>
+          </ul>
+          <a href="mailto:asso@carnet.life" class="btn btn-secondary" style="width: 100%; border-color: var(--vert-anglais); color: var(--vert-anglais);">Candidater</a>
+        </div>
+      </div>
+      
+      <div style="margin-top: 34px; padding: 21px; background: var(--papier-creme-light); border-radius: 2px; text-align: center;">
+        <p style="margin: 0; font-size: 15px; color: #666;">
+          <strong>Pack Standard</strong> : 28€/mois = 3.50€/annonce · <strong>Pack Pro</strong> : 42€/mois = 1.50€/annonce (3.5× capacité + badge + analytics pour +50% prix)
+        </p>
+      </div>
+    </div>
+  </section>
 
-        <!-- ───── STEP 1 : VOITURE ───── -->
-        <div class="step active" id="step-1">
-
-          <div class="field-row">
-            <div class="field">
-              <label for="marque">Marque</label>
-              <select id="marque">
-                <option value="">— Choisir —</option>
-                <option>Porsche</option>
-                <option>Ferrari</option>
-                <option>Lamborghini</option>
-                <option>Mercedes-Benz</option>
-                <option>BMW</option>
-                <option>Audi</option>
-                <option>Aston Martin</option>
-                <option>Bentley</option>
-                <option>Maserati</option>
-                <option>Jaguar</option>
-                <option>Land Rover</option>
-                <option>Alfa Romeo</option>
-                <option>Lancia</option>
-                <option>Lotus</option>
-                <option>McLaren</option>
-                <option>Alpine</option>
-                <option>Autre</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="modele">Modèle</label>
-              <input type="text" id="modele" placeholder="993 Carrera 4S" autocomplete="off" />
-            </div>
-          </div>
-
-          <div class="field-row">
-            <div class="field">
-              <label for="annee">Année</label>
-              <input type="number" id="annee" min="1900" max="2026" placeholder="1997" />
-            </div>
-            <div class="field">
-              <label for="km">Kilométrage</label>
-              <input type="number" id="km" min="0" step="1000" placeholder="78 000" />
-            </div>
-          </div>
-
-          <div class="field">
-            <label for="description">Présentation libre</label>
-            <textarea id="description" placeholder="Raconte-la. L'histoire qu'elle traîne, ce qu'elle a vécu, ce qui la rend particulière. Trois paragraphes valent mieux que trois lignes."></textarea>
-            <p class="field-hint">Cinq cents mots minimum recommandés. C'est ce qui te distingue de l'annonce eBay.</p>
-          </div>
-
-          <div class="wizard-nav">
-            <button class="btn-step btn-next" data-go="2">Continuer →</button>
+  <!-- === PASSE 3 — COMPARAISON INDUSTRIE === -->
+  <section>
+    <div class="container">
+      <div style="text-align: center; margin-bottom: 55px;">
+        <h2>CARNET vs industrie traditionnelle</h2>
+        <p style="max-width: 700px; margin: 0 auto;">
+          Pas d'attaque. Juste les chiffres bruts. La différence structurelle est évidente : infrastructure on-chain supérieure pour 3-4x moins cher.
+        </p>
+      </div>
+      
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Maison de vente</th>
+            <th>Commission totale</th>
+            <th>Multiple vs CARNET</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Sotheby's / RM Sotheby's</td>
+            <td>25-30%</td>
+            <td class="comparison-multiple">2.8x à 3.4x</td>
+            <td>Buyer's premium 25% + Seller's premium 10%</td>
+          </tr>
+          <tr>
+            <td>Gooding & Company</td>
+            <td>20-25%</td>
+            <td class="comparison-multiple">2.3x à 2.8x</td>
+            <td>Buyer's premium 12% + Seller's premium 10-12%</td>
+          </tr>
+          <tr>
+            <td>Bonhams</td>
+            <td>22-28%</td>
+            <td class="comparison-multiple">2.5x à 3.2x</td>
+            <td>Variable selon catégorie</td>
+          </tr>
+          <tr>
+            <td>Bring a Trailer</td>
+            <td>~6% (cap 5k$)</td>
+            <td class="comparison-multiple">comparable limité</td>
+            <td>Plus accessible mais cap fee</td>
+          </tr>
+          <tr class="highlight">
+            <td><strong>CARNET</strong></td>
+            <td><strong>8.8%</strong></td>
+            <td class="comparison-multiple">référence</td>
+            <td>7.1% asso + 1.7% royalties NFT</td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <div class="chips-grid" style="margin-top: 55px;">
+        <div class="chip success">
+          <span class="chip-icon">✅</span>
+          <div>
+            <strong>On-chain</strong><br/>
+            <small>CARNET</small>
           </div>
         </div>
-
-        <!-- ───── STEP 2 : PHOTOS ───── -->
-        <div class="step" id="step-2">
-
-          <p style="font-family: var(--editorial); font-style: italic; color: var(--encre-soft); margin: 0 0 var(--s-5) 0;">
-            Huit photos minimum. Profil, face, trois-quarts arrière, intérieur conducteur, planche
-            de bord, moteur, coffre, plaque châssis. Lumière naturelle, propre, pas de filtre.
-          </p>
-
-          <div class="photo-grid" id="photo-grid">
-            <button class="photo-slot" data-slot="1" type="button"><span class="plus">+</span><span class="check">✓</span><small>Profil</small></button>
-            <button class="photo-slot" data-slot="2" type="button"><span class="plus">+</span><span class="check">✓</span><small>Face</small></button>
-            <button class="photo-slot" data-slot="3" type="button"><span class="plus">+</span><span class="check">✓</span><small>¾ arrière</small></button>
-            <button class="photo-slot" data-slot="4" type="button"><span class="plus">+</span><span class="check">✓</span><small>Intérieur</small></button>
-            <button class="photo-slot" data-slot="5" type="button"><span class="plus">+</span><span class="check">✓</span><small>Tableau</small></button>
-            <button class="photo-slot" data-slot="6" type="button"><span class="plus">+</span><span class="check">✓</span><small>Moteur</small></button>
-            <button class="photo-slot" data-slot="7" type="button"><span class="plus">+</span><span class="check">✓</span><small>Coffre</small></button>
-            <button class="photo-slot" data-slot="8" type="button"><span class="plus">+</span><span class="check">✓</span><small>Châssis</small></button>
-          </div>
-
-          <p class="field-hint" style="margin-top: var(--s-5);">
-            <em>Photos pro recommandées dès qu'elle dépasse 50 k€. Une voiture mal photographiée
-            vaut 15% de moins. <a href="#photographers" style="color: var(--orange-polo);">Photographes
-            partenaires →</a></em>
-          </p>
-
-          <div class="wizard-nav">
-            <button class="btn-step btn-back" data-back="1">←</button>
-            <button class="btn-step btn-next" data-go="3">Continuer →</button>
+        <div class="chip error">
+          <span class="chip-icon">❌</span>
+          <div>
+            <strong>Opaque</strong><br/>
+            <small>Industrie traditionnelle</small>
           </div>
         </div>
-
-        <!-- ───── STEP 3 : COTE AUTO ───── -->
-        <div class="step" id="step-3">
-
-          <p style="font-family: var(--editorial); font-style: italic; color: var(--encre-soft); margin: 0 0 var(--s-5) 0;">
-            Sur la base de tes informations, voici la fourchette CARNET pour ce véhicule. Tu
-            décideras du prix à l'étape 5.
-          </p>
-
-          <div class="cote-box">
-            <p class="label">Cote CARNET · État bon</p>
-            <p class="range" id="cote-range">— € — — €</p>
-            <p><em>Médiane <strong id="cote-median">—</strong> · échantillon <strong id="cote-sample">—</strong></em></p>
-          </div>
-
-          <p class="field-hint">
-            <em>Ce n'est pas ton prix de vente — c'est le marché. Au-dessus tu négocies, en
-            dessous tu pars vite. À toi de positionner.</em>
-          </p>
-
-          <div class="wizard-nav">
-            <button class="btn-step btn-back" data-back="2">←</button>
-            <button class="btn-step btn-next" data-go="4">Continuer →</button>
+        <div class="chip success">
+          <span class="chip-icon">✅</span>
+          <div>
+            <strong>Anti-shill cryptographique</strong><br/>
+            <small>CARNET</small>
           </div>
         </div>
-
-        <!-- ───── STEP 4 : CARNET ENTRETIEN ───── -->
-        <div class="step" id="step-4">
-
-          <p style="font-family: var(--editorial); font-style: italic; color: var(--encre-soft); margin: 0 0 var(--s-5) 0;">
-            Coche ce que tu as. Chaque case cochée renforce le dossier et booste la cote
-            recommandée de 2 à 8% selon le poids du document.
-          </p>
-
-          <div class="carnet-list">
-            <button class="carnet-row" type="button" data-weight="8"><span class="tick"></span><span class="label">Carnet d'entretien d'origine<small>Tampons concessionnaire · révisions documentées</small></span></button>
-            <button class="carnet-row" type="button" data-weight="6"><span class="tick"></span><span class="label">Factures concessionnaire archivées<small>10+ factures, traçabilité complète</small></span></button>
-            <button class="carnet-row" type="button" data-weight="5"><span class="tick"></span><span class="label">Distribution faite il y a moins de 2 ans<small>Pour modèles concernés · facture à l'appui</small></span></button>
-            <button class="carnet-row" type="button" data-weight="4"><span class="tick"></span><span class="label">Contrôle technique vierge récent<small>Moins de 6 mois, aucune contre-visite</small></span></button>
-            <button class="carnet-row" type="button" data-weight="3"><span class="tick"></span><span class="label">Pneus neufs ou < 5 000 km<small>4 pneus marque premium, même dimension</small></span></button>
-            <button class="carnet-row" type="button" data-weight="2"><span class="tick"></span><span class="label">Carrosserie originale (jamais repeinte)<small>Constat épaisseur peinture par expert</small></span></button>
-            <button class="carnet-row" type="button" data-weight="4"><span class="tick"></span><span class="label">Toutes les clefs d'origine<small>+ télécommande, + alarme si applicable</small></span></button>
-            <button class="carnet-row" type="button" data-weight="3"><span class="tick"></span><span class="label">Outillage de bord complet<small>+ cric, croix, manuel d'origine</small></span></button>
-            <button class="carnet-row" type="button" data-weight="2"><span class="tick"></span><span class="label">Photos d'époque ou de provenance<small>Acquisition, salons, anciens propriétaires</small></span></button>
-            <button class="carnet-row" type="button" data-weight="6"><span class="tick"></span><span class="label">Certificat de conformité COC<small>Document EU original, immatriculation directe</small></span></button>
-          </div>
-
-          <p class="field-hint" style="margin-top: var(--s-5);">
-            <em><strong>Score carnet : <span id="carnet-score">0</span>/40.</strong> Au-dessus de 25,
-            le badge « Carnet complet » s'affiche sur l'annonce.</em>
-          </p>
-
-          <div class="wizard-nav">
-            <button class="btn-step btn-back" data-back="3">←</button>
-            <button class="btn-step btn-next" data-go="5">Continuer →</button>
+        <div class="chip error">
+          <span class="chip-icon">❌</span>
+          <div>
+            <strong>Vérification manuelle</strong><br/>
+            <small>Industrie traditionnelle</small>
           </div>
         </div>
-
-        <!-- ───── STEP 5 : PRIX ───── -->
-        <div class="step" id="step-5">
-
-          <p style="font-family: var(--editorial); font-style: italic; color: var(--encre-soft); margin: 0 0 var(--s-5) 0;">
-            La fourchette CARNET est ta boussole. Le slider est calibré ±20% autour de la médiane,
-            avec le boost carnet appliqué. À toi de placer le curseur.
-          </p>
-
-          <p class="price-display" id="price-display">— €</p>
-
-          <input type="range" id="price-slider" class="price-slider" min="0" max="100" value="50" />
-          <div class="price-marks">
-            <span>Vente rapide</span>
-            <span>Médiane CARNET</span>
-            <span>Top fourchette</span>
+        <div class="chip success">
+          <span class="chip-icon">✅</span>
+          <div>
+            <strong>NFT XLS-20 automatique</strong><br/>
+            <small>CARNET</small>
           </div>
+        </div>
+        <div class="chip error">
+          <span class="chip-icon">❌</span>
+          <div>
+            <strong>Paperwork traditionnel</strong><br/>
+            <small>Industrie traditionnelle</small>
+          </div>
+        </div>
+        <div class="chip success">
+          <span class="chip-icon">✅</span>
+          <div>
+            <strong>Settlement immédiat</strong><br/>
+            <small>CARNET</small>
+          </div>
+        </div>
+        <div class="chip error">
+          <span class="chip-icon">⏱️</span>
+          <div>
+            <strong>30-60 jours</strong><br/>
+            <small>Industrie traditionnelle</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-          <div class="field" style="margin-top: var(--s-6);">
-            <label for="negociable">Marge de négociation acceptée</label>
-            <select id="negociable">
-              <option value="0">Prix ferme</option>
-              <option value="3">Jusqu'à -3%</option>
-              <option value="5" selected>Jusqu'à -5%</option>
-              <option value="10">Jusqu'à -10%</option>
-              <option value="open">Faire offre</option>
+  <!-- === PASSE 4 — WIZARD ANNONCE PREMIUM === -->
+  <section id="wizard-annonce">
+    <div class="container">
+      <div style="text-align: center; margin-bottom: 55px;">
+        <h2>Publier une annonce premium</h2>
+        <p style="max-width: 600px; margin: 0 auto;">
+          7 étapes. Transparence totale. Tous les frais affichés avant confirmation.
+        </p>
+      </div>
+      
+      <div class="wizard">
+        <div class="wizard-steps">
+          <div class="wizard-step active">
+            <div class="wizard-step-number">1</div>
+            <div class="wizard-step-label">Type</div>
+          </div>
+          <div class="wizard-step">
+            <div class="wizard-step-number">2</div>
+            <div class="wizard-step-label">Voiture</div>
+          </div>
+          <div class="wizard-step">
+            <div class="wizard-step-number">3</div>
+            <div class="wizard-step-label">Photos</div>
+          </div>
+          <div class="wizard-step">
+            <div class="wizard-step-number">4</div>
+            <div class="wizard-step-label">Description</div>
+          </div>
+          <div class="wizard-step">
+            <div class="wizard-step-number">5</div>
+            <div class="wizard-step-label">Pricing</div>
+          </div>
+          <div class="wizard-step">
+            <div class="wizard-step-number">6</div>
+            <div class="wizard-step-label">Durée</div>
+          </div>
+          <div class="wizard-step">
+            <div class="wizard-step-number">7</div>
+            <div class="wizard-step-label">Confirmation</div>
+          </div>
+        </div>
+        
+        <div class="wizard-content">
+          <h3 style="font-family: var(--font-dm-mono); font-size: 14px; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 34px;">Étape 1 · Type de vendeur</h3>
+          
+          <div class="wizard-field">
+            <label class="wizard-label">Je suis</label>
+            <select class="wizard-select" id="seller-type">
+              <option value="">Choisir...</option>
+              <option value="particulier">Particulier</option>
+              <option value="concessionnaire">Concessionnaire</option>
             </select>
           </div>
-
-          <div class="wizard-nav">
-            <button class="btn-step btn-back" data-back="4">←</button>
-            <button class="btn-step btn-next" data-go="6">Continuer →</button>
+          
+          <div class="breakdown">
+            <div class="breakdown-title">Tarification transparente · Signature 8.8%</div>
+            <p style="margin-bottom: 21px;">Pour une annonce premium 30 jours :</p>
+            <div class="breakdown-tree">
+              <div><strong>17€</strong> total</div>
+              <div>├─ <span class="breakdown-amount">1.21€</span> asso (7.1%)</div>
+              <div>├─ <span class="breakdown-amount">0.29€</span> royalties NFT (1.7%)</div>
+              <div>└─ <span class="breakdown-amount">15.50€</span> infrastructure (91.2%)</div>
+            </div>
+            <p style="margin-top: 21px; font-size: 14px; color: #666;">
+              <strong>17 = 10 × 1.7</strong> · Notre tarif reflète directement la signature CARNET (7.1% + 1.7% = 8.8%)
+            </p>
           </div>
         </div>
+        
+        <div class="wizard-actions">
+          <button class="btn btn-secondary" disabled>← Précédent</button>
+          <button class="btn btn-primary">Suivant →</button>
+        </div>
+      </div>
+      
+      <div style="text-align: center; margin-top: 34px;">
+        <p style="font-size: 14px; color: #666;">
+          Les étapes 2-7 du wizard seront implémentées avec le backend. 
+          <a href="mailto:asso@carnet.life" style="color: var(--orange-polo);">Contacte-nous pour une démo complète</a>.
+        </p>
+      </div>
+    </div>
+  </section>
 
-        <!-- ───── STEP 6 : RÉCAP + PUBLIER ───── -->
-        <div class="step" id="step-6">
+  <!-- === PASSE 5 — WIZARD ENCHÈRE === -->
+  <section id="wizard-enchere">
+    <div class="container">
+      <div style="text-align: center; margin-bottom: 55px;">
+        <h2>Inscrire en enchère</h2>
+        <p style="max-width: 700px; margin: 0 auto;">
+          8 étapes. Commission 8.8% (7.1% vendeur + 1.7% acheteur). Settlement immédiat via smart contract.
+        </p>
+      </div>
+      
+      <div class="wizard">
+        <div class="wizard-steps">
+          <div class="wizard-step active">
+            <div class="wizard-step-number">1</div>
+            <div class="wizard-step-label">Voiture</div>
+          </div>
+          <div class="wizard-step">
+            <div class="wizard-step-number">2</div>
+            <div class="wizard-step-label">Photos</div>
+          </div>
+          <div class="wizard-step">
+            <div class="wizard-step-number">3</div>
+            <div class="wizard-step-label">Carnet</div>
+          </div>
+          <div class="wizard-step">
+            <div class="wizard-step-number">4</div>
+            <div class="wizard-step-label">Prix</div>
+          </div>
+          <div class="wizard-step">
+            <div class="wizard-step-number">5</div>
+            <div class="wizard-step-label">Réserve</div>
+          </div>
+          <div class="wizard-step">
+            <div class="wizard-step-number">6</div>
+            <div class="wizard-step-label">Timing</div>
+          </div>
+          <div class="wizard-step">
+            <div class="wizard-step-number">7</div>
+            <div class="wizard-step-label">Frais</div>
+          </div>
+          <div class="wizard-step">
+            <div class="wizard-step-number">8</div>
+            <div class="wizard-step-label">Signature</div>
+          </div>
+        </div>
+        
+        <div class="wizard-content">
+          <h3 style="font-family: var(--font-dm-mono); font-size: 14px; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 34px;">Étape 1 · Ta voiture</h3>
+          
+          <div class="wizard-field">
+            <label class="wizard-label">Marque</label>
+            <input type="text" class="wizard-input" placeholder="Porsche">
+          </div>
+          
+          <div class="wizard-field">
+            <label class="wizard-label">Modèle & Génération</label>
+            <input type="text" class="wizard-input" placeholder="911 (993) Turbo S">
+          </div>
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 21px;">
+            <div class="wizard-field">
+              <label class="wizard-label">Année</label>
+              <input type="number" class="wizard-input" placeholder="1997">
+            </div>
+            <div class="wizard-field">
+              <label class="wizard-label">Kilométrage</label>
+              <input type="number" class="wizard-input" placeholder="42000">
+            </div>
+          </div>
+          
+          <div class="breakdown">
+            <div class="breakdown-title">Simulation transparente</div>
+            <p style="margin-bottom: 13px;">Si ta voiture se vend à <strong>290 000€</strong> :</p>
+            <div style="font-family: var(--font-dm-mono); font-size: 15px; line-height: 2;">
+              <div><strong>Tu recevras :</strong> <span class="breakdown-amount">269 410€</span></div>
+              <div><strong>Asso recevra :</strong> <span class="breakdown-amount">20 590€ (7.1%)</span></div>
+              <div><strong>Acheteur paiera :</strong> <span class="breakdown-amount">294 930€ (prix + 1.7%)</span></div>
+            </div>
+            
+            <hr style="border: none; border-top: 1px solid var(--papier-creme-deep); margin: 21px 0;">
+            
+            <p style="margin-bottom: 8px;"><strong>Comparaison Sotheby's équivalent :</strong></p>
+            <div style="font-family: var(--font-dm-mono); font-size: 15px; line-height: 2;">
+              <div>Tu recevrais : <span style="color: #999;">246 500€</span> (15% seller's premium)</div>
+              <div>Ils prendraient : <span style="color: #999;">43 500€</span></div>
+              <div><strong>Différence en ta faveur :</strong> <span style="color: var(--vert-anglais); font-weight: 500;">+23 010€ avec CARNET</span></div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="wizard-actions">
+          <button class="btn btn-secondary" disabled>← Précédent</button>
+          <button class="btn btn-primary">Suivant →</button>
+        </div>
+      </div>
+      
+      <div style="text-align: center; margin-top: 34px;">
+        <p style="font-size: 14px; color: #666;">
+          Les étapes 2-8 du wizard seront implémentées avec le backend + XRPL. 
+          <a href="mailto:asso@carnet.life" style="color: var(--orange-polo);">Contacte-nous pour inscription prioritaire</a>.
+        </p>
+      </div>
+    </div>
+  </section>
 
-          <p style="font-family: var(--editorial); font-style: italic; color: var(--encre-soft); margin: 0 0 var(--s-5) 0;">
-            Récapitulatif. Vérifie, ajuste si besoin, puis publie. L'annonce part sur l'<a href="index.html" style="color: var(--orange-polo);">Affût CARNET</a> et est diffusée à 24 268 chercheurs actifs.
+  <!-- === PASSE 6 — BREAKDOWN COMMISSION 8.8% === -->
+  <section>
+    <div class="container">
+      <div style="text-align: center; margin-bottom: 55px;">
+        <h2>La signature CARNET · 8.8%</h2>
+        <p style="max-width: 700px; margin: 0 auto;">
+          Petite, lisible, honnête. Cette signature économique finance une infrastructure commune au service de tous.
+        </p>
+      </div>
+      
+      <div class="breakdown" style="max-width: 600px; margin: 55px auto;">
+        <div class="breakdown-title">Commission CARNET 8.8%</div>
+        <div class="breakdown-tree">
+          <div><strong>├─ 7.1% asso</strong></div>
+          <div>│   ├─ Infrastructure technique (25-30%)</div>
+          <div>│   ├─ Événements caritatifs enfants (25-35%)</div>
+          <div>│   ├─ Redistribution bénévoles (10-15%)</div>
+          <div>│   └─ Réserve trésorerie (10-15%)</div>
+          <div>│</div>
+          <div><strong>└─ 1.7% royalties NFT XLS-20</strong></div>
+          <div>    └─ Smart contract automatique, versement immédiat</div>
+        </div>
+      </div>
+      
+      <div style="text-align: center; margin-top: 55px;">
+        <p style="font-size: 16px; margin-bottom: 21px;">
+          <strong>Aucun salaire CARNET.</strong> Conformément à asso loi 1901 non-lucrative.
+        </p>
+        <a href="https://github.com/Vinci75000/carnet-asso-public/methodology" class="btn btn-secondary">
+          Voir la méthodologie complète sur GitHub
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- === PASSE 7 — NFT PREMIUM LISTING === -->
+  <section>
+    <div class="container">
+      <div style="text-align: center; margin-bottom: 55px;">
+        <h2>NFT premium listing · traçabilité cryptographique</h2>
+        <p style="max-width: 700px; margin: 0 auto;">
+          Chaque annonce premium génère un NFT XLS-20 minté pour la durée payée. Impossible de falsifier le statut, vérifiable publiquement.
+        </p>
+      </div>
+      
+      <div class="nft-preview" style="max-width: 700px; margin: 0 auto;">
+        <div class="nft-preview-title">Premium Listing NFT</div>
+        <div class="nft-preview-field">
+          <span class="nft-preview-label">Listing ID :</span>
+          <span class="nft-preview-value">0x4f7a...c89e</span>
+        </div>
+        <div class="nft-preview-field">
+          <span class="nft-preview-label">Annonce voiture :</span>
+          <span class="nft-preview-value">NFT car 0xB89c...</span>
+        </div>
+        <div class="nft-preview-field">
+          <span class="nft-preview-label">Type :</span>
+          <span class="nft-preview-value">Premium 30 jours</span>
+        </div>
+        <div class="nft-preview-field">
+          <span class="nft-preview-label">Vendeur :</span>
+          <span class="nft-preview-value">EUDI Wallet rJBh...</span>
+        </div>
+        <div class="nft-preview-field">
+          <span class="nft-preview-label">Période active :</span>
+          <span class="nft-preview-value">13/05/27 → 12/06/27</span>
+        </div>
+        <div class="nft-preview-field">
+          <span class="nft-preview-label">Tarif payé :</span>
+          <span class="nft-preview-value">17€ RLUSD</span>
+        </div>
+        <div class="nft-preview-field">
+          <span class="nft-preview-label">Commission asso :</span>
+          <span class="nft-preview-value">1.21€ (7.1%)</span>
+        </div>
+        <div class="nft-preview-field">
+          <span class="nft-preview-label">Hash transaction :</span>
+          <span class="nft-preview-value">7a4f...c89e</span>
+        </div>
+      </div>
+      
+      <div class="chips-grid" style="margin-top: 55px;">
+        <div class="chip success">
+          <span class="chip-icon">✅</span>
+          <div>
+            <strong>Impossible de falsifier</strong><br/>
+            <small>Signature on-chain</small>
+          </div>
+        </div>
+        <div class="chip success">
+          <span class="chip-icon">✅</span>
+          <div>
+            <strong>Vérifiable publiquement</strong><br/>
+            <small>Anti-fraude</small>
+          </div>
+        </div>
+        <div class="chip success">
+          <span class="chip-icon">✅</span>
+          <div>
+            <strong>Remboursement prorata</strong><br/>
+            <small>Si suppression prématurée</small>
+          </div>
+        </div>
+        <div class="chip success">
+          <span class="chip-icon">✅</span>
+          <div>
+            <strong>Transfert NFT premium</strong><br/>
+            <small>Si changement voiture</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- === PASSE 8 — SMART CONTRACT SETTLEMENT === -->
+  <section>
+    <div class="container">
+      <div style="text-align: center; margin-bottom: 55px;">
+        <h2>Settlement automatique · zéro friction</h2>
+        <p style="max-width: 700px; margin: 0 auto;">
+          Smart contract XRPL exécute le settlement en une seule transaction atomique. Immédiat vs 30-60 jours Sotheby's.
+        </p>
+      </div>
+      
+      <div class="flow-visual">
+        <div class="flow-step">
+          <div class="flow-step-icon">🔨</div>
+          <div class="flow-step-content">
+            <h4>Enchère gagnée</h4>
+            <p>Winner confirme son bid à <strong>290 000€</strong></p>
+          </div>
+        </div>
+        
+        <div class="flow-step">
+          <div class="flow-step-icon">⚙️</div>
+          <div class="flow-step-content">
+            <h4>Settlement déclenché</h4>
+            <p>Smart contract XRPL exécute automatiquement</p>
+          </div>
+        </div>
+        
+        <div class="flow-step">
+          <div class="flow-step-icon">💰</div>
+          <div class="flow-step-content">
+            <h4>Split automatique</h4>
+            <p>
+              Vendeur : <strong>269 410€</strong> (immédiat)<br/>
+              Asso : <strong>20 590€</strong> (7.1%, immédiat)<br/>
+              Royalties NFT : <strong>4 930€</strong> (1.7%, au transfer)
+            </p>
+          </div>
+        </div>
+        
+        <div class="flow-step">
+          <div class="flow-step-icon">🎁</div>
+          <div class="flow-step-content">
+            <h4>Transfer NFT car</h4>
+            <p>NFT voiture transféré au winner (atomique)</p>
+          </div>
+        </div>
+        
+        <div class="flow-step">
+          <div class="flow-step-icon">📜</div>
+          <div class="flow-step-content">
+            <h4>Provenance permanente</h4>
+            <p>Historique complet mis à jour on-chain</p>
+          </div>
+        </div>
+      </div>
+      
+      <div style="margin-top: 55px;">
+        <h3>Anti-shill bidding par construction</h3>
+        <div class="chips-grid" style="margin-top: 34px;">
+          <div class="chip success">
+            <span class="chip-icon">✅</span>
+            <div>
+              <strong>1 EUDI Wallet = 1 bid</strong><br/>
+              <small>Identifiable</small>
+            </div>
+          </div>
+          <div class="chip success">
+            <span class="chip-icon">✅</span>
+            <div>
+              <strong>Vendeur bloqué</strong><br/>
+              <small>Ne peut pas bidder sur sa voiture</small>
+            </div>
+          </div>
+          <div class="chip success">
+            <span class="chip-icon">✅</span>
+            <div>
+              <strong>Bids signés</strong><br/>
+              <small>Cryptographiquement</small>
+            </div>
+          </div>
+          <div class="chip success">
+            <span class="chip-icon">✅</span>
+            <div>
+              <strong>Audit public</strong><br/>
+              <small>Post-enchère traçable</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- === PASSE 9 — VISION FOUNDATIONAL === -->
+  <section>
+    <div class="container">
+      <div style="text-align: center; margin-bottom: 55px;">
+        <h2>Marketplace + maison d'enchères · éthique et ouverte</h2>
+      </div>
+      
+      <div class="quote">
+        <p class="quote-text">
+          "À 10 ans, CARNET devient la référence européenne : marketplace ouverte + maison d'enchères éthique + transparence radicale + tarification juste. Sans agressivité, par l'exemple."
+        </p>
+      </div>
+      
+      <div style="margin-top: 89px;">
+        <h3 style="text-align: center; margin-bottom: 34px;">Projection volume · 2028</h3>
+        <div class="projection-grid">
+          <div class="projection-item">
+            <div class="projection-label">Enchères/mois</div>
+            <div class="projection-value">50-100</div>
+            <div class="projection-desc">À 50-100k€ moyenne</div>
+          </div>
+          <div class="projection-item">
+            <div class="projection-label">Revenu enchères</div>
+            <div class="projection-value">300-600k€</div>
+            <div class="projection-desc">Par mois</div>
+          </div>
+          <div class="projection-item">
+            <div class="projection-label">Annonces concessionnaires</div>
+            <div class="projection-value">500-1000</div>
+            <div class="projection-desc">25-50k€/mois</div>
+          </div>
+          <div class="projection-item">
+            <div class="projection-label">Annonces particuliers</div>
+            <div class="projection-value">200-500</div>
+            <div class="projection-desc">5-15k€/mois</div>
+          </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 55px; padding: 34px; background: var(--papier-creme-light); border-radius: 2px;">
+          <p style="font-size: 19px; margin: 0;">
+            <strong>Contribution asso annuelle</strong> : 300-700k€/an (commission 7.1%)
           </p>
-
-          <div class="recap">
-            <div class="recap-row"><span class="k">Véhicule</span><span class="v" id="rc-vehicle">—</span></div>
-            <div class="recap-row"><span class="k">Année · km</span><span class="v" id="rc-stats">—</span></div>
-            <div class="recap-row"><span class="k">Photos</span><span class="v" id="rc-photos">—</span></div>
-            <div class="recap-row"><span class="k">Score carnet</span><span class="v" id="rc-carnet">—</span></div>
-            <div class="recap-row"><span class="k">Prix demandé</span><span class="v" id="rc-price">—</span></div>
-            <div class="recap-row"><span class="k">Marge nég.</span><span class="v" id="rc-neg">—</span></div>
-            <div class="recap-row"><span class="k">Badges</span><span class="v" id="rc-badges">—</span></div>
-          </div>
-
-          <div style="padding: var(--s-5); background: var(--orange-soft); border-left: 2px solid var(--orange-polo); border-radius: var(--r); margin-bottom: var(--s-5);">
-            <p style="font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--orange-polo); margin: 0 0 var(--s-2) 0;">Contribution CARNET</p>
-            <p style="font-family: var(--editorial); font-style: italic; font-size: 15px; line-height: 1.5; margin: 0;">
-              <em>Contribution recommandée <strong>8,8% du prix de vente</strong>, prélevée en
-              XRP/EURØP à la transaction, fléchée infra + événements automobiles avec enfants.
-              CARNET est asso loi 1901 non-lucrative — aucun salaire, aucune commission, juste de
-              quoi tenir l'infra et faire rouler des gosses.</em>
-            </p>
-          </div>
-
-          <div class="badge-cert">
-            <span class="dot"></span>
-            <span>Annonce certifiée CARNET</span>
-          </div>
-
-          <div class="wizard-nav">
-            <button class="btn-step btn-back" data-back="5">←</button>
-            <button class="btn-step btn-next" id="publish-btn">Publier l'annonce →</button>
-          </div>
-        </div>
-
-        <!-- ───── STEP 7 : CONFIRMATION ───── -->
-        <div class="step" id="step-7">
-
-          <div class="confirm-hero">
-            <p class="confirm-icon"><em>—</em></p>
-            <p class="confirm-title"><em>Ton annonce est en revue.</em></p>
-            <p class="confirm-sub">
-              <em>L'équipe CARNET vérifie ton dossier sous 48h. Tu reçois un mail dès la mise en
-              ligne, avec ton lien public et le hash XRPL du carnet.</em>
-            </p>
-          </div>
-
-          <div class="cta-row">
-            <a href="index.html" class="cta cta-primary">
-              <span class="dot" aria-hidden="true"></span>
-              Aller à l'Affût
-            </a>
-            <a href="carnet-entretien.html" class="cta cta-ghost">Ouvrir un carnet</a>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ═══════════════════════════════════════════════════════════════
-         CAS PARTICULIER : VENDEUR ASSURÉ EN PERTE TOTALE
-         ═══════════════════════════════════════════════════════════════ -->
-    <section id="insurance-flow" aria-labelledby="insurance-title">
-      <p class="eyebrow">Tu vends suite à un sinistre ?</p>
-      <h2 id="insurance-title"><em>Flux dédié assurés Carene, MAIF, Hagerty, Chubb, AXA.</em></h2>
-
-      <p>
-        Si ta voiture est passée en perte totale ou si tu la vends après un événement assurance,
-        ton dossier sinistre, l'expertise et la valeur agréée sont automatiquement injectés dans
-        l'annonce. Tu sautes les étapes 3 et 4 — ton assureur les a déjà fournies.
-      </p>
-
-      <p>
-        Demande à ton assureur partenaire ton code de portage. Sinon, lien direct ci-dessous.
-      </p>
-
-      <div class="cta-row">
-        <a href="assurance.html" class="cta cta-ghost">Page assureurs partenaires</a>
-      </div>
-    </section>
-
-    <!-- ═══════════════════════════════════════════════════════════════
-         CONTRIBUTION DETAIL
-         ═══════════════════════════════════════════════════════════════ -->
-    <section aria-labelledby="contrib-title">
-      <p class="eyebrow">Modèle non-lucratif</p>
-      <h2 id="contrib-title"><em>Où va l'argent.</em></h2>
-
-      <p>
-        La contribution recommandée est de <strong>8,8% du prix de vente</strong>. Elle n'est pas
-        obligatoire — c'est une recommandation de bonne foi inscrite dans les statuts. Elle se
-        décompose comme suit, vérifiable on-chain :
-      </p>
-
-      <div class="why-grid" style="margin-top: var(--s-5);">
-        <div class="why-card">
-          <p class="num">40 %</p>
-          <h3><em>Infrastructure</em></h3>
-          <p>Hetzner hybrid, Supabase, scrapers, scrap dealers, mailing — l'asso tient debout.</p>
-        </div>
-        <div class="why-card">
-          <p class="num">30 %</p>
-          <h3><em>Événements enfants</em></h3>
-          <p>Sorties auto avec écoles, journées famille à Mulhouse, mécanique pour ados.</p>
-        </div>
-        <div class="why-card">
-          <p class="num">30 %</p>
-          <h3><em>Réserve EURØP</em></h3>
-          <p>Trésorerie stable MiCA pour traverser les hivers crypto. KPMG audité, BdF supervisé.</p>
         </div>
       </div>
+    </div>
+  </section>
 
-      <p style="margin-top: var(--s-5);">
-        <em>Aucun salaire. Aucun dividende. Aucun retour aux fondateurs. CARNET est une asso
-        loi 1901 non-lucrative, inscrite ORIAS par choix, trois signatures multisig pour toute
-        décision. Voir les <a href="about.html" style="color: var(--orange-polo);">statuts complets →</a></em>
+  <!-- === CTA FINAL === -->
+  <section class="cta-section">
+    <div class="container">
+      <h2>Prêt à vendre ?</h2>
+      <p style="max-width: 600px; margin: 0 auto 55px;">
+        Annonce premium ou enchère transparente. Infrastructure on-chain. Commission 8.8% — 3.4x moins cher que Sotheby's.
       </p>
-    </section>
+      
+      <div class="cta-buttons">
+        <a href="#wizard-annonce" class="btn btn-primary">Publier une annonce</a>
+        <a href="#wizard-enchere" class="btn btn-secondary">Inscrire en enchère</a>
+        <a href="mailto:asso@carnet.life" class="btn btn-secondary">Devenir Charter Member</a>
+      </div>
+    </div>
+  </section>
 
-  </main>
-
-  <!-- ═══════════════════════════════════════════════════════════════
-       FOOTER
-       ═══════════════════════════════════════════════════════════════ -->
-  <footer class="carnet-footer">
-    <p class="footer-tagline"><em>Une histoire de voitures.</em></p>
-
-    <nav class="footer-nav" aria-label="Pages utilitaires">
-      <a href="index.html">Affût</a>
-      <a href="cote.html">Cote</a>
-      <a href="assurance.html">Assurance</a>
-      <a href="discover.html">Discover</a>
-      <a href="archetypes.html">Archétypes</a>
-      <a href="launch.html">14·12·2026</a>
-      <a href="about.html">À propos</a>
-    </nav>
-
-    <p class="footer-legal">
-      CARNET · Association loi 1901 française non-lucrative familiale<br />
-      Contribution vente recommandée 8,8% · prélevée en XRP/EURØP via XRPL<br />
-      Wallet officiel multisig 3/3&nbsp;: <code>rJBhnYvg5kq9PgWFZziEXu2EcdJfcq8WSU</code>
-    </p>
+  <!-- === FOOTER === -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-section">
+          <h4>Produit</h4>
+          <ul>
+            <li><a href="/affut.html">Affût</a></li>
+            <li><a href="/cote.html">Cote</a></li>
+            <li><a href="/vendre.html">Vendre</a></li>
+            <li><a href="/discover.html">Discover</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Asso</h4>
+          <ul>
+            <li><a href="/about.html">À propos</a></li>
+            <li><a href="/transparence.html">Transparence</a></li>
+            <li><a href="https://github.com/Vinci75000/carnet-asso-public">GitHub</a></li>
+            <li><a href="mailto:asso@carnet.life">Contact</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Vendre</h4>
+          <ul>
+            <li><a href="#wizard-annonce">Annonce premium</a></li>
+            <li><a href="#wizard-enchere">Enchère</a></li>
+            <li><a href="/transparence.html#comparaison">Comparaison industrie</a></li>
+            <li><a href="mailto:asso@carnet.life">Charter Member</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Légal</h4>
+          <ul>
+            <li><a href="/terms.html">CGU</a></li>
+            <li><a href="/privacy.html">Confidentialité</a></li>
+            <li><a href="/security.html">Sécurité</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>
+          CARNET · Association loi 1901 à but non lucratif<br/>
+          Signature économique 8.8% (7.1% asso + 1.7% royalties NFT XLS-20)<br/>
+          <a href="https://github.com/Vinci75000/carnet-asso-public/methodology" style="color: var(--orange-polo);">Méthodologie complète sur GitHub</a>
+        </p>
+      </div>
+    </div>
   </footer>
 
-  <!-- ═══════════════════════════════════════════════════════════════
-       JAVASCRIPT — Wizard + cote calc + carnet score + price slider
-       ═══════════════════════════════════════════════════════════════ -->
   <script>
-    'use strict';
-
-    /* Référentiel cote (subset) */
-    const COTE = {
-      'porsche/992 turbo s':{m:230000,n:47},'porsche/992 turbo':{m:195000,n:38},
-      'porsche/992 gt3':{m:215000,n:52},'porsche/992 carrera':{m:115000,n:184},
-      'porsche/991 turbo s':{m:175000,n:89},'porsche/991 gt3':{m:155000,n:76},
-      'porsche/991 carrera':{m:78000,n:234},'porsche/997 turbo':{m:95000,n:112},
-      'porsche/997 gt3':{m:135000,n:67},'porsche/997 carrera':{m:42000,n:298},
-      'porsche/996':{m:25000,n:412},'porsche/993 turbo':{m:285000,n:28},
-      'porsche/993 carrera':{m:92000,n:156},'porsche/964':{m:78000,n:134},
-      'porsche/911':{m:95000,n:412},'porsche/cayman':{m:48000,n:178},
-      'porsche/boxster':{m:32000,n:145},'ferrari/f8':{m:245000,n:23},
-      'ferrari/488':{m:185000,n:67},'ferrari/458':{m:175000,n:89},
-      'ferrari/f430':{m:125000,n:54},'ferrari/360':{m:85000,n:78},
-      'ferrari/f355':{m:145000,n:42},'ferrari/testarossa':{m:165000,n:28},
-      'lamborghini/huracan':{m:215000,n:56},'lamborghini/aventador':{m:385000,n:29},
-      'lamborghini/gallardo':{m:115000,n:78},'lamborghini/diablo':{m:385000,n:14},
-      'mercedes-benz/sl':{m:85000,n:156},'mercedes-benz/amg gt':{m:125000,n:89},
-      'mercedes-benz/300sl':{m:1450000,n:8},'mercedes-benz/190sl':{m:145000,n:23},
-      'bmw/m3':{m:78000,n:234},'bmw/m4':{m:75000,n:156},
-      'bmw/m5':{m:95000,n:134},'bmw/2002':{m:45000,n:38},
-      'aston martin/db9':{m:65000,n:78},'aston martin/db11':{m:145000,n:56},
-      'aston martin/vantage':{m:115000,n:67},'alfa romeo/giulia':{m:35000,n:156},
-      'lancia/delta integrale':{m:95000,n:67},'lotus/elise':{m:45000,n:89},
-      'mclaren/720s':{m:195000,n:56},
-      'porsche/_':{m:65000,n:1450},'ferrari/_':{m:145000,n:678},
-      'lamborghini/_':{m:165000,n:312},'mercedes-benz/_':{m:45000,n:2890},
-      'bmw/_':{m:38000,n:2156},'_/_':{m:35000,n:8500}
-    };
-
-    function lookupCote(marque, modele) {
-      const m = (marque||'').toLowerCase().trim();
-      const md = (modele||'').toLowerCase().trim();
-      if (COTE[`${m}/${md}`]) return COTE[`${m}/${md}`];
-      for (const k of Object.keys(COTE)) {
-        if (k.startsWith(m+'/') && k !== `${m}/_`) {
-          const segM = k.split('/')[1];
-          if (segM && md && (md.includes(segM) || segM.includes(md))) return COTE[k];
-        }
-      }
-      return COTE[`${m}/_`] || COTE['_/_'];
-    }
-
-    function fmtEUR(v) {
-      if (v >= 1000000) return (v/1000000).toFixed(2).replace('.',',') + ' M€';
-      return Math.round(v/1000) + ' k€';
-    }
-
-    /* State */
-    const state = {
-      cote: null, carnetScore: 0, photos: 0, priceMultiplier: 1.0, neg: 5
-    };
-
-    /* Step navigation */
-    function showStep(n) {
-      for (let i = 1; i <= 7; i++) {
-        const s = document.getElementById('step-'+i);
-        if (s) s.classList.toggle('active', i === n);
-        const ind = document.getElementById('ind-'+i);
-        if (ind) {
-          ind.classList.remove('active','done');
-          if (i === n) ind.classList.add('active');
-          else if (i < n) ind.classList.add('done');
-        }
-      }
-      window.scrollTo({ top: document.querySelector('.wizard').offsetTop - 40, behavior: 'smooth' });
-    }
-
-    document.querySelectorAll('[data-go]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const target = parseInt(btn.dataset.go, 10);
-        // Validation per step
-        if (target === 2) {
-          if (!document.getElementById('marque').value) { document.getElementById('marque').focus(); return; }
-          if (!document.getElementById('modele').value.trim()) { document.getElementById('modele').focus(); return; }
-          if (!document.getElementById('annee').value) { document.getElementById('annee').focus(); return; }
-        }
-        if (target === 4) {
-          // Compute cote when entering step 4 actually — we compute at step 3 entry
-        }
-        if (target === 3) {
-          const cote = lookupCote(
-            document.getElementById('marque').value,
-            document.getElementById('modele').value
-          );
-          state.cote = cote;
-          const median = cote.m;
-          const low = Math.round(median * 0.88);
-          const high = Math.round(median * 1.12);
-          document.getElementById('cote-range').textContent =
-            `${fmtEUR(low)} — ${fmtEUR(high)}`;
-          document.getElementById('cote-median').textContent = fmtEUR(median);
-          document.getElementById('cote-sample').textContent = `${cote.n} annonces`;
-        }
-        if (target === 6) {
-          // build recap
-          buildRecap();
-        }
-        showStep(target);
-      });
-    });
-
-    document.querySelectorAll('[data-back]').forEach(btn => {
-      btn.addEventListener('click', () => showStep(parseInt(btn.dataset.back, 10)));
-    });
-
-    /* Photos */
-    document.querySelectorAll('.photo-slot').forEach(slot => {
-      slot.addEventListener('click', () => {
-        // Simulate upload
-        slot.classList.toggle('filled');
-        state.photos = document.querySelectorAll('.photo-slot.filled').length;
-      });
-    });
-
-    /* Carnet */
-    document.querySelectorAll('.carnet-row').forEach(row => {
-      row.addEventListener('click', () => {
-        row.classList.toggle('checked');
-        // recompute score
-        let sum = 0;
-        document.querySelectorAll('.carnet-row.checked').forEach(r => {
-          sum += parseInt(r.dataset.weight, 10) || 0;
+    // === WIZARD INTERACTIONS (mocks) ===
+    document.addEventListener('DOMContentLoaded', function() {
+      // Smooth scroll to sections
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
         });
-        state.carnetScore = sum;
-        document.getElementById('carnet-score').textContent = sum;
       });
-    });
-
-    /* Price slider */
-    const slider = document.getElementById('price-slider');
-    const priceDisplay = document.getElementById('price-display');
-    function renderPrice() {
-      if (!state.cote) return;
-      const pct = parseInt(slider.value, 10);
-      // 0 = -20% (vente rapide), 50 = médiane, 100 = +20%
-      const mult = 0.80 + (pct / 100) * 0.40;
-      // Carnet score bonus (max +8%)
-      const carnetBonus = 1 + (state.carnetScore / 40) * 0.08;
-      const price = state.cote.m * mult * carnetBonus;
-      state.priceMultiplier = mult * carnetBonus;
-      priceDisplay.textContent = fmtEUR(price);
-    }
-    slider.addEventListener('input', renderPrice);
-    document.getElementById('negociable').addEventListener('change', (e) => {
-      state.neg = e.target.value;
-    });
-
-    // Recompute price when entering step 5
-    document.querySelector('[data-go="5"]').addEventListener('click', () => {
-      setTimeout(renderPrice, 100);
-    });
-
-    /* Recap */
-    function buildRecap() {
-      const marque = document.getElementById('marque').value;
-      const modele = document.getElementById('modele').value;
-      const annee = document.getElementById('annee').value;
-      const km = document.getElementById('km').value;
-      const price = state.cote ? state.cote.m * state.priceMultiplier : 0;
-
-      document.getElementById('rc-vehicle').innerHTML = `<em>${marque} ${modele}</em>`;
-      document.getElementById('rc-stats').textContent = `${annee}` + (km ? ` · ${parseInt(km).toLocaleString('fr-FR')} km` : '');
-      document.getElementById('rc-photos').textContent = `${state.photos}/8 fournies`;
-      document.getElementById('rc-carnet').textContent = `${state.carnetScore}/40` + (state.carnetScore >= 25 ? ' · badge « Carnet complet »' : '');
-      document.getElementById('rc-price').textContent = fmtEUR(price);
-      let negTxt = '';
-      if (state.neg === '0') negTxt = 'Prix ferme';
-      else if (state.neg === 'open') negTxt = 'Faire offre';
-      else negTxt = `Jusqu'à -${state.neg}%`;
-      document.getElementById('rc-neg').textContent = negTxt;
-      const badges = ['Annonce certifiée CARNET'];
-      if (state.carnetScore >= 25) badges.push('Carnet complet');
-      if (state.photos >= 8) badges.push('Dossier photo complet');
-      document.getElementById('rc-badges').textContent = badges.join(' · ');
-    }
-
-    /* Publish */
-    document.getElementById('publish-btn').addEventListener('click', () => {
-      // TODO: POST to /api/listings with full dossier + IPFS pin
-      showStep(7);
+      
+      // Log wizard interactions (placeholders)
+      document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          if (this.textContent.includes('Publier') || this.textContent.includes('Inscrire') || this.textContent.includes('S\'abonner')) {
+            console.log('Wizard interaction:', this.textContent);
+            // Backend integration goes here
+          }
+        });
+      });
     });
   </script>
-
 </body>
 </html>
