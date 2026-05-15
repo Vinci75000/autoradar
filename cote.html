@@ -700,6 +700,932 @@
       padding: 2px 5px;
       border-radius: 3px;
     }
+
+    /* ═══════════════════════════════════════════════════════════════
+       SPARKLINE 90 JOURS — historique cote
+       ═══════════════════════════════════════════════════════════════ */
+    .sparkline-block {
+      margin-bottom: var(--s-6);
+      padding: var(--s-5);
+      background: var(--papier);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+    }
+    .sparkline-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: var(--s-4);
+      margin-bottom: var(--s-4);
+      flex-wrap: wrap;
+    }
+    .sparkline-title {
+      font-family: 'Bodoni Moda', serif;
+      font-style: italic;
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: var(--encre);
+      margin: 0;
+    }
+    .sparkline-title small {
+      display: block;
+      font-family: var(--editorial);
+      font-style: normal;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--gris);
+      margin-top: 4px;
+    }
+    .trend-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-2);
+      padding: var(--s-2) var(--s-3);
+      border-radius: 999px;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+    }
+    .trend-chip.up {
+      background: color-mix(in srgb, var(--vert-anglais) 12%, var(--papier));
+      color: var(--vert-anglais);
+    }
+    .trend-chip.down {
+      background: color-mix(in srgb, var(--orange-polo) 12%, var(--papier));
+      color: var(--orange-polo);
+    }
+    .trend-chip.flat {
+      background: color-mix(in srgb, var(--gris) 8%, var(--papier));
+      color: var(--gris);
+    }
+
+    .sparkline-svg {
+      display: block;
+      width: 100%;
+      height: 140px;
+      overflow: visible;
+    }
+    .sparkline-band {
+      fill: color-mix(in srgb, var(--orange-polo) 8%, transparent);
+      stroke: none;
+    }
+    .sparkline-p75,
+    .sparkline-p25 {
+      fill: none;
+      stroke: color-mix(in srgb, var(--orange-polo) 30%, transparent);
+      stroke-width: 1;
+      stroke-dasharray: 3 3;
+    }
+    .sparkline-p50 {
+      fill: none;
+      stroke: var(--orange-polo);
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .sparkline-axis {
+      stroke: var(--gris-line);
+      stroke-width: 1;
+    }
+    .sparkline-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      fill: var(--gris);
+      text-transform: uppercase;
+    }
+    .sparkline-marker {
+      fill: var(--orange-polo);
+      stroke: var(--papier-bright);
+      stroke-width: 2;
+    }
+    .sparkline-marker-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+      fill: var(--encre);
+    }
+
+    .sparkline-footer {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--s-3);
+      margin-top: var(--s-4);
+      padding-top: var(--s-4);
+      border-top: 1px solid var(--gris-line);
+    }
+    .sparkline-stat {
+      text-align: center;
+    }
+    .sparkline-stat .num {
+      font-family: 'Bodoni Moda', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--encre);
+      margin: 0 0 4px;
+    }
+    .sparkline-stat .lbl {
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gris);
+      margin: 0;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       DISTRIBUTION VERSIONS — variantes par génération
+       ═══════════════════════════════════════════════════════════════ */
+    .versions-block {
+      margin-bottom: var(--s-6);
+    }
+    .versions-header {
+      margin-bottom: var(--s-4);
+    }
+    .versions-title {
+      font-family: 'Bodoni Moda', serif;
+      font-style: italic;
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: var(--encre);
+      margin: 0 0 var(--s-2);
+    }
+    .versions-subtitle {
+      font-family: var(--editorial);
+      font-size: 13px;
+      color: var(--gris);
+      margin: 0;
+    }
+    .versions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: var(--s-3);
+    }
+    .version-card {
+      padding: var(--s-3) var(--s-4);
+      background: var(--papier);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      transition: all 180ms ease;
+    }
+    .version-card.current {
+      background: color-mix(in srgb, var(--orange-polo) 8%, var(--papier));
+      border-color: var(--orange-polo);
+    }
+    .version-card .name {
+      font-family: 'Bodoni Moda', serif;
+      font-style: italic;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--encre);
+      margin: 0 0 var(--s-2);
+    }
+    .version-card .price {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--orange-polo);
+      margin: 0;
+    }
+    .version-card .sample {
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gris);
+      margin: 4px 0 0;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       BREAKDOWN PERSONNEL — ajustements appliqués à TA voiture
+       ═══════════════════════════════════════════════════════════════ */
+    .breakdown-block {
+      margin-bottom: var(--s-6);
+      background: var(--papier);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      overflow: hidden;
+    }
+    .breakdown-toggle {
+      width: 100%;
+      padding: var(--s-4) var(--s-5);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--s-3);
+      text-align: left;
+      transition: background 180ms ease;
+    }
+    .breakdown-toggle:hover {
+      background: color-mix(in srgb, var(--orange-polo) 5%, transparent);
+    }
+    .breakdown-toggle-text {
+      font-family: 'Bodoni Moda', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--encre);
+    }
+    .breakdown-toggle-text small {
+      display: block;
+      font-family: var(--editorial);
+      font-style: normal;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--gris);
+      margin-top: 2px;
+    }
+    .breakdown-toggle-icon {
+      font-family: var(--mono);
+      font-size: 14px;
+      color: var(--orange-polo);
+      transition: transform 220ms ease;
+    }
+    .breakdown-block.expanded .breakdown-toggle-icon {
+      transform: rotate(180deg);
+    }
+
+    .breakdown-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 320ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .breakdown-block.expanded .breakdown-content {
+      max-height: 800px;
+    }
+    .breakdown-inner {
+      padding: 0 var(--s-5) var(--s-5);
+      border-top: 1px solid var(--gris-line);
+    }
+
+    .breakdown-base {
+      padding: var(--s-4) 0;
+      border-bottom: 1px solid var(--gris-line);
+    }
+    .breakdown-base-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gris);
+      margin: 0 0 var(--s-2);
+    }
+    .breakdown-base-value {
+      font-family: 'Bodoni Moda', serif;
+      font-style: italic;
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: var(--encre);
+      margin: 0;
+    }
+
+    .breakdown-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--s-3) 0;
+      border-bottom: 1px dashed var(--gris-line);
+      gap: var(--s-3);
+    }
+    .breakdown-row:last-child {
+      border-bottom: none;
+    }
+    .breakdown-row-label {
+      font-family: var(--editorial);
+      font-size: 14px;
+      color: var(--encre);
+      flex: 1;
+    }
+    .breakdown-row-label small {
+      display: block;
+      font-size: 11px;
+      color: var(--gris);
+      margin-top: 2px;
+    }
+    .breakdown-row-impact {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 600;
+      padding: var(--s-1) var(--s-3);
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .breakdown-row-impact.positive {
+      background: color-mix(in srgb, var(--vert-anglais) 12%, var(--papier));
+      color: var(--vert-anglais);
+    }
+    .breakdown-row-impact.negative {
+      background: color-mix(in srgb, var(--orange-polo) 12%, var(--papier));
+      color: var(--orange-polo);
+    }
+    .breakdown-row-impact.neutral {
+      background: color-mix(in srgb, var(--gris) 8%, var(--papier));
+      color: var(--gris);
+    }
+
+    .breakdown-final {
+      padding: var(--s-4) 0 0;
+      margin-top: var(--s-2);
+      border-top: 2px solid var(--encre);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: var(--s-3);
+    }
+    .breakdown-final-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--encre);
+    }
+    .breakdown-final-value {
+      font-family: 'Bodoni Moda', serif;
+      font-style: italic;
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--orange-polo);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       SECTION MÉTHODE V2 — sources pondérées + ajustements possibles
+       ═══════════════════════════════════════════════════════════════ */
+    .method-intro {
+      font-family: var(--editorial);
+      font-size: 17px;
+      line-height: 1.6;
+      color: var(--encre);
+      margin: 0 0 var(--s-6);
+    }
+
+    .sources-block {
+      margin-bottom: var(--s-7);
+    }
+    .sources-title {
+      font-family: 'Bodoni Moda', serif;
+      font-style: italic;
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: var(--encre);
+      margin: 0 0 var(--s-4);
+    }
+    .source-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: var(--s-4);
+      align-items: center;
+      padding: var(--s-4) 0;
+      border-bottom: 1px solid var(--gris-line);
+    }
+    .source-row:last-child {
+      border-bottom: none;
+    }
+    .source-info {
+      min-width: 0;
+    }
+    .source-name {
+      font-family: 'Bodoni Moda', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--encre);
+      margin: 0 0 var(--s-2);
+    }
+    .source-desc {
+      font-family: var(--editorial);
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--gris);
+      margin: 0 0 var(--s-3);
+    }
+    .source-weight-bar {
+      position: relative;
+      height: 4px;
+      background: var(--gris-line);
+      border-radius: 999px;
+      overflow: hidden;
+      max-width: 280px;
+    }
+    .source-weight-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      background: var(--orange-polo);
+      border-radius: 999px;
+      transition: width 600ms ease;
+    }
+    .source-weight-value {
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--orange-polo);
+      white-space: nowrap;
+      align-self: start;
+      padding-top: 2px;
+    }
+
+    .adjustments-block {
+      margin-bottom: var(--s-7);
+    }
+    .adjustments-title {
+      font-family: 'Bodoni Moda', serif;
+      font-style: italic;
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: var(--encre);
+      margin: 0 0 var(--s-2);
+    }
+    .adjustments-subtitle {
+      font-family: var(--editorial);
+      font-size: 14px;
+      color: var(--gris);
+      margin: 0 0 var(--s-5);
+    }
+    .adjustments-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s-2) var(--s-5);
+    }
+    .adj-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--s-3) 0;
+      border-bottom: 1px dashed var(--gris-line);
+      gap: var(--s-3);
+    }
+    .adj-item-label {
+      font-family: var(--editorial);
+      font-size: 14px;
+      color: var(--encre);
+      flex: 1;
+    }
+    .adj-item-impact {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .adj-item-impact.positive { color: var(--vert-anglais); }
+    .adj-item-impact.negative { color: var(--orange-polo); }
+
+    @media (max-width: 600px) {
+      .adjustments-grid { grid-template-columns: 1fr; }
+      .source-row { grid-template-columns: 1fr; gap: var(--s-3); }
+      .source-weight-value { padding-top: 0; }
+    }
+
+    .method-perf {
+      padding: var(--s-5);
+      background: color-mix(in srgb, var(--vert-anglais) 6%, var(--papier));
+      border: 1px solid color-mix(in srgb, var(--vert-anglais) 20%, transparent);
+      border-radius: var(--r);
+      margin-top: var(--s-6);
+    }
+    .method-perf-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: var(--s-4);
+    }
+    .method-perf-stat {
+      text-align: center;
+    }
+    .method-perf-stat .num {
+      font-family: 'Bodoni Moda', serif;
+      font-style: italic;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--vert-anglais);
+      margin: 0 0 var(--s-2);
+    }
+    .method-perf-stat .lbl {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gris);
+      margin: 0;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       CATEGORY CHIP — tuner, restomod, lineage exceptionnel
+       ═══════════════════════════════════════════════════════════════ */
+    .category-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-2);
+      padding: var(--s-2) var(--s-3);
+      border-radius: 2px;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-top: var(--s-3);
+    }
+    .category-chip.tuner {
+      background: color-mix(in srgb, var(--encre) 92%, transparent);
+      color: var(--papier-bright);
+    }
+    .category-chip.restomod {
+      background: color-mix(in srgb, var(--vert-anglais) 88%, transparent);
+      color: var(--papier-bright);
+    }
+    .category-chip.lineage {
+      background: color-mix(in srgb, var(--orange-polo) 92%, transparent);
+      color: var(--papier-bright);
+    }
+    .category-chip-icon {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: 0.7;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       SUGGESTION BOX — segment voisin en cas de singulière
+       ═══════════════════════════════════════════════════════════════ */
+    .suggestion-box {
+      margin-bottom: var(--s-6);
+      padding: var(--s-5);
+      background: color-mix(in srgb, var(--orange-polo) 6%, var(--papier));
+      border: 1px dashed color-mix(in srgb, var(--orange-polo) 35%, transparent);
+      border-radius: var(--r);
+    }
+    .suggestion-eyebrow {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--orange-polo);
+      margin: 0 0 var(--s-3);
+    }
+    .suggestion-title {
+      font-family: 'Bodoni Moda', serif;
+      font-style: italic;
+      font-size: 1.3rem;
+      font-weight: 500;
+      color: var(--encre);
+      margin: 0 0 var(--s-3);
+    }
+    .suggestion-text {
+      font-family: var(--editorial);
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--encre);
+      margin: 0 0 var(--s-4);
+    }
+    .suggestion-text strong {
+      color: var(--orange-polo);
+    }
+    .suggestion-ref {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: var(--s-4);
+      align-items: center;
+      padding: var(--s-4);
+      background: var(--papier-bright);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+    }
+    .suggestion-ref-name {
+      font-family: 'Bodoni Moda', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--encre);
+    }
+    .suggestion-ref-meta {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--gris);
+      margin-top: 4px;
+    }
+    .suggestion-ref-price {
+      font-family: 'Bodoni Moda', serif;
+      font-style: italic;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--orange-polo);
+      white-space: nowrap;
+    }
+    .suggestion-cta {
+      display: block;
+      margin-top: var(--s-4);
+      padding: var(--s-3) var(--s-4);
+      background: transparent;
+      border: 1px solid var(--orange-polo);
+      border-radius: var(--r);
+      color: var(--orange-polo);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 180ms ease;
+    }
+    .suggestion-cta:hover {
+      background: var(--orange-polo);
+      color: var(--papier-bright);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       LINEAGE BOX — mode curaté (bénévole expert)
+       ═══════════════════════════════════════════════════════════════ */
+    .lineage-box {
+      margin-bottom: var(--s-6);
+      padding: var(--s-5);
+      background: color-mix(in srgb, var(--encre) 4%, var(--papier-bright));
+      border-left: 3px solid var(--orange-polo);
+      border-radius: var(--r);
+    }
+    .lineage-title {
+      font-family: 'Bodoni Moda', serif;
+      font-style: italic;
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: var(--encre);
+      margin: 0 0 var(--s-3);
+    }
+    .lineage-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 17px;
+      line-height: 1.6;
+      color: var(--encre);
+      margin: 0 0 var(--s-4);
+      padding-left: var(--s-4);
+      border-left: 2px solid var(--gris-line);
+    }
+    .lineage-signature {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--gris);
+      margin: 0;
+    }
+    .lineage-signature strong {
+      color: var(--encre);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       DATA STATUS — PASSE 5 (live/cache/mock indicator)
+       ═══════════════════════════════════════════════════════════════ */
+    .data-status {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-2);
+      padding: var(--s-2) var(--s-3);
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gris);
+      background: transparent;
+      border: 1px solid var(--gris-line);
+      border-radius: 999px;
+      margin-top: var(--s-5);
+    }
+    .data-status.live {
+      color: var(--vert-anglais);
+      border-color: color-mix(in srgb, var(--vert-anglais) 30%, transparent);
+    }
+    .data-status.cache {
+      color: var(--gris);
+      border-color: var(--gris-line);
+    }
+    .data-status.mock {
+      color: color-mix(in srgb, var(--orange-polo) 70%, var(--encre));
+      border-color: color-mix(in srgb, var(--orange-polo) 25%, transparent);
+    }
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+    .status-dot.live {
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       BIEN COMMUN — PASSE 6 (open formula / NFT snapshot / feeds)
+       ═══════════════════════════════════════════════════════════════ */
+    .bien-commun-intro {
+      font-family: var(--editorial);
+      font-size: 17px;
+      line-height: 1.65;
+      color: var(--encre);
+      margin: 0 0 var(--s-6);
+    }
+    .bien-commun-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--s-5);
+      margin-bottom: var(--s-6);
+    }
+    .bc-card {
+      padding: var(--s-5);
+      background: var(--papier-bright);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      position: relative;
+      overflow: hidden;
+    }
+    .bc-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--orange-polo);
+    }
+    .bc-card-eyebrow {
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--orange-polo);
+      margin: 0 0 var(--s-3);
+    }
+    .bc-card h3 {
+      font-family: 'Bodoni Moda', serif;
+      font-style: italic;
+      font-size: 1.3rem;
+      font-weight: 500;
+      margin: 0 0 var(--s-3);
+      color: var(--encre);
+    }
+    .bc-card p {
+      font-family: var(--editorial);
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--gris);
+      margin: 0 0 var(--s-4);
+    }
+    .bc-card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-2);
+      padding: var(--s-2) var(--s-3);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--encre);
+      background: transparent;
+      border: 1px solid var(--encre);
+      border-radius: var(--r);
+      text-decoration: none;
+      transition: all 180ms ease;
+    }
+    .bc-card-link:hover {
+      background: var(--encre);
+      color: var(--papier-bright);
+    }
+    .bc-card-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--s-2);
+      margin-top: var(--s-4);
+      padding-top: var(--s-4);
+      border-top: 1px dashed var(--gris-line);
+    }
+    .bc-meta-chip {
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gris);
+      padding: 2px var(--s-2);
+      background: color-mix(in srgb, var(--gris) 6%, var(--papier));
+      border-radius: 999px;
+    }
+
+    /* ───── Feeds opt-in list ───── */
+    .feeds-block {
+      margin-top: var(--s-7);
+    }
+    .feeds-title {
+      font-family: 'Bodoni Moda', serif;
+      font-style: italic;
+      font-size: 1.3rem;
+      font-weight: 500;
+      color: var(--encre);
+      margin: 0 0 var(--s-3);
+    }
+    .feeds-subtitle {
+      font-family: var(--editorial);
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--gris);
+      margin: 0 0 var(--s-5);
+    }
+    .feeds-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: var(--s-3);
+    }
+    .feed-item {
+      padding: var(--s-3) var(--s-4);
+      background: var(--papier);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-2);
+    }
+    .feed-item-role {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--orange-polo);
+    }
+    .feed-item-desc {
+      font-family: var(--editorial);
+      font-size: 13px;
+      line-height: 1.4;
+      color: var(--encre);
+    }
+    .feed-item-desc small {
+      display: block;
+      font-size: 11px;
+      color: var(--gris);
+      margin-top: 4px;
+    }
+
+    /* ───── Open formula version badge ───── */
+    .version-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-2);
+      padding: var(--s-2) var(--s-3);
+      background: var(--encre);
+      color: var(--papier-bright);
+      border-radius: 2px;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-top: var(--s-3);
+    }
+    .version-badge-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--orange-polo);
+    }
+
+    /* ───── Snapshot NFT preview ───── */
+    .snapshot-preview {
+      margin-top: var(--s-4);
+      padding: var(--s-4);
+      background: color-mix(in srgb, var(--encre) 4%, var(--papier));
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      font-family: var(--mono);
+      font-size: 11px;
+      line-height: 1.6;
+      color: var(--gris);
+    }
+    .snapshot-preview strong {
+      color: var(--encre);
+      font-weight: 600;
+    }
+    .snapshot-preview code {
+      font-size: 10px;
+      color: var(--orange-polo);
+      word-break: break-all;
+    }
   </style>
 </head>
 <body>
@@ -845,8 +1771,44 @@
               </div>
             </div>
 
+            <!-- CATEGORY CHIP — PASSE 4 (tuner, restomod, lineage) -->
+            <div class="category-chip tuner" id="category-chip" style="display:none">
+              <span class="category-chip-icon"></span>
+              <span id="category-chip-text">Tuner · segment dédié</span>
+            </div>
+
             <p class="result-range" id="result-range">— € — — €</p>
             <p class="result-median">Médiane <strong id="result-median">—</strong> · échantillon <strong id="result-sample">— annonces</strong></p>
+          </div>
+
+          <!-- ─────────────────────────────────────────────────────────────
+               SUGGESTION VOISIN — PASSE 4 (singulière)
+               ───────────────────────────────────────────────────────────── -->
+          <div class="suggestion-box" id="suggestion-box" style="display:none">
+            <p class="suggestion-eyebrow">Voiture singulière</p>
+            <h3 class="suggestion-title" id="suggestion-title"><em>—</em></h3>
+            <p class="suggestion-text" id="suggestion-text">—</p>
+
+            <div class="suggestion-ref" id="suggestion-ref">
+              <div>
+                <p class="suggestion-ref-name" id="suggestion-ref-name">—</p>
+                <p class="suggestion-ref-meta" id="suggestion-ref-meta">— specimens · — ventes 12 mois</p>
+              </div>
+              <p class="suggestion-ref-price" id="suggestion-ref-price">—</p>
+            </div>
+
+            <a class="suggestion-cta" href="#" id="suggestion-cta">Consulter un bénévole expert →</a>
+          </div>
+
+          <!-- ─────────────────────────────────────────────────────────────
+               LINEAGE EXCEPTIONNEL — PASSE 4 (curaté)
+               ───────────────────────────────────────────────────────────── -->
+          <div class="lineage-box" id="lineage-box" style="display:none">
+            <h3 class="lineage-title" id="lineage-title"><em>Valuation curatée</em></h3>
+            <p class="lineage-quote" id="lineage-quote">—</p>
+            <p class="lineage-signature" id="lineage-signature">
+              Estimation par <strong>—</strong> · signée on-chain · <a href="#" style="color: var(--orange-polo);">voir la justification publique</a>
+            </p>
           </div>
 
           <div class="compare">
@@ -867,6 +1829,106 @@
                 Annonces actives<small>Médiane des annonces visibles</small>
               </div>
               <div class="compare-value" id="cmp-annonces">—</div>
+            </div>
+          </div>
+
+          <!-- ─────────────────────────────────────────────────────────────
+               SPARKLINE 90 JOURS — PASSE 2
+               ───────────────────────────────────────────────────────────── -->
+          <div class="sparkline-block" id="sparkline-block">
+            <div class="sparkline-header">
+              <p class="sparkline-title">
+                <em>Cote · 90 derniers jours</em>
+                <small id="sparkline-subtitle">Médiane segment avec bandes p25 — p75</small>
+              </p>
+              <div class="trend-chip up" id="trend-chip">
+                <span id="trend-text">+0%</span>
+              </div>
+            </div>
+
+            <svg class="sparkline-svg" id="sparkline-svg" viewBox="0 0 600 140" preserveAspectRatio="none" aria-label="Évolution de la cote sur 90 jours">
+              <!-- Bandes + courbes injectées en JS -->
+            </svg>
+
+            <div class="sparkline-footer">
+              <div class="sparkline-stat">
+                <p class="num" id="trend-30d">—</p>
+                <p class="lbl">30 jours</p>
+              </div>
+              <div class="sparkline-stat">
+                <p class="num" id="trend-90d">—</p>
+                <p class="lbl">90 jours</p>
+              </div>
+              <div class="sparkline-stat">
+                <p class="num" id="trend-volatility">—</p>
+                <p class="lbl">Volatilité</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─────────────────────────────────────────────────────────────
+               DISTRIBUTION VERSIONS — PASSE 2
+               ───────────────────────────────────────────────────────────── -->
+          <div class="versions-block" id="versions-block" style="display:none">
+            <div class="versions-header">
+              <p class="versions-title"><em>Distribution par version</em></p>
+              <p class="versions-subtitle" id="versions-subtitle">Médiane segment par variante de la génération</p>
+            </div>
+            <div class="versions-grid" id="versions-grid">
+              <!-- Cards injectées en JS -->
+            </div>
+          </div>
+
+          <!-- ─────────────────────────────────────────────────────────────
+               BREAKDOWN PERSONNEL — PASSE 3
+               ajustements appliqués à TA voiture, transparents
+               ───────────────────────────────────────────────────────────── -->
+          <div class="breakdown-block" id="breakdown-block">
+            <button class="breakdown-toggle" id="breakdown-toggle" aria-expanded="false">
+              <span class="breakdown-toggle-text">
+                <em>Comment on est arrivé à cette cote</em>
+                <small>Détail des ajustements appliqués à ta voiture</small>
+              </span>
+              <span class="breakdown-toggle-icon">▾</span>
+            </button>
+            <div class="breakdown-content">
+              <div class="breakdown-inner">
+
+                <div class="breakdown-base">
+                  <p class="breakdown-base-label">Médiane segment de référence</p>
+                  <p class="breakdown-base-value" id="breakdown-base">—</p>
+                </div>
+
+                <div class="breakdown-row">
+                  <div class="breakdown-row-label">
+                    État général
+                    <small id="breakdown-etat-detail">—</small>
+                  </div>
+                  <span class="breakdown-row-impact" id="breakdown-etat-impact">—</span>
+                </div>
+
+                <div class="breakdown-row">
+                  <div class="breakdown-row-label">
+                    Kilométrage
+                    <small id="breakdown-km-detail">—</small>
+                  </div>
+                  <span class="breakdown-row-impact" id="breakdown-km-impact">—</span>
+                </div>
+
+                <div class="breakdown-row">
+                  <div class="breakdown-row-label">
+                    Âge du véhicule
+                    <small id="breakdown-age-detail">—</small>
+                  </div>
+                  <span class="breakdown-row-impact" id="breakdown-age-impact">—</span>
+                </div>
+
+                <div class="breakdown-final">
+                  <span class="breakdown-final-label">Cote finale</span>
+                  <span class="breakdown-final-value" id="breakdown-final">—</span>
+                </div>
+
+              </div>
             </div>
           </div>
 
@@ -897,58 +1959,310 @@
     </section>
 
     <!-- ═══════════════════════════════════════════════════════════════
-         MÉTHODE
+         MÉTHODE — PASSE 3
          ═══════════════════════════════════════════════════════════════ -->
     <section id="method" aria-labelledby="method-title">
       <p class="eyebrow">Méthode</p>
       <h2 id="method-title"><em>Comment on calcule.</em></h2>
 
-      <p>
-        La cote CARNET n'est pas un guide imprimé. C'est un agrégat vivant, recalculé chaque nuit
-        sur la base réelle du marché européen. Trois étapes, transparentes par construction.
+      <p class="method-intro">
+        La Cote CARNET n'est pas un guide imprimé. C'est un agrégat vivant, recalculé chaque
+        nuit sur la base réelle du marché européen. Chaque source a un poids transparent, chaque
+        ajustement est documenté, et la formule complète est publique sur le GitHub de l'asso.
       </p>
 
-      <div class="method-grid">
-        <div class="method-card">
-          <p class="num">01</p>
-          <h3><em>Marché vivant</em></h3>
-          <p>
-            On scanne en continu vingt-six sources européennes — concessionnaires spécialisés,
-            marketplaces, salles d'enchères. Aujourd'hui 24 268 véhicules actifs en base. Une
-            voiture qui n'apparaît nulle part n'a pas de cote sérieuse.
-          </p>
+      <!-- Sources pondérées -->
+      <div class="sources-block">
+        <h3 class="sources-title"><em>Trois sources, trois poids</em></h3>
+
+        <div class="source-row">
+          <div class="source-info">
+            <p class="source-name">Annonces actives</p>
+            <p class="source-desc">
+              24 268 véhicules vivants scannés en continu sur 26 sources européennes — concessionnaires
+              spécialisés, marketplaces, plateformes. Prix demandés, biais haut connu, pondération basse.
+            </p>
+            <div class="source-weight-bar"><div class="source-weight-fill" style="width: 47%"></div></div>
+          </div>
+          <p class="source-weight-value">poids 0.7</p>
         </div>
 
-        <div class="method-card">
-          <p class="num">02</p>
-          <h3><em>Pondération km · état</em></h3>
-          <p>
-            On normalise par kilométrage (courbe segment par segment, pas linéaire) et par
-            état (les quatre niveaux ci-dessus). Une 993 Turbo à 30 000 km en concours et une
-            993 Turbo à 180 000 km en projet ne se croisent jamais — sauf à l'arrêt.
-          </p>
+        <div class="source-row">
+          <div class="source-info">
+            <p class="source-name">Ventes confirmées 12 mois</p>
+            <p class="source-desc">
+              Prix réels de transaction documentés, archives marketplaces, déclarations dealers
+              partenaires. Source la plus solide, pondération la plus forte.
+            </p>
+            <div class="source-weight-bar"><div class="source-weight-fill" style="width: 100%"></div></div>
+          </div>
+          <p class="source-weight-value">poids 1.5</p>
         </div>
 
-        <div class="method-card">
-          <p class="num">03</p>
-          <h3><em>Facteur de marché</em></h3>
-          <p>
-            On regarde l'évolution du segment sur les douze derniers mois et on ajuste. Le
-            facteur est public, recalculé le 1<sup>er</sup> de chaque mois. Pas de boîte noire :
-            tu peux refaire le calcul à la main si tu veux.
-          </p>
-        </div>
-
-        <div class="method-card">
-          <p class="num">04</p>
-          <h3><em>Aucun intérêt à mentir</em></h3>
-          <p>
-            CARNET n'est pas un courtier. Pas de commission sur l'achat ou la vente. La cote
-            n'est ni gonflée pour faire vendre, ni baissée pour faire racheter. C'est l'asso
-            qui la publie, pas un acteur du marché.
-          </p>
+        <div class="source-row">
+          <div class="source-info">
+            <p class="source-name">Enchères publiques</p>
+            <p class="source-desc">
+              Bring a Trailer, RM Sotheby's, Artcurial, Gooding, The Market by Bonhams. Prix
+              transparents, biais haut sur lots prestige corrigé par filtrage IQR.
+            </p>
+            <div class="source-weight-bar"><div class="source-weight-fill" style="width: 80%"></div></div>
+          </div>
+          <p class="source-weight-value">poids 1.2</p>
         </div>
       </div>
+
+      <!-- Ajustements possibles -->
+      <div class="adjustments-block">
+        <h3 class="adjustments-title"><em>Onze ajustements documentés</em></h3>
+        <p class="adjustments-subtitle">
+          Appliqués automatiquement quand l'information est disponible (annonce détaillée, carnet
+          on-chain, expertise communauté). Sinon, médiane segment brute.
+        </p>
+
+        <div class="adjustments-grid">
+          <div class="adj-item">
+            <span class="adj-item-label">Matching numbers vérifié</span>
+            <span class="adj-item-impact positive">+5%</span>
+          </div>
+          <div class="adj-item">
+            <span class="adj-item-label">Carnet entretien complet</span>
+            <span class="adj-item-impact positive">+3%</span>
+          </div>
+          <div class="adj-item">
+            <span class="adj-item-label">Photos professionnelles</span>
+            <span class="adj-item-impact positive">+2%</span>
+          </div>
+          <div class="adj-item">
+            <span class="adj-item-label">Propriétaire historique unique</span>
+            <span class="adj-item-impact positive">+4%</span>
+          </div>
+          <div class="adj-item">
+            <span class="adj-item-label">Restauration documentée récente</span>
+            <span class="adj-item-impact positive">+6%</span>
+          </div>
+          <div class="adj-item">
+            <span class="adj-item-label">Couleur d'origine conservée</span>
+            <span class="adj-item-impact positive">+2%</span>
+          </div>
+          <div class="adj-item">
+            <span class="adj-item-label">Plus de trois propriétaires récents</span>
+            <span class="adj-item-impact negative">−3%</span>
+          </div>
+          <div class="adj-item">
+            <span class="adj-item-label">Kilométrage au-dessus médiane</span>
+            <span class="adj-item-impact negative">−2 à −8%</span>
+          </div>
+          <div class="adj-item">
+            <span class="adj-item-label">Sinistre déclaré non réparé pro</span>
+            <span class="adj-item-impact negative">−10 à −25%</span>
+          </div>
+          <div class="adj-item">
+            <span class="adj-item-label">Modifications non-réversibles</span>
+            <span class="adj-item-impact negative">−5 à −15%</span>
+          </div>
+          <div class="adj-item">
+            <span class="adj-item-label">Documentation manquante</span>
+            <span class="adj-item-impact negative">−3%</span>
+          </div>
+          <div class="adj-item">
+            <span class="adj-item-label">Lineage exceptionnel (ex-pilote)</span>
+            <span class="adj-item-impact positive">curatée</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Performance + transparence -->
+      <div class="method-perf">
+        <div class="method-perf-grid">
+          <div class="method-perf-stat">
+            <p class="num">4 821</p>
+            <p class="lbl">segments couverts</p>
+          </div>
+          <div class="method-perf-stat">
+            <p class="num">&lt; 90s</p>
+            <p class="lbl">recalcul nightly</p>
+          </div>
+          <div class="method-perf-stat">
+            <p class="num">26</p>
+            <p class="lbl">sources EU</p>
+          </div>
+          <div class="method-perf-stat">
+            <p class="num">0€</p>
+            <p class="lbl">commission</p>
+          </div>
+        </div>
+        <div style="text-align: center; margin-top: var(--s-4);">
+          <span class="data-status mock" id="data-status">
+            <span class="status-dot mock"></span>Chargement…
+          </span>
+        </div>
+      </div>
+
+      <p style="font-family: var(--editorial); font-size: 14px; line-height: 1.6; color: var(--gris); margin: var(--s-5) 0 0;">
+        <strong style="color: var(--encre);">Aucun intérêt à mentir.</strong> CARNET n'est pas un
+        courtier. Pas de commission sur l'achat ou la vente. La cote n'est ni gonflée pour faire
+        vendre, ni baissée pour faire racheter. C'est l'association qui la publie, dans l'intérêt
+        général de la communauté automobile européenne. La formule complète est consultable
+        commit-by-commit sur le repo public de l'asso — chaque modification fait l'objet d'une
+        Pull Request publique commentée.
+      </p>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         BIEN COMMUN — PASSE 6
+         ═══════════════════════════════════════════════════════════════ -->
+    <section aria-labelledby="bien-commun-title">
+      <p class="eyebrow">Bien commun</p>
+      <h2 id="bien-commun-title"><em>La cote n'appartient à personne.</em></h2>
+
+      <p class="bien-commun-intro">
+        La Cote CARNET est un bien commun d'utilité publique. Jamais monétisée. Jamais derrière
+        paywall API. Trois piliers techniques garantissent qu'elle le reste — quelle que soit
+        l'évolution de l'association ou des personnes qui l'animent.
+      </p>
+
+      <!-- 3 cards : Open formula / Snapshot NFT / Feeds API -->
+      <div class="bien-commun-grid">
+
+        <!-- Card 1 : Open formula GitHub -->
+        <div class="bc-card">
+          <p class="bc-card-eyebrow">Pilier 01 · Méthodologie</p>
+          <h3><em>Formule ouverte sur GitHub</em></h3>
+          <p>
+            La méthodologie complète est versionnée commit-by-commit sur le repository public
+            de l'association. Chaque ajustement (ajout d'une source, modification d'un poids,
+            changement de seuil IQR) passe par une Pull Request publique commentée. Trois
+            bénévoles experts + un Founder Circle doivent valider avant merge en main.
+          </p>
+          <a class="bc-card-link" href="https://github.com/Vinci75000/carnet-asso-public/blob/main/cote-methodology.md" target="_blank" rel="noopener">
+            github.com/carnet-asso-public →
+          </a>
+          <span class="version-badge">
+            <span class="version-badge-dot"></span>
+            v2.1 · 15·05·2026
+          </span>
+        </div>
+
+        <!-- Card 2 : Snapshot NFT mensuel -->
+        <div class="bc-card">
+          <p class="bc-card-eyebrow">Pilier 02 · Preuve historique</p>
+          <h3><em>Snapshot mensuel NFT</em></h3>
+          <p>
+            Chaque 1<sup>er</sup> du mois, l'ensemble des cotes CARNET est mintée en NFT XLS-20
+            sur le wallet de l'asso. Document juridiquement opposable, archivable 50 ans :
+            successions, contestations d'assurance, audits fiscaux, expertises judiciaires
+            référencent la Cote CARNET à date.
+          </p>
+          <a class="bc-card-link" href="#" onclick="alert('Lien XRPL explorer — à brancher après premier mint.'); return false;">
+            Voir snapshot d'avril →
+          </a>
+          <div class="snapshot-preview">
+            <strong>CARNET Cote Snapshot · 2026-04</strong><br/>
+            4 821 segments couverts<br/>
+            Methodology version v2.1<br/>
+            Wallet asso&nbsp;: <code>rJBhnYvg5kq9PgWFZziEXu2EcdJfcq8WSU</code><br/>
+            Hash p25/p50/p75&nbsp;: <code>7a4f9b2c…d89e</code>
+          </div>
+        </div>
+
+        <!-- Card 3 : Feeds API gratuits -->
+        <div class="bc-card">
+          <p class="bc-card-eyebrow">Pilier 03 · Distribution</p>
+          <h3><em>Feeds API gratuits opt-in</em></h3>
+          <p>
+            Les assureurs, notaires, concours, banques privées, médias spécialisés et fonds
+            patrimoniaux peuvent consommer la Cote CARNET gratuitement. Seule condition :
+            apparaître publiquement sur la liste des consommateurs — transparence sur qui
+            l'utilise dans son métier. Pas de licensing payant, pas de commission.
+          </p>
+          <a class="bc-card-link" href="mailto:asso@carnet.life?subject=Demande%20feed%20Cote%20CARNET">
+            Demander un accès →
+          </a>
+          <div class="bc-card-meta">
+            <span class="bc-meta-chip">REST API</span>
+            <span class="bc-meta-chip">JSON</span>
+            <span class="bc-meta-chip">ZK proofs</span>
+            <span class="bc-meta-chip">eIDAS 2.0 ready</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Feeds opt-in : exemples consommateurs cible -->
+      <div class="feeds-block">
+        <h3 class="feeds-title"><em>Qui peut consommer la Cote</em></h3>
+        <p class="feeds-subtitle">
+          Toute organisation européenne d'intérêt général ou commerciale légitime peut se
+          référencer. Aucun ranking, aucun favoritisme. Liste vivante, mise à jour mensuellement.
+        </p>
+
+        <div class="feeds-list">
+          <div class="feed-item">
+            <p class="feed-item-role">Assureurs collection</p>
+            <p class="feed-item-desc">
+              Référence indemnisation sinistre
+              <small>Carene, Hagerty, Chubb, MAIF Vintage, AXA Collection…</small>
+            </p>
+          </div>
+          <div class="feed-item">
+            <p class="feed-item-role">Notaires</p>
+            <p class="feed-item-desc">
+              Évaluation succession automobile
+              <small>Snapshot mensuel daté faisant foi juridique</small>
+            </p>
+          </div>
+          <div class="feed-item">
+            <p class="feed-item-role">Concours d'élégance</p>
+            <p class="feed-item-desc">
+              Qualification candidats
+              <small>Pebble Beach, Villa d'Este, Chantilly Arts &amp; Élégance…</small>
+            </p>
+          </div>
+          <div class="feed-item">
+            <p class="feed-item-role">Banques privées</p>
+            <p class="feed-item-desc">
+              Gestion patrimoine collectionneurs
+              <small>Lombard, gestion d'actifs alternatifs</small>
+            </p>
+          </div>
+          <div class="feed-item">
+            <p class="feed-item-role">Médias spécialisés</p>
+            <p class="feed-item-desc">
+              Citations éditoriales sourcées
+              <small>Petrolicious, Magneto, The Drive, Classic Driver…</small>
+            </p>
+          </div>
+          <div class="feed-item">
+            <p class="feed-item-role">Expertises judiciaires</p>
+            <p class="feed-item-desc">
+              Référence valuation contentieux
+              <small>Tribunaux civils, contentieux assurance, divorce</small>
+            </p>
+          </div>
+          <div class="feed-item">
+            <p class="feed-item-role">Fonds patrimoniaux</p>
+            <p class="feed-item-desc">
+              Valuation portfolios voitures
+              <small>Investissement alternatif, classic car funds</small>
+            </p>
+          </div>
+          <div class="feed-item">
+            <p class="feed-item-role">Fédérations</p>
+            <p class="feed-item-desc">
+              FFVE, ASA, FIA Historic
+              <small>Référence patrimoine automobile européen</small>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <p style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 19px; line-height: 1.6; color: var(--encre); margin-top: var(--s-7); padding-left: var(--s-4); border-left: 2px solid var(--orange-polo);">
+        À l'horizon 2030, la Cote CARNET devient infrastructure publique automobile européenne —
+        au même titre que les statistiques INSEE sont infrastructure publique de la France. Bien
+        public, non monétisable, audité, durable. Une référence factuelle pour toute la communauté
+        automobile européenne, gouvernée par les passionnés qui la construisent.
+      </p>
     </section>
 
     <!-- ═══════════════════════════════════════════════════════════════
@@ -1127,6 +2441,7 @@
     <p class="footer-legal">
       CARNET · Association loi 1901 française non-lucrative familiale<br />
       Cote calculée sur la base AutoRadar · 24 268 véhicules · mise à jour quotidienne<br />
+      Methodology <a href="https://github.com/Vinci75000/carnet-asso-public/blob/main/cote-methodology.md" target="_blank" rel="noopener" style="color: var(--orange-polo); text-decoration: none;">v2.1 · open formula</a> · snapshot NFT mensuel XLS-20<br />
       Wallet officiel multisig 3/3&nbsp;: <code>rJBhnYvg5kq9PgWFZziEXu2EcdJfcq8WSU</code>
     </p>
   </footer>
@@ -1136,9 +2451,25 @@
        ═══════════════════════════════════════════════════════════════ -->
   <script>
     // ═══════════════════════════════════════════════════════════════
-    // COTE_SEGMENTS — mock référentiel embarqué (sera remplacé par Supabase fetch)
+    // PASSE 5 — Supabase config + cache LocalStorage + fallback
     // ═══════════════════════════════════════════════════════════════
-    const COTE_SEGMENTS = {
+    // À remplacer par les vraies clés Supabase carnet.life en prod.
+    // Pour mode offline pur (dev/demo), laisser SUPABASE_URL vide.
+    const SUPABASE_URL = window.CARNET_SUPABASE_URL || 'https://nfpcgnffwbxudaprcuux.supabase.co';
+    const SUPABASE_ANON_KEY = window.CARNET_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5mcGNnbmZmd2J4dWRhcHJjdXV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzAwMDAwMDAsImV4cCI6MjA0NTU3NjAwMH0.placeholder';
+
+    const CACHE_KEY = 'carnet_cote_cache_v1';
+    const CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24h
+
+    // Data source mode (live | cache | mock)
+    let dataSource = 'mock';
+    let dataUpdatedAt = null;
+
+    // ═══════════════════════════════════════════════════════════════
+    // COTE_SEGMENTS — mock référentiel embarqué (fallback dernier recours)
+    // Remplacé au load par fetch Supabase via loadCoteData()
+    // ═══════════════════════════════════════════════════════════════
+    let COTE_SEGMENTS = {
       'porsche/911 (993)': { p25: 78000, p50: 92000, p75: 106000, sample: 47, sales: 23 },
       'porsche/911 (993) turbo s': { p25: 210000, p50: 230000, p75: 255000, sample: 47, sales: 18 },
       'porsche/911 (992) turbo s': { p25: 205000, p50: 230000, p75: 250000, sample: 47, sales: 21 },
@@ -1183,6 +2514,97 @@
       'pagani/huayra': { p25: 2400000, p50: 2800000, p75: 3400000, sample: 3, sales: 1 },
       'koenigsegg/agera': { p25: 1800000, p50: 2200000, p75: 2700000, sample: 2, sales: 1 },
     };
+
+    // ═══════════════════════════════════════════════════════════════
+    // PASSE 4 — Catégories spéciales (tuners, restomods, lineage)
+    // ═══════════════════════════════════════════════════════════════
+
+    // Mots-clés tuners — déclenchent segment dédié
+    const TUNERS_KEYWORDS = ['brabus', 'mansory', 'ruf', 'alpina', 'koenig', 'hartge',
+                              'gemballa', 'techart', 'kahn', 'novitec', 'liberty walk',
+                              'eisenmann', 'ac schnitzer'];
+
+    // Mots-clés restomods — déclenchent segment dédié
+    const RESTOMODS_KEYWORDS = ['singer', 'theon', 'tuthill', 'kalmar', 'gunther werks',
+                                 'rauh-welt', 'rwb', 'restomod'];
+
+    // Segments tuners (cote propre, pas dérivée du base modèle)
+    let TUNERS_SEGMENTS = {
+      'porsche/ruf ctr': { p25: 5200000, p50: 6000000, p75: 7100000, sample: 4, sales: 1, tuner: 'RUF' },
+      'porsche/ruf scr': { p25: 850000, p50: 980000, p75: 1150000, sample: 6, sales: 2, tuner: 'RUF' },
+      'porsche/ruf rt12': { p25: 320000, p50: 380000, p75: 440000, sample: 5, sales: 2, tuner: 'RUF' },
+      'porsche/singer dls': { p25: 1800000, p50: 2200000, p75: 2700000, sample: 8, sales: 3, restomod: 'Singer' },
+      'porsche/singer classic study': { p25: 580000, p50: 720000, p75: 880000, sample: 14, sales: 5, restomod: 'Singer' },
+      'mercedes/brabus 800': { p25: 320000, p50: 380000, p75: 440000, sample: 7, sales: 2, tuner: 'Brabus' },
+      'mercedes/brabus g900 rocket': { p25: 580000, p50: 680000, p75: 800000, sample: 5, sales: 1, tuner: 'Brabus' },
+      'bmw/alpina b7': { p25: 95000, p50: 115000, p75: 138000, sample: 28, sales: 11, tuner: 'Alpina' },
+      'bmw/alpina b5': { p25: 78000, p50: 92000, p75: 108000, sample: 34, sales: 14, tuner: 'Alpina' },
+      'rolls/mansory rolls-royce': { p25: 480000, p50: 580000, p75: 700000, sample: 4, sales: 1, tuner: 'Mansory' },
+    };
+
+    // Voitures à lineage exceptionnel — valuation curatée par bénévole expert
+    let LINEAGE_EXCEPTIONNEL = {
+      'porsche/911 (993) carrera rs steve mcqueen': {
+        quote: "Cette 993 Carrera RS appartenait à un proche collaborateur de Steve McQueen, documentée par photos d'archives Solar Productions 1979. Valeur retenue : 1.4M€ (référence vente privée Goodwood Speedweek 09/2025).",
+        expert: "Bénévole #007 · expert Porsche air-cooled",
+        signature: "0x7a4f...d89e"
+      },
+      'ferrari/f40 ex-pilote': {
+        quote: "F40 châssis 88062, ex-Nick Mason (Pink Floyd), conservation exceptionnelle, 12 800 km certifiés. Valeur retenue : 3.2M€ (référence vente RM Sotheby's Maranello 12/2024).",
+        expert: "Bénévole #023 · expert Ferrari V12 classiques",
+        signature: "0x9c4a...f72e"
+      }
+    };
+
+    // Détection catégorie spéciale
+    function detectCategory(marque, modele) {
+      const lower = modele.toLowerCase();
+      for (const kw of TUNERS_KEYWORDS) {
+        if (lower.includes(kw)) return { type: 'tuner', name: capitalize(kw) };
+      }
+      for (const kw of RESTOMODS_KEYWORDS) {
+        if (lower.includes(kw)) return { type: 'restomod', name: capitalize(kw) };
+      }
+      return null;
+    }
+
+    // Recherche segment voisin pour suggestion
+    function findNeighborSegment(marque, modele) {
+      const lower = modele.toLowerCase();
+
+      // Stratégie 1 : même marque, match partiel sur les premiers mots
+      const firstWord = lower.split(' ')[0];
+      const candidates = [];
+
+      for (const key of Object.keys(COTE_SEGMENTS)) {
+        const [keyMarque, keyModele] = key.split('/');
+        if (keyMarque !== marque) continue;
+
+        // Score de similarité simple (mots communs)
+        const keyWords = keyModele.toLowerCase().split(' ');
+        const modeleWords = lower.split(' ');
+        const common = keyWords.filter(w => modeleWords.some(mw => mw.includes(w) || w.includes(mw)));
+
+        if (common.length > 0) {
+          candidates.push({ key, score: common.length, segment: COTE_SEGMENTS[key] });
+        }
+      }
+
+      candidates.sort((a, b) => b.score - a.score);
+
+      if (candidates.length === 0) {
+        // Fallback : premier segment de la marque
+        for (const key of Object.keys(COTE_SEGMENTS)) {
+          if (key.startsWith(marque + '/')) {
+            return { key, segment: COTE_SEGMENTS[key] };
+          }
+        }
+        return null;
+      }
+
+      return candidates[0];
+    }
+
 
     // ═══════════════════════════════════════════════════════════════
     // WIZARD NAVIGATION
@@ -1256,9 +2678,47 @@
       const km = parseInt(document.getElementById('km').value);
       const etat = document.getElementById('etat').value;
 
-      // Lookup segment
+      // Rétablir affichage sparkline (au cas où masqué par singulière précédente)
+      document.getElementById('sparkline-block').style.display = 'block';
+      // Masquer les boxes spéciales au début
+      document.getElementById('suggestion-box').style.display = 'none';
+      document.getElementById('lineage-box').style.display = 'none';
+      document.getElementById('category-chip').style.display = 'none';
+
+      // PASSE 4 — Vérification lineage exceptionnel d'abord (curé)
+      const lineageKey = `${marque}/${modele}`;
+      if (LINEAGE_EXCEPTIONNEL[lineageKey]) {
+        displayLineageExceptionnel(marque, modele, LINEAGE_EXCEPTIONNEL[lineageKey]);
+        return;
+      }
+
+      // PASSE 4 — Détection catégorie spéciale (tuner/restomod)
+      const category = detectCategory(marque, modele);
+
+      // Lookup segment — d'abord tuners segments, puis cote segments standard
       const segmentKey = `${marque}/${modele}`;
-      const segment = COTE_SEGMENTS[segmentKey];
+      const segment = TUNERS_SEGMENTS[segmentKey] || COTE_SEGMENTS[segmentKey];
+
+      if (!segment) {
+        // Cas limite : segment non trouvé → suggestion voisin
+        displaySinguliere(marque, modele);
+        return;
+      }
+
+      // Si tuner/restomod détecté, afficher la chip catégorie
+      if (category || segment.tuner || segment.restomod) {
+        const chipEl = document.getElementById('category-chip');
+        const chipText = document.getElementById('category-chip-text');
+        chipEl.className = 'category-chip';
+        if (segment.restomod || (category && category.type === 'restomod')) {
+          chipEl.classList.add('restomod');
+          chipText.textContent = `Restomod ${segment.restomod || category.name} · segment dédié`;
+        } else {
+          chipEl.classList.add('tuner');
+          chipText.textContent = `Tuner ${segment.tuner || category.name} · segment dédié`;
+        }
+        chipEl.style.display = 'inline-flex';
+      }
 
       if (!segment) {
         // Cas limite : segment non trouvé → PASSE 4 à venir
@@ -1311,6 +2771,312 @@
 
       // Drawer data
       updateDrawerData(marque, modele, p25, p50, p75, segment.sample, segment.sales);
+
+      // Sparkline 90j — PASSE 2
+      generateSparkline(segment.p25, segment.p50, segment.p75);
+
+      // Versions distribution — PASSE 2
+      renderVersions(marque, modele);
+
+      // Breakdown personnel — PASSE 3
+      renderBreakdown(segment.p50, etat, km, annee, p50, STATE_MULT[etat], kmFactor, yearFactor);
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // BREAKDOWN PERSONNEL — PASSE 3
+    // ═══════════════════════════════════════════════════════════════
+    function renderBreakdown(basP50, etat, km, annee, finalP50, etatMult, kmFactor, yearFactor) {
+      const block = document.getElementById('breakdown-block');
+      block.style.display = 'block';
+
+      // Base segment
+      document.getElementById('breakdown-base').textContent = fmtEUR(basP50);
+
+      // État
+      const etatLabels = {
+        concours: 'Parfait · expo · 0 défaut',
+        excellent: 'Très bien entretenue · défauts mineurs',
+        bon: 'Usage normal · usure visible',
+        projet: 'Restauration complète à prévoir'
+      };
+      const etatPct = Math.round((etatMult - 1) * 100);
+      document.getElementById('breakdown-etat-detail').textContent = `${capitalize(etat)} · ${etatLabels[etat]}`;
+      const etatImpact = document.getElementById('breakdown-etat-impact');
+      etatImpact.textContent = etatPct >= 0 ? `+${etatPct}%` : `${etatPct}%`;
+      etatImpact.className = 'breakdown-row-impact ' + (etatPct > 0 ? 'positive' : etatPct < 0 ? 'negative' : 'neutral');
+
+      // Km
+      const kmRef = 80000;
+      const kmPct = Math.round((kmFactor - 1) * 100);
+      const kmDeltaText = km < kmRef ? `${(kmRef - km).toLocaleString('fr-FR')} km sous référence` : `${(km - kmRef).toLocaleString('fr-FR')} km au-dessus référence`;
+      document.getElementById('breakdown-km-detail').textContent = `${km.toLocaleString('fr-FR')} km · ${kmDeltaText} (80 000 km)`;
+      const kmImpact = document.getElementById('breakdown-km-impact');
+      kmImpact.textContent = kmPct >= 0 ? `+${kmPct}%` : `${kmPct}%`;
+      kmImpact.className = 'breakdown-row-impact ' + (kmPct > 0 ? 'positive' : kmPct < 0 ? 'negative' : 'neutral');
+
+      // Age
+      const age = 2026 - annee;
+      const agePct = Math.round((yearFactor - 1) * 100);
+      const ageText = age > 25 ? `${age} ans · bonus collector (+25 ans)` : `${age} ans · pas de bonus collector`;
+      document.getElementById('breakdown-age-detail').textContent = ageText;
+      const ageImpact = document.getElementById('breakdown-age-impact');
+      ageImpact.textContent = agePct >= 0 ? `+${agePct}%` : `${agePct}%`;
+      ageImpact.className = 'breakdown-row-impact ' + (agePct > 0 ? 'positive' : agePct < 0 ? 'negative' : 'neutral');
+
+      // Final
+      document.getElementById('breakdown-final').textContent = fmtEUR(finalP50);
+    }
+
+    // Toggle breakdown
+    document.getElementById('breakdown-toggle').addEventListener('click', () => {
+      const block = document.getElementById('breakdown-block');
+      const toggle = document.getElementById('breakdown-toggle');
+      block.classList.toggle('expanded');
+      toggle.setAttribute('aria-expanded', block.classList.contains('expanded'));
+    });
+
+    // ═══════════════════════════════════════════════════════════════
+    // SPARKLINE 90 JOURS — PASSE 2
+    // ═══════════════════════════════════════════════════════════════
+    function generateSparkline(p25, p50, p75) {
+      const svg = document.getElementById('sparkline-svg');
+      const width = 600;
+      const height = 140;
+      const padTop = 12;
+      const padBottom = 24;
+      const padLeft = 8;
+      const padRight = 8;
+      const chartW = width - padLeft - padRight;
+      const chartH = height - padTop - padBottom;
+
+      // Générer 90 points avec random walk seedé (déterministe pour cohérence)
+      const days = 90;
+      const seed = (p50 % 100) + 1; // seed dérivé du prix pour reproductibilité
+      function seededRandom(i) {
+        const x = Math.sin(seed * 9999 + i * 7) * 10000;
+        return x - Math.floor(x);
+      }
+
+      // Random walk autour de p50, amplitude ±6%
+      const points = [];
+      let currentP50 = p50 * 0.94; // commence légèrement en bas
+      const trendStrength = 0.0008; // léger trend haussier
+      const noiseAmp = 0.025;
+
+      for (let i = 0; i < days; i++) {
+        // Trend + bruit
+        currentP50 = currentP50 * (1 + trendStrength + (seededRandom(i) - 0.5) * noiseAmp);
+        const localP25 = currentP50 * (p25 / p50);
+        const localP75 = currentP50 * (p75 / p50);
+        points.push({ p25: localP25, p50: currentP50, p75: localP75 });
+      }
+
+      // Min/max pour scaling
+      const allVals = points.flatMap(p => [p.p25, p.p75]);
+      const minVal = Math.min(...allVals) * 0.98;
+      const maxVal = Math.max(...allVals) * 1.02;
+
+      function xCoord(i) {
+        return padLeft + (i / (days - 1)) * chartW;
+      }
+      function yCoord(val) {
+        return padTop + chartH - ((val - minVal) / (maxVal - minVal)) * chartH;
+      }
+
+      // Path p25 (bas)
+      let pathP25 = `M ${xCoord(0)} ${yCoord(points[0].p25)}`;
+      for (let i = 1; i < days; i++) {
+        pathP25 += ` L ${xCoord(i)} ${yCoord(points[i].p25)}`;
+      }
+
+      // Path p75 (haut)
+      let pathP75 = `M ${xCoord(0)} ${yCoord(points[0].p75)}`;
+      for (let i = 1; i < days; i++) {
+        pathP75 += ` L ${xCoord(i)} ${yCoord(points[i].p75)}`;
+      }
+
+      // Path p50 (médiane)
+      let pathP50 = `M ${xCoord(0)} ${yCoord(points[0].p50)}`;
+      for (let i = 1; i < days; i++) {
+        pathP50 += ` L ${xCoord(i)} ${yCoord(points[i].p50)}`;
+      }
+
+      // Bande entre p25 et p75 (closed path)
+      let bandPath = `M ${xCoord(0)} ${yCoord(points[0].p25)}`;
+      for (let i = 1; i < days; i++) {
+        bandPath += ` L ${xCoord(i)} ${yCoord(points[i].p25)}`;
+      }
+      for (let i = days - 1; i >= 0; i--) {
+        bandPath += ` L ${xCoord(i)} ${yCoord(points[i].p75)}`;
+      }
+      bandPath += ' Z';
+
+      // Marker final (point actuel)
+      const lastX = xCoord(days - 1);
+      const lastY = yCoord(points[days - 1].p50);
+
+      // Axes labels
+      svg.innerHTML = `
+        <!-- Bande p25-p75 -->
+        <path class="sparkline-band" d="${bandPath}" />
+
+        <!-- Lignes p25 / p75 -->
+        <path class="sparkline-p25" d="${pathP25}" />
+        <path class="sparkline-p75" d="${pathP75}" />
+
+        <!-- Ligne p50 médiane -->
+        <path class="sparkline-p50" d="${pathP50}" />
+
+        <!-- Axis bottom -->
+        <line class="sparkline-axis" x1="${padLeft}" y1="${height - padBottom}" x2="${width - padRight}" y2="${height - padBottom}" />
+
+        <!-- Labels temporels -->
+        <text class="sparkline-label" x="${xCoord(0)}" y="${height - 6}" text-anchor="start">J-90</text>
+        <text class="sparkline-label" x="${xCoord(days / 2)}" y="${height - 6}" text-anchor="middle">J-45</text>
+        <text class="sparkline-label" x="${xCoord(days - 1)}" y="${height - 6}" text-anchor="end">Aujourd'hui</text>
+
+        <!-- Marker actuel -->
+        <circle class="sparkline-marker" cx="${lastX}" cy="${lastY}" r="5" />
+      `;
+
+      // Stats footer
+      const trend30d = ((points[days - 1].p50 - points[days - 30].p50) / points[days - 30].p50) * 100;
+      const trend90d = ((points[days - 1].p50 - points[0].p50) / points[0].p50) * 100;
+      const volatility = Math.abs(maxVal - minVal) / p50 * 100;
+
+      document.getElementById('trend-30d').textContent = formatTrend(trend30d);
+      document.getElementById('trend-90d').textContent = formatTrend(trend90d);
+      document.getElementById('trend-volatility').textContent = `±${volatility.toFixed(1)}%`;
+
+      // Trend chip principal
+      const trendChip = document.getElementById('trend-chip');
+      const trendText = document.getElementById('trend-text');
+      trendChip.className = 'trend-chip';
+
+      if (trend90d > 2) {
+        trendChip.classList.add('up');
+        trendText.textContent = `${formatTrend(trend90d)} sur 90j`;
+      } else if (trend90d < -2) {
+        trendChip.classList.add('down');
+        trendText.textContent = `${formatTrend(trend90d)} sur 90j`;
+      } else {
+        trendChip.classList.add('flat');
+        trendText.textContent = `Stable ±${Math.abs(trend90d).toFixed(1)}%`;
+      }
+    }
+
+    function formatTrend(val) {
+      const sign = val >= 0 ? '+' : '';
+      return `${sign}${val.toFixed(1)}%`;
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // DISTRIBUTION VERSIONS — PASSE 2
+    // ═══════════════════════════════════════════════════════════════
+    // Référentiel versions par modèle/génération (mock, sera remplacé par Supabase)
+    let VERSIONS_BY_MODEL = {
+      'porsche/911 (993)': [
+        { name: 'Carrera',      p50: 78000,  sample: 124 },
+        { name: 'Carrera S',    p50: 92000,  sample: 87  },
+        { name: 'Carrera 4S',   p50: 105000, sample: 56  },
+        { name: 'Targa',        p50: 84000,  sample: 38  },
+        { name: 'Turbo',        p50: 168000, sample: 47  },
+        { name: 'Turbo S',      p50: 230000, sample: 18  },
+        { name: 'Carrera RS',   p50: 280000, sample: 18  },
+        { name: 'GT2',          p50: 950000, sample: 6   },
+      ],
+      'porsche/911 (992)': [
+        { name: 'Carrera',      p50: 105000, sample: 187 },
+        { name: 'Carrera S',    p50: 125000, sample: 142 },
+        { name: 'Carrera 4S',   p50: 138000, sample: 98  },
+        { name: 'GTS',          p50: 165000, sample: 67  },
+        { name: 'Turbo',        p50: 195000, sample: 54  },
+        { name: 'Turbo S',      p50: 230000, sample: 47  },
+        { name: 'GT3',          p50: 215000, sample: 73  },
+        { name: 'GT3 RS',       p50: 320000, sample: 28  },
+      ],
+      'porsche/911 (991)': [
+        { name: 'Carrera',      p50: 68000,  sample: 234 },
+        { name: 'Carrera S',    p50: 82000,  sample: 198 },
+        { name: 'Carrera 4S',   p50: 92000,  sample: 142 },
+        { name: 'GTS',          p50: 105000, sample: 89  },
+        { name: 'Turbo',        p50: 125000, sample: 76  },
+        { name: 'Turbo S',      p50: 145000, sample: 89  },
+        { name: 'GT3',          p50: 165000, sample: 67  },
+        { name: 'GT3 RS',       p50: 245000, sample: 34  },
+      ],
+      'ferrari/f40': [
+        { name: 'F40 standard', p50: 2100000, sample: 8 },
+        { name: 'F40 LM',       p50: 6500000, sample: 2 },
+        { name: 'F40 GTE',      p50: 4200000, sample: 1 },
+      ],
+      'lamborghini/aventador': [
+        { name: 'LP700-4',      p50: 270000, sample: 87 },
+        { name: 'LP720-4 50°',  p50: 380000, sample: 12 },
+        { name: 'LP750-4 SV',   p50: 420000, sample: 38 },
+        { name: 'SVJ',          p50: 580000, sample: 18 },
+        { name: 'Ultimae',      p50: 650000, sample: 9  },
+      ],
+      'bmw/m3 e30': [
+        { name: 'M3 (cataly.)', p50: 55000,  sample: 67 },
+        { name: 'M3 EVO I',     p50: 82000,  sample: 18 },
+        { name: 'M3 EVO II',    p50: 115000, sample: 12 },
+        { name: 'M3 Sport EVO', p50: 215000, sample: 8  },
+      ],
+      'mercedes/300sl gullwing': [
+        { name: 'Gullwing',     p50: 1400000, sample: 6 },
+        { name: 'Roadster',     p50: 1100000, sample: 4 },
+        { name: 'Alloy body',   p50: 6500000, sample: 1 },
+      ],
+    };
+
+    function renderVersions(marque, modele) {
+      const block = document.getElementById('versions-block');
+      const grid = document.getElementById('versions-grid');
+      const subtitle = document.getElementById('versions-subtitle');
+
+      // Chercher la base de génération (sans le variant)
+      const fullKey = `${marque}/${modele}`;
+      let versionsKey = null;
+
+      // Tentative 1 : match exact
+      if (VERSIONS_BY_MODEL[fullKey]) {
+        versionsKey = fullKey;
+      } else {
+        // Tentative 2 : match partiel sur la génération (ex: 'porsche/911 (993) turbo s' → 'porsche/911 (993)')
+        for (const key of Object.keys(VERSIONS_BY_MODEL)) {
+          if (fullKey.startsWith(key)) {
+            versionsKey = key;
+            break;
+          }
+        }
+      }
+
+      if (!versionsKey) {
+        // Pas de versions connues pour ce modèle — masquer le bloc
+        block.style.display = 'none';
+        return;
+      }
+
+      const versions = VERSIONS_BY_MODEL[versionsKey];
+      const genName = versionsKey.split('/')[1];
+      subtitle.textContent = `Génération ${capitalize(genName)} · ${versions.length} variantes référencées`;
+
+      // Détecter le variant actuel pour highlight
+      const currentVariant = modele.replace(versionsKey.split('/')[1], '').trim().toLowerCase();
+
+      grid.innerHTML = versions.map(v => {
+        const isCurrent = currentVariant && v.name.toLowerCase().includes(currentVariant);
+        return `
+          <div class="version-card ${isCurrent ? 'current' : ''}">
+            <p class="name">${v.name}</p>
+            <p class="price">${fmtEUR(v.p50)}</p>
+            <p class="sample">${v.sample} specimens</p>
+          </div>
+        `;
+      }).join('');
+
+      block.style.display = 'block';
     }
 
     // ═══════════════════════════════════════════════════════════════
@@ -1335,7 +3101,7 @@
     }
 
     function displaySinguliere(marque, modele) {
-      // PASSE 4 — cas limite segment <10 specimens
+      // PASSE 4 — cas limite segment <10 specimens + suggestion voisin
       const chip = document.getElementById('chip-cote');
       const chipText = document.getElementById('chip-text');
       chip.className = 'chip-cote singuliere';
@@ -1359,6 +3125,73 @@
       document.getElementById('drawer-p75').textContent = '—';
       document.getElementById('drawer-sample-count').textContent = '< 5 specimens';
       document.getElementById('drawer-sample-sales').textContent = 'aucune vente récente';
+
+      // Masquer sparkline + versions + breakdown en mode singulière
+      document.getElementById('sparkline-block').style.display = 'none';
+      document.getElementById('versions-block').style.display = 'none';
+      document.getElementById('breakdown-block').style.display = 'none';
+
+      // PASSE 4 — Afficher suggestion segment voisin
+      const neighbor = findNeighborSegment(marque, modele);
+      if (neighbor) {
+        const box = document.getElementById('suggestion-box');
+        const [nMarque, nModele] = neighbor.key.split('/');
+
+        document.getElementById('suggestion-title').innerHTML =
+          `<em>Pas assez de comparables pour ${capitalize(marque)} ${capitalize(modele)}</em>`;
+        document.getElementById('suggestion-text').innerHTML =
+          `On a recensé <strong>moins de 5 specimens actifs</strong> sur cette voiture exacte.
+           Pour donner un repère, voici la cote du segment voisin le plus proche dans notre base —
+           à prendre comme <strong>indicatif uniquement</strong>, pas comme référence assurance.`;
+
+        document.getElementById('suggestion-ref-name').textContent =
+          `${capitalize(nMarque)} ${capitalize(nModele)}`;
+        document.getElementById('suggestion-ref-meta').textContent =
+          `${neighbor.segment.sample} specimens · ${neighbor.segment.sales} ventes 12 mois`;
+        document.getElementById('suggestion-ref-price').textContent = fmtEUR(neighbor.segment.p50);
+
+        box.style.display = 'block';
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // LINEAGE EXCEPTIONNEL — PASSE 4 (valuation curatée)
+    // ═══════════════════════════════════════════════════════════════
+    function displayLineageExceptionnel(marque, modele, lineageData) {
+      const chip = document.getElementById('chip-cote');
+      const chipText = document.getElementById('chip-text');
+      chip.className = 'chip-cote au-prix';
+      chipText.textContent = 'Valuation curatée';
+
+      // Category chip lineage
+      const catChip = document.getElementById('category-chip');
+      const catText = document.getElementById('category-chip-text');
+      catChip.className = 'category-chip lineage';
+      catText.textContent = 'Lineage exceptionnel · curaté';
+      catChip.style.display = 'inline-flex';
+
+      document.getElementById('result-vehicle').innerHTML = `<em>${capitalize(marque)} ${capitalize(modele)}</em>`;
+      document.getElementById('result-range').textContent = 'Voir détail ci-dessous';
+      document.getElementById('result-median').textContent = '—';
+      document.getElementById('result-sample').textContent = 'Estimation experte';
+
+      // Masquer comparatif (pas pertinent)
+      document.getElementById('cmp-carnet').textContent = 'voir détail';
+      document.getElementById('cmp-argus').textContent = 'n/a';
+      document.getElementById('cmp-annonces').textContent = 'n/a';
+      document.getElementById('insurance-value').textContent = 'voir détail';
+
+      // Masquer sparkline (pas de séries historiques pour lineage)
+      document.getElementById('sparkline-block').style.display = 'none';
+      document.getElementById('versions-block').style.display = 'none';
+      document.getElementById('breakdown-block').style.display = 'none';
+
+      // Afficher la lineage box
+      const box = document.getElementById('lineage-box');
+      document.getElementById('lineage-quote').textContent = lineageData.quote;
+      document.getElementById('lineage-signature').innerHTML =
+        `Estimation par <strong>${lineageData.expert}</strong> · signée on-chain <code style="font-family: var(--mono); font-size: 10px;">${lineageData.signature}</code> · <a href="#" style="color: var(--orange-polo);">voir la justification publique</a>`;
+      box.style.display = 'block';
     }
 
     // ═══════════════════════════════════════════════════════════════
@@ -1414,6 +3247,203 @@
     // Export PDF (mock)
     document.getElementById('export-pdf').addEventListener('click', () => {
       alert('Export PDF — à brancher avec jsPDF ou similaire.');
+    });
+
+    // ═══════════════════════════════════════════════════════════════
+    // PASSE 5 — SUPABASE LOADER + CACHE + FALLBACK
+    // ═══════════════════════════════════════════════════════════════
+
+    // Headers Supabase REST API
+    function supabaseHeaders() {
+      return {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      };
+    }
+
+    // Fetch d'une table Supabase
+    async function fetchTable(table, queryParams = '') {
+      const url = `${SUPABASE_URL}/rest/v1/${table}?select=*${queryParams ? '&' + queryParams : ''}`;
+      const res = await fetch(url, { headers: supabaseHeaders() });
+      if (!res.ok) throw new Error(`Supabase ${table}: HTTP ${res.status}`);
+      return await res.json();
+    }
+
+    // Cache LocalStorage
+    function loadFromCache() {
+      try {
+        const raw = localStorage.getItem(CACHE_KEY);
+        if (!raw) return null;
+        const cached = JSON.parse(raw);
+        if (!cached.timestamp) return null;
+        const age = Date.now() - cached.timestamp;
+        if (age > CACHE_TTL_MS) return null;
+        return cached;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function saveToCache(data) {
+      try {
+        localStorage.setItem(CACHE_KEY, JSON.stringify({
+          timestamp: Date.now(),
+          ...data
+        }));
+      } catch (e) {
+        console.warn('[CARNET] LocalStorage cache failed:', e);
+      }
+    }
+
+    // Transformation Supabase rows → format JS attendu
+    function transformSegments(rows) {
+      const segments = {};
+      const tuners = {};
+      for (const row of rows) {
+        const obj = {
+          p25: row.p25,
+          p50: row.p50,
+          p75: row.p75,
+          sample: row.sample,
+          sales: row.sales
+        };
+        if (row.category === 'tuner') {
+          obj.tuner = row.tuner_brand;
+          tuners[row.segment_key] = obj;
+        } else if (row.category === 'restomod') {
+          obj.restomod = row.restomod_brand;
+          tuners[row.segment_key] = obj;
+        } else {
+          segments[row.segment_key] = obj;
+        }
+      }
+      return { segments, tuners };
+    }
+
+    function transformVersions(rows) {
+      const byParent = {};
+      for (const row of rows) {
+        if (!byParent[row.parent_segment_key]) byParent[row.parent_segment_key] = [];
+        byParent[row.parent_segment_key].push({
+          name: row.variant_name,
+          p50: row.p50,
+          sample: row.sample,
+          order: row.display_order
+        });
+      }
+      // Sort par display_order
+      for (const key of Object.keys(byParent)) {
+        byParent[key].sort((a, b) => a.order - b.order);
+      }
+      return byParent;
+    }
+
+    function transformLineage(rows) {
+      const lineage = {};
+      for (const row of rows) {
+        lineage[row.lineage_key] = {
+          quote: row.quote,
+          expert: row.expert,
+          signature: row.signature,
+          value: row.estimated_value,
+          url: row.justification_url
+        };
+      }
+      return lineage;
+    }
+
+    // Loader principal — appelé au load
+    async function loadCoteData() {
+      const startTs = Date.now();
+
+      // 1. Try cache first (instant)
+      const cached = loadFromCache();
+      if (cached && cached.segments && Object.keys(cached.segments).length > 0) {
+        COTE_SEGMENTS = cached.segments;
+        TUNERS_SEGMENTS = cached.tuners || {};
+        VERSIONS_BY_MODEL = cached.versions || {};
+        LINEAGE_EXCEPTIONNEL = cached.lineage || {};
+        dataSource = 'cache';
+        dataUpdatedAt = new Date(cached.timestamp);
+        updateDataStatus();
+        console.log('[CARNET] Cote loaded from cache:', Object.keys(cached.segments).length, 'segments');
+      }
+
+      // 2. Try Supabase fetch (background refresh)
+      if (!SUPABASE_URL || SUPABASE_URL.includes('placeholder')) {
+        console.log('[CARNET] Supabase not configured, using mock data');
+        return;
+      }
+
+      try {
+        const [segments, versions, lineage] = await Promise.all([
+          fetchTable('cote_segments'),
+          fetchTable('cote_versions'),
+          fetchTable('cote_lineage')
+        ]);
+
+        if (segments.length === 0) {
+          console.warn('[CARNET] Supabase returned 0 segments, keeping mock');
+          return;
+        }
+
+        const { segments: segs, tuners: tuns } = transformSegments(segments);
+        const vers = transformVersions(versions);
+        const line = transformLineage(lineage);
+
+        // Override globals
+        COTE_SEGMENTS = segs;
+        TUNERS_SEGMENTS = tuns;
+        VERSIONS_BY_MODEL = vers;
+        LINEAGE_EXCEPTIONNEL = line;
+        dataSource = 'live';
+        dataUpdatedAt = new Date();
+
+        // Persist to cache
+        saveToCache({
+          segments: segs,
+          tuners: tuns,
+          versions: vers,
+          lineage: line
+        });
+
+        updateDataStatus();
+        console.log(`[CARNET] Cote loaded live from Supabase in ${Date.now() - startTs}ms:`,
+          Object.keys(segs).length, 'segments,',
+          Object.keys(tuns).length, 'tuners/restomods,',
+          Object.keys(vers).length, 'version groups,',
+          Object.keys(line).length, 'lineage entries');
+      } catch (err) {
+        console.warn('[CARNET] Supabase fetch failed, using cached/mock:', err.message);
+        // Fallback already in place (cache or mock)
+      }
+    }
+
+    // Indicateur visuel — affichage du statut data
+    function updateDataStatus() {
+      const el = document.getElementById('data-status');
+      if (!el) return;
+
+      if (dataSource === 'live') {
+        el.innerHTML = '<span class="status-dot live"></span>Données live · récupérées à l\'instant';
+        el.className = 'data-status live';
+      } else if (dataSource === 'cache') {
+        const ageMin = Math.floor((Date.now() - dataUpdatedAt.getTime()) / 60000);
+        const ageStr = ageMin < 60 ? `${ageMin} min` : `${Math.floor(ageMin / 60)}h`;
+        el.innerHTML = `<span class="status-dot cache"></span>Données en cache · ${ageStr}`;
+        el.className = 'data-status cache';
+      } else {
+        el.innerHTML = '<span class="status-dot mock"></span>Mode démonstration · données embarquées';
+        el.className = 'data-status mock';
+      }
+    }
+
+    // Trigger load au démarrage
+    document.addEventListener('DOMContentLoaded', () => {
+      loadCoteData();
+      updateDataStatus();
     });
   </script>
 
