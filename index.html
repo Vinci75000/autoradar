@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- 28 -->
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -8563,6 +8564,8 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 </style>
   <!-- v6.0 : Supabase JS SDK pour connexion live à carnet.life DB -->
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <!-- Carnet archetypes module (8 archétypes canonical + persistence localStorage carnet:v1:profiles) -->
+  <script src="carnet-archetypes.js"></script>
 </head>
 <body>
 <div class="app">
@@ -8585,6 +8588,51 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
       </button>
     </div>
   </header>
+
+  <!-- ===== TOP NAV ÉDITORIALE (Discover / Archétypes / 14·12·2026 / À propos) ===== -->
+  <style>
+    .editorial-nav{
+      display:flex;
+      align-items:center;
+      gap:21px;
+      padding:8px 16px;
+      background:var(--papier);
+      border-bottom:1px solid var(--gris-line);
+      overflow-x:auto;
+      -webkit-overflow-scrolling:touch;
+      scrollbar-width:none;
+      position:sticky;
+      top:48px;
+      z-index:40;
+    }
+    .editorial-nav::-webkit-scrollbar{display:none}
+    .editorial-nav a{
+      font-family:var(--mono);
+      font-size:11px;
+      font-weight:500;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+      color:var(--gris);
+      text-decoration:none;
+      white-space:nowrap;
+      padding:4px 0;
+      transition:color 200ms ease;
+    }
+    .editorial-nav a:hover{color:var(--encre)}
+    .editorial-nav a.featured{color:var(--orange-polo)}
+    .editorial-nav a.featured:hover{color:var(--encre)}
+    @media (max-width:380px){
+      .editorial-nav{gap:13px;padding:6px 13px}
+      .editorial-nav a{font-size:10px;letter-spacing:0.1em}
+    }
+  </style>
+  <nav class="editorial-nav" aria-label="Navigation éditoriale">
+    <a href="discover.html">Découvrir</a>
+    <a href="archetypes.html">Archétypes</a>
+    <a href="launch.html" class="featured">14·12·2026</a>
+    <a href="about.html">À propos</a>
+    <a href="assurance.html">Partenaires</a>
+  </nav>
 
   <!-- ===== MAIN SCROLLABLE ===== -->
   <main class="main">
@@ -10660,7 +10708,10 @@ const State = {
   encheresFilter: 'all',
   garage: GARAGE.slice(),
   listingsFilter: 'all',
-  listingsSearch: ''
+  listingsSearch: '',
+  // Sprint « Boucler la boucle Vendre » — intent de publication depuis vendre.html
+  // shape : { plan: 'premium-30'|'premium-60'|'premium-90', mode: 'listing'|'auction', amount: 17|28|42, ts: Date.now() } | null
+  pendingSaleIntent: null
 };
 
 // ===== SHEET API =====
@@ -10783,7 +10834,7 @@ function renderDiscoverSheet() {
         <li>Pas de tracking publicitaire.</li>
         <li>Pas de revente de données.</li>
         <li>Pas de simili-cote inflationniste.</li>
-        <li>Pas de commission cachée.</li>
+        <li>Pas de frais cachés &mdash; les contributions sont fixées et publiées par l'association.</li>
         <li>Pas de custody de tes fonds.</li>
         <li>Pas de KYC superflu.</li>
         <li>Pas de dividendes, ni de salaires.</li>
@@ -10858,10 +10909,40 @@ function renderDiscoverSheet() {
         <p>Pour le texte officiel complet (incluant la politique <em>Anti-Bribery & Corruption</em> de Ripple Labs Inc.), voir la documentation Ripple Europe.</p>
       </details>
 
+
+      <details class="discover-faq">
+        <summary>Quel est le modèle légal de CARNET&nbsp;?</summary>
+        <p>CARNET est un <strong>SaaS non-profit d’un genre nouveau</strong> &mdash; ni courtier, ni comparateur, ni intermédiaire.</p>
+        <p>Le XRP Ledger exécute les contrats automatiquement. CARNET ne touche pas aux transactions, ne porte pas le risque, ne détient pas tes fonds.</p>
+        <p>Les utilisateurs qui trouvent de la valeur dans l’infrastructure contribuent à l’association, au taux suggéré et publié &mdash; de bonne foi. Comme on soutient Wikipedia ou Let’s Encrypt.</p>
+        <p>Inscrit ORIAS par choix de qualité. Structuration juridique par <strong>Cabinet CSBC &mdash; Maître Salim Boufenara</strong>, partenaire juridique fondateur de l’association.</p>
+      </details>
+
       <details class="discover-faq">
         <summary>Comment aider autrement ?</summary>
         <p>Partage l\u2019app à des passionnés qui aiment les voitures autant que toi.<br><em>Embarque-les dans la tribu.</em></p>
       </details>
+
+
+      <div class="discover-divider"></div>
+
+      <div style="text-align:center;padding:var(--s-4) 0">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:.12em;
+                    color:var(--gris);text-transform:uppercase;margin-bottom:var(--s-3)">
+          Partenaire juridique fondateur
+        </div>
+        <div style="font-family:var(--editorial);font-style:italic;font-size:16px;
+                    color:var(--encre);margin-bottom:var(--s-2)">
+          Cabinet CSBC
+        </div>
+        <div style="font-family:var(--mono);font-size:9px;color:var(--gris);line-height:1.9">
+          Ma&icirc;tre Salim Boufenara<br>
+          1 rue de Sfax &mdash; 75116 Paris<br>
+          +33(0)1.45.00.01.40 &middot; Lun&ndash;Ven 10h&ndash;19h<br>
+          <a href="https://cabinet-csbc.fr" target="_blank" rel="noopener"
+             style="color:var(--orange-polo);text-decoration:none">cabinet-csbc.fr</a>
+        </div>
+      </div>
 
       <div class="discover-signature">
         <div class="discover-sig-line"></div>
@@ -11320,6 +11401,10 @@ function renderUserMenuSheet() {
         </div>
 
         <div class="user-menu-actions">
+          <a class="user-menu-item" href="archetypes.html" style="text-decoration:none;">
+            <span>Mes archétypes</span>
+            <span class="user-menu-chevron">→</span>
+          </a>
           <button class="user-menu-item" data-action="signOut">
             <span>Se déconnecter</span>
             <span class="user-menu-chevron">→</span>
@@ -14050,6 +14135,7 @@ const SaleListingFormState = {
   narrative: '',
   tunerName: '',
   tunerCategories: [],
+  plan: '', // 'premium-30' | 'premium-60' | 'premium-90' — pré-réglé depuis vendre.html
   _submitting: false
 };
 function resetSaleListingForm(){
@@ -14058,6 +14144,7 @@ function resetSaleListingForm(){
   SaleListingFormState.narrative = '';
   SaleListingFormState.tunerName = '';
   SaleListingFormState.tunerCategories = [];
+  SaleListingFormState.plan = '';
   SaleListingFormState._submitting = false;
 }
 function saleListingFormIsValid(){
@@ -14119,6 +14206,27 @@ const SALE_DURATIONS = [
   { id: '30', label: '30 jours' }
 ];
 const LISTING_DURATION_DAYS = 90;
+
+// Sprint « Boucler la boucle Vendre » — mapping plan annonce → durée + tarif paywall
+const LISTING_PLANS = {
+  'premium-30':   { days: 30, amount: 17, label: 'Premium 30 jours' },
+  'premium-60':   { days: 60, amount: 28, label: 'Premium 60 jours · mise en avant 7 jours' },
+  'premium-90':   { days: 90, amount: 42, label: 'Premium 90 jours · boost mensuel' },
+  'pro-standard': { days: 60, amount: 28, label: 'Pro standard' },
+  'pro':          { days: 90, amount: 42, label: 'Pro' }
+};
+function getListingDurationForPlan(plan){
+  if(plan && LISTING_PLANS[plan]) return LISTING_PLANS[plan].days;
+  return LISTING_DURATION_DAYS; // fallback historique
+}
+function getListingAmountForPlan(plan){
+  if(plan && LISTING_PLANS[plan]) return LISTING_PLANS[plan].amount;
+  return null;
+}
+function getListingLabelForPlan(plan){
+  if(plan && LISTING_PLANS[plan]) return LISTING_PLANS[plan].label;
+  return null;
+}
 
 // Helpers
 function fmtSaleDate(ts){
@@ -16815,10 +16923,17 @@ function renderSaleListingFormSheet(carId){
     resetSaleListingForm();
     SaleListingFormState.carId = carId;
     SaleListingFormState.askingPrice = String(car.cote || car.paidPrice || '');
+    // Sprint Boucler la boucle Vendre : consommer le plan du pendingSaleIntent
+    if(State.pendingSaleIntent && State.pendingSaleIntent.mode === 'listing' && State.pendingSaleIntent.plan){
+      SaleListingFormState.plan = State.pendingSaleIntent.plan;
+    }
   }
   const f = SaleListingFormState;
   const valid = saleListingFormIsValid();
-  const endDate = new Date(Date.now() + LISTING_DURATION_DAYS * 86400000);
+  const planDays = getListingDurationForPlan(f.plan);
+  const planLabel = getListingLabelForPlan(f.plan);
+  const planAmount = getListingAmountForPlan(f.plan);
+  const endDate = new Date(Date.now() + planDays * 86400000);
   const endLabel = endDate.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
   const photosReady = (car.photos || []).length >= 3;
   const docsReady = (car.docs || []).length >= 1;
@@ -16828,7 +16943,7 @@ function renderSaleListingFormSheet(carId){
     </div>
     <div class="sheet-header">
       <div>
-        <div class="sheet-tag">ANNONCE · 90 JOURS</div>
+        <div class="sheet-tag">ANNONCE · ${planDays} JOURS</div>
         <h2 class="sheet-title">${esc(car.brand)} ${esc(car.model)}</h2>
         <div style="font-family:var(--editorial);font-style:italic;font-size:var(--t-sm);color:var(--gris);margin-top:var(--s-1)">Une annonce simple. Tu reçois les contacts intéressés.</div>
       </div>
@@ -16836,6 +16951,12 @@ function renderSaleListingFormSheet(carId){
     </div>
     <div class="sheet-content">
       <div class="garage-form">
+        ${planLabel && planAmount ? `
+        <div class="sale-plan-banner" style="border:1px solid var(--encre);background:var(--papier);padding:var(--s-3);margin-bottom:var(--s-4);border-radius:2px">
+          <div style="font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--gris);text-transform:uppercase">Plan choisi sur la page Vendre</div>
+          <div style="font-family:var(--editorial);font-style:italic;font-size:var(--t-md);color:var(--encre);margin-top:4px"><strong style="font-style:normal;font-family:var(--sans)">${esc(planLabel)}</strong> · ${esc(planAmount)} €</div>
+          <div style="font-family:var(--editorial);font-style:italic;font-size:11px;color:var(--gris);margin-top:6px;line-height:1.5">Réglé à la publication. Tu peux changer de plan en revenant sur la page Vendre.</div>
+        </div>` : ''}
         <div class="sheet-section-label">PRIX</div>
         <div class="garage-form-row">
           <label class="garage-form-label">Prix demandé (€)<span class="required">·</span></label>
@@ -16870,13 +16991,13 @@ function renderSaleListingFormSheet(carId){
 
         <div class="sheet-section-label">DURÉE</div>
         <div class="sale-duration-info">
-          Annonce active jusqu'au <strong>${esc(endLabel)}</strong> (90 jours).<br>
+          Annonce active jusqu'au <strong>${esc(endLabel)}</strong> (${planDays} jours).<br>
           Si elle n'a pas trouvé preneur, CARNET te propose la transition en enchère.
         </div>
       </div>
     </div>
     <div class="sheet-actions">
-      <button class="sheet-btn primary full" data-action="saleListingFormSubmit" ${valid ? '' : 'disabled'}>${valid ? "Publier l\u2019annonce" : 'Prix demandé requis'}</button>
+      <button class="sheet-btn primary full" data-action="saleListingFormSubmit" ${valid ? '' : 'disabled'}>${valid ? (planAmount ? `Publier · ${planAmount} €` : "Publier l\u2019annonce") : 'Prix demandé requis'}</button>
     </div>
   `;
 }
@@ -17933,6 +18054,12 @@ const Actions = {
     resetGarageForm();
     Sheet.open('addGarage');
   },
+  clearPendingSaleIntent(){
+    // Sprint « Boucler la boucle Vendre » — l'user annule l'intent de publication.
+    State.pendingSaleIntent = null;
+    if(State.activeTab === 'garage' && typeof renderGaragePage === 'function') renderGaragePage();
+    showToastFloat('Intention de publication annulée.');
+  },
   garageFormChange(field, value){
     if(!field || typeof GarageFormState[field] === 'undefined') return;
     GarageFormState[field] = String(value || '');
@@ -18136,6 +18263,19 @@ const Actions = {
       // Toast flottant non-bloquant
       showToastFloat(`« ${newCar.brand} ${newCar.model} » ajoutée au Garage.`);
       resetGarageForm();
+      // Sprint Boucler la boucle Vendre : si l'user est arrivé depuis vendre.html
+      // avec un intent de publication, on enchaîne directement sur le form approprié
+      if(State.pendingSaleIntent){
+        const intent = State.pendingSaleIntent;
+        setTimeout(() => {
+          if(intent.mode === 'auction'){
+            Sheet.open('saleAuctionForm', newCar.id);
+          } else {
+            // listing par défaut, plan déjà attaché côté renderSaleListingFormSheet
+            Sheet.open('saleListingForm', newCar.id);
+          }
+        }, 600);
+      }
     }, 340);
     } catch(err) {
       GarageFormState._submitting = false;
@@ -18454,6 +18594,13 @@ const Actions = {
   listForSale(id){
     const c = (State.garage || []).find(x => x.id === id);
     if(!c) return;
+    // Sprint Boucler la boucle Vendre : si l'user arrive avec un intent
+    // de publication, on saute le picker et on ouvre directement le bon form.
+    if(State.pendingSaleIntent){
+      if(State.pendingSaleIntent.mode === 'auction') Sheet.open('saleAuctionForm', id);
+      else Sheet.open('saleListingForm', id);
+      return;
+    }
     Sheet.open('listForSale', id);
   },
   openSoldDetail(id){
@@ -18743,11 +18890,14 @@ const Actions = {
     if(idx === -1){ resetSaleListingForm(); Sheet.close(); return; }
     const car = State.garage[idx];
     const now = Date.now();
+    const planDays = getListingDurationForPlan(f.plan);
     car.saleStatus = 'listing';
     car.saleData = {
       mode: 'listing',
       startedAt: now,
-      expiresAt: now + LISTING_DURATION_DAYS * 86400000,
+      expiresAt: now + planDays * 86400000,
+      plan: f.plan || null,
+      durationDays: planDays,
       askingPrice: parseInt(f.askingPrice, 10) || 0,
       narrative: f.narrative.trim() || '',
       views: 0,
@@ -18760,11 +18910,17 @@ const Actions = {
     State.garage[idx] = car;
     if(!safePersistGarage()){ SaleListingFormState._submitting = false; return; }
     const carCopy = car;
+    // Consommer le pendingSaleIntent une fois la publication faite
+    if(State.pendingSaleIntent){ State.pendingSaleIntent = null; }
     Sheet.close();
     setTimeout(() => {
       resetSaleListingForm();
       if(State.activeTab === 'garage') renderGaragePage();
-      showToastFloat(`Annonce publiée pour « ${carCopy.brand} ${carCopy.model} » \u00b7 90 jours d\u2019exposition.`);
+      const planLabel = getListingLabelForPlan(carCopy.saleData.plan);
+      const toastMsg = planLabel
+        ? `Annonce publiée pour « ${carCopy.brand} ${carCopy.model} » · ${planLabel}.`
+        : `Annonce publiée pour « ${carCopy.brand} ${carCopy.model} » · ${planDays} jours d\u2019exposition.`;
+      showToastFloat(toastMsg);
     }, 340);
   },
   saleAuctionFormChange(field, value){
@@ -19627,6 +19783,29 @@ function renderGarageDeadlinesBlock(){
   </div>`;
 }
 
+function renderPendingSaleIntentBanner(){
+  // Sprint « Boucler la boucle Vendre » — banner affiché quand l'user arrive
+  // depuis vendre.html avec une intention de publication.
+  const intent = State.pendingSaleIntent;
+  if(!intent) return '';
+  const isAuction = intent.mode === 'auction';
+  const tag = isAuction ? 'ENCHÈRE CARNET' : 'ANNONCE PREMIUM';
+  const headline = isAuction
+    ? 'Tu veux la mettre aux enchères.'
+    : `Tu veux la publier en ${intent.label}.`;
+  const sub = isAuction
+    ? 'Commission 8,8 % à la vente · aucun frais d\u2019entrée. Choisis la voiture ou ajoutes-en une.'
+    : `${intent.amount} € réglés à la publication. Choisis la voiture à publier ou ajoutes-en une nouvelle.`;
+  return `
+    <div class="pending-sale-banner" style="border:1px solid var(--encre);background:var(--orange-polo);color:var(--papier);padding:var(--s-3) var(--s-4);margin-bottom:var(--s-4);border-radius:2px;position:relative">
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--papier);opacity:.85">${esc(tag)}</div>
+      <div style="font-family:var(--display);font-style:italic;font-size:var(--t-lg);color:var(--papier);margin-top:6px;line-height:1.25">${esc(headline)}</div>
+      <div style="font-family:var(--editorial);font-style:italic;font-size:var(--t-sm);color:var(--papier);opacity:.92;margin-top:8px;line-height:1.5">${esc(sub)}</div>
+      <button class="pending-sale-banner-close" data-action="clearPendingSaleIntent" aria-label="Annuler l'intention" style="position:absolute;top:8px;right:8px;background:transparent;border:none;color:var(--papier);font-size:22px;line-height:1;cursor:pointer;opacity:.8;padding:4px 8px">×</button>
+    </div>
+  `;
+}
+
 function renderGaragePage(){
   const m = document.querySelector('main.main');
   if(!m) return;
@@ -19654,7 +19833,7 @@ function renderGaragePage(){
 
   let body;
   if(garage.length === 0 && wishlistCars.length === 0){
-    body = renderProfileOnboardingBanner() + renderEmptyState({
+    body = renderPendingSaleIntentBanner() + renderProfileOnboardingBanner() + renderEmptyState({
       title: 'Garage à remplir',
       text: "Entre ta première voiture. Suivi de cote, entretien, photos, factures — tout reste là, accessible. Plus tard, fouille annonces et enchères pour étoffer, ou prépare une revente depuis CARNET.",
       cta: { label: '+ Ajouter ma première voiture', action: 'openAddGarage', primary: true }
@@ -19710,6 +19889,7 @@ function renderGaragePage(){
     ` : '';
 
     body = `
+      ${renderPendingSaleIntentBanner()}
       <div class="garage-summary">
         <div class="garage-summary-label">VALEUR ESTIM\u00c9E \u00b7 COTE CARNET</div>
         <div class="garage-summary-value">${esc(fmtPrice(totalValue))}</div>
@@ -20175,6 +20355,41 @@ function init(){
   });
   // Moteur d'auto-transition annonce → enchère
   const transitions = checkSaleTransitions();
+
+  // === Sprint « Boucler la boucle Vendre » : routing URL params ===
+  // vendre.html → /?tab=garage&plan=premium-30  → ouvre Garage avec intent de publication
+  // vendre.html → /?tab=garage&mode=enchere     → ouvre Garage avec intent d'enchère
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const requestedTab = urlParams.get('tab');
+    const requestedPlan = urlParams.get('plan');
+    const requestedMode = urlParams.get('mode');
+
+    if(requestedTab && ['affut','annonces','encheres','garage'].includes(requestedTab)){
+      State.activeTab = requestedTab;
+    }
+    if(requestedPlan && LISTING_PLANS[requestedPlan]){
+      State.pendingSaleIntent = {
+        plan: requestedPlan,
+        mode: 'listing',
+        amount: LISTING_PLANS[requestedPlan].amount,
+        label: LISTING_PLANS[requestedPlan].label,
+        ts: Date.now()
+      };
+    } else if(requestedMode === 'enchere'){
+      State.pendingSaleIntent = {
+        plan: null,
+        mode: 'auction',
+        amount: null,
+        label: 'Enchère · commission 8,8 %',
+        ts: Date.now()
+      };
+    }
+    // URL propre après lecture
+    if(urlParams.has('tab') || urlParams.has('plan') || urlParams.has('mode')){
+      try { window.history.replaceState({}, '', window.location.pathname); } catch(_){}
+    }
+  } catch(e){ /* no-op : on ne casse pas l'init si URLSearchParams indisponible */ }
 
   renderAll();
   captureAffutSnapshot();
