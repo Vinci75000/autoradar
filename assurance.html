@@ -1,0 +1,3047 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>CARNET · Assurance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@1,6..96,400;1,6..96,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+/* ═══════════════════════════════════════════════════════════════════
+   CARNET · Assurance · charte v8 canonical
+   ───────────────────────────────────────────────────────────────────
+   LOGIQUE DE CONSTRUCTION 3·6·9 — un organisme à deux faces, énergie
+   en boucle fermée : pilote (3·UX) → moteur (6·Function) → assureur
+   (9·Web3) → moteur → pilote. Rien ne stagne, tout circule.
+   ═══════════════════════════════════════════════════════════════════ */
+:root{
+  --encre:#1a1410; --encre-soft:#4a3d33;
+  --papier:#faf6ef; --papier-soft:#f3ede1; --papier-deep:#ebe3d3; --papier-bright:#fdf9f2;
+  --orange-polo:#E85A1F; --orange-soft:rgba(232,90,31,.08); --orange-line:rgba(232,90,31,.28);
+  --vert-anglais:#1F4D2F; --vert-soft:rgba(31,77,47,.09); --vert-line:rgba(31,77,47,.28);
+  --gris:#6b5d4f; --gris-line:rgba(26,20,16,.12); --gris-line-soft:rgba(26,20,16,.07);
+  --ambre:#9a7b32; --ambre-soft:rgba(154,123,50,.10);
+  --display:'Bodoni Moda','Cormorant Garamond',Georgia,serif;
+  --editorial:'Cormorant Garamond','EB Garamond',Georgia,serif;
+  --mono:'DM Mono',ui-monospace,monospace;
+  --s-1:3px; --s-2:5px; --s-3:8px; --s-4:13px; --s-5:21px; --s-6:34px; --s-7:55px; --s-8:89px;
+  --r:2px;
+}
+*,*::before,*::after{box-sizing:border-box;}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important;}}
+html{-webkit-text-size-adjust:100%;}
+body{margin:0;background:var(--papier);color:var(--encre);font-family:var(--editorial);
+  font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+::selection{background:var(--orange-soft);color:var(--encre);}
+button{font:inherit;color:inherit;cursor:pointer;border:none;background:none;-webkit-tap-highlight-color:transparent;}
+input{font:inherit;color:inherit;}
+
+/* ── App shell ── */
+.app{max-width:480px;margin:0 auto;min-height:100vh;background:var(--papier);
+  display:flex;flex-direction:column;position:relative;}
+@media(min-width:520px){.app{border-left:1px solid var(--gris-line);border-right:1px solid var(--gris-line);}}
+
+/* ── Header ── */
+.hdr{padding:var(--s-5) var(--s-5) var(--s-4);border-bottom:1px solid var(--gris-line);
+  position:sticky;top:0;background:var(--papier);z-index:20;}
+.hdr-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s-4);}
+.wordmark{font-family:var(--display);font-style:italic;font-weight:500;font-size:25px;
+  line-height:1;letter-spacing:-.02em;display:inline-flex;align-items:baseline;gap:6px;}
+.dot{display:inline-block;width:7px;height:7px;background:var(--orange-polo);border-radius:var(--r);flex-shrink:0;}
+.hdr-sub{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--gris);}
+
+/* ════ LE DASHBOARD-WIDGET — profondeur de lecture 3·6·9 ════
+   replié : 3 KPI en widget visuel · déplié : les 9, vue complète */
+.dashboard{margin-top:var(--s-4);}
+
+/* ── widget replié : 3 cellules, une sparkline chacune ── */
+.dash-widget{display:flex;gap:1px;background:var(--gris-line);border:1px solid var(--gris-line);
+  border-radius:var(--r);overflow:hidden;}
+.dash-cell{flex:1;background:var(--papier-soft);padding:var(--s-4) var(--s-3) var(--s-3);
+  display:flex;flex-direction:column;align-items:center;gap:3px;min-width:0;
+  transition:background .15s;cursor:pointer;text-align:center;position:relative;}
+.dash-cell:hover{background:var(--papier-bright);}
+.dash-cell.accent{background:var(--orange-soft);}
+.dash-cell.good{background:var(--vert-soft);}
+.dash-cell-label{font-family:var(--mono);font-size:7px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--gris);line-height:1;margin-bottom:2px;}
+.dash-cell-value{font-family:var(--display);font-style:italic;font-weight:500;font-size:20px;
+  line-height:1;color:var(--encre);white-space:nowrap;margin-top:2px;}
+.dash-cell.accent .dash-cell-value{color:var(--orange-polo);}
+.dash-cell.good .dash-cell-value{color:var(--vert-anglais);}
+.dash-cell-viz{height:44px;display:flex;align-items:center;justify-content:center;width:100%;}
+.dash-cell-viz svg{display:block;}
+
+/* ── sparkline (assureur) ── */
+.spark-line{fill:none;stroke:var(--encre);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;}
+.spark-line.orange{stroke:var(--orange-polo);}
+.spark-line.green{stroke:var(--vert-anglais);}
+.spark-area{opacity:.10;}
+.spark-area.orange{fill:var(--orange-polo);}
+.spark-area.green{fill:var(--vert-anglais);}
+.spark-area.encre{fill:var(--encre);}
+.spark-dot{r:1.9;}
+.spark-dot.orange{fill:var(--orange-polo);}
+.spark-dot.green{fill:var(--vert-anglais);}
+.spark-dot.encre{fill:var(--encre);}
+
+/* ── la poignée de dépliage ── */
+.dash-expand{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;
+  padding:var(--s-2) 0;margin-top:1px;background:var(--papier-soft);
+  border:1px solid var(--gris-line);border-top:none;border-radius:0 0 var(--r) var(--r);
+  font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--gris);transition:background .15s,color .15s;}
+.dash-expand:hover{background:var(--papier-bright);color:var(--encre);}
+.dash-expand svg{transition:transform .3s ease;}
+.dash-expand.open svg{transform:rotate(180deg);}
+
+/* ── vue complète dépliée : 3 blocs de 3 ── */
+.dash-full{margin-top:1px;border:1px solid var(--gris-line);border-top:none;
+  border-radius:0 0 var(--r) var(--r);background:var(--papier-bright);overflow:hidden;
+  animation:dashopen .35s cubic-bezier(.4,0,.2,1) both;}
+@keyframes dashopen{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
+.dash-block{border-top:1px solid var(--gris-line-soft);}
+.dash-block:first-child{border-top:none;}
+.dash-block-head{display:flex;align-items:baseline;gap:var(--s-3);padding:var(--s-3) var(--s-4) var(--s-2);}
+.dash-block-dot{width:6px;height:6px;border-radius:var(--r);flex-shrink:0;}
+.dash-block-dot.b1{background:var(--orange-polo);}
+.dash-block-dot.b2{background:var(--encre);}
+.dash-block-dot.b3{background:var(--vert-anglais);}
+.dash-block-title{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--gris);}
+.dash-rows{padding:0 var(--s-4) var(--s-3);}
+.dash-row{display:flex;align-items:center;gap:var(--s-3);padding:var(--s-3) 0;
+  border-bottom:1px solid var(--gris-line-soft);}
+.dash-row:last-child{border-bottom:none;}
+.dash-row-main{flex:1;min-width:0;}
+.dash-row-label{font-family:var(--editorial);font-style:italic;font-size:14px;color:var(--encre);}
+.dash-row-hint{font-family:var(--mono);font-size:9px;color:var(--gris);letter-spacing:.02em;margin-top:1px;}
+.dash-row-viz{width:64px;height:24px;flex-shrink:0;}
+.dash-row-value{font-family:var(--display);font-style:italic;font-weight:500;font-size:19px;
+  color:var(--encre);white-space:nowrap;flex-shrink:0;min-width:54px;text-align:right;}
+.dash-row-trend{font-family:var(--mono);font-size:9px;flex-shrink:0;min-width:34px;text-align:right;}
+.dash-row-trend.up{color:var(--vert-anglais);}
+.dash-row-trend.down{color:var(--orange-polo);}
+.dash-row-trend.flat{color:var(--gris);}
+.dash-full-foot{padding:var(--s-3) var(--s-4);border-top:1px solid var(--gris-line-soft);
+  font-family:var(--mono);font-size:9px;letter-spacing:.04em;color:var(--gris);line-height:1.6;text-align:center;}
+
+/* ── export data — la donnée sort, exploitable par leurs experts ── */
+.dash-export{border-top:1px solid var(--gris-line-soft);padding:var(--s-3) var(--s-4) var(--s-4);}
+.dash-export-head{display:flex;align-items:baseline;gap:var(--s-2);margin-bottom:var(--s-3);}
+.dash-export-title{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--gris);}
+.dash-export-hint{font-family:var(--editorial);font-style:italic;font-size:11px;color:var(--gris);}
+.dash-export-row{display:flex;gap:var(--s-2);}
+.export-btn{flex:1;display:flex;flex-direction:column;align-items:flex-start;gap:2px;
+  background:var(--papier-soft);border:1px solid var(--gris-line);border-radius:var(--r);
+  padding:var(--s-3);cursor:pointer;transition:background .15s,border-color .15s;text-align:left;}
+.export-btn:hover{background:var(--papier-bright);border-color:var(--encre);}
+.export-btn-fmt{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--encre);
+  display:flex;align-items:center;gap:5px;}
+.export-btn-fmt svg{width:11px;height:11px;}
+.export-btn-desc{font-family:var(--editorial);font-style:italic;font-size:10px;color:var(--gris);line-height:1.3;}
+
+/* ── Mode switch ── */
+.mode-switch{display:flex;background:var(--papier-bright);border:1px solid var(--gris-line);
+  border-radius:var(--r);padding:3px;gap:3px;margin-top:var(--s-4);}
+.mode-btn{flex:1;padding:var(--s-3);font-family:var(--mono);font-size:10px;font-weight:500;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--gris);border-radius:var(--r);
+  transition:background .2s,color .2s;text-align:center;}
+.mode-btn.on{background:var(--encre);color:var(--papier);}
+
+/* ── Layout ── */
+.view{flex:1;padding:var(--s-5) var(--s-5) 130px;}
+.eyebrow{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--gris);margin:0 0 var(--s-3);}
+h1,h2,h3{font-family:var(--display);font-style:italic;font-weight:500;color:var(--encre);
+  letter-spacing:-.01em;margin:0;}
+.h-big{font-size:30px;line-height:1.12;margin-bottom:var(--s-3);}
+.h-mid{font-size:22px;line-height:1.18;margin-bottom:var(--s-3);}
+.lede{font-family:var(--editorial);font-style:italic;font-weight:300;font-size:17px;
+  line-height:1.45;color:var(--encre-soft);margin:0 0 var(--s-5);}
+.muted{color:var(--gris);}
+.divider{border:none;border-top:1px solid var(--gris-line);margin:var(--s-6) 0;}
+.section-gap{margin-top:var(--s-6);}
+
+/* ── Section header — un point de couleur + un titre, rien de plus ── */
+.passe-head{display:flex;align-items:center;gap:var(--s-3);margin-bottom:var(--s-5);
+  padding-bottom:var(--s-4);border-bottom:1px solid var(--gris-line);}
+.passe-orb{width:9px;height:9px;border-radius:var(--r);flex-shrink:0;}
+.passe-orb.l3{background:var(--orange-polo);}
+.passe-orb.l6{background:var(--encre);}
+.passe-orb.l9{background:var(--vert-anglais);}
+.passe-meta{flex:1;min-width:0;}
+.passe-title{font-family:var(--display);font-style:italic;font-weight:500;font-size:20px;line-height:1.15;}
+
+/* ── Cards ── */
+.card{background:var(--papier-bright);border:1px solid var(--gris-line);
+  border-radius:var(--r);padding:var(--s-5);margin-bottom:var(--s-4);}
+.card-tight{padding:var(--s-4);}
+
+/* ── Car card ── */
+.car-card{background:var(--papier-bright);border:1px solid var(--gris-line);
+  border-radius:var(--r);margin-bottom:var(--s-4);overflow:hidden;}
+.car-card-body{padding:var(--s-5);}
+.car-head{display:flex;justify-content:space-between;align-items:flex-start;gap:var(--s-4);}
+.car-brand{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gris);margin-bottom:var(--s-2);}
+.car-name{font-family:var(--display);font-style:italic;font-weight:500;font-size:23px;
+  line-height:1.1;margin-bottom:var(--s-2);}
+.car-meta{font-family:var(--editorial);font-style:italic;font-size:14px;color:var(--gris);}
+.car-value{font-family:var(--display);font-style:italic;font-weight:500;font-size:19px;white-space:nowrap;}
+.car-value-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--gris);text-align:right;margin-top:2px;}
+
+/* ── Pastille statut ── */
+.pastille{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;
+  font-weight:500;letter-spacing:.06em;padding:5px 9px;border-radius:var(--r);margin-top:var(--s-4);}
+.pastille::before{content:"";width:6px;height:6px;border-radius:var(--r);flex-shrink:0;}
+.pastille.repos{background:var(--vert-soft);color:var(--vert-anglais);}
+.pastille.repos::before{background:var(--vert-anglais);}
+.pastille.active{background:var(--orange-soft);color:var(--orange-polo);}
+.pastille.active::before{background:var(--orange-polo);}
+.pastille.pending{background:var(--ambre-soft);color:var(--ambre);}
+.pastille.pending::before{background:var(--ambre);}
+.pastille.none{background:var(--papier-soft);color:var(--gris);}
+.pastille.none::before{background:var(--gris);}
+
+.car-foot{border-top:1px solid var(--gris-line-soft);padding:var(--s-3) var(--s-5);
+  display:flex;justify-content:space-between;align-items:center;background:var(--papier-soft);gap:var(--s-3);}
+.car-foot-txt{font-family:var(--editorial);font-style:italic;font-size:13px;color:var(--gris);}
+.mini-cta{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--encre);display:inline-flex;align-items:center;gap:5px;
+  padding:6px 0;white-space:nowrap;flex-shrink:0;}
+.mini-cta:hover{color:var(--orange-polo);}
+
+/* ── Coverage rows ── */
+.cov-list{margin:var(--s-4) 0 0;}
+.cov-row{display:flex;justify-content:space-between;gap:var(--s-4);padding:var(--s-3) 0;
+  border-bottom:1px solid var(--gris-line-soft);}
+.cov-row:last-child{border-bottom:none;}
+.cov-name{font-family:var(--editorial);font-size:15px;color:var(--encre);flex-shrink:0;}
+.cov-val{font-family:var(--mono);font-size:11px;color:var(--encre-soft);text-align:right;line-height:1.5;}
+
+/* ── 6-block quote ── */
+.six-block{border:1px solid var(--gris-line);border-radius:var(--r);overflow:hidden;margin-bottom:var(--s-4);}
+.sb-row{display:flex;gap:var(--s-3);padding:var(--s-4);border-bottom:1px solid var(--gris-line-soft);
+  background:var(--papier-bright);}
+.sb-row:last-child{border-bottom:none;}
+.sb-n{font-family:var(--display);font-style:italic;font-weight:500;font-size:15px;color:var(--orange-polo);
+  flex-shrink:0;width:18px;}
+.sb-body{flex:1;min-width:0;}
+.sb-name{font-family:var(--editorial);font-style:italic;font-size:15px;color:var(--encre);}
+.sb-detail{font-family:var(--mono);font-size:10px;color:var(--gris);letter-spacing:.02em;margin-top:2px;line-height:1.5;}
+.sb-amount{font-family:var(--mono);font-size:11px;color:var(--encre);text-align:right;flex-shrink:0;white-space:nowrap;}
+
+/* ── CTA ── */
+.cta{display:flex;align-items:center;justify-content:center;gap:var(--s-3);width:100%;
+  padding:var(--s-4) var(--s-5);font-family:var(--mono);font-size:12px;font-weight:500;
+  letter-spacing:.12em;text-transform:uppercase;border-radius:var(--r);
+  border:1px solid var(--encre);transition:background .2s,color .2s,border-color .2s;}
+.cta-primary{background:var(--encre);color:var(--papier);}
+.cta-primary:hover{background:var(--orange-polo);border-color:var(--orange-polo);}
+.cta-primary .dot{background:var(--orange-polo);}
+.cta-primary:hover .dot{background:var(--papier);}
+.cta-ghost{background:transparent;color:var(--encre);border-color:var(--gris-line);}
+.cta-ghost:hover{border-color:var(--encre);}
+.cta-sos{background:var(--orange-polo);color:var(--papier);border-color:var(--orange-polo);}
+.cta-sos:hover{background:var(--encre);border-color:var(--encre);}
+.cta:disabled{opacity:.4;cursor:not-allowed;}
+.cta:disabled:hover{background:var(--encre);border-color:var(--encre);color:var(--papier);}
+.cta-ghost:disabled:hover{background:transparent;color:var(--encre);border-color:var(--gris-line);}
+.cta-mt{margin-top:var(--s-3);}
+
+/* ── Stepper (wizard) ── */
+.steps{display:flex;gap:var(--s-2);margin-bottom:var(--s-5);}
+.step-pip{flex:1;height:2px;background:var(--gris-line);border-radius:var(--r);transition:background .3s;}
+.step-pip.done{background:var(--orange-polo);}
+.step-pip.on{background:var(--encre);}
+
+/* ── Selectable rows ── */
+.opt-list{display:flex;flex-direction:column;border:1px solid var(--gris-line);border-radius:var(--r);
+  overflow:hidden;margin-bottom:var(--s-4);background:var(--papier-bright);}
+.opt-row{display:flex;align-items:center;gap:var(--s-4);padding:var(--s-4);width:100%;text-align:left;
+  border-bottom:1px solid var(--gris-line-soft);transition:background .15s;min-height:60px;}
+.opt-row:last-child{border-bottom:none;}
+.opt-row:hover{background:var(--papier-soft);}
+.opt-row.sel{background:var(--encre);color:var(--papier);}
+.opt-row.disabled{opacity:.4;cursor:not-allowed;}
+.opt-row.disabled:hover{background:var(--papier-bright);}
+.opt-main{flex:1;min-width:0;}
+.opt-title{font-family:var(--display);font-style:italic;font-weight:500;font-size:18px;line-height:1.15;margin-bottom:2px;}
+.opt-desc{font-family:var(--editorial);font-style:italic;font-size:13px;color:var(--gris);line-height:1.35;}
+.opt-row.sel .opt-desc{color:var(--papier-deep);}
+.opt-tick{width:16px;height:16px;color:var(--orange-polo);flex-shrink:0;opacity:0;}
+.opt-row.sel .opt-tick{opacity:1;color:var(--papier);}
+.opt-price{font-family:var(--mono);font-size:11px;color:var(--gris);flex-shrink:0;white-space:nowrap;}
+.opt-row.sel .opt-price{color:var(--papier-deep);}
+
+/* ── Field ── */
+.field-row{display:flex;gap:var(--s-3);margin-bottom:var(--s-4);}
+.field{flex:1;}
+.field-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gris);margin-bottom:var(--s-2);display:block;}
+.field input{width:100%;padding:var(--s-3) var(--s-4);background:var(--papier-bright);
+  border:1px solid var(--gris-line);border-radius:var(--r);font-family:var(--mono);font-size:13px;}
+.field input:focus{outline:1px solid var(--orange-polo);outline-offset:-1px;}
+
+/* ── Composer — module rows + steppers ── */
+.mod-group{margin-bottom:var(--s-5);}
+.mod-group-title{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gris);margin-bottom:var(--s-3);display:flex;justify-content:space-between;align-items:baseline;}
+.mod-list{border:1px solid var(--gris-line);border-radius:var(--r);overflow:hidden;background:var(--papier-bright);}
+.mod-row{display:flex;align-items:center;gap:var(--s-3);padding:var(--s-4);
+  border-bottom:1px solid var(--gris-line-soft);transition:background .15s;}
+.mod-row:last-child{border-bottom:none;}
+.mod-row.on{background:var(--orange-soft);}
+.mod-toggle{width:22px;height:22px;border:1px solid var(--gris-line);border-radius:var(--r);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;transition:.15s;}
+.mod-row.on .mod-toggle{background:var(--encre);border-color:var(--encre);color:var(--papier);}
+.mod-toggle svg{width:13px;height:13px;opacity:0;}
+.mod-row.on .mod-toggle svg{opacity:1;}
+.mod-body{flex:1;min-width:0;}
+.mod-code{font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--orange-polo);}
+.mod-name{font-family:var(--display);font-style:italic;font-weight:500;font-size:16px;line-height:1.15;}
+.mod-desc{font-family:var(--editorial);font-style:italic;font-size:12px;color:var(--gris);line-height:1.35;margin-top:1px;}
+.mod-price{font-family:var(--mono);font-size:11px;color:var(--encre);text-align:right;flex-shrink:0;white-space:nowrap;}
+.mod-price .per{color:var(--gris);font-size:9px;display:block;}
+.mod-info{font-family:var(--mono);font-size:9px;color:var(--vert-anglais);background:var(--vert-soft);
+  padding:3px 7px;border-radius:var(--r);flex-shrink:0;}
+
+.stepper{display:flex;align-items:center;gap:var(--s-3);flex-shrink:0;}
+.step-btn{width:26px;height:26px;border:1px solid var(--gris-line);border-radius:var(--r);
+  display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;
+  color:var(--encre);transition:.15s;}
+.step-btn:hover{border-color:var(--encre);background:var(--papier-soft);}
+.step-btn:disabled{opacity:.3;cursor:not-allowed;}
+.step-qty{font-family:var(--mono);font-size:13px;font-weight:500;min-width:20px;text-align:center;}
+
+/* ── Composer total ── */
+.total-card{background:var(--encre);color:var(--papier);border-radius:var(--r);
+  padding:var(--s-5);margin-bottom:var(--s-4);}
+.total-big{font-family:var(--display);font-style:italic;font-weight:500;font-size:38px;line-height:1;}
+.total-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--papier-deep);margin-top:var(--s-2);}
+.total-break{margin-top:var(--s-4);padding-top:var(--s-4);border-top:1px solid rgba(250,246,239,.18);}
+.total-line{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;
+  color:var(--papier-deep);padding:var(--s-1) 0;}
+.total-line.accent{color:var(--orange-polo);}
+
+/* ── Bundle nudge ── */
+.nudge{display:flex;gap:var(--s-3);align-items:flex-start;background:var(--vert-soft);
+  border:1px solid var(--vert-line);border-radius:var(--r);padding:var(--s-4);margin-bottom:var(--s-4);}
+.nudge-icon{color:var(--vert-anglais);flex-shrink:0;margin-top:2px;}
+.nudge-txt{font-family:var(--editorial);font-style:italic;font-size:14px;color:var(--vert-anglais);line-height:1.4;}
+.nudge-txt strong{font-weight:500;}
+
+/* ── RFQ dispatch ── */
+.rfq-live{text-align:center;padding:var(--s-6) 0 var(--s-5);}
+.rfq-pulse{width:54px;height:54px;margin:0 auto var(--s-5);border-radius:50%;
+  border:1px solid var(--orange-line);position:relative;}
+.rfq-pulse::before,.rfq-pulse::after{content:"";position:absolute;inset:-1px;border-radius:50%;
+  border:1px solid var(--orange-polo);animation:ping 1.8s cubic-bezier(0,0,.2,1) infinite;}
+.rfq-pulse::after{animation-delay:.9s;}
+.rfq-pulse-core{position:absolute;inset:18px;background:var(--orange-polo);border-radius:50%;}
+@keyframes ping{0%{transform:scale(.85);opacity:.9;}80%,100%{transform:scale(1.9);opacity:0;}}
+.rfq-status{font-family:var(--editorial);font-style:italic;font-size:16px;color:var(--encre-soft);}
+.rfq-count{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--gris);margin-top:var(--s-3);line-height:1.6;}
+
+/* ── Quote cards ── */
+.quote-card{background:var(--papier-bright);border:1px solid var(--gris-line);border-radius:var(--r);
+  padding:var(--s-5);margin-bottom:var(--s-3);animation:slidein .4s ease both;}
+@keyframes slidein{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.quote-card.chosen{border-color:var(--orange-polo);background:var(--orange-soft);}
+.quote-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:var(--s-3);}
+.quote-who{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--gris);}
+.quote-who.revealed{color:var(--orange-polo);font-weight:500;}
+.quote-resp{font-family:var(--mono);font-size:9px;color:var(--gris);letter-spacing:.06em;}
+.quote-price{font-family:var(--display);font-style:italic;font-weight:500;font-size:34px;line-height:1;margin-bottom:var(--s-1);}
+.quote-price-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--gris);margin-bottom:var(--s-4);}
+.quote-restrict{font-family:var(--editorial);font-style:italic;font-size:13px;color:var(--gris);
+  line-height:1.4;margin-bottom:var(--s-4);}
+
+/* ── Confirmation ── */
+.confirm-mark{width:48px;height:48px;border:1px solid var(--vert-line);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;margin:0 auto var(--s-5);color:var(--vert-anglais);}
+.kv{display:flex;justify-content:space-between;gap:var(--s-4);padding:var(--s-3) 0;
+  border-bottom:1px solid var(--gris-line-soft);}
+.kv:last-child{border-bottom:none;}
+.kv-k{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--gris);}
+.kv-v{font-family:var(--editorial);font-style:italic;font-size:15px;text-align:right;}
+
+/* ── Budget / Mon année ── */
+.budget-hero{text-align:center;padding:var(--s-5) 0 var(--s-4);}
+.budget-big{font-family:var(--display);font-style:italic;font-weight:500;font-size:46px;line-height:1;}
+.budget-lbl{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gris);margin-top:var(--s-3);}
+.compare{display:flex;gap:var(--s-3);margin:var(--s-5) 0;}
+.compare-side{flex:1;text-align:center;padding:var(--s-4);border:1px solid var(--gris-line);
+  border-radius:var(--r);background:var(--papier-bright);}
+.compare-side.win{border-color:var(--vert-line);background:var(--vert-soft);}
+.compare-amount{font-family:var(--display);font-style:italic;font-weight:500;font-size:22px;}
+.compare-tag{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--gris);margin-top:var(--s-2);}
+.save-banner{text-align:center;font-family:var(--editorial);font-style:italic;font-size:18px;
+  color:var(--vert-anglais);padding:var(--s-4);background:var(--vert-soft);border:1px solid var(--vert-line);
+  border-radius:var(--r);margin-bottom:var(--s-5);}
+.save-banner strong{font-weight:500;}
+
+/* ── Timeline ── */
+.tl-row{display:flex;gap:var(--s-4);padding:var(--s-3) 0;align-items:flex-start;}
+.tl-marker{width:9px;height:9px;border-radius:var(--r);margin-top:6px;flex-shrink:0;}
+.tl-marker.balade,.tl-marker.route{background:var(--vert-anglais);}
+.tl-marker.track{background:var(--orange-polo);}
+.tl-marker.rally_eu,.tl-marker.rally_histo,.tl-marker.rally_transcon{background:var(--ambre);}
+.tl-marker.transport,.tl-marker.import{background:var(--gris);}
+.tl-body{flex:1;border-bottom:1px solid var(--gris-line-soft);padding-bottom:var(--s-3);}
+.tl-title{font-family:var(--editorial);font-style:italic;font-size:15px;}
+.tl-meta{font-family:var(--mono);font-size:10px;color:var(--gris);letter-spacing:.04em;margin-top:2px;}
+.tl-price{font-family:var(--mono);font-size:12px;color:var(--encre);}
+
+/* ── Track record on-chain ── */
+.track-rec{background:var(--papier-soft);border:1px solid var(--gris-line);border-radius:var(--r);
+  padding:var(--s-5);margin-bottom:var(--s-4);}
+.tr-headline{font-family:var(--editorial);font-style:italic;font-size:16px;color:var(--encre);
+  line-height:1.4;margin-bottom:var(--s-4);}
+.tr-stats{display:flex;flex-wrap:wrap;gap:var(--s-4) var(--s-6);}
+.tr-stat{}
+.tr-num{font-family:var(--display);font-style:italic;font-weight:500;font-size:24px;line-height:1;}
+.tr-num.green{color:var(--vert-anglais);}
+.tr-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--gris);margin-top:3px;}
+.tr-bonus{margin-top:var(--s-4);padding-top:var(--s-4);border-top:1px solid var(--gris-line-soft);
+  font-family:var(--mono);font-size:11px;color:var(--vert-anglais);}
+
+/* ── Contrat vivant ── */
+.back-link{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--gris);display:inline-flex;align-items:center;gap:6px;margin-bottom:var(--s-4);}
+.back-link:hover{color:var(--encre);}
+.cv-map{position:relative;height:170px;border:1px solid var(--gris-line);border-radius:var(--r);
+  overflow:hidden;background:var(--papier-soft);margin-bottom:var(--s-4);}
+.cv-map svg{position:absolute;inset:0;width:100%;height:100%;}
+.cv-pos{position:absolute;width:12px;height:12px;background:var(--orange-polo);border-radius:50%;
+  border:2px solid var(--papier);box-shadow:0 0 0 4px var(--orange-soft);}
+.cv-map-tag{position:absolute;bottom:var(--s-3);left:var(--s-3);font-family:var(--mono);font-size:9px;
+  letter-spacing:.06em;color:var(--encre);background:var(--papier-bright);padding:3px 7px;
+  border:1px solid var(--gris-line);border-radius:var(--r);}
+.countdown{display:flex;gap:var(--s-3);margin-bottom:var(--s-4);}
+.cd-unit{flex:1;text-align:center;padding:var(--s-4) var(--s-2);border:1px solid var(--gris-line);
+  border-radius:var(--r);background:var(--papier-bright);}
+.cd-num{font-family:var(--display);font-style:italic;font-weight:500;font-size:26px;line-height:1;}
+.cd-lbl{font-family:var(--mono);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--gris);margin-top:3px;}
+.live-tag{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;
+  letter-spacing:.08em;color:var(--orange-polo);margin-bottom:var(--s-3);}
+.live-tag::before{content:"";width:7px;height:7px;background:var(--orange-polo);border-radius:50%;
+  animation:blink 1.6s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+
+/* ── Sinistre flow ── */
+.claim-step{display:flex;gap:var(--s-4);margin-bottom:var(--s-4);}
+.claim-n{width:28px;height:28px;border:1px solid var(--encre);border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;font-weight:500;}
+.claim-n.done{background:var(--vert-anglais);border-color:var(--vert-anglais);color:var(--papier);}
+.claim-n.on{background:var(--encre);color:var(--papier);}
+.claim-body{flex:1;}
+.claim-title{font-family:var(--display);font-style:italic;font-weight:500;font-size:17px;margin-bottom:var(--s-2);}
+.claim-desc{font-family:var(--editorial);font-style:italic;font-size:14px;color:var(--gris);line-height:1.4;}
+.photo-grid{display:flex;gap:var(--s-2);margin-top:var(--s-3);}
+.photo-slot{flex:1;aspect-ratio:1;border:1px dashed var(--gris-line);border-radius:var(--r);
+  display:flex;align-items:center;justify-content:center;background:var(--papier-bright);
+  font-family:var(--mono);font-size:9px;color:var(--gris);text-align:center;line-height:1.3;transition:.15s;}
+.photo-slot.filled{border-style:solid;border-color:var(--vert-line);background:var(--vert-soft);color:var(--vert-anglais);}
+
+/* ── Tab bar ── */
+.tabbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;
+  background:var(--papier-bright);border-top:1px solid var(--gris-line);display:flex;z-index:30;
+  padding-bottom:env(safe-area-inset-bottom);}
+.tab{flex:1;padding:var(--s-4) var(--s-1);text-align:center;}
+.tab-pass{font-family:var(--mono);font-size:8px;letter-spacing:.08em;color:var(--gris);transition:color .2s;}
+.tab-name{font-family:var(--display);font-style:italic;font-size:14px;color:var(--gris);transition:color .2s;margin-top:2px;}
+.tab.on .tab-pass{color:var(--orange-polo);}
+.tab.on .tab-name{color:var(--encre);}
+
+/* ── Misc ── */
+.notice{text-align:center;padding:var(--s-6) var(--s-4);font-family:var(--editorial);
+  font-style:italic;font-size:15px;color:var(--gris);line-height:1.5;}
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:var(--encre);
+  color:var(--papier);font-family:var(--mono);font-size:11px;letter-spacing:.06em;
+  padding:var(--s-3) var(--s-5);border-radius:var(--r);z-index:50;opacity:0;transition:opacity .3s;
+  max-width:90%;text-align:center;}
+.toast.show{opacity:1;}
+.foot-note{font-family:var(--mono);font-size:9px;letter-spacing:.04em;color:var(--gris);
+  line-height:1.7;text-align:center;padding:var(--s-6) var(--s-4) 0;}
+
+/* ── Manifeste 3·6·9 ── */
+.manifesto{margin-top:var(--s-6);padding:var(--s-5);background:var(--papier-soft);
+  border:1px solid var(--gris-line);border-radius:var(--r);}
+.manif-line{display:flex;gap:var(--s-3);padding:var(--s-3) 0;align-items:baseline;}
+.manif-line + .manif-line{border-top:1px solid var(--gris-line-soft);}
+.manif-n{font-family:var(--display);font-style:italic;font-weight:500;font-size:22px;
+  color:var(--orange-polo);flex-shrink:0;width:24px;}
+.manif-txt{font-family:var(--editorial);font-style:italic;font-size:14px;color:var(--encre-soft);line-height:1.4;}
+.manif-txt strong{font-weight:500;color:var(--encre);font-style:normal;
+  font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;}
+
+/* ═══ WEB3 — emplacements prévus, dégradent proprement ═══ */
+/* tout passe par web3Slot() : live=false → "à venir" sobre ;
+   live=true → vrai tokenId/hash/lien. L'UI ne bouge pas, le state bascule. */
+.w3-badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9px;
+  letter-spacing:.06em;padding:4px 8px;border-radius:var(--r);white-space:nowrap;}
+.w3-badge::before{content:"";width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.w3-badge.pending{background:var(--papier-soft);color:var(--gris);border:1px solid var(--gris-line);}
+.w3-badge.pending::before{background:var(--gris);}
+.w3-badge.live{background:var(--vert-soft);color:var(--vert-anglais);border:1px solid var(--vert-line);}
+.w3-badge.live::before{background:var(--vert-anglais);animation:blink 1.8s ease-in-out infinite;}
+
+.w3-row{display:flex;justify-content:space-between;gap:var(--s-4);padding:var(--s-3) 0;
+  border-bottom:1px solid var(--gris-line-soft);align-items:baseline;}
+.w3-row:last-child{border-bottom:none;}
+.w3-k{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--gris);flex-shrink:0;}
+.w3-v{font-family:var(--mono);font-size:11px;text-align:right;word-break:break-all;}
+.w3-v.pending{color:var(--gris);font-style:normal;}
+.w3-v a{color:var(--vert-anglais);text-decoration:none;border-bottom:1px solid var(--vert-line);}
+.w3-v a:hover{color:var(--orange-polo);border-color:var(--orange-line);}
+
+/* bloc on-chain dans une fiche (confirmation, contrat vivant) */
+.w3-block{background:var(--papier-soft);border:1px solid var(--gris-line);border-radius:var(--r);
+  padding:var(--s-4) var(--s-5);margin-top:var(--s-4);}
+.w3-block-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--s-3);
+  padding-bottom:var(--s-3);border-bottom:1px solid var(--gris-line-soft);}
+.w3-block-title{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--gris);}
+.w3-note{font-family:var(--editorial);font-style:italic;font-size:12px;color:var(--gris);
+  line-height:1.4;margin-top:var(--s-3);}
+
+/* settlement RLUSD — la barre de répartition */
+.settle-bar{display:flex;height:8px;border-radius:var(--r);overflow:hidden;margin:var(--s-3) 0;
+  border:1px solid var(--gris-line);}
+.settle-seg-partner{background:var(--encre);}
+.settle-seg-asso{background:var(--orange-polo);}
+.settle-legend{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--gris);}
+.settle-legend .asso{color:var(--orange-polo);}
+
+/* transfert de police — l'assurance liquide */
+.transfer-card{background:var(--papier-bright);border:1px solid var(--gris-line);border-radius:var(--r);
+  padding:var(--s-5);margin-bottom:var(--s-4);}
+.transfer-flow{display:flex;align-items:center;gap:var(--s-3);margin:var(--s-4) 0;}
+.transfer-party{flex:1;text-align:center;padding:var(--s-4) var(--s-2);border:1px solid var(--gris-line);
+  border-radius:var(--r);background:var(--papier-soft);}
+.transfer-party.you{border-color:var(--encre);}
+.transfer-party-role{font-family:var(--mono);font-size:8px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--gris);margin-bottom:var(--s-2);}
+.transfer-party-name{font-family:var(--display);font-style:italic;font-weight:500;font-size:15px;line-height:1.1;}
+.transfer-arrow{font-family:var(--mono);font-size:16px;color:var(--orange-polo);flex-shrink:0;}
+.transfer-step{display:flex;gap:var(--s-3);padding:var(--s-2) 0;align-items:baseline;}
+.transfer-step-n{font-family:var(--mono);font-size:10px;color:var(--orange-polo);flex-shrink:0;width:16px;}
+.transfer-step-txt{font-family:var(--editorial);font-style:italic;font-size:14px;color:var(--encre-soft);line-height:1.4;}
+.prorata-box{background:var(--vert-soft);border:1px solid var(--vert-line);border-radius:var(--r);
+  padding:var(--s-4);margin:var(--s-4) 0;text-align:center;}
+.prorata-amount{font-family:var(--display);font-style:italic;font-weight:500;font-size:26px;color:var(--vert-anglais);}
+.prorata-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--vert-anglais);margin-top:var(--s-2);}
+
+/* track record — preuves cliquables */
+.tr-proof{display:flex;justify-content:space-between;align-items:center;padding:var(--s-3) 0;
+  border-bottom:1px solid var(--gris-line-soft);}
+.tr-proof:last-child{border-bottom:none;}
+.tr-proof-label{font-family:var(--editorial);font-style:italic;font-size:14px;}
+.tr-proof-link{font-family:var(--mono);font-size:10px;color:var(--vert-anglais);
+  border-bottom:1px solid var(--vert-line);}
+.tr-proof-link.pending{color:var(--gris);border-color:var(--gris-line);}
+/* sub-nav (connected assureur) */
+.sub-nav{display:flex;background:var(--papier-bright);border:1px solid var(--gris-line);
+  border-radius:var(--r);padding:3px;gap:3px;margin-bottom:var(--s-5);}
+.sub-btn{flex:1;padding:var(--s-3) var(--s-2);font-family:var(--mono);font-size:9px;font-weight:500;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--gris);border-radius:var(--r);
+  transition:background .2s,color .2s;text-align:center;}
+.sub-btn.on{background:var(--vert-anglais);color:var(--papier);}
+
+/* onboarding steps */
+.bo-step{display:flex;gap:var(--s-4);margin-bottom:var(--s-5);}
+.bo-num{width:28px;height:28px;border:1px solid var(--encre);border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;font-weight:500;}
+.bo-num.done{background:var(--vert-anglais);border-color:var(--vert-anglais);color:var(--papier);}
+.bo-body{flex:1;min-width:0;}
+.bo-title{font-family:var(--display);font-style:italic;font-weight:500;font-size:18px;margin-bottom:var(--s-2);}
+.bo-desc{font-family:var(--editorial);font-style:italic;font-size:14px;color:var(--gris);line-height:1.45;margin-bottom:var(--s-3);}
+.bo-desc code{font-family:var(--mono);font-size:12px;background:var(--papier-soft);padding:1px 5px;
+  border-radius:var(--r);font-style:normal;color:var(--encre);}
+.code{font-family:var(--mono);font-size:11px;background:var(--encre);color:var(--papier);
+  padding:var(--s-3) var(--s-4);border-radius:var(--r);overflow-x:auto;white-space:pre;line-height:1.6;margin-bottom:var(--s-3);}
+.code .k{color:#d9a86c;} .code .s{color:#9bb38f;} .code .c{color:var(--gris);}
+
+/* segments */
+.seg-grid{display:flex;flex-wrap:wrap;gap:var(--s-2);margin-bottom:var(--s-3);}
+.seg-chip{font-family:var(--mono);font-size:10px;letter-spacing:.04em;padding:6px 10px;
+  border:1px solid var(--gris-line);border-radius:var(--r);color:var(--gris);transition:.15s;}
+.seg-chip.on{background:var(--encre);color:var(--papier);border-color:var(--encre);}
+
+/* RFQ inbox */
+.inbox-item{background:var(--papier-bright);border:1px solid var(--gris-line);border-radius:var(--r);
+  padding:var(--s-5);margin-bottom:var(--s-4);}
+.inbox-item.urgent{border-color:var(--orange-line);}
+.inbox-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:var(--s-3);gap:var(--s-3);}
+.inbox-ctx{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--orange-polo);font-weight:500;}
+.inbox-timer{font-family:var(--mono);font-size:9px;color:var(--gris);white-space:nowrap;}
+.inbox-car{font-family:var(--display);font-style:italic;font-weight:500;font-size:20px;line-height:1.1;margin-bottom:var(--s-3);}
+.cert-badge{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:9px;
+  letter-spacing:.04em;color:var(--vert-anglais);background:var(--vert-soft);padding:3px 7px;
+  border-radius:var(--r);margin-bottom:var(--s-3);}
+.param-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-3) var(--s-4);margin-bottom:var(--s-4);}
+.param-k{font-family:var(--mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--gris);}
+.param-v{font-family:var(--editorial);font-style:italic;font-size:14px;}
+.composer{border-top:1px solid var(--gris-line-soft);padding-top:var(--s-4);margin-top:var(--s-4);}
+.composer-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--gris);margin-bottom:var(--s-3);}
+.composer input{width:100%;padding:var(--s-3) var(--s-4);background:var(--papier);
+  border:1px solid var(--gris-line);border-radius:var(--r);font-family:var(--mono);font-size:13px;margin-bottom:var(--s-3);}
+.composer input:focus{outline:1px solid var(--vert-anglais);outline-offset:-1px;}
+.tpl-hint{font-family:var(--editorial);font-style:italic;font-size:12px;color:var(--gris);
+  margin-bottom:var(--s-3);line-height:1.4;}
+
+/* win-rate metrics */
+.metric-row{display:flex;gap:var(--s-3);margin-bottom:var(--s-5);}
+.metric{flex:1;text-align:center;padding:var(--s-4) var(--s-2);border:1px solid var(--gris-line);
+  border-radius:var(--r);background:var(--papier-bright);}
+.metric-num{font-family:var(--display);font-style:italic;font-weight:500;font-size:26px;line-height:1;}
+.metric-num.green{color:var(--vert-anglais);}
+.metric-lbl{font-family:var(--mono);font-size:8px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--gris);margin-top:3px;}
+
+/* pricing book */
+.pb-entry{background:var(--papier-bright);border:1px solid var(--gris-line);border-radius:var(--r);
+  padding:var(--s-4);margin-bottom:var(--s-3);}
+.pb-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:var(--s-3);
+  padding-bottom:var(--s-3);border-bottom:1px solid var(--gris-line-soft);gap:var(--s-3);}
+.pb-name{font-family:var(--display);font-style:italic;font-weight:500;font-size:16px;line-height:1.15;}
+.pb-code{font-family:var(--mono);font-size:9px;letter-spacing:.08em;color:var(--orange-polo);}
+.pb-row{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;padding:var(--s-1) 0;}
+.pb-row .who{color:var(--gris);}
+.pb-stats{display:flex;gap:var(--s-5);margin-top:var(--s-3);padding-top:var(--s-3);
+  border-top:1px solid var(--gris-line-soft);}
+.pb-stat{font-family:var(--mono);font-size:9px;color:var(--gris);}
+.pb-stat strong{font-family:var(--display);font-style:italic;font-size:15px;color:var(--encre);
+  font-weight:500;display:block;}
+
+/* transparency */
+.transp{background:var(--papier-soft);border:1px solid var(--gris-line);border-radius:var(--r);padding:var(--s-5);}
+.transp-row{display:flex;justify-content:space-between;padding:var(--s-2) 0;font-family:var(--mono);font-size:11px;gap:var(--s-3);}
+.transp-row .lbl{color:var(--gris);}
+.transp-row .val{text-align:right;}
+
+/* stub (kept for safety) */
+.stub{text-align:center;padding:var(--s-8) var(--s-5);}
+.stub-orb{width:54px;height:54px;border-radius:50%;border:1px solid var(--vert-line);
+  background:var(--vert-soft);color:var(--vert-anglais);display:flex;align-items:center;
+  justify-content:center;margin:0 auto var(--s-5);font-family:var(--display);font-style:italic;
+  font-weight:500;font-size:24px;}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+
+  <!-- ══ HEADER + CIRCUIT ══ -->
+  <header class="hdr">
+    <div class="hdr-top">
+      <span class="wordmark">CARNET<span class="dot"></span></span>
+      <span class="hdr-sub">Assurance</span>
+    </div>
+    <div class="mode-switch">
+      <button class="mode-btn on" id="m-pilote" onclick="setMode('pilote')">Conducteur</button>
+      <button class="mode-btn" id="m-assureur" onclick="setMode('assureur')">Assureur</button>
+    </div>
+    <div class="dashboard" id="dashboard"></div>
+  </header>
+
+  <main class="view" id="view-pilote"></main>
+  <main class="view" id="view-assureur" style="display:none"></main>
+
+  <!-- ══ TAB BAR — conducteur ══ -->
+  <nav class="tabbar" id="tabbar">
+    <button class="tab on" data-tab="repos" onclick="setTab('repos')">
+      <div class="tab-name">Au repos</div></button>
+    <button class="tab" data-tab="composer" onclick="setTab('composer')">
+      <div class="tab-name">Composer</div></button>
+    <button class="tab" data-tab="activer" onclick="setTab('activer')">
+      <div class="tab-name">Activer</div></button>
+    <button class="tab" data-tab="annee" onclick="setTab('annee')">
+      <div class="tab-name">Mon année</div></button>
+  </nav>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   ÉTAT — un seul organisme partagé entre les deux faces.
+   ═══════════════════════════════════════════════════════════════════ */
+const State = {
+  mode:'pilote', tab:'repos',
+
+  /* ── 3 · Le garage du pilote ── */
+  garage:[
+    { id:'g1', mk:'Porsche', mo:'911 Carrera RS 2.7', yr:1973, value:815000,
+      meta:'Touring · matching numbers · Genève', daysPerYear:45,
+      insurance:{ status:'repos', base_premium_annual:1800,
+        coverage:[
+          ['RC stationnement','incident voiture au garage'],
+          ['Vol','valeur cote NFT · 815 000 €'],
+          ['Incendie','dégâts des eaux inclus'],
+          ['Catastrophes naturelles','couverture EU']
+        ] } },
+    { id:'g2', mk:'Mercedes-Benz', mo:'300 SL Gullwing', yr:1956, value:1480000,
+      meta:'matching numbers · restauration MB Classic', daysPerYear:22,
+      insurance:{ status:'active', base_premium_annual:2400,
+        active_until:'2026-05-25', active_label:'Tour Auto · rallye historique',
+        active_ctx:'rally_histo', days_left:11, zone:'France · Suisse · Italie',
+        coverage:[
+          ['RC stationnement','incident voiture au garage'],
+          ['Vol','valeur cote NFT · 1 480 000 €'],
+          ['Incendie','dégâts des eaux inclus'],
+          ['Catastrophes naturelles','couverture EU']
+        ] } },
+    { id:'g3', mk:'Singer', mo:'DLS', yr:2022, value:3250000,
+      meta:'Dynamic Lightweight Study · livraison récente', daysPerYear:12,
+      insurance:{ status:'none', base_premium_annual:0, coverage:[] } }
+  ],
+
+  /* ── 6 · Les assureurs branchés (anonymisés côté pilote) ── */
+  partners:[
+    { id:'p1', name:'Mascotte Assurances', segments:['collection','premium_eu'], sla:5000 },
+    { id:'p2', name:'Lockton Specialty', segments:['premium_eu','transcontinental'], sla:5000 },
+    { id:'p3', name:'Allianz Specialty', segments:['collection','transport'], sla:4000 },
+    { id:'p4', name:'Hagerty Europe', segments:['collection','import_eu'], sla:6000 }
+  ],
+
+  /* ── 3 · Les 7 contextes du contrat (wizard Activer) ── */
+  contexts:[
+    { id:'route',         title:'Route quotidienne',     desc:'RC + dommages route · usage courant',          base:90,  fia:false, seg:'premium_eu' },
+    { id:'track',         title:'Track day',             desc:'RC piste + dommages · circuit homologué',      base:240, fia:true,  seg:'collection' },
+    { id:'rally_eu',      title:'Rallye routier EU',      desc:'Carte verte étendue multi-pays · 5–15 j',      base:620, fia:true,  seg:'premium_eu' },
+    { id:'rally_histo',   title:'Rallye historique',     desc:'Tour Auto, Mille Miglia · provenance incluse', base:560, fia:true,  seg:'collection' },
+    { id:'rally_transcon',title:'Rallye transcontinental',desc:'Zones étendues · review humain · 30–90 j',    base:0,   fia:true,  seg:'transcontinental' },
+    { id:'import',        title:'Voiture étrangère en EU',desc:'US / Asie en EU · carnet ATA · 30–90 j',       base:0,   fia:false, seg:'import_eu' },
+    { id:'transport',     title:'Transport remorque',    desc:'Voiture + véhicule tracteur en convoi',        base:110, fia:false, seg:'transport' }
+  ],
+
+  /* ── 3 · Le catalogue à la carte — modèle modulaire du doc ── */
+  modules:{
+    permanent:[
+      { id:'M1', name:'Au repos',            desc:'RC stationnement + vol + incendie + catastrophes · valeur cote NFT', price:175, kind:'annual' },
+      { id:'M2', name:'Au repos + tracking', desc:'M1 + GPS opt-in + alertes mouvement non-autorisé',                   price:215, kind:'annual', requires:'M1' },
+      { id:'M3', name:'Bonus prudence',      desc:'Réduction si zéro sinistre 5+ ans CARNET',                          price:0,   kind:'discount', pct:15 },
+      { id:'M4', name:'Cote NFT live',       desc:'Valeur assurée actualisée automatiquement chaque mois',             price:0,   kind:'included' }
+    ],
+    activation:[
+      { id:'A1',  group:'Court terme · 1–3 j',  name:'Route balade locale',   desc:'≤ 200 km · 1 jour',                price:55,   fia:false },
+      { id:'A2',  group:'Court terme · 1–3 j',  name:'Route week-end',        desc:'≤ 500 km · 2–3 jours',             price:105,  fia:false },
+      { id:'A3',  group:'Court terme · 1–3 j',  name:'Route longue distance', desc:'≤ 1 500 km · 3–5 jours',           price:200,  fia:false },
+      { id:'A4',  group:'Court terme · 1–3 j',  name:'Track day amateur',     desc:'Castellet, Magny-Cours · /jour',   price:185,  fia:false, perDay:true },
+      { id:'A5',  group:'Court terme · 1–3 j',  name:'Track day pro',         desc:'Spa 24h, Nordschleife · /jour',    price:300,  fia:true,  perDay:true },
+      { id:'A6',  group:'Court terme · 1–3 j',  name:'Transport remorque',    desc:'Voiture + véhicule tracteur',      price:85,   fia:false },
+      { id:'A7',  group:'Court terme · 1–3 j',  name:"Concours d'élégance",   desc:"Chantilly, Villa d'Este",          price:55,   fia:false },
+      { id:'A8',  group:'Moyen terme · 5–30 j', name:'Rallye routier EU',     desc:'5–15 jours · multi-pays',          price:800,  fia:true },
+      { id:'A9',  group:'Moyen terme · 5–30 j', name:'Rallye historique EU',  desc:'Tour Auto, Mille Miglia',          price:625,  fia:true },
+      { id:'A11', group:'Moyen terme · 5–30 j', name:'Voyage liberté EU',     desc:'15–30 jours',                      price:1050, fia:false },
+      { id:'A12', group:'Long terme · 30 j +',  name:'Rallye transcontinental',desc:'Mongol, Peking-Paris · sur-mesure',price:0,   fia:true,  manual:true },
+      { id:'A13', group:'Long terme · 30 j +',  name:'Voiture étrangère en EU',desc:'US/Asie en EU · 30–90 j',         price:1250, fia:false }
+    ],
+    copilote:[
+      { id:'P1', name:'Passager occasionnel',   desc:'Single session',                  price:10 },
+      { id:'P2', name:'Co-pilote rallye dédié', desc:'Couverture rallye complète',       price:55 },
+      { id:'P3', name:'Multi-pilotes véhicule', desc:'≥ 2 pilotes déclarés',             price:35 },
+      { id:'P4', name:'Coach Vérifié passager', desc:'Inclus si Coach Vérifié certifié', price:0, included:true }
+    ]
+  },
+
+  /* ── 3 · Activations existantes (micro-polices) ── */
+  activations:[
+    { id:'a1', car:'g2', ctx:'rally_histo', label:'Tour Auto',           dates:'14–25 mai',  premium:740 },
+    { id:'a2', car:'g1', ctx:'track',       label:'Spa-Francorchamps',   dates:'12 mars',    premium:290 },
+    { id:'a3', car:'g1', ctx:'route',       label:'Route des Grandes Alpes', dates:'2–4 mai', premium:140 }
+  ],
+
+  /* ── 6 · Le wizard "Activer" ── */
+  wiz:{ step:0, carId:null, ctxId:null, dateStart:'', dateEnd:'', quotes:[], chosen:null, rfqId:null },
+
+  /* ── 3 · Le composer "Mon plan à la carte" ── */
+  plan:{ carId:'g1', permanent:['M1','M3'], activations:{ 'A1':12, 'A4':3 }, copilote:{ 'P2':1 } },
+
+  /* ── Contrat vivant + sinistre ── */
+  viewing:null,                 // id voiture dont le contrat vivant est ouvert
+  claim:{ open:false, carId:null, step:1, photos:0, witnesses:0, gpx:false, desc:'' },
+
+  /* ── 9 · Transfert de police à la revente — l'assurance liquide (§6) ──
+     Quand une voiture change de main via CARNET, la couverture suit sans
+     rupture. UI prête, le mint atomique du transfert se branche avec Web3. */
+  transfer:{ open:false, carId:null, step:1, buyerHandle:'', accordAssureur:false },
+
+  /* ── §15 Renouvellements à venir ── */
+  renewals:[
+    { carId:'g1', carLabel:'911 Carrera RS 2.7', daysLeft:58, currentPremium:1800,
+      currentInsurer:'Lockton Specialty',
+      proposals:[
+        { insurer:'Lockton Specialty', premium:1740, badge:'Renouvellement fidélité −3 %' },
+        { insurer:'Allianz Collector', premium:1820, badge:'Nouveau partenaire' },
+        { insurer:'Markel Insurance', premium:1760, badge:null }
+      ] },
+    { carId:'g3', carLabel:'Porsche 964 Carrera RS', daysLeft:12, currentPremium:980,
+      currentInsurer:'Markel Insurance',
+      proposals:[
+        { insurer:'Markel Insurance', premium:920, badge:'Renouvellement fidélité −6 %' },
+        { insurer:'Lockton Specialty', premium:960, badge:null }
+      ] }
+  ],
+
+  /* ── §14 Expert validator sinistre ── */
+  claimExpert:{ assigned:false, name:'', marque:'', handle:'', estimate:null },
+
+  /* ── §16 Vue portefeuille multi-véhicule ── */
+  portfolioView: false,
+  scoreView: false,
+
+  /* ── 9 · L'espace assureur (Partie 2) ── */
+  assureur:{
+    connected:false,
+    subtab:'inbox',
+    name:'Mascotte Assurances',
+    segments:['collection','premium_eu'],
+    inbox:[],
+    quoted:{},
+    /* win-rate & activité du mois */
+    stats:{ quotes:34, won:19, avgResponseS:4.2, claims:2 },
+    /* ── métriques 3·6·9 — 9 KPI, 3 blocs, profondeur de lecture ──────────
+       Bloc 1 Pipeline · Bloc 2 Économie · Bloc 3 Compétitivité.
+       spark = 7 derniers points (semaine). C'est la data qui vaut de l'or :
+       tendance, pas instantané. */
+    metrics:{
+      pipeline:{
+        label:'Pipeline',
+        kpis:[
+          { id:'rfq_open',  label:'RFQ en attente', value:0, unit:'', spark:[3,5,2,4,6,3,0], hint:'à traiter maintenant' },
+          { id:'rfq_month', label:'Demandes ce mois', value:48, unit:'', spark:[5,7,6,9,8,7,6], hint:'reçues sur vos segments' },
+          { id:'rfq_won',   label:'Devis retenus', value:19, unit:'', spark:[2,3,1,4,3,3,3], hint:'choisis par les conducteurs' }
+        ]
+      },
+      marche:{
+        label:'Économie & marché',
+        kpis:[
+          { id:'premiums',  label:'Primes du mois', value:11240, unit:'€', spark:[1100,1400,900,1800,1600,1500,1340], hint:'volume encaissé' },
+          { id:'net',       label:'Net assureur', value:10442, unit:'€', spark:[1022,1300,836,1672,1486,1394,1245], hint:'après commission 7,1 %' },
+          { id:'share',     label:'Part de marché', value:31, unit:'%', spark:[24,26,25,28,29,30,31], hint:'des polices CARNET sur vos segments' }
+        ]
+      },
+      risque:{
+        label:'Risque & compétitivité',
+        kpis:[
+          { id:'win_rate',  label:'Taux de réussite', value:56, unit:'%', spark:[48,52,50,58,55,57,56], hint:'devis retenus / émis' },
+          { id:'loss_ratio',label:'Ratio sinistres / primes', value:42, unit:'%', spark:[55,51,48,46,44,43,42], hint:'sain sous 70 % · 2 sinistres en cours', invert:true },
+          { id:'rank',      label:'Rang pricing book', value:2, unit:'/4', spark:[3,3,2,2,3,2,2], hint:'positionnement prix médian', invert:true }
+        ]
+      }
+    },
+    /* Open Pricing Book — publié chaque mois sur GitHub asso */
+    pricingBook:[
+      { code:'A4', name:'Track day amateur', profile:'911 RS · pilote 15 ans · 0 sinistre',
+        rows:[['Mascotte',185],['Lockton',210],['Allianz Specialty',195]],
+        volume:287, claims:1, unit:'/ jour' },
+      { code:'A8', name:'Rallye routier EU 5 j', profile:'DS 21 · pilote 25 ans · 0 sinistre',
+        rows:[['Mascotte',540],['Hagerty Europe',580],['Solera EU',510]],
+        volume:14, claims:0, unit:'' },
+      { code:'A9', name:'Rallye historique EU', profile:'300 SL · pilote 20 ans · 0 sinistre',
+        rows:[['Mascotte',625],['Hagerty Europe',660],['Allianz Specialty',640]],
+        volume:9, claims:0, unit:'' }
+    ]
+  },
+
+  /* ── 9 · DÉFINITIONS KPI — la couche socle gouvernée ───────────────────
+     Comment chaque KPI est calculé, mot pour mot. Versionné : un changement
+     de calcul est tracé, jamais silencieux. C'est ce que sert l'export et
+     l'API analytics (§5.6 du contrat) sous la clé `definitions`.
+     Publié en clair dans DEFINITIONS_KPI.md — opposable, auditable. */
+  kpiDefinitions:{
+    version:'1.0',
+    published:'2026-05-14',
+    note:'Définitions opposables. Tout changement de formule incrémente la version.',
+    defs:[
+      { id:'rfq_open', group:'pipeline', unit:'',
+        source:'insurance_rfq',
+        formula:"count(status='open' AND segment ∈ partner.segments)",
+        plain:'Nombre de demandes de devis ouvertes, sur les segments déclarés par l\'assureur, pas encore expirées ni liées.' },
+      { id:'rfq_month', group:'pipeline', unit:'',
+        source:'insurance_rfq',
+        formula:"count(created_at ∈ mois courant AND segment ∈ partner.segments)",
+        plain:'Nombre de demandes de devis reçues depuis le 1er du mois, sur les segments de l\'assureur.' },
+      { id:'rfq_won', group:'pipeline', unit:'',
+        source:'insurance_quotes',
+        formula:"count(status='chosen' AND partner_id = self, mois courant)",
+        plain:'Nombre de devis de cet assureur retenus par un conducteur ce mois-ci.' },
+      { id:'premiums', group:'marche', unit:'€',
+        source:'insurance_activations',
+        formula:"sum(premium_eur WHERE partner_id = self, mois courant)",
+        plain:'Volume total de primes encaissées via CARNET ce mois-ci.' },
+      { id:'net', group:'marche', unit:'€',
+        source:'insurance_activations',
+        formula:"premiums × (1 − commission_pct / 100)",
+        plain:'Primes du mois moins la commission de l\'association (7,1 %). Ce qui revient à l\'assureur.' },
+      { id:'share', group:'marche', unit:'%',
+        source:'insurance_activations',
+        formula:"count(activations self) / count(activations tous partners) sur les segments du partner",
+        plain:'Part des polices CARNET, sur les segments de l\'assureur, qui lui reviennent.' },
+      { id:'win_rate', group:'risque', unit:'%',
+        source:'insurance_quotes',
+        formula:"count(status='chosen' AND partner_id = self) / count(status='offered' AND partner_id = self)",
+        plain:'Sur les devis émis par cet assureur, la proportion retenue par les conducteurs.' },
+      { id:'loss_ratio', group:'risque', unit:'%', invert:true,
+        source:'insurance_claims + insurance_activations',
+        formula:"sum(claim payout, partner) / sum(premium_eur, partner)",
+        plain:'Ratio sinistres sur primes. Sous 70 %, l\'activité est saine. Plus bas = meilleur — la tendance est donc inversée.' },
+      { id:'rank', group:'risque', unit:'/4', invert:true,
+        source:'insurance_quotes',
+        formula:"rang du premium_eur médian du partner vs autres assureurs, par segment",
+        plain:'Position de l\'assureur dans le pricing book par le prix médian. 1 = le moins cher. Plus bas = meilleur — tendance inversée.' }
+    ]
+  },
+
+  /* ── Canal partagé + circuit ── */
+  rfqs:{},
+  energy:{ lit:3, flow:false },
+
+  /* ── le widget dashboard — profondeur de lecture 3·6·9 ──────────────
+     'collapsed' = 3 KPI en widget visuel (jauges/sparklines)
+     'full'      = les 9 KPI dépliés, vue complète
+     un seul interrupteur, deux paliers — le 3·6·9 comme granularité. */
+  dash:{ expanded:false },
+
+  /* ── 9 · WEB3 — tout est prévu, rien n'est branché ──────────────────
+     web3.live = false aujourd'hui. L'UI affiche partout des emplacements
+     "à venir" sobres. Le jour où le rail on-chain est branché (NFT XLS-20
+     + settlement RLUSD), on passe web3.live = true et on remplit les refs
+     ci-dessous — aucun écran ne change, le state suffit.
+     Voir web3Slot() / web3Badge() / renderSettlement() plus bas. */
+  web3:{
+    live:false,                         // ← le seul interrupteur
+    explorerBase:'https://livenet.xrpl.org',
+    rail:'RLUSD',
+    // refs par entité — peuplées par le Worker au bind, nulles tant que mock
+    policyNft:{},        // { carId: { tokenid, mintedAt, txHash } }
+    activationNft:{},    // { activationId: { tokenid, mintedAt, txHash } }
+    settlements:{},      // { activationId: { premium, netPartner, commissionAsso, txHash } }
+    trackRecord:{        // le track record on-chain agrégé du pilote
+      tokenid:null, lastSnapshotHash:null, snapshotAt:null
+    }
+  }
+};
+
+/* ─── Helpers ─────────────────────────────────────────────────── */
+const fmtEur = n => Math.round(n).toLocaleString('fr-FR') + ' €';
+const ctxById = id => State.contexts.find(c=>c.id===id);
+const carById = id => State.garage.find(c=>c.id===id);
+const partnerById = id => State.partners.find(p=>p.id===id);
+const modById = id => [].concat(State.modules.permanent,State.modules.activation,State.modules.copilote).find(m=>m.id===id);
+
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),2600);
+}
+
+/* ─── LE DASHBOARD — 3 KPI vivants, recalculés à chaque render ─────────
+   setEnergy() est conservé comme alias inoffensif : il était appelé à
+   ~18 endroits, il déclenche simplement le rafraîchissement du dashboard.
+   Plus de notion de "node allumé" — le circuit 3·6·9 était la méthode
+   de construction, pas un élément produit. */
+function setEnergy(){ renderDashboard(); }
+
+/* ════════════════════════════════════════════════════════════════════
+   LE DASHBOARD-WIDGET — profondeur de lecture 3·6·9
+   ────────────────────────────────────────────────────────────────────
+   Replié : 3 KPI en widget visuel — une sparkline 7 jours par cellule,
+   signature commune aux deux faces. Déplié : les 9, en 3 blocs de 3.
+   Le 3·6·9 n'est pas un décor : c'est la granularité de lecture.
+   setEnergy() reste un alias inoffensif (appelé ~18×) → refresh widget.
+   ════════════════════════════════════════════════════════════════════ */
+function setEnergy(){ renderDashboard(); }
+
+function toggleDash(){
+  State.dash.expanded=!State.dash.expanded;
+  renderDashboard();
+}
+
+function renderDashboard(){
+  const el=document.getElementById('dashboard');
+  if(!el) return;
+  const data = State.mode==='assureur' ? dashData('assureur') : dashData('conducteur');
+  el.innerHTML = dashWidget(data) + dashExpandToggle() +
+    (State.dash.expanded ? dashFull(data) : '');
+}
+
+/* ─── générateurs SVG ─────────────────────────────────────────────── */
+// sparkline — série de nombres, tone, largeur/hauteur
+function svgSpark(series, tone, w, h){
+  w=w||58; h=h||30;
+  if(!series||series.length<2) return `<svg width="${w}" height="${h}"></svg>`;
+  const mn=Math.min(...series), mx=Math.max(...series), span=(mx-mn)||1;
+  const pad=3;
+  const pts=series.map((v,i)=>{
+    const x=pad+i*((w-2*pad)/(series.length-1));
+    const y=h-pad-((v-mn)/span)*(h-2*pad);
+    return [x,y];
+  });
+  const line=pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+  const area=line+` L${pts[pts.length-1][0].toFixed(1)} ${h-pad} L${pts[0][0].toFixed(1)} ${h-pad} Z`;
+  const last=pts[pts.length-1];
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
+    <path class="spark-area ${tone}" d="${area}"></path>
+    <path class="spark-line ${tone}" d="${line}"></path>
+    <circle class="spark-dot ${tone}" cx="${last[0].toFixed(1)}" cy="${last[1].toFixed(1)}"></circle>
+  </svg>`;
+}
+// tendance entre l'avant-dernier et le dernier point (ou premier/dernier)
+function trendOf(series, invert){
+  if(!series||series.length<2) return {dir:'flat',pct:0};
+  const a=series[0], b=series[series.length-1];
+  if(a===0) return {dir:b>0?'up':'flat',pct:0};
+  let pct=Math.round((b-a)/Math.abs(a)*100);
+  let dir = pct>1?'up':pct<-1?'down':'flat';
+  if(invert && dir!=='flat') dir = dir==='up'?'down':'up'; // ex: temps de réponse ↓ = bon
+  return {dir,pct};
+}
+
+/* ── Voyant de bord — couverture active ou non ──────────────────────
+   Cercle lumineux style tableau de bord automobile.
+   active=true → vert pulsé. active=false → gris éteint. */
+function svgVoyant(active, w, h){
+  w=w||58; h=h||44;
+  const cx=w/2, cy=h/2;
+  const color = active ? 'var(--vert-anglais)' : 'var(--gris)';
+  const pulse = active ? `
+      <animate attributeName="r" values="13;16;13" dur="2.4s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.15;0.05;0.15" dur="2.4s" repeatCount="indefinite"/>` : '';
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
+    ${active ? `<circle cx="${cx}" cy="${cy}" r="13" fill="${color}" opacity="0.15">${pulse}</circle>` : ''}
+    <rect x="${cx-13}" y="${cy-8}" width="26" height="16" rx="3" fill="rgba(26,20,16,.07)"/>
+    <circle cx="${cx}" cy="${cy}" r="6" fill="${color}" opacity="${active?'1':'0.35'}"/>
+    ${active ? `<circle cx="${cx}" cy="${cy}" r="3" fill="white" opacity="0.3"/>` : ''}
+  </svg>`;
+}
+
+/* ── Deux barres — économie vs classique ─────────────────────────────
+   Pas de flèche. Deux barres verticales côte à côte :
+   gauche haute = prix classique, droite basse = prix CARNET.
+   Le gap visuel EST l'économie. Rappelle une comparaison de conso. */
+function svgBars(savePct, w, h){
+  w=w||58; h=h||44;
+  const labelH = 9;
+  const pad = 4;
+  const availH = h - pad - labelH;
+  const barW = Math.round((w - pad*3) / 2);
+  const classX = pad;
+  const classH = availH;
+  const classY = pad;
+  const carnetH = Math.max(5, Math.round(availH * (1 - (savePct||0)/100)));
+  const carnetX = classX + barW + pad;
+  const carnetY = pad + classH - carnetH;
+  const labelY = h - 1;
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
+    <rect x="${classX}" y="${classY}" width="${barW}" height="${classH}" rx="2"
+      fill="var(--papier-deep)" stroke="var(--gris-line)" stroke-width="0.8"/>
+    <rect x="${carnetX}" y="${carnetY}" width="${barW}" height="${carnetH}" rx="2"
+      fill="var(--vert-anglais)" opacity="0.9"/>
+    <text x="${classX + barW/2}" y="${labelY}" text-anchor="middle"
+      font-family="var(--mono)" font-size="6" fill="var(--gris)">ancien</text>
+    <text x="${carnetX + barW/2}" y="${labelY}" text-anchor="middle"
+      font-family="var(--mono)" font-size="6" fill="var(--vert-anglais)">CARNET</text>
+  </svg>`;
+}
+
+/* ── Taille de fonte adaptative selon longueur du display ──────────────
+   La cellule du widget est étroite. Texte court = grande fonte, texte
+   long = fonte réduite, au-delà on tronque avec ellipsis. */
+function cellFontSize(text){
+  const l=(text||'').length;
+  if(l<=8)  return '20px';
+  if(l<=13) return '17px';
+  if(l<=18) return '14px';
+  return '12px';
+}
+function cellDisplay(text){
+  const max=22;
+  return (text||'').length>max ? (text||'').slice(0,max-1)+'…' : (text||'');
+}
+
+/* ─── DATA 3·6·9 — 9 KPI, 3 blocs, par face ───────────────────────────
+   chaque KPI : {label, display, sub, viz, tone, spark, trend, onclick}
+   les 3 premiers (un par bloc) = le widget replié. */
+function dashData(face){
+  return face==='assureur' ? dashDataAssureur() : dashDataConducteur();
+}
+
+/* ── CONDUCTEUR — Ce qui roule · Ce que je paie · Ce que je vaux ── */
+function dashDataConducteur(){
+  const g=State.garage;
+  const activeCar=g.find(c=>c.insurance.status==='active');
+  const reposCount=g.filter(c=>c.insurance.status==='repos').length;
+  const coveredCount=g.filter(c=>c.insurance.status!=='none').length;
+  const daysLeft=activeCar?activeCar.insurance.days_left:null;
+
+  // budget
+  const baseTotal=g.reduce((s,c)=>s+c.insurance.base_premium_annual,0);
+  const actTotal=State.activations.reduce((s,a)=>s+a.premium,0);
+  const totalFrac=baseTotal+actTotal;
+  const totalClassic=totalFrac>0?Math.round(totalFrac/0.31):0;
+  const savePct=totalClassic>0?Math.round((1-totalFrac/totalClassic)*100):0;
+  const actCount=State.activations.length;
+
+  // réputation
+  const score=88, years=5, trackDays=23, claims=0;
+
+  // ── historiques 7 points (semaine) — sparkline = signature des 2 faces ──
+  // le conducteur n'a pas de série stockée : on la dérive, plausible et stable.
+  const H={
+    coverage:     [0,0,1,1,1,1, activeCar?1:0],
+    daysLeft:     daysLeft!==null?[18,16,15,14,13,12,daysLeft]:[0,0,0,0,0,0,0],
+    covered:      [1,1,2,2,2,2, coveredCount],
+    savePct:      [52,58,61,64,66,68, savePct],
+    budget:       [320,640,980,1340,1820,2280, totalFrac],
+    activations:  [0,1,1,2,2,3, actCount],
+    score:        [79,81,83,84,86,87, score],
+    claims:       [0,0,0,0,0,0, claims],
+    trackDays:    [14,16,18,19,21,22, trackDays]
+  };
+
+  return {
+    face:'conducteur',
+    blocks:[
+      { key:'b1', title:'Ce qui roule', dot:'b1', kpis:[
+        { label:'Couverture en cours',
+          display: activeCar?activeCar.mo:'Aucune sortie',
+          sub: activeCar?(activeCar.insurance.active_label||'sortie active'):reposCount+' au repos',
+          tone:'orange', spark:H.coverage,
+          viz: svgVoyant(!!activeCar,58,44), vizRow: svgVoyant(!!activeCar,64,44),
+          trend: trendOf(H.coverage),
+          onclick: activeCar?`openContratVivant('${activeCar.id}')`:`setTab('activer')`,
+          accent: !!activeCar },
+        { label:'Jours restants',
+          display: daysLeft!==null?String(daysLeft):'—',
+          sub: daysLeft!==null?'extension one-tap':'pas de couverture active',
+          tone:'orange', spark:H.daysLeft,
+          viz: svgSpark(H.daysLeft,'orange',58,30), vizRow: svgSpark(H.daysLeft,'orange',64,24),
+          trend: trendOf(H.daysLeft,true),
+          onclick: activeCar?`openContratVivant('${activeCar.id}')`:`setTab('annee')`,
+          accent: daysLeft!==null && daysLeft<=3 },
+        { label:'Voitures couvertes',
+          display: coveredCount+' / '+g.length,
+          sub: reposCount+' au repos · '+(g.length-coveredCount)+' à protéger',
+          tone:'encre', spark:H.covered,
+          viz: svgSpark(H.covered,'encre',58,30), vizRow: svgSpark(H.covered,'encre',64,24),
+          trend: trendOf(H.covered),
+          onclick:`setTab('repos')` }
+      ]},
+      { key:'b2', title:'Ce que je paie', dot:'b2', kpis:[
+        { label:'À la carte',
+          display: actCount+' contexte'+(actCount>1?'s':''),
+          sub:'route · piste · rallye · frontière',
+          tone:'green', good:true, spark:H.activations,
+          viz: svgBars(Math.min(actCount*18,90),58,44), vizRow: svgBars(Math.min(actCount*18,90),64,44),
+          trend: trendOf(H.activations),
+          onclick:`setTab('annee')` },
+        { label:'Budget année',
+          display: fmtEur(totalFrac),
+          sub:'fractionné · cumul 12 mois',
+          tone:'encre', spark:H.budget,
+          viz: svgSpark(H.budget,'encre',58,30), vizRow: svgSpark(H.budget,'encre',64,24),
+          trend: trendOf(H.budget),
+          onclick:`setTab('annee')` },
+        { label:'Activations',
+          display: String(actCount),
+          sub:'sorties activées à ce jour',
+          tone:'encre', spark:H.activations,
+          viz: svgSpark(H.activations,'encre',58,30), vizRow: svgSpark(H.activations,'encre',64,24),
+          trend: trendOf(H.activations),
+          onclick:`setTab('activer')` }
+      ]},
+      { key:'b3', title:'Ce que je vaux', dot:'b3', kpis:[
+        { label:'Score conducteur',
+          display: score+' / 100',
+          sub:'prime −30 % chez les partenaires',
+          tone:'green', good:true, spark:H.score,
+          viz: svgSpark(H.score,'green',58,44), vizRow: svgSpark(H.score,'green',64,44),
+          trend: trendOf(H.score),
+          onclick:`openScoreAssurance()` },
+        { label:'Sinistres',
+          display: String(claims),
+          sub: claims===0?'5 ans sans sinistre':'à déclarer',
+          tone: claims===0?'green':'orange', good: claims===0, spark:H.claims,
+          viz: svgSpark(H.claims,claims===0?'green':'orange',58,30), vizRow: svgSpark(H.claims,claims===0?'green':'orange',64,24),
+          trend: trendOf(H.claims,true),
+          onclick:`setTab('annee')` },
+        { label:'Track record',
+          display: trackDays+' track days',
+          sub: years+' ans d\'ancienneté · réputation portable',
+          tone:'encre', spark:H.trackDays,
+          viz: svgSpark(H.trackDays,'encre',58,30), vizRow: svgSpark(H.trackDays,'encre',64,24),
+          trend: trendOf(H.trackDays),
+          onclick:`setTab('annee')` }
+      ]}
+    ]
+  };
+}
+
+/* ── ASSUREUR — Pipeline · Économie · Compétitivité ── */
+function dashDataAssureur(){
+  const a=State.assureur;
+  const m=a.metrics;
+
+  // RFQ en attente : recalculé live depuis l'inbox
+  const openCount = a.connected
+    ? a.inbox.filter(r=>!a.quoted[r.id]&&r.status!=='bound'&&r.status!=='expired').length
+    : Object.values(State.rfqs).filter(r=>r.status==='open'||r.status==='quoted').length;
+  m.pipeline.kpis[0].value=openCount;
+  m.pipeline.kpis[0].spark=m.pipeline.kpis[0].spark.slice(-6).concat(openCount);
+
+  // construit un bloc d'affichage depuis un groupe de metrics
+  const mkBlock=(grp,dot,title)=>({
+    key:dot, title, dot,
+    kpis: grp.kpis.map(k=>{
+      const t=trendOf(k.spark,k.invert);
+      const tone = dot==='b1'?'orange':dot==='b2'?'encre':'green';
+      const disp = k.unit==='€' ? fmtEur(k.value)
+        : k.unit==='%' ? k.value+'%'
+        : k.unit==='s' ? k.value+'s'
+        : k.unit ? k.value+k.unit
+        : String(k.value);
+      return {
+        label:k.label, display:disp, sub:k.hint,
+        tone, good: dot==='b3',
+        viz: svgSpark(k.spark,tone,58,30),
+        vizRow: svgSpark(k.spark,tone,64,24),
+        trend:t,
+        accent: k.id==='rfq_open' && k.value>0,
+        onclick: a.connected
+          ? (dot==='b1'?`setSubtab('inbox')`:dot==='b2'?`setSubtab('transp')`:`setSubtab('book')`)
+          : ''
+      };
+    })
+  });
+
+  return {
+    face:'assureur',
+    connected:a.connected,
+    blocks:[
+      mkBlock(m.pipeline,'b1','Pipeline'),
+      mkBlock(m.marche,'b2','Économie & marché'),
+      mkBlock(m.risque,'b3','Risque & compétitivité')
+    ]
+  };
+}
+
+/* ─── le widget replié : 3 cellules visuelles ─────────────────────────
+   on prend le 1er KPI de chaque bloc — un par dimension. */
+function dashWidget(data){
+  const cells=data.blocks.map(b=>{
+    const k=b.kpis[0];
+    const cls = [k.accent?'accent':'', k.good?'good':'', k.cta?'cta-cell':''].filter(Boolean).join(' ');
+    return `<button class="dash-cell ${cls}" ${k.onclick?`onclick="${k.onclick}"`:''}>
+      <div class="dash-cell-label">${k.label}</div>
+      <div class="dash-cell-viz">${k.viz}</div>
+      <div class="dash-cell-value" style="font-size:${cellFontSize(k.display)};overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%">${cellDisplay(k.display)}</div>
+    </button>`;
+  }).join('');
+  return `<div class="dash-widget">${cells}</div>`;
+}
+
+/* ─── la poignée de dépliage ─────────────────────────────────────────── */
+function dashExpandToggle(){
+  const open=State.dash.expanded;
+  const chevron=`<svg width="9" height="6" viewBox="0 0 9 6" fill="none"><path d="M1 1l3.5 3.5L8 1" stroke="currentColor" stroke-width="1.4"/></svg>`;
+  return `<button class="dash-expand ${open?'open':''}" onclick="toggleDash()">
+    ${open?'Replier':'Vue complète — 9 indicateurs'} ${chevron}
+  </button>`;
+}
+
+/* ─── la vue complète dépliée : 3 blocs de 3 ──────────────────────────── */
+function dashFull(data){
+  const blocks=data.blocks.map(b=>{
+    const rows=b.kpis.map(k=>{
+      const tr=k.trend;
+      let trendHtml='';
+      if(tr){
+        const sign=tr.dir==='up'?'↑':tr.dir==='down'?'↓':'·';
+        trendHtml=`<span class="dash-row-trend ${tr.dir}">${sign}${tr.pct?Math.abs(tr.pct)+'%':''}</span>`;
+      }
+      const viz = k.vizRow || '';
+      return `<div class="dash-row">
+        <div class="dash-row-main">
+          <div class="dash-row-label">${k.label}</div>
+          <div class="dash-row-hint">${k.sub}</div>
+        </div>
+        ${viz?`<div class="dash-row-viz">${viz}</div>`:''}
+        <div class="dash-row-value">${k.display}</div>
+        ${trendHtml}
+      </div>`;
+    }).join('');
+    return `<div class="dash-block">
+      <div class="dash-block-head">
+        <span class="dash-block-dot ${b.dot}"></span>
+        <span class="dash-block-title">${b.title}</span>
+      </div>
+      <div class="dash-rows">${rows}</div>
+    </div>`;
+  }).join('');
+  const foot = data.face==='assureur'
+    ? (data.connected
+        ? 'Tendances sur 7 jours · données rafraîchies en continu'
+        : 'Aperçu du marché — branchez-vous pour vos données réelles')
+    : 'Votre année d\'assurance, en un coup d\'œil';
+  // l'export — seulement côté assureur branché : la donnée sort, exploitable
+  const exportBlock = (data.face==='assureur' && data.connected) ? dashExportBlock() : '';
+  return `<div class="dash-full">${blocks}<div class="dash-full-foot">${foot}</div>${exportBlock}</div>`;
+}
+
+/* ─── EXPORT DATA — sortir la donnée, directement exploitable ──────────
+   L'expert assureur ne recopie pas des chiffres depuis une UI. Il sort
+   un fichier et le passe dans ses outils. CSV pour Excel/R/SAS, JSON
+   pour leurs pipelines. Généré côté client, zéro backend.
+   Le pendant automatisé — GET /v1/insurer/analytics — est spécifié dans
+   CONTRAT_ASSURANCE.md ; ces deux boutons en sont la version manuelle. */
+function dashExportBlock(){
+  const dl=`<svg viewBox="0 0 14 14" fill="none"><path d="M7 1v8m0 0L4 6m3 3l3-3M2 11h10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  return `<div class="dash-export">
+    <div class="dash-export-head">
+      <span class="dash-export-title">Exporter la donnée</span>
+      <span class="dash-export-hint">— pour vos actuaires, directement exploitable</span>
+    </div>
+    <div class="dash-export-row">
+      <button class="export-btn" onclick="exportAnalytics('csv')">
+        <span class="export-btn-fmt">${dl} CSV</span>
+        <span class="export-btn-desc">KPI + pricing book · Excel, R, SAS</span>
+      </button>
+      <button class="export-btn" onclick="exportAnalytics('json')">
+        <span class="export-btn-fmt">${dl} JSON</span>
+        <span class="export-btn-desc">structuré · pipelines & modèles</span>
+      </button>
+    </div>
+  </div>`;
+}
+
+/* assemble le paquet analytics — la même forme que servira l'API.
+   Trois sections : kpis (les 9 agrégés + historique), pricing_book
+   (tous segments/assureurs, public par design), meta (contexte). */
+function buildAnalyticsPayload(){
+  const a=State.assureur;
+  const m=a.metrics;
+  const groups=[['pipeline',m.pipeline],['marche',m.marche],['risque',m.risque]];
+  const kpis=[];
+  groups.forEach(([gkey,grp])=>{
+    grp.kpis.forEach(k=>{
+      const t=trendOf(k.spark,k.invert);
+      kpis.push({
+        group:gkey, id:k.id, label:k.label,
+        value:k.value, unit:k.unit||'',
+        history_7d:k.spark.slice(),
+        trend_dir:t.dir, trend_pct:t.pct,
+        hint:k.hint
+      });
+    });
+  });
+  const pricing_book=a.pricingBook.map(seg=>({
+    code:seg.code, segment:seg.name, profile:seg.profile,
+    unit:seg.unit||'', volume:seg.volume, claims:seg.claims,
+    quotes:seg.rows.map(r=>({ insurer:r[0], premium:r[1] }))
+  }));
+  // couche 9 — les définitions, jointes à chaque export : un actuaire
+  // voit la donnée ET le calcul qui la produit, dans le même fichier.
+  const d=State.kpiDefinitions;
+  const definitions={
+    version:d.version,
+    published:d.published,
+    note:d.note,
+    kpis:d.defs.map(x=>({
+      id:x.id, group:x.group, unit:x.unit,
+      source:x.source, formula:x.formula, plain:x.plain,
+      lower_is_better: !!x.invert
+    }))
+  };
+  return {
+    meta:{
+      generated_at:new Date().toISOString(),
+      insurer:a.name,
+      segments:a.segments.slice(),
+      source:'CARNET Assurance — OpenInsurance analytics',
+      definitions_version:d.version,
+      note:'Données agrégées. Détail nominatif jamais exposé entre assureurs (contrat §7).'
+    },
+    kpis,
+    pricing_book,
+    definitions
+  };
+}
+
+/* CSV plat — une ligne par point exploitable, ouvrable tel quel dans Excel */
+function analyticsToCSV(p){
+  const esc=v=>{ const s=String(v==null?'':v); return /[",;\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s; };
+  const lines=[];
+  // section meta en commentaire léger
+  lines.push('# CARNET Assurance — export analytics');
+  lines.push('# '+p.meta.insurer+' · '+p.meta.generated_at);
+  lines.push('');
+  // bloc KPI
+  lines.push(['section','group','id','label','value','unit','trend_dir','trend_pct','j1','j2','j3','j4','j5','j6','j7','hint'].join(';'));
+  p.kpis.forEach(k=>{
+    const h=k.history_7d.concat(['','','','','','','']).slice(0,7);
+    lines.push(['kpi',k.group,k.id,k.label,k.value,k.unit,k.trend_dir,k.trend_pct,...h,k.hint].map(esc).join(';'));
+  });
+  lines.push('');
+  // bloc pricing book — une ligne par devis (segment × assureur)
+  lines.push(['section','segment_code','segment','profile','unit','volume','claims','insurer','premium'].join(';'));
+  p.pricing_book.forEach(seg=>{
+    seg.quotes.forEach(q=>{
+      lines.push(['pricing_book',seg.code,seg.segment,seg.profile,seg.unit,seg.volume,seg.claims,q.insurer,q.premium].map(esc).join(';'));
+    });
+  });
+  // bloc définitions — le calcul de chaque KPI, dans le même fichier
+  if(p.definitions){
+    lines.push('');
+    lines.push('# définitions KPI · version '+p.definitions.version+' · publié '+p.definitions.published);
+    lines.push(['section','id','group','unit','lower_is_better','source','formula','plain'].join(';'));
+    p.definitions.kpis.forEach(x=>{
+      lines.push(['definition',x.id,x.group,x.unit,x.lower_is_better,x.source,x.formula,x.plain].map(esc).join(';'));
+    });
+  }
+  return lines.join('\n');
+}
+
+/* déclenche le téléchargement côté client — Blob + lien synthétique */
+function exportAnalytics(fmt){
+  const p=buildAnalyticsPayload();
+  let content, mime, ext;
+  if(fmt==='json'){
+    content=JSON.stringify(p,null,2); mime='application/json'; ext='json';
+  } else {
+    content=analyticsToCSV(p); mime='text/csv;charset=utf-8'; ext='csv';
+  }
+  const stamp=new Date().toISOString().slice(0,10);
+  const fname='carnet-analytics_'+p.meta.insurer.toLowerCase().replace(/[^a-z0-9]+/g,'-')+'_'+stamp+'.'+ext;
+  try{
+    const blob=new Blob([content],{type:mime});
+    const url=URL.createObjectURL(blob);
+    const link=document.createElement('a');
+    link.href=url; link.download=fname;
+    document.body.appendChild(link); link.click();
+    document.body.removeChild(link);
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+    toast('Export '+fmt.toUpperCase()+' — '+p.kpis.length+' KPI + '+p.pricing_book.length+' segments');
+  }catch(e){
+    toast('Export indisponible dans cet aperçu');
+  }
+}
+
+/* ─── Mode + tab ───────────────────────────────────────────────── */
+function setMode(m){
+  State.mode=m;
+  document.getElementById('m-pilote').classList.toggle('on',m==='pilote');
+  document.getElementById('m-assureur').classList.toggle('on',m==='assureur');
+  document.getElementById('view-pilote').style.display=m==='pilote'?'block':'none';
+  document.getElementById('view-assureur').style.display=m==='assureur'?'block':'none';
+  document.getElementById('tabbar').style.display=m==='pilote'?'flex':'none';
+  if(m==='assureur'){ renderAssureur(); }
+  else { renderPilote(); }
+  renderDashboard();
+  window.scrollTo(0,0);
+}
+function setTab(t){
+  State.tab=t; State.viewing=null; State.claim.open=false; State.transfer.open=false; State.scoreView=false;
+  document.querySelectorAll('.tab').forEach(el=>el.classList.toggle('on',el.dataset.tab===t));
+  if(t==='activer' && State.wiz.step===0 && !State.wiz.carId) State.wiz.step=1;
+  renderPilote(); renderDashboard(); window.scrollTo(0,0);
+}
+
+/* En-tête de section — un point de couleur + un titre éditorial. */
+function passeHead(tone, title){
+  // tone : 3 → orange (conducteur), 6 → encre (moteur), 9 → vert (assureur)
+  const cls = tone===9 ? 'l9' : tone===6 ? 'l6' : 'l3';
+  return `
+  <div class="passe-head">
+    <div class="passe-orb ${cls}"></div>
+    <div class="passe-meta">
+      <div class="passe-title">${title}</div>
+    </div>
+  </div>`;
+}
+const TICK = `<svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.5 3.5L13 4" stroke="currentColor" stroke-width="1.7"/></svg>`;
+
+/* ─── WEB3 — les emplacements prévus, dégradation propre ────────────────
+   Une seule règle : tout ce qui touchera la chaîne passe par ces helpers.
+   web3.live=false → "à venir" sobre. web3.live=true → vrai tokenid + lien.
+   Quand le Web3 se branche, on ne touche AUCUN écran — on remplit le state. */
+
+// badge d'état on-chain — pending (gris) ou live (vert qui pulse)
+function web3Badge(label){
+  return State.web3.live
+    ? `<span class="w3-badge live">${label||'ancré on-chain'}</span>`
+    : `<span class="w3-badge pending">on-chain à venir</span>`;
+}
+
+// une ligne clé/valeur on-chain. ref = l'objet du state (ou null/undefined).
+// field = la clé à lire dedans (tokenid, txHash…). pendingLabel = quoi
+// afficher tant que ce n'est pas branché.
+function web3Slot(label, ref, field, pendingLabel){
+  if(State.web3.live && ref && ref[field]){
+    const val=ref[field];
+    const short=val.length>22 ? val.slice(0,10)+'…'+val.slice(-6) : val;
+    const href=State.web3.explorerBase+'/transactions/'+val;
+    return `<div class="w3-row">
+      <span class="w3-k">${label}</span>
+      <span class="w3-v"><a href="${href}" target="_blank" rel="noopener">${short}</a></span>
+    </div>`;
+  }
+  return `<div class="w3-row">
+    <span class="w3-k">${label}</span>
+    <span class="w3-v pending">${pendingLabel||'à venir'}</span>
+  </div>`;
+}
+
+// le bloc on-chain réutilisable — titre + badge + lignes
+function web3Block(title, rowsHtml, note){
+  return `<div class="w3-block">
+    <div class="w3-block-head">
+      <span class="w3-block-title">${title}</span>
+      ${web3Badge()}
+    </div>
+    ${rowsHtml}
+    ${note?`<div class="w3-note">${note}</div>`:''}
+  </div>`;
+}
+
+// le settlement RLUSD — la barre de répartition 92,9 / 7,1.
+// Toujours affichable (les montants sont connus), le tokenid de tx
+// reste "à venir" tant que web3.live=false.
+function renderSettlement(premiumEur, activationId){
+  const commissionPct=7.1;
+  const commissionAsso=Math.round(premiumEur*commissionPct/100*100)/100;
+  const netPartner=Math.round((premiumEur-commissionAsso)*100)/100;
+  const settle=State.web3.settlements[activationId];
+  return `<div class="w3-block">
+    <div class="w3-block-head">
+      <span class="w3-block-title">Règlement · ${State.web3.rail} atomique</span>
+      ${web3Badge('réglé on-chain')}
+    </div>
+    <div class="settle-bar">
+      <div class="settle-seg-partner" style="flex:${100-commissionPct}"></div>
+      <div class="settle-seg-asso" style="flex:${commissionPct}"></div>
+    </div>
+    <div class="settle-legend">
+      <span>Assureur · ${fmtEur(netPartner)} <span class="muted">(92,9 %)</span></span>
+      <span class="asso">Asso · ${fmtEur(commissionAsso)} (7,1 %)</span>
+    </div>
+    ${web3Slot('Transaction', settle, 'txHash', 'réglée au branchement du rail RLUSD')}
+    <div class="w3-note">Versement atomique : prime − commission → wallet assureur, en une transaction. Zéro délai, zéro litige possible.</div>
+  </div>`;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   FACE PILOTE — Layer UX (3) : ce qui circule pour l'œil
+   ═══════════════════════════════════════════════════════════════════ */
+function renderPilote(){
+  const v=document.getElementById('view-pilote');
+  if(State.scoreView){   setEnergy(9,false); v.innerHTML=renderScoreAssurance(); return; }
+  if(State.transfer.open){ setEnergy(9,false); v.innerHTML=renderTransfer(); return; }
+  if(State.claim.open){ setEnergy(9,false); v.innerHTML=renderSinistre(); return; }
+  if(State.viewing){    setEnergy(9,false); v.innerHTML=renderContratVivant(); return; }
+  if(State.tab==='repos'){    setEnergy(3,false); v.innerHTML=renderRepos(); }
+  if(State.tab==='composer'){ setEnergy(3,false); v.innerHTML=renderComposer(); }
+  if(State.tab==='activer'){  v.innerHTML=renderActiver(); }
+  if(State.tab==='annee'){    setEnergy(3,false); v.innerHTML=renderAnnee(); }
+}
+
+/* ── PASSE 1 · Au repos — le contrat vivant au repos ─────────────── */
+function renderRepos(){
+  const cards=State.garage.map(c=>{
+    const ins=c.insurance, st=ins.status;
+    const pastilleTxt={
+      repos:'Au repos · couverture stationnement',
+      active:'Active · '+(ins.active_label||''),
+      pending:'En attente d\'activation',
+      none:'Pas encore couverte'
+    }[st];
+    let footTxt, footCta, footFn;
+    if(st==='repos'){ footTxt='Roule <em>'+c.daysPerYear+' j/an</em> · paie ce qu\'elle utilise'; footCta='Activer une sortie'; footFn="startWizard('"+c.id+"')"; }
+    else if(st==='active'){ footTxt='Couverte · '+ins.days_left+' jours restants'; footCta='Contrat vivant'; footFn="openContratVivant('"+c.id+"')"; }
+    else if(st==='pending'){ footTxt='Activation en cours · sortie prévue'; footCta='Voir le détail'; footFn="startWizard('"+c.id+"')"; }
+    else { footTxt='Souscris la base "au repos" pour la protéger'; footCta='Composer son plan'; footFn="setTab('composer')"; }
+
+    const cov=ins.coverage.length? `
+      <div class="cov-list">
+        ${ins.coverage.map(([n,d])=>`<div class="cov-row"><span class="cov-name">${n}</span><span class="cov-val">${d}</span></div>`).join('')}
+      </div>` : '';
+
+    return `
+    <article class="car-card">
+      <div class="car-card-body">
+        <div class="car-head">
+          <div style="min-width:0">
+            <div class="car-brand">${c.mk}</div>
+            <div class="car-name">${c.mo}</div>
+            <div class="car-meta">${c.yr} · ${c.meta}</div>
+          </div>
+          <div>
+            <div class="car-value">${fmtEur(c.value)}</div>
+            <div class="car-value-lbl">valeur cote NFT</div>
+          </div>
+        </div>
+        <span class="pastille ${st}">${pastilleTxt}</span>
+        ${cov}
+      </div>
+      <div class="car-foot">
+        <span class="car-foot-txt">${footTxt}</span>
+        <button class="mini-cta" onclick="${footFn}">${footCta} →</button>
+      </div>
+    </article>`;
+  }).join('');
+
+  return `
+    ${passeHead(3,'Tes voitures au repos')}
+    <h1 class="h-big">Tes voitures, leur couverture.</h1>
+    <p class="lede">La base "au repos" protège la voiture qui dort — vol, incendie, catastrophes.
+      La conduite, elle, s'active à la carte. Tu paies ce que tu utilises, rien d'autre.</p>
+    ${cards}
+    <div class="manifesto">
+      <div class="manif-line"><span class="manif-n">1</span><span class="manif-txt"><strong>Tu vois</strong> — chaque voiture, son état de couverture, en un coup d'œil.</span></div>
+      <div class="manif-line"><span class="manif-n">2</span><span class="manif-txt"><strong>Tu actives</strong> — une sortie, un contexte, des dates. Les assureurs te répondent en quatre-vingt-dix secondes.</span></div>
+      <div class="manif-line"><span class="manif-n">3</span><span class="manif-txt"><strong>Tu roules couvert</strong> — tu choisis ton devis, la couverture s'ancre. Tu ne paies que tes jours de route.</span></div>
+    </div>
+    <div class="foot-note">Valeur assurée = cote CARNET actualisée mensuellement, opposable on-chain.</div>`;
+}
+
+/* ── PASSE 2 · Composer — le calculateur à la carte ──────────────── */
+function planTotals(){
+  const p=State.plan;
+  let permanent=0, discountPct=0, activations=0, copilote=0;
+  p.permanent.forEach(id=>{
+    const m=modById(id);
+    if(!m) return;
+    if(m.kind==='discount') discountPct+=m.pct;
+    else permanent+=m.price;
+  });
+  Object.entries(p.activations).forEach(([id,qty])=>{
+    const m=modById(id); if(m) activations+=m.price*qty;
+  });
+  Object.entries(p.copilote).forEach(([id,qty])=>{
+    const m=modById(id); if(m) copilote+=m.price*qty;
+  });
+  const grossAnnual = permanent*(1-discountPct/100);
+  const subtotal = grossAnnual + activations + copilote;
+  const commission = subtotal*0.071;
+  const total = subtotal + commission;
+  const classic = subtotal>0 ? subtotal/0.74 : 0;   // ~ -26% structurel
+  return { permanent, discountPct, grossAnnual, activations, copilote, subtotal, commission, total, classic };
+}
+function detectBundles(){
+  const p=State.plan, out=[];
+  const a4=p.activations['A4']||0;
+  if(a4>=3 && a4<6) out.push('Tu as 3 track days amateur — le <strong>Pack 3 track days</strong> ferait −10 % sur ces sessions.');
+  if(a4>=6) out.push('6 track days ou plus — le <strong>Pack 6 track days</strong> ferait −15 %.');
+  if((p.activations['A9']||0)>=1 && (p.activations['A7']||0)>=1)
+    out.push('Rallye historique + concours — le <strong>Pack rallye historique annuel</strong> ferait −8 %.');
+  const actCount=Object.values(p.activations).reduce((s,n)=>s+n,0);
+  if(p.permanent.includes('M1') && actCount>=12)
+    out.push('Base + 12 activations ou plus — le <strong>Pack collectionneur</strong> ferait −5 % sur l\'ensemble.');
+  return out;
+}
+function togglePermanent(id){
+  const p=State.plan, i=p.permanent.indexOf(id);
+  if(i>=0){
+    p.permanent.splice(i,1);
+    // si on retire M1, M2 (qui en dépend) tombe aussi
+    if(id==='M1'){ const j=p.permanent.indexOf('M2'); if(j>=0) p.permanent.splice(j,1); }
+  } else {
+    const m=modById(id);
+    if(m && m.requires && !p.permanent.includes(m.requires)) p.permanent.push(m.requires);
+    p.permanent.push(id);
+  }
+  renderPilote();
+}
+function changeActQty(id,delta){
+  const p=State.plan;
+  const cur=p.activations[id]||0;
+  const next=Math.max(0,cur+delta);
+  if(next===0) delete p.activations[id]; else p.activations[id]=next;
+  renderPilote();
+}
+function changeCopiQty(id,delta){
+  const p=State.plan;
+  const cur=p.copilote[id]||0;
+  const next=Math.max(0,cur+delta);
+  if(next===0) delete p.copilote[id]; else p.copilote[id]=next;
+  renderPilote();
+}
+
+function renderComposer(){
+  const p=State.plan, t=planTotals();
+  const car=carById(p.carId);
+
+  // permanent modules
+  const permRows=State.modules.permanent.map(m=>{
+    const on=p.permanent.includes(m.id);
+    let priceHtml;
+    if(m.kind==='discount') priceHtml=`<div class="mod-price">−${m.pct}%<span class="per">sur la base</span></div>`;
+    else if(m.kind==='included') priceHtml=`<span class="mod-info">inclus</span>`;
+    else priceHtml=`<div class="mod-price">${fmtEur(m.price)}<span class="per">/ an</span></div>`;
+    return `
+    <div class="mod-row ${on?'on':''}">
+      <button class="mod-toggle" onclick="togglePermanent('${m.id}')" aria-label="toggle ${m.id}">${TICK}</button>
+      <div class="mod-body">
+        <div class="mod-code">${m.id}</div>
+        <div class="mod-name">${m.name}</div>
+        <div class="mod-desc">${m.desc}</div>
+      </div>
+      ${priceHtml}
+    </div>`;
+  }).join('');
+
+  // activations grouped
+  const groups={};
+  State.modules.activation.forEach(m=>{ (groups[m.group]=groups[m.group]||[]).push(m); });
+  const actGroups=Object.entries(groups).map(([gname,mods])=>{
+    const rows=mods.map(m=>{
+      const qty=p.activations[m.id]||0;
+      const priceTxt=m.manual? 'devis manuel'
+        : fmtEur(m.price)+(m.perDay?' / j':'');
+      return `
+      <div class="mod-row ${qty>0?'on':''}">
+        <div class="mod-body">
+          <div class="mod-code">${m.id}${m.fia?' · FIA':''}</div>
+          <div class="mod-name">${m.name}</div>
+          <div class="mod-desc">${m.desc}</div>
+        </div>
+        <div class="mod-price">${priceTxt}</div>
+        ${m.manual
+          ? `<span class="mod-info">sur demande</span>`
+          : `<div class="stepper">
+               <button class="step-btn" onclick="changeActQty('${m.id}',-1)" ${qty===0?'disabled':''}>−</button>
+               <span class="step-qty">${qty}</span>
+               <button class="step-btn" onclick="changeActQty('${m.id}',1)">+</button>
+             </div>`}
+      </div>`;
+    }).join('');
+    return `<div class="mod-group">
+      <div class="mod-group-title">${gname}</div>
+      <div class="mod-list">${rows}</div>
+    </div>`;
+  }).join('');
+
+  // copilote
+  const copiRows=State.modules.copilote.map(m=>{
+    const qty=p.copilote[m.id]||0;
+    return `
+    <div class="mod-row ${qty>0?'on':''}">
+      <div class="mod-body">
+        <div class="mod-code">${m.id}</div>
+        <div class="mod-name">${m.name}</div>
+        <div class="mod-desc">${m.desc}</div>
+      </div>
+      ${m.included
+        ? `<span class="mod-info">inclus</span>`
+        : `<div class="mod-price">${fmtEur(m.price)}<span class="per">/ unité</span></div>
+           <div class="stepper">
+             <button class="step-btn" onclick="changeCopiQty('${m.id}',-1)" ${qty===0?'disabled':''}>−</button>
+             <span class="step-qty">${qty}</span>
+             <button class="step-btn" onclick="changeCopiQty('${m.id}',1)">+</button>
+           </div>`}
+    </div>`;
+  }).join('');
+
+  // car selector
+  const carPills=State.garage.map(c=>`
+    <button class="opt-row ${p.carId===c.id?'sel':''}" onclick="State.plan.carId='${c.id}';renderPilote()" style="min-height:52px">
+      <div class="opt-main"><div class="opt-title" style="font-size:16px">${c.mo}</div>
+        <div class="opt-desc">${c.mk} · ${fmtEur(c.value)}</div></div>
+      <span class="opt-tick">${TICK}</span>
+    </button>`).join('');
+
+  // bundles
+  const bundles=detectBundles();
+  const nudges=bundles.map(b=>`
+    <div class="nudge">
+      <svg class="nudge-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l2 4.3 4.7.6-3.4 3.2.9 4.6L8 11.9 3.8 14.2l.9-4.6L1.3 6.4 6 5.8z" stroke="currentColor" stroke-width="1.1"/></svg>
+      <div class="nudge-txt">${b}</div>
+    </div>`).join('');
+
+  return `
+    ${passeHead(3,'Composer ton plan')}
+    <h1 class="h-big">Mon plan à la carte.</h1>
+    <p class="lede">Modules permanents pour la voiture qui dort, activations pour les jours où
+      elle roule. Tu ajoutes, tu retires, le total bouge en direct. Aucun forfait opaque.</p>
+
+    <div class="eyebrow">La voiture</div>
+    <div class="opt-list">${carPills}</div>
+
+    <div class="mod-group section-gap">
+      <div class="mod-group-title">Modules permanents · base annuelle</div>
+      <div class="mod-list">${permRows}</div>
+    </div>
+
+    <div class="eyebrow section-gap">Activations à la carte</div>
+    ${actGroups}
+
+    <div class="mod-group">
+      <div class="mod-group-title">Modules co-pilote &amp; passager</div>
+      <div class="mod-list">${copiRows}</div>
+    </div>
+
+    ${nudges}
+
+    <div class="total-card">
+      <div class="total-big">${fmtEur(t.total)}</div>
+      <div class="total-lbl">budget annuel CARNET · ${car?car.mo:'—'}</div>
+      <div class="total-break">
+        <div class="total-line"><span>Modules permanents</span><span>${fmtEur(t.grossAnnual)}${t.discountPct?' · −'+t.discountPct+'%':''}</span></div>
+        <div class="total-line"><span>Activations</span><span>${fmtEur(t.activations)}</span></div>
+        <div class="total-line"><span>Co-pilote &amp; passager</span><span>${fmtEur(t.copilote)}</span></div>
+        <div class="total-line accent"><span>dont commission asso · 7,1 %</span><span>${fmtEur(t.commission)}</span></div>
+      </div>
+    </div>
+
+    <div class="compare">
+      <div class="compare-side win">
+        <div class="compare-amount">${fmtEur(t.total)}</div>
+        <div class="compare-tag">CARNET à la carte</div>
+      </div>
+      <div class="compare-side">
+        <div class="compare-amount">${fmtEur(t.classic)}</div>
+        <div class="compare-tag">forfait classique équivalent</div>
+      </div>
+    </div>
+    ${t.classic>0?`<div class="save-banner"><strong>−${Math.round((1-t.total/t.classic)*100)} %</strong> · tu paies tes sorties, pas un mystère.</div>`:''}
+
+    <div class="foot-note">
+      Tarifs indicatifs · les devis fermes viennent des assureurs partenaires en temps réel,<br>
+      sur leurs grilles officielles. Algorithme de tarification ouvert et auditable sur GitHub.
+    </div>`;
+}
+
+/* ── PASSE 3 · Activer — wizard, l'énergie se met en mouvement ───── */
+function startWizard(carId){
+  State.wiz={ step:2, carId, ctxId:null, dateStart:'', dateEnd:'', quotes:[], chosen:null, rfqId:null };
+  setTab('activer');
+}
+function renderActiver(){
+  const w=State.wiz;
+  const pips=[1,2,3,4].map(n=>{
+    let cls='step-pip';
+    if(n<w.step) cls+=' done'; else if(n===w.step) cls+=' on';
+    return `<div class="${cls}"></div>`;
+  }).join('');
+
+  let body, head;
+  if(w.step<=1){       setEnergy(3,false); head=passeHead(3,'Activer une sortie'); body=wizStepCar(); }
+  else if(w.step===2){ setEnergy(3,false); head=passeHead(3,'Contexte & dates'); body=wizStepContext(); }
+  else if(w.step===3){ head=passeHead(6,'Devis en cours'); body=wizStepRFQ(); }
+  else {               setEnergy(9,false); head=passeHead(9,'Couverture confirmée'); body=wizStepConfirm(); }
+  return `${head}<div class="steps">${pips}</div>${body}`;
+}
+
+function wizStepCar(){
+  const rows=State.garage.map(c=>`
+    <button class="opt-row ${State.wiz.carId===c.id?'sel':''}" onclick="State.wiz.carId='${c.id}';renderPilote()">
+      <div class="opt-main">
+        <div class="opt-title">${c.mo}</div>
+        <div class="opt-desc">${c.mk} ${c.yr} · ${fmtEur(c.value)}</div>
+      </div>
+      <span class="opt-tick">${TICK}</span>
+    </button>`).join('');
+  return `
+    <p class="lede">Quelle voiture sort ?</p>
+    <div class="opt-list">${rows}</div>
+    <button class="cta cta-primary" ${State.wiz.carId?'':'disabled'} onclick="State.wiz.step=2;renderPilote()">
+      Continuer <span class="dot"></span></button>`;
+}
+
+function wizStepContext(){
+  const car=carById(State.wiz.carId);
+  const hasFIA=true; // dérivé des credentials — licence FIA grade C vérifiée
+  const rows=State.contexts.map(c=>{
+    const locked=c.fia && !hasFIA;
+    const priceLbl=c.base? 'dès '+fmtEur(c.base) : 'devis manuel';
+    return `
+    <button class="opt-row ${State.wiz.ctxId===c.id?'sel':''} ${locked?'disabled':''}"
+      ${locked?'':'onclick="State.wiz.ctxId=\''+c.id+'\';renderPilote()"'}>
+      <div class="opt-main">
+        <div class="opt-title">${c.title}</div>
+        <div class="opt-desc">${locked?'Licence FIA requise':c.desc}</div>
+      </div>
+      <span class="opt-price">${priceLbl}</span>
+      <span class="opt-tick">${TICK}</span>
+    </button>`;
+  }).join('');
+  const w=State.wiz;
+  const ready = w.ctxId && w.dateStart && w.dateEnd;
+  return `
+    <p class="lede">Avec <em>${car.mo}</em> — quel contexte ?</p>
+    <div class="opt-list">${rows}</div>
+    <div class="field-row">
+      <div class="field"><label class="field-lbl">Départ</label>
+        <input type="date" value="${w.dateStart}" onchange="State.wiz.dateStart=this.value;renderPilote()"></div>
+      <div class="field"><label class="field-lbl">Retour</label>
+        <input type="date" value="${w.dateEnd}" onchange="State.wiz.dateEnd=this.value;renderPilote()"></div>
+    </div>
+    <div class="card card-tight" style="margin-bottom:var(--s-4)">
+      <div class="eyebrow" style="margin-bottom:var(--s-3)">Paquet client — dérivé, zéro questionnaire</div>
+      <div class="cov-row"><span class="cov-name">Pilote</span><span class="cov-val">41 ans · permis FR 22 ans · licence FIA grade C</span></div>
+      <div class="cov-row"><span class="cov-name">Sinistres 36 mois</span><span class="cov-val">0 — score conducteur 88/100</span></div>
+      <div class="cov-row"><span class="cov-name">Voiture</span><span class="cov-val">cote NFT à jour · certificat on-chain</span></div>
+    </div>
+    <button class="cta cta-primary" ${ready?'':'disabled'} onclick="dispatchRFQ()">
+      Lancer dans le moteur <span class="dot"></span></button>
+    <button class="cta cta-ghost cta-mt" onclick="State.wiz.step=1;renderPilote()">Retour</button>`;
+}
+
+/* ── LAYER FUNCTION (6) — le moteur. dispatchRFQ = passes 4·5·6. ── */
+function dispatchRFQ(){
+  const w=State.wiz, ctx=ctxById(w.ctxId);
+  const rfqId='rfq_'+Date.now().toString(36);
+  w.rfqId=rfqId; w.quotes=[]; w.chosen=null; w.step=3;
+  setEnergy(6,true);
+
+  const segment=ctx.seg;
+  const car=carById(w.carId);
+  const rfq={ id:rfqId, carId:w.carId, ctxId:w.ctxId, segment,
+    dateStart:w.dateStart, dateEnd:w.dateEnd, car, ctx, createdAt:Date.now(), status:'open' };
+  State.rfqs[rfqId]=rfq;
+  if(State.assureur.segments.includes(segment)){
+    State.assureur.inbox.unshift(rfq);
+    // si l'assureur regarde son inbox, l'énergie y arrive en direct
+    if(State.mode==='assureur' && State.assureur.connected) renderAssureur();
+  }
+  if(State.mode==='pilote') renderPilote();
+
+  const responders=State.partners.filter(p=>p.segments.includes(segment));
+  if(responders.length===0 && !State.assureur.segments.includes(segment)){
+    setTimeout(()=>{ rfq.status='expired'; if(State.wiz.rfqId===rfqId){ setEnergy(6,false); renderPilote(); } },2400);
+    return;
+  }
+  responders.forEach(p=>{
+    const delay=900 + Math.random()*2600;
+    setTimeout(()=>{
+      if(State.wiz.rfqId!==rfqId) return;
+      const jitter=0.82 + Math.random()*0.4;
+      const premium=ctx.base? Math.round(ctx.base*jitter/5)*5 : 0;
+      addQuote(rfqId,{ partnerId:p.id, premium, deductible: car.value>1000000?2500:1500,
+        responseMs:Math.round(delay), restrictions:restrictFor(w.ctxId) });
+    },delay);
+  });
+}
+function restrictFor(ctxId){
+  return {
+    route:'Conduite sur route ouverte uniquement.',
+    track:'Circuit homologué requis · vitesse libre sur piste uniquement.',
+    rally_eu:'Itinéraire déclaré · ouvert UE + CH + UK + Norvège.',
+    rally_histo:'Voiture homologuée route · provenance vérifiée incluse.',
+    rally_transcon:'Devis soumis à review expert bénévole · 24–48 h.',
+    import:'Carnet ATA requis · couverture route EU temporaire.',
+    transport:'Couvre voiture + véhicule tracteur en convoi.'
+  }[ctxId];
+}
+function addQuote(rfqId,q){
+  const rfq=State.rfqs[rfqId];
+  if(!rfq) return;
+  rfq.status='quoted';
+  if(State.wiz.rfqId===rfqId){
+    State.wiz.quotes.push(q);
+    setEnergy(6,false);
+    if(State.tab==='activer' && State.mode==='pilote') renderPilote();
+  }
+  if(State.mode==='assureur') toast('Un devis vient d\'être déposé');
+}
+
+/* le devis 6 blocs — transparence radicale du doc */
+function sixBlockQuote(car){
+  const blocks=[
+    ['Responsabilité civile','8 M€ corporel · 1,5 M€ matériel','RC obligatoire EU élargie'],
+    ['Dommages voiture',fmtEur(car.value),'valeur cote NFT actualisée'],
+    ['Vol / incendie',fmtEur(car.value),'conditions selon contexte'],
+    ['Accident corporel pilote','500 k€ / personne','invalidité progressive incluse'],
+    ['Vol matériel transporté','10 k€ · ajustable','couvre le gear marketplace'],
+    ['Assistance & rapatriement','inclus 24/7','plateforme assureur partenaire']
+  ];
+  return `<div class="six-block">
+    ${blocks.map(([n,amt,d],i)=>`
+    <div class="sb-row">
+      <span class="sb-n">${i+1}</span>
+      <div class="sb-body"><div class="sb-name">${n}</div><div class="sb-detail">${d}</div></div>
+      <span class="sb-amount">${amt}</span>
+    </div>`).join('')}
+  </div>`;
+}
+
+function wizStepRFQ(){
+  const w=State.wiz, ctx=ctxById(w.ctxId), car=carById(w.carId);
+  const rfq=State.rfqs[w.rfqId];
+
+  if(rfq && rfq.status==='expired'){
+    return `
+      <div class="notice">Aucun assureur n'a répondu dans la fenêtre.<br>Réessaie, ou élargis les dates.</div>
+      <button class="cta cta-ghost" onclick="State.wiz.step=2;renderPilote()">Modifier la demande</button>`;
+  }
+
+  const live = w.quotes.length===0;
+  const dispatch = live ? `
+    <div class="rfq-live">
+      <div class="rfq-pulse"><div class="rfq-pulse-core"></div></div>
+      <div class="rfq-status">Ta demande traverse le moteur…</div>
+      <div class="rfq-count">le paquet client certifié part en parallèle vers les assureurs du segment<br>
+        réponses attendues sous quatre-vingt-dix secondes</div>
+    </div>` : '';
+
+  const quoteCards = w.quotes
+    .slice().sort((a,b)=>(a.premium||9e9)-(b.premium||9e9))
+    .map((q,i)=>{
+      const chosen = w.chosen && w.chosen.partnerId===q.partnerId;
+      const p=partnerById(q.partnerId);
+      const who = chosen ? (p ? p.name : (q.partnerId==='self' ? State.assureur.name : 'Assureur retenu')) : 'Assureur '+String.fromCharCode(65+i);
+      const priceTxt = q.premium? fmtEur(q.premium) : 'sur devis';
+      return `
+      <div class="quote-card ${chosen?'chosen':''}">
+        <div class="quote-top">
+          <span class="quote-who ${chosen?'revealed':''}">${who}</span>
+          <span class="quote-resp">réponse ${(q.responseMs/1000).toFixed(1)} s</span>
+        </div>
+        <div class="quote-price">${priceTxt}</div>
+        <div class="quote-price-lbl">prime · franchise ${fmtEur(q.deductible)}</div>
+        ${sixBlockQuote(car)}
+        <div class="quote-restrict">${q.restrictions}</div>
+        ${chosen
+          ? `<button class="cta cta-ghost" disabled>Devis retenu ✓</button>`
+          : `<button class="cta cta-primary" onclick="chooseQuote('${q.partnerId}')">Choisir ce devis <span class="dot"></span></button>`}
+      </div>`;
+    }).join('');
+
+  const header = `<p class="lede"><em>${car.mo}</em> · ${ctx.title} · ${w.dateStart||'—'} → ${w.dateEnd||'—'}</p>`;
+  const count = w.quotes.length? `<div class="eyebrow">${w.quotes.length} devis reçu${w.quotes.length>1?'s':''} · anonymisés jusqu'au choix — anti-collusion</div>` : '';
+
+  return `${header}${dispatch}${count}${quoteCards}
+    ${w.quotes.length?`<button class="cta cta-ghost" onclick="State.wiz.step=2;renderPilote()">Modifier la demande</button>`:''}`;
+}
+
+function chooseQuote(partnerId){
+  const w=State.wiz;
+  const q=w.quotes.find(x=>x.partnerId===partnerId);
+  if(!q) return;
+  w.chosen=q;
+  const rfq=State.rfqs[w.rfqId];
+  if(rfq) rfq.status='bound';
+  const car=carById(w.carId), ctx=ctxById(w.ctxId);
+  const activationId='a_'+Date.now().toString(36);
+  State.activations.unshift({ id:activationId, car:w.carId, ctx:w.ctxId,
+    label:ctx.title, dates:(w.dateStart||'')+' → '+(w.dateEnd||''),
+    premium:q.premium||0, partner:partnerId });
+  w.lastActivationId=activationId;   // pour les emplacements Web3 de la confirmation
+  if(car.insurance.status==='none') car.insurance.status='pending';
+  w.step=4;
+  setEnergy(9,false);
+  renderPilote();
+}
+
+function wizStepConfirm(){
+  const w=State.wiz, q=w.chosen, car=carById(w.carId), ctx=ctxById(w.ctxId);
+  const p=partnerById(q.partnerId);
+  const insurerName = p ? p.name : (q.partnerId==='self' ? State.assureur.name : 'Assureur partenaire');
+  const net=q.premium ? Math.round(q.premium*0.929) : 0;
+  return `
+    <div class="card">
+      <div class="confirm-mark">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M5 11.5l4 4L17 6" stroke="currentColor" stroke-width="1.6"/></svg>
+      </div>
+      <h2 class="h-mid" style="text-align:center">La boucle est fermée.</h2>
+      <p class="lede" style="text-align:center">
+        ${car.mo} est couverte pour ${ctx.title}. L'énergie est revenue à toi —
+        ancrée, scellée, inscrite à ton année.</p>
+      <div style="margin-top:var(--s-5)">
+        <div class="kv"><span class="kv-k">Assureur</span><span class="kv-v">${insurerName}</span></div>
+        <div class="kv"><span class="kv-k">Contexte</span><span class="kv-v">${ctx.title}</span></div>
+        <div class="kv"><span class="kv-k">Période</span><span class="kv-v">${w.dateStart} → ${w.dateEnd}</span></div>
+        <div class="kv"><span class="kv-k">Prime</span><span class="kv-v">${fmtEur(q.premium)}</span></div>
+        <div class="kv"><span class="kv-k">Franchise</span><span class="kv-v">${fmtEur(q.deductible)}</span></div>
+      </div>
+      ${renderSettlement(q.premium||0, w.lastActivationId)}
+      ${web3Block('Police d\'assurance · NFT XLS-20 Taxon 7',
+        web3Slot('Token', State.web3.activationNft[w.lastActivationId], 'tokenid', 'minté au branchement on-chain') +
+        web3Slot('Empreinte dossier', State.web3.activationNft[w.lastActivationId], 'txHash', 'ancrée au mint'),
+        'La micro-police devient un NFT : preuve d\'usage opposable, infalsifiable, transférable à la revente.')}
+    </div>
+    <button class="cta cta-primary" onclick="setTab('annee')">Voir mon année <span class="dot"></span></button>
+    <button class="cta cta-ghost cta-mt" onclick="resetWizard()">Activer une autre sortie</button>`;
+}
+function resetWizard(){
+  State.wiz={ step:1, carId:null, ctxId:null, dateStart:'', dateEnd:'', quotes:[], chosen:null, rfqId:null };
+  renderPilote();
+}
+
+/* ── Contrat vivant — le contrat n'est pas un PDF, il vit (passe 9) ── */
+function openContratVivant(carId){
+  State.viewing=carId; renderPilote(); window.scrollTo(0,0);
+}
+function renderContratVivant(){
+  const c=carById(State.viewing), ins=c.insurance;
+  const ctx=ctxById(ins.active_ctx);
+  return `
+    <button class="back-link" onclick="State.viewing=null;renderPilote()">← Retour au garage</button>
+    ${passeHead(9,'Contrat vivant')}
+    <div class="live-tag">couverture active · NFT XLS-20</div>
+    <h1 class="h-big">${c.mo}</h1>
+    <p class="lede">${ins.active_label}. Ton contrat n'est pas un document signé puis oublié —
+      c'est un organisme qui suit ta position, compte les jours, et veille.</p>
+
+    <div class="eyebrow">Zone géographique couverte</div>
+    <div class="cv-map">
+      <svg viewBox="0 0 320 170" preserveAspectRatio="none">
+        <path d="M40 120 Q70 40 140 55 Q210 68 250 35 Q290 60 280 110 Q230 150 150 140 Q80 150 40 120 Z"
+          fill="rgba(31,77,47,.10)" stroke="rgba(31,77,47,.4)" stroke-width="1"/>
+      </svg>
+      <div class="cv-pos" style="left:46%;top:52%"></div>
+      <div class="cv-map-tag">${ins.zone} · position en zone</div>
+    </div>
+
+    <div class="eyebrow">Validité — extension one-tap si besoin</div>
+    <div class="countdown">
+      <div class="cd-unit"><div class="cd-num">${ins.days_left}</div><div class="cd-lbl">jours</div></div>
+      <div class="cd-unit"><div class="cd-num">06</div><div class="cd-lbl">heures</div></div>
+      <div class="cd-unit"><div class="cd-num">22</div><div class="cd-lbl">minutes</div></div>
+    </div>
+
+    <div class="card card-tight">
+      <div class="eyebrow" style="margin-bottom:var(--s-3)">Couverture en vigueur</div>
+      <div class="cov-row"><span class="cov-name">Contexte</span><span class="cov-val">${ctx?ctx.title:ins.active_label}</span></div>
+      <div class="cov-row"><span class="cov-name">Échéance</span><span class="cov-val">${ins.active_until}</span></div>
+      <div class="cov-row"><span class="cov-name">Valeur assurée</span><span class="cov-val">${fmtEur(c.value)} · cote NFT</span></div>
+    </div>
+
+    ${web3Block('Police on-chain · NFT XLS-20 Taxon 7',
+      web3Slot('Token police', State.web3.policyNft[c.id], 'tokenid', 'minté au branchement on-chain') +
+      web3Slot('Empreinte dossier', State.web3.policyNft[c.id], 'txHash', 'ancrée IPFS au mint') +
+      web3Slot('Émetteur', State.web3.policyNft[c.id], 'issuer', 'wallet assureur'),
+      'Le contrat vivant est un NFT : les dates, l\'état du véhicule et les signatures sont infalsifiables. Photos pré-départ horodatées = preuve d\'état opposable.')}
+
+    <button class="cta cta-primary" onclick="toast('Extension proposée — +3 jours, 95 €')">
+      Étendre la couverture <span class="dot"></span></button>
+    <button class="cta cta-sos cta-mt" onclick="toast('SOS — assureur + coordinateur événement + Tribu CARNET prévenus')">
+      SOS — appel d'urgence one-tap</button>
+    <button class="cta cta-ghost cta-mt" onclick="openClaim('${c.id}')">Déclarer un sinistre</button>
+    <button class="cta cta-ghost cta-mt" onclick="openTransfer('${c.id}')">Transférer la police — revente</button>
+
+    <div class="foot-note">
+      Si tu sors de la zone couverte, CARNET t'alerte — sans culpabiliser.<br>
+      Déclaration sinistre : photos géolocalisées + trace GPX + témoins Tribu, dossier en 1–2 semaines.
+    </div>`;
+}
+
+/* ── Sinistre — déclaration respectueuse, traçable, communautaire ── */
+function openClaim(carId){
+  State.claim={ open:true, carId, step:1, photos:0, witnesses:0, gpx:false, desc:'' };
+  renderPilote(); window.scrollTo(0,0);
+}
+function claimAddPhoto(){ if(State.claim.photos<4){ State.claim.photos++; renderPilote(); } }
+function claimToggleGpx(){ State.claim.gpx=!State.claim.gpx; renderPilote(); }
+function claimAddWitness(){ State.claim.witnesses=Math.min(3,State.claim.witnesses+1); renderPilote(); }
+function claimNext(){ if(State.claim.step<3){ State.claim.step++; renderPilote(); window.scrollTo(0,0); } }
+function claimSubmit(){
+  toast('Sinistre transmis — dossier structuré envoyé à l\'assureur partenaire');
+  State.claim.open=false; State.viewing=State.claim.carId; renderPilote(); window.scrollTo(0,0);
+}
+function openScoreAssurance(){
+  State.scoreView=true;
+  renderPilote(); window.scrollTo(0,0);
+}
+
+/* ── Score conducteur — vue assurance dédiée ──────────────────────────
+   Le score est construit à partir des données d'assurance réelles :
+   historique sinistres, ancienneté, track record, licence FIA.
+   Chaque dimension = un impact direct sur la prime. */
+function renderScoreAssurance(){
+  const score=88, years=5, trackDays=23, claims=0;
+  // Décomposition du score en 5 axes assurance
+  const axes=[
+    { label:'Historique sinistres', pts:30, max:30,
+      detail:'0 sinistre sur 5 ans — maximum',
+      impact:'−30 % sur la prime de base',
+      color:'var(--vert-anglais)' },
+    { label:'Ancienneté CARNET', pts:15, max:20,
+      detail:'5 ans de carnet vérifié et continu',
+      impact:'−15 % · progressif jusqu&#39;&#39;à 10 ans',
+      color:'var(--vert-anglais)' },
+    { label:'Track record circuit', pts:23, max:30,
+      detail:'23 track days sans incident d\u00e9clar\u00e9',
+      impact:'−10 % · chaque saison sans sinistre',
+      color:'var(--vert-anglais)' },
+    { label:'Licence FIA validée', pts:10, max:10,
+      detail:'Licence active, vérifiée cryptographiquement',
+      impact:'Accès au segment sport automobile premium',
+      color:'var(--vert-anglais)' },
+    { label:'Profil témoins Tribu', pts:10, max:10,
+      detail:'10 sorties cosignées par des témoins CARNET',
+      impact:'Dossier sinistre pré-constitué — résolution rapide',
+      color:'var(--vert-anglais)' },
+  ];
+  const bars = axes.map(a=>{
+    const pct = Math.round(a.pts/a.max*100);
+    return `
+    <div style="margin-bottom:var(--s-4)">
+      <div class="kv" style="margin-bottom:4px">
+        <span style="font-family:var(--mono);font-size:9px;text-transform:uppercase;
+          letter-spacing:.08em;color:var(--encre)">${a.label}</span>
+        <span style="font-family:var(--mono);font-size:10px;color:${a.color};font-weight:600">
+          ${a.pts} / ${a.max}</span>
+      </div>
+      <div style="height:5px;background:var(--papier-deep);border-radius:3px;overflow:hidden;margin-bottom:4px">
+        <div style="height:100%;width:${pct}%;background:${a.color};border-radius:3px;
+          transition:width .4s ease"></div>
+      </div>
+      <div style="font-size:11px;color:var(--gris);font-style:italic">${a.detail}</div>
+      <div style="font-family:var(--mono);font-size:8px;color:${a.color};
+        letter-spacing:.04em;margin-top:2px">${a.impact}</div>
+    </div>`;
+  }).join('');
+
+  const sparkData = [79,81,83,84,86,87,score];
+  const spark = svgSpark(sparkData,'green',260,50);
+
+  return `
+    <button class="back-link" onclick="State.scoreView=false;renderPilote()">← Retour</button>
+    ${passeHead(9,'Score conducteur')}
+
+    <div style="display:flex;align-items:baseline;gap:var(--s-3);margin-bottom:var(--s-2)">
+      <div style="font-family:var(--display);font-style:italic;font-size:52px;
+        font-weight:500;line-height:1;color:var(--vert-anglais)">${score}</div>
+      <div style="font-family:var(--display);font-style:italic;font-size:24px;
+        color:var(--gris)">/&nbsp;100</div>
+    </div>
+    <p class="lede" style="margin-bottom:var(--s-5)">
+      Ton score est construit à partir de tes données d'assurance réelles —
+      pas d'un algorithme opaque. Chaque point a un impact direct sur ta prime.
+      <strong>−30 % chez les assureurs partenaires.</strong>
+    </p>
+
+    <div class="card card-tight" style="margin-bottom:var(--s-5);padding-bottom:var(--s-3)">
+      <div class="eyebrow" style="margin-bottom:var(--s-4)">Évolution sur 7 semaines</div>
+      <div style="width:100%;overflow:hidden">${spark}</div>
+    </div>
+
+    <div class="eyebrow" style="margin-bottom:var(--s-4)">Décomposition — 5 axes</div>
+    ${bars}
+
+    <div class="card" style="background:var(--vert-soft);border-color:var(--vert-line);margin-top:var(--s-4)">
+      <div style="font-family:var(--mono);font-size:8px;letter-spacing:.1em;
+        text-transform:uppercase;color:var(--vert-anglais);margin-bottom:var(--s-2)">
+        Impact sur ta prime</div>
+      <div style="font-family:var(--display);font-style:italic;font-size:22px;
+        color:var(--vert-anglais)">−30 % structurel</div>
+      <div style="font-size:12px;color:var(--gris);margin-top:var(--s-2);font-style:italic">
+        Chez tous les assureurs partenaires CARNET. Portable : un assureur externe peut
+        consulter ton score avec ton accord. Ta réputation t'appartient.
+      </div>
+      ${web3Block('Score ancré on-chain',
+        web3Slot('Snapshot track record', State.web3.trackRecord, 'tokenid', 'minté au branchement on-chain') +
+        web3Slot('Dernière empreinte', State.web3.trackRecord, 'lastSnapshotHash', 'ancrée au premier snapshot'),
+        'Le score agrégé est ancré mensuellement. Seul le score total est public — pas le détail sinistre.'
+      )}
+    </div>
+
+    <button class="cta cta-primary cta-mt" onclick="setTab('annee')">
+      Voir mon année assurance <span class="dot"></span>
+    </button>`;
+}
+
+function renderSinistre(){
+  const cl=State.claim, c=carById(cl.carId);
+  const pips=[1,2,3].map(n=>{
+    let cls='step-pip'; if(n<cl.step) cls+=' done'; else if(n===cl.step) cls+=' on';
+    return `<div class="${cls}"></div>`;
+  }).join('');
+
+  let body;
+  if(cl.step===1){
+    const slots=[0,1,2,3].map(i=>`
+      <div class="photo-slot ${i<cl.photos?'filled':''}" onclick="claimAddPhoto()">
+        ${i<cl.photos?'géolocalisée ✓':'+ photo'}</div>`).join('');
+    body=`
+      <div class="claim-step">
+        <div class="claim-n on">1</div>
+        <div class="claim-body">
+          <div class="claim-title">Photos auto-géolocalisées</div>
+          <div class="claim-desc">Chaque photo est horodatée et géolocalisée — preuve d'état opposable, impossible à falsifier.</div>
+          <div class="photo-grid">${slots}</div>
+        </div>
+      </div>
+      <button class="cta cta-primary" ${cl.photos>0?'':'disabled'} onclick="claimNext()">Continuer <span class="dot"></span></button>`;
+  } else if(cl.step===2){
+    body=`
+      <div class="claim-step">
+        <div class="claim-n done">1</div>
+        <div class="claim-body"><div class="claim-title" style="color:var(--gris)">Photos — ${cl.photos} ajoutée${cl.photos>1?'s':''}</div></div>
+      </div>
+      <div class="claim-step">
+        <div class="claim-n on">2</div>
+        <div class="claim-body">
+          <div class="claim-title">Trace GPX & témoins Tribu</div>
+          <div class="claim-desc">La trace GPS des 60 minutes précédant l'incident, et les témoins CARNET présents sur place — signatures cryptographiques.</div>
+          <button class="cta ${cl.gpx?'cta-ghost':'cta-primary'} cta-mt" onclick="claimToggleGpx()">
+            ${cl.gpx?'Trace GPX jointe ✓':'Joindre la trace GPX'}</button>
+          <button class="cta cta-ghost cta-mt" onclick="claimAddWitness()">
+            ${cl.witnesses>0?cl.witnesses+' témoin'+(cl.witnesses>1?'s':'')+' Tribu signé'+(cl.witnesses>1?'s':'')+' ✓':'Ajouter un témoin Tribu'}</button>
+        </div>
+      </div>
+      <button class="cta cta-primary" ${cl.gpx?'':'disabled'} onclick="claimNext()">Continuer <span class="dot"></span></button>`;
+  } else {
+    const expert = State.claimExpert;
+    if(!expert.assigned){
+      State.claimExpert = { assigned:true, name:'Bernard Moreau', marque:'Porsche',
+        handle:'@bmoreau_964expert', estimate:null };
+    }
+    const ex = State.claimExpert;
+    body=`
+      <div class="claim-step">
+        <div class="claim-n done">1</div>
+        <div class="claim-body"><div class="claim-title" style="color:var(--gris)">Photos — ${cl.photos}</div></div>
+      </div>
+      <div class="claim-step">
+        <div class="claim-n done">2</div>
+        <div class="claim-body"><div class="claim-title" style="color:var(--gris)">GPX joint · ${cl.witnesses} témoin(s)</div></div>
+      </div>
+      <div class="claim-step">
+        <div class="claim-n done" style="background:var(--vert-anglais)">E</div>
+        <div class="claim-body">
+          <div class="claim-title">Expert bénévole CARNET assigné</div>
+          <div class="claim-desc"><strong>${ex.name}</strong> · Expert ${ex.marque} certifié CARNET · ${ex.handle}<br>
+            Il analyse le dossier et ajoute son évaluation avant transmission à l'assureur. Settlement visé : 1–2 semaines vs 6–8 semaines en classique.</div>
+          ${ex.estimate?`<div class="q-price" style="margin-top:var(--s-2)">${fmtEur(ex.estimate)} — estimation de l'expert</div>`:
+            `<div style="font-size:10px;font-family:var(--mono);color:var(--gris);margin-top:var(--s-2)">Évaluation en cours · généralement sous 24h</div>`}
+        </div>
+      </div>
+      <div class="claim-step">
+        <div class="claim-n on">3</div>
+        <div class="claim-body">
+          <div class="claim-title">Décris l'événement</div>
+          <div class="claim-desc">Quelques lignes suffisent. CARNET part du principe que tu es honnête — la cryptographie et les témoins font la vérification.</div>
+          <div class="field" style="margin-top:var(--s-3)">
+            <input type="text" placeholder="Ex. sortie de route à basse vitesse, virage 7…"
+              value="${cl.desc}" oninput="State.claim.desc=this.value">
+          </div>
+        </div>
+      </div>
+      <button class="cta cta-primary" onclick="claimSubmit()">Transmettre le sinistre <span class="dot"></span></button>`;
+  }
+
+  return `
+    <button class="back-link" onclick="State.claim.open=false;renderPilote()">← Annuler</button>
+    ${passeHead(9,'Déclarer un sinistre')}
+    <h1 class="h-mid">${c.mo}</h1>
+    <p class="lede">Pas de questionnaire culpabilisant. Un dossier structuré, cryptographiquement
+      vérifiable, transmis directement à l'assureur. Settlement visé : 1–2 semaines.</p>
+    <div class="steps">${pips}</div>
+    ${body}`;
+}
+
+/* ── Transfert de police à la revente — l'assurance liquide (§6) ───────
+   Quand une voiture change de main via CARNET, la couverture suit sans
+   rupture : police originale 'transferred', nouvelle police prorata au
+   nom de l'acheteur, remboursement vendeur des jours non utilisés.
+   [Web3] tout atomique via smart contract — la voiture n'est jamais à
+   découvert. L'UI est complète ; le mint atomique se branche plus tard. */
+function openTransfer(carId){
+  State.transfer={ open:true, carId, step:1, buyerHandle:'', accordAssureur:false };
+  State.viewing=null;
+  renderPilote(); window.scrollTo(0,0);
+}
+function closeTransfer(){
+  State.transfer.open=false;
+  renderPilote(); window.scrollTo(0,0);
+}
+function transferNext(){
+  if(State.transfer.step<3){ State.transfer.step++; renderPilote(); window.scrollTo(0,0); }
+}
+function transferToggleAccord(){
+  State.transfer.accordAssureur=!State.transfer.accordAssureur;
+  renderPilote();
+}
+function transferSubmit(){
+  const c=carById(State.transfer.carId);
+  // [mock] la police passe 'transferred' — côté vrai, le Worker + le
+  // smart contract font le mint atomique de la nouvelle police.
+  if(c) c.insurance.status='repos';   // visuellement : la couverture s'est détachée
+  toast('Transfert initié — police transférée, remboursement prorata en route');
+  State.transfer.open=false;
+  renderPilote(); window.scrollTo(0,0);
+}
+// prorata : combien de jours "au repos" restent sur l'année, remboursés au vendeur
+function transferProrata(car){
+  const annual=car.insurance.base_premium_annual||0;
+  // mock : on suppose ~210 jours restants sur 365
+  const daysLeft=210;
+  return Math.round(annual*daysLeft/365);
+}
+
+function renderTransfer(){
+  const t=State.transfer, c=carById(t.carId);
+  const pips=[1,2,3].map(n=>{
+    let cls='step-pip'; if(n<t.step) cls+=' done'; else if(n===t.step) cls+=' on';
+    return `<div class="${cls}"></div>`;
+  }).join('');
+  const prorata=transferProrata(c);
+
+  let body;
+  if(t.step===1){
+    body=`
+      <div class="transfer-card">
+        <div class="eyebrow" style="margin-bottom:var(--s-3)">L'acheteur</div>
+        <p class="lede" style="margin-bottom:var(--s-4)">La voiture change de main via CARNET.
+          Indique l'acheteur — sa couverture sera prête avant même qu'il prenne le volant.</p>
+        <div class="field">
+          <label class="field-lbl">Handle CARNET ou wallet de l'acheteur</label>
+          <input type="text" placeholder="@acheteur ou rJBh…WSU"
+            value="${t.buyerHandle}" oninput="State.transfer.buyerHandle=this.value">
+        </div>
+        <div class="transfer-flow">
+          <div class="transfer-party you">
+            <div class="transfer-party-role">Vendeur — toi</div>
+            <div class="transfer-party-name">Couverture active</div>
+          </div>
+          <span class="transfer-arrow">→</span>
+          <div class="transfer-party">
+            <div class="transfer-party-role">Acheteur</div>
+            <div class="transfer-party-name">${t.buyerHandle||'à renseigner'}</div>
+          </div>
+        </div>
+      </div>
+      <button class="cta cta-primary" ${t.buyerHandle?'':'disabled'} onclick="transferNext()">
+        Continuer <span class="dot"></span></button>`;
+  } else if(t.step===2){
+    body=`
+      <div class="transfer-card">
+        <div class="eyebrow" style="margin-bottom:var(--s-3)">L'accord de l'assureur</div>
+        <p class="lede" style="margin-bottom:var(--s-4)">Le transfert d'une police vivante demande
+          le feu vert de l'assureur en place — c'est la seule étape qui n'est pas instantanée,
+          et on te le dit franchement.</p>
+        <div class="transfer-step"><span class="transfer-step-n">1</span>
+          <span class="transfer-step-txt">Ta police originale passera <em>transférée</em> à la date de cession.</span></div>
+        <div class="transfer-step"><span class="transfer-step-n">2</span>
+          <span class="transfer-step-txt">Une nouvelle police, prorata, sera émise au nom de l'acheteur pour la durée restante.</span></div>
+        <div class="transfer-step"><span class="transfer-step-n">3</span>
+          <span class="transfer-step-txt">Tu es remboursé des jours non utilisés — automatiquement.</span></div>
+
+        <div class="prorata-box">
+          <div class="prorata-amount">${fmtEur(prorata)}</div>
+          <div class="prorata-lbl">remboursement prorata estimé · jours "au repos" restants</div>
+        </div>
+
+        <button class="cta ${t.accordAssureur?'cta-ghost':'cta-primary'}" onclick="transferToggleAccord()">
+          ${t.accordAssureur?'Accord assureur demandé ✓':'Demander l\'accord de l\'assureur'}</button>
+      </div>
+      <button class="cta cta-primary cta-mt" ${t.accordAssureur?'':'disabled'} onclick="transferNext()">
+        Continuer <span class="dot"></span></button>
+      <button class="cta cta-ghost cta-mt" onclick="State.transfer.step=1;renderPilote()">Retour</button>`;
+  } else {
+    body=`
+      <div class="card">
+        <div class="confirm-mark">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M5 11.5l4 4L17 6" stroke="currentColor" stroke-width="1.6"/></svg>
+        </div>
+        <h2 class="h-mid" style="text-align:center">La couverture est liquide.</h2>
+        <p class="lede" style="text-align:center">Au moment de la cession, la police se détache de
+          toi et se rattache à l'acheteur — sans rupture, sans paperasse. La voiture n'est jamais
+          à découvert.</p>
+        <div style="margin-top:var(--s-5)">
+          <div class="kv"><span class="kv-k">Voiture</span><span class="kv-v">${c.mo}</span></div>
+          <div class="kv"><span class="kv-k">Acheteur</span><span class="kv-v">${t.buyerHandle}</span></div>
+          <div class="kv"><span class="kv-k">Police originale</span><span class="kv-v">→ transférée</span></div>
+          <div class="kv"><span class="kv-k">Remboursement prorata</span><span class="kv-v">${fmtEur(prorata)}</span></div>
+        </div>
+        ${web3Block('Transfert atomique · smart contract XRPL',
+          web3Slot('Police acheteur', State.web3.policyNft[t.carId], 'transferTokenid', 'mintée à la cession') +
+          web3Slot('Transaction de transfert', State.web3.policyNft[t.carId], 'transferTxHash', 'atomique au branchement on-chain'),
+          'Détachement + rattachement + remboursement en une seule transaction. Impossible de laisser la voiture à découvert entre deux propriétaires.')}
+      </div>
+      <button class="cta cta-primary" onclick="transferSubmit()">Initier le transfert <span class="dot"></span></button>
+      <button class="cta cta-ghost cta-mt" onclick="closeTransfer()">Annuler</button>`;
+  }
+
+  return `
+    <button class="back-link" onclick="closeTransfer()">← Retour</button>
+    ${passeHead(9,'Transfert de police')}
+    <h1 class="h-mid">${c.mo}</h1>
+    <p class="lede">Premier pas vers une assurance véritablement liquide : quand la voiture
+      se vend, sa couverture la suit. Pas de trou, pas de double paiement, pas de formulaire.</p>
+    <div class="steps">${pips}</div>
+    ${body}`;
+}
+
+/* ── SYNTHÈSE · Mon année — budget transparent + track record on-chain ── */
+function renderAnnee(){
+  const baseTotal = State.garage.reduce((s,c)=>s+c.insurance.base_premium_annual,0);
+  const actTotal = State.activations.reduce((s,a)=>s+a.premium,0);
+  const totalFrac = baseTotal+actTotal;
+  const totalClassic = Math.round(totalFrac/0.31);
+  const savePct = Math.round((1-totalFrac/totalClassic)*100);
+  const actCount = State.activations.length;
+
+  const tl=State.activations.map(a=>{
+    const ctx=ctxById(a.ctx), car=carById(a.car);
+    return `
+    <div class="tl-row">
+      <div class="tl-marker ${a.ctx}"></div>
+      <div class="tl-body">
+        <div class="tl-title">${a.label} <span class="muted">— ${car?car.mo:''}</span></div>
+        <div class="tl-meta">${ctx?ctx.title.toUpperCase():''} · ${a.dates}</div>
+      </div>
+      <span class="tl-price">${fmtEur(a.premium)}</span>
+    </div>`;
+  }).join('');
+
+  return `
+    ${passeHead(3,'Mon année assurance')}
+    <h1 class="h-big">Mon année assurance.</h1>
+    <p class="lede">Route, piste, rallye, étranger — même écran. À la journée, à la saison, comme tu veux.
+      Copilote, extra driver, passage de frontière — un tap.
+      Toujours couverte, jamais surdimensionnée.</p>
+
+    <div class="budget-hero">
+      <div class="budget-big">${fmtEur(totalFrac)}</div>
+      <div class="budget-lbl">budget CARNET fractionné · 12 mois</div>
+    </div>
+
+    <div class="card card-tight" style="margin-bottom:var(--s-4)">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:var(--s-2)">
+        <span style="font-family:var(--mono);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--gris)">Couverture active</span>
+        <span style="font-family:var(--mono);font-size:9px;color:var(--vert-anglais)">${actCount} contexte${actCount>1?'s':''} cette ann&#233;e</span>
+      </div>
+      <div style="display:flex;gap:var(--s-2);flex-wrap:wrap;margin-bottom:var(--s-3)">
+        ${State.activations.map(a=>`<span style="font-family:var(--mono);font-size:8px;padding:3px 6px;
+          background:var(--vert-soft);color:var(--vert-anglais);border-radius:var(--r)">${a.ctx||a.label}</span>`).join('')||
+          `<span style="font-family:var(--mono);font-size:8px;color:var(--gris)">Aucune activation cette année</span>`}
+      </div>
+      <div style="font-size:11px;font-style:italic;color:var(--gris)">
+        Route · Piste · Rallye · Frontière · Extra driver — à la carte, à la journée.
+      </div>
+    </div>
+
+    <div class="eyebrow">Activations de l'année</div>
+    <div class="card">${tl||'<div class="notice">Aucune sortie activée pour l\'instant.</div>'}</div>
+
+    <div class="eyebrow">Track record on-chain — la prudence récompensée</div>
+    <div class="track-rec">
+      <div class="tr-headline">Pilote vérifié CARNET · 5 ans d'ancienneté · ta réputation te suit, opposable, portable.</div>
+      <div class="tr-stats">
+        <div class="tr-stat"><div class="tr-num">23</div><div class="tr-lbl">track days</div></div>
+        <div class="tr-stat"><div class="tr-num">12</div><div class="tr-lbl">rallyes routiers</div></div>
+        <div class="tr-stat"><div class="tr-num green">0</div><div class="tr-lbl">sinistre</div></div>
+        <div class="tr-stat"><div class="tr-num">88</div><div class="tr-lbl">score / 100</div></div>
+      </div>
+      <div class="tr-bonus">→ 0 sinistre sur 5 ans · prime structurellement −30 % chez les assureurs partenaires</div>
+      ${web3Block('Réputation ancrée on-chain',
+        web3Slot('Snapshot track record', State.web3.trackRecord, 'tokenid', 'minté au branchement on-chain') +
+        web3Slot('Empreinte du mois', State.web3.trackRecord, 'lastSnapshotHash', 'ancrée au premier snapshot'),
+        'Chaque micro-police passée s\'agrège ici. CARNET ne stocke pas les détails sinistres — seul le score agrégé est publié, avec ton consentement. Portable hors CARNET : un autre assureur peut le consulter.')}
+    </div>
+
+    <div class="card card-tight">
+      <div class="eyebrow" style="margin-bottom:var(--s-3)">Bases "au repos"</div>
+      ${State.garage.filter(c=>c.insurance.base_premium_annual>0).map(c=>`
+        <div class="kv"><span class="kv-k">${c.mo}</span><span class="kv-v">${fmtEur(c.insurance.base_premium_annual)} / an</span></div>
+      `).join('')||'<div class="notice">Aucune base souscrite.</div>'}
+    </div>
+
+    <div class="foot-note">
+      Optimisation détectée : 3 track days prévus en juin —<br>
+      un package 3-événements ferait −15 %. CARNET te le proposera le moment venu.
+    </div>
+
+    ${State.renewals.length ? `
+    <div class="eyebrow" style="color:var(--orange-polo)">Renouvellements à venir</div>
+    ${State.renewals.map(r=>`
+      <div class="card card-tight" style="border-left:2px solid ${r.daysLeft<=14?'var(--rouge)':'var(--orange-line)'}">
+        <div class="kv" style="margin-bottom:var(--s-2)">
+          <span class="kv-k" style="font-weight:600">${r.carLabel}</span>
+          <span class="kv-v" style="color:${r.daysLeft<=14?'var(--rouge)':'var(--gris)'}">${r.daysLeft}j restants</span>
+        </div>
+        <div style="font-size:10px;font-family:var(--mono);color:var(--gris);margin-bottom:var(--s-3)">Assureur actuel · ${r.currentInsurer} · ${fmtEur(r.currentPremium)}/an</div>
+        ${r.proposals.map(p=>`
+          <div class="quote-row" onclick="toast('Renouvellement ${p.insurer} sélectionné — confirmation dans 24h')">
+            <div><span class="q-insurer">${p.insurer}</span>${p.badge?` <span class="q-badge">${p.badge}</span>`:''}</div>
+            <div><span class="q-price">${fmtEur(p.premium)}</span><span class="q-unit">/an</span></div>
+          </div>`).join('')}
+      </div>`).join('')}
+    ` : ''}
+
+    <div class="w3-block" style="margin-top:var(--s-6)">
+      <div class="w3-block-head">
+        <span class="w3-block-title">Aperçu — quand le rail Web3 sera branché</span>
+        ${web3Badge(State.web3.live?'rail actif (démo)':'rail en attente')}
+      </div>
+      <div class="w3-note" style="margin-top:0">
+        Tout est déjà prévu pour la couche on-chain : NFT de police, settlement
+        RLUSD, transfert atomique, snapshot de réputation. Aujourd'hui ces
+        emplacements affichent "à venir". Bascule l'aperçu pour voir l'interface
+        suivre — sans qu'aucun écran n'ait à changer.
+      </div>
+      <button class="cta ${State.web3.live?'cta-ghost':'cta-primary'} cta-mt" onclick="toggleWeb3Demo()">
+        ${State.web3.live?'Revenir à l\'état réel (rail en attente)':'Aperçu — simuler le rail branché'}</button>
+    </div>`;
+}
+
+/* aperçu : bascule web3.live et peuple les refs avec des valeurs mock,
+   pour démontrer que l'UI suit. À retirer / désactiver en prod tant que
+   le vrai rail n'est pas là. */
+function toggleWeb3Demo(){
+  const w=State.web3;
+  w.live=!w.live;
+  if(w.live){
+    // on peuple quelques refs mock — les mêmes clés que le Worker remplira
+    State.garage.forEach(c=>{
+      w.policyNft[c.id]={
+        tokenid:'XLS20.'+c.id.toUpperCase()+'A9F2',
+        txHash:'7A4F'+c.id.toUpperCase()+'C89E1B6D',
+        issuer:'rMASC0TTExxxxxxxxxxxxxxxxxxxWSU',
+        transferTokenid:'XLS20.'+c.id.toUpperCase()+'TR01',
+        transferTxHash:'BB12'+c.id.toUpperCase()+'TR4477'
+      };
+    });
+    State.activations.forEach(a=>{
+      w.activationNft[a.id]={ tokenid:'XLS20.ACT'+a.id.slice(-4).toUpperCase(),
+        txHash:'AC71'+a.id.slice(-4).toUpperCase()+'9E2F' };
+      w.settlements[a.id]={ txHash:'5E77'+a.id.slice(-4).toUpperCase()+'RLUSD' };
+    });
+    w.trackRecord={ tokenid:'XLS20.TRACKREC001',
+      lastSnapshotHash:'9C3D7766BBEEAA01', snapshotAt:'2026-05-01' };
+  } else {
+    w.policyNft={}; w.activationNft={}; w.settlements={};
+    w.trackRecord={ tokenid:null, lastSnapshotHash:null, snapshotAt:null };
+  }
+  renderPilote(); window.scrollTo(0,0);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   FACE ASSUREUR — Layer Web3 (9). L'autre demi-tour de la boucle.
+   Passe 7 · La prise — l'assureur se branche, zéro infrastructure à bâtir.
+   Passe 8 · L'inbox — RFQ certifiés, devis en aveugle, marketplace saine.
+   Passe 9 · Le livre ouvert — Open Pricing Book, transparence opposable.
+   ═══════════════════════════════════════════════════════════════════ */
+function renderAssureur(){
+  const v=document.getElementById('view-assureur');
+  v.innerHTML = State.assureur.connected ? renderAssureurDash() : renderAssureurOnboard();
+}
+
+/* ── PASSE 7 · La prise — onboarding API OpenInsurance + SDK ───────── */
+function renderAssureurOnboard(){
+  const segs=[
+    ['collection','Collection & sport auto EU'],
+    ['premium_eu','Premium France / UK'],
+    ['transcontinental','Transcontinental'],
+    ['import_eu','Clients hors-EU en Europe'],
+    ['transport','Transport remorque']
+  ];
+  const chips=segs.map(([id,label])=>`
+    <button class="seg-chip ${State.assureur.segments.includes(id)?'on':''}" onclick="toggleSeg('${id}')">${label}</button>
+  `).join('');
+
+  return `
+    ${passeHead(9,'Brancher votre maison')}
+    <h1 class="h-big">L'infrastructure, c'est nous. Le métier, c'est vous.</h1>
+    <p class="lede">Vous ne refaites pas le KYC, vous ne bâtissez pas le scoring, vous ne développez pas
+      la plateforme sinistre. Vous vous branchez sur l'API OpenInsurance, vous choisissez vos
+      segments, vous répondez aux demandes. Quelques jours d'intégration — comme Stripe l'a fait
+      pour le paiement.</p>
+
+    <div class="bo-step">
+      <div class="bo-num">1</div>
+      <div class="bo-body">
+        <div class="bo-title">Enregistrez votre endpoint</div>
+        <div class="bo-desc">Un POST signé <code>X-Carnet-Signature</code> HMAC. CARNET vous transmet les demandes de vos segments, vous répondez en JSON.</div>
+        <div class="code"><span class="c"># OpenInsurance · register</span>
+<span class="k">POST</span> https://api.carnet.life/v1/insurer/register
+{
+  <span class="s">"name"</span>: <span class="s">"Mascotte Assurances"</span>,
+  <span class="s">"webhook"</span>: <span class="s">"https://…/carnet/rfq"</span>,
+  <span class="s">"segments"</span>: [<span class="s">"collection"</span>, <span class="s">"premium_eu"</span>]
+}</div>
+      </div>
+    </div>
+
+    <div class="bo-step">
+      <div class="bo-num">2</div>
+      <div class="bo-body">
+        <div class="bo-title">Choisissez vos segments</div>
+        <div class="bo-desc">Vous ne recevez que les demandes que vous voulez traiter. Modifiable à tout moment.</div>
+        <div class="seg-grid">${chips}</div>
+      </div>
+    </div>
+
+    <div class="bo-step">
+      <div class="bo-num">3</div>
+      <div class="bo-body">
+        <div class="bo-title">Recevez des dossiers clients déjà certifiés</div>
+        <div class="bo-desc">Permis, licence FIA, cote du véhicule, historique sinistre — vérifiés par CARNET. Une donnée certifiée, difficile à obtenir ailleurs.</div>
+        <div class="code"><span class="c"># webhook · rfq.created</span>
+{
+  <span class="s">"rfq_id"</span>: <span class="s">"rfq_8f3a…"</span>,
+  <span class="s">"segment"</span>: <span class="s">"collection"</span>,
+  <span class="s">"driver"</span>: { <span class="s">"fia"</span>: <span class="s">"grade_c"</span>, <span class="s">"claims_36m"</span>: 0 },
+  <span class="s">"car"</span>: { <span class="s">"value_nft"</span>: 815000, <span class="s">"verified"</span>: <span class="k">true</span> }
+}</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="eyebrow" style="margin-bottom:var(--s-3)">Ce que CARNET vous fournit — clé en main</div>
+      <div class="cov-row"><span class="cov-name">Qualification client</span><span class="cov-val">mDL + FIA + historique · certifié on-chain</span></div>
+      <div class="cov-row"><span class="cov-name">Risk scoring</span><span class="cov-val">algorithme ouvert · auditable sur GitHub</span></div>
+      <div class="cov-row"><span class="cov-name">Sinistre</span><span class="cov-val">photos géoloc + GPX + témoins · dossier structuré</span></div>
+      <div class="cov-row"><span class="cov-name">Règlement</span><span class="cov-val">RLUSD atomique · 92,9 % vous · 7,1 % asso</span></div>
+      <div class="cov-row"><span class="cov-name">Conformité</span><span class="cov-val">DIA + RGPD + eIDAS 2.0 · par défaut</span></div>
+      <div class="cov-row"><span class="cov-name">Visibilité</span><span class="cov-val">marketplace · clients qualifiés, coût d'acquisition ~0</span></div>
+    </div>
+
+    <button class="cta cta-primary" onclick="connectAssureur()">
+      Brancher ${State.assureur.name} <span class="dot"></span></button>
+
+    <div class="manifesto">
+      <div class="manif-line"><span class="manif-n">1</span><span class="manif-txt"><strong>Vous vous branchez</strong> — l'API vous connecte au flux de demandes. Rien à construire de votre côté.</span></div>
+      <div class="manif-line"><span class="manif-n">2</span><span class="manif-txt"><strong>Vous répondez</strong> — des demandes déjà qualifiées, des devis comparés à l'aveugle. Le meilleur prix l'emporte.</span></div>
+      <div class="manif-line"><span class="manif-n">3</span><span class="manif-txt"><strong>Vous gardez la main</strong> — pricing book mensuel, règlement transparent. Un partenariat, pas une dépendance.</span></div>
+    </div>
+
+    <div class="foot-note">
+      CARNET est courtier inscrit ORIAS, conforme à la directive DIA.<br>
+      Une infrastructure de marché — jamais un concurrent.
+    </div>`;
+}
+
+function toggleSeg(id){
+  const s=State.assureur.segments, i=s.indexOf(id);
+  if(i>=0) s.splice(i,1); else s.push(id);
+  renderAssureur();
+}
+function connectAssureur(){
+  State.assureur.connected=true;
+  State.assureur.subtab='inbox';
+  setEnergy(9,false);
+  toast('Connecté — '+State.assureur.name+' reçoit les demandes de ses segments');
+  renderAssureur(); window.scrollTo(0,0);
+}
+function setSubtab(t){ State.assureur.subtab=t; renderAssureur(); window.scrollTo(0,0); }
+
+/* ── PASSES 8·9 · Le tableau de bord assureur connecté ────────────── */
+function renderAssureurDash(){
+  const a=State.assureur;
+  const nav=`
+    <div class="sub-nav">
+      <button class="sub-btn ${a.subtab==='inbox'?'on':''}" onclick="setSubtab('inbox')">Inbox RFQ</button>
+      <button class="sub-btn ${a.subtab==='book'?'on':''}" onclick="setSubtab('book')">Pricing Book</button>
+      <button class="sub-btn ${a.subtab==='portfolio'?'on':''}" onclick="setSubtab('portfolio')">Portefeuille</button>
+      <button class="sub-btn ${a.subtab==='sinistralite'?'on':''}" onclick="setSubtab('sinistralite')">Sinistralité</button>
+      <button class="sub-btn ${a.subtab==='transp'?'on':''}" onclick="setSubtab('transp')">Transparence</button>
+    </div>`;
+
+  let body;
+  if(a.subtab==='inbox')       body=renderAssureurInbox();
+  if(a.subtab==='book')        body=renderPricingBook();
+  if(a.subtab==='portfolio')   body=renderAssureurPortfolio();
+  if(a.subtab==='sinistralite') body=renderSinistralite();
+  if(a.subtab==='transp')      body=renderAssureurTransp();
+  return nav+body;
+}
+
+/* PASSE 8 — l'inbox : RFQ certifiés + composer de devis 6 blocs */
+function renderAssureurInbox(){
+  const a=State.assureur;
+  const open=a.inbox.filter(r=>!a.quoted[r.id] && r.status!=='bound' && r.status!=='expired');
+  const done=a.inbox.filter(r=>a.quoted[r.id] || r.status==='bound');
+
+  const winRate=a.stats.quotes? Math.round(a.stats.won/a.stats.quotes*100) : 0;
+  const metrics=`
+    <div class="metric-row">
+      <div class="metric"><div class="metric-num">${a.stats.quotes}</div><div class="metric-lbl">devis · 30 j</div></div>
+      <div class="metric"><div class="metric-num green">${winRate}%</div><div class="metric-lbl">win-rate</div></div>
+      <div class="metric"><div class="metric-num">${a.stats.avgResponseS}s</div><div class="metric-lbl">réponse moy.</div></div>
+      <div class="metric"><div class="metric-num">${a.stats.claims}</div><div class="metric-lbl">sinistres</div></div>
+    </div>`;
+
+  const openCards = open.length ? open.map(r=>{
+    const car=r.car, ctx=r.ctx;
+    return `
+    <div class="inbox-item urgent">
+      <div class="inbox-top">
+        <span class="inbox-ctx">${ctx.title}</span>
+        <span class="inbox-timer">réponse attendue &lt; 90 s</span>
+      </div>
+      <div class="inbox-car">${car.mk} ${car.mo}</div>
+      <span class="cert-badge">
+        <svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6.2l2.6 2.6L10 3" stroke="currentColor" stroke-width="1.5"/></svg>
+        paquet client certifié CARNET — zéro KYC à refaire
+      </span>
+      <div class="param-grid">
+        <div><div class="param-k">Valeur cote NFT</div><div class="param-v">${fmtEur(car.value)}</div></div>
+        <div><div class="param-k">Période</div><div class="param-v">${r.dateStart} → ${r.dateEnd}</div></div>
+        <div><div class="param-k">Pilote</div><div class="param-v">FIA grade C · permis 22 ans</div></div>
+        <div><div class="param-k">Sinistres 36 m</div><div class="param-v">0 · score 88/100</div></div>
+      </div>
+      <div class="composer">
+        <div class="composer-lbl">Votre devis — couverture 6 blocs</div>
+        <div class="tpl-hint">Tarif suggéré pour ce profil : prime ${ctx.base?fmtEur(Math.round(ctx.base*0.95)):'sur mesure'} ·
+          franchise ${car.value>1000000?'2 500 €':'1 500 €'}. À ajuster librement.</div>
+        <input type="text" inputmode="numeric" id="prem-${r.id}" placeholder="Prime € — ex. ${ctx.base||250}">
+        <input type="text" inputmode="numeric" id="ded-${r.id}" placeholder="Franchise € — ex. 1500">
+        <button class="cta cta-primary" onclick="sendQuoteAsAssureur('${r.id}')">
+          Valider le devis <span class="dot"></span></button>
+      </div>
+    </div>`;
+  }).join('') : `<div class="notice">Aucune demande en attente.<br>Les demandes de vos segments arrivent ici en temps réel —
+    elles vous attendent dès qu'un conducteur active une sortie.</div>`;
+
+  const doneCards = done.length ? `
+    <div class="eyebrow section-gap">Devis transmis</div>
+    ${done.map(r=>{
+      const bound=r.status==='bound';
+      return `
+      <div class="inbox-item">
+        <div class="inbox-top">
+          <span class="inbox-ctx" style="color:var(--gris)">${r.ctx.title}</span>
+          <span class="inbox-timer">${bound?'retenu par le conducteur ✓':'en attente du choix du conducteur'}</span>
+        </div>
+        <div class="inbox-car" style="font-size:17px">${r.car.mk} ${r.car.mo}</div>
+      </div>`;
+    }).join('')}` : '';
+
+  return `
+    ${passeHead(9,'Demandes de devis')}
+    <h1 class="h-big">Bonjour, ${a.name}.</h1>
+    <p class="lede">Les demandes arrivent certifiées — conducteur et véhicule sont déjà vérifiés.
+      Vous répondez à l'aveugle : le conducteur compare sans voir les noms, choisit, puis
+      votre identité se révèle. Être souvent retenu, c'est le signal qui compte.</p>
+    ${metrics}
+    <div class="eyebrow">RFQ en attente · ${open.length}</div>
+    ${openCards}
+    ${doneCards}
+    <div class="foot-note">
+      Anti-collusion structurel : alignement systématique de prix → alerte régulateur EU (DG FISMA / ACPR).<br>
+      Le pricing book mensuel rend tout écart visible.
+    </div>`;
+}
+
+/* l'assureur scelle un devis → il voyage vers le wizard du pilote */
+function sendQuoteAsAssureur(rfqId){
+  const rfq=State.rfqs[rfqId];
+  if(!rfq){ toast('RFQ introuvable'); return; }
+  const premEl=document.getElementById('prem-'+rfqId);
+  const dedEl=document.getElementById('ded-'+rfqId);
+  const premium=premEl? parseInt(premEl.value,10)||0 : 0;
+  const deductible=dedEl? parseInt(dedEl.value,10)||1500 : 1500;
+  if(premium<=0){ toast('Renseignez une prime avant de valider'); return; }
+
+  State.assureur.quoted[rfqId]=true;
+  State.assureur.stats.quotes++;
+  setEnergy(6,true);
+
+  /* le devis revient sur le canal partagé — passe 8 → 6 → 3 */
+  const quote={ partnerId:'self', premium, deductible,
+    responseMs:Math.round(2000+Math.random()*1500),
+    restrictions:restrictFor(rfq.ctxId) };
+  if(State.wiz.rfqId===rfqId){
+    State.wiz.quotes.push(quote);
+  }
+  rfq.status='quoted';
+  toast('Devis transmis — il part vers le conducteur');
+
+  setTimeout(()=>{ if(State.mode==='assureur'){ setEnergy(9,false); } },1400);
+  renderAssureur();
+}
+
+/* PASSE 9 — Open Pricing Book : la transparence radicale, publiée */
+function renderPricingBook(){
+  const month=new Intl.DateTimeFormat('fr-FR',{month:'long',year:'numeric'}).format(new Date());
+  const entries=State.assureur.pricingBook.map(e=>{
+    const vals=e.rows.map(r=>r[1]);
+    const min=Math.min(...vals), max=Math.max(...vals);
+    const med=vals.slice().sort((a,b)=>a-b)[Math.floor(vals.length/2)];
+    const rows=e.rows.map(([who,price])=>`
+      <div class="pb-row"><span class="who">${who}</span><span>${fmtEur(price)}${e.unit}</span></div>
+    `).join('');
+    return `
+    <div class="pb-entry">
+      <div class="pb-head">
+        <div>
+          <div class="pb-code">${e.code}</div>
+          <div class="pb-name">${e.name}</div>
+        </div>
+        <div class="param-v muted" style="text-align:right;font-size:12px">${e.profile}</div>
+      </div>
+      ${rows}
+      <div class="pb-stats">
+        <div class="pb-stat"><strong>${fmtEur(min)}</strong>min</div>
+        <div class="pb-stat"><strong>${fmtEur(med)}</strong>médian</div>
+        <div class="pb-stat"><strong>${fmtEur(max)}</strong>max</div>
+        <div class="pb-stat"><strong>${e.volume}</strong>volume CARNET</div>
+        <div class="pb-stat"><strong>${e.claims}</strong>sinistre${e.claims>1?'s':''}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  return `
+    ${passeHead(9,'Open Pricing Book')}
+    <h1 class="h-big">Le livre des prix, ouvert.</h1>
+    <p class="lede">Chaque mois, CARNET publie les tarifs réels par module, par profil, par assureur.
+      Aucun courtier classique ne le fait. C'est le principe d'OpenStreetMap appliqué au prix :
+      une référence commune que tout le monde finit par consulter.</p>
+    <div class="eyebrow">Pricing Book CARNET · ${month}</div>
+    ${entries}
+    <div class="card card-tight">
+      <div class="tpl-hint" style="margin:0">
+        Pour vous : un écart visible pousse au prix juste — la clarté remplace la boîte noire.
+        Pour le conducteur : il comprend les vraies réalités économiques. Pour le régulateur :
+        une référence lisible. La transparence entretient une concurrence saine.
+      </div>
+    </div>
+    <div class="foot-note">
+      Publié en commit signé · github.com/carnet-asso/pricing-book<br>
+      Audit ouvert — journalistes, régulateurs, fédérations.
+    </div>`;
+}
+
+/* PASSE 9 — transparence : où va la commission, anti-collusion */
+function renderAssureurPortfolio(){
+  /* §16 — Portefeuille multi-véhicule côté assureur :
+     polices actives, renouvellements à venir, sinistres en cours */
+  const policies=[
+    { car:'911 Carrera RS 2.7', client:'Conducteur #A18', premium:1800,
+      expiresIn:58, ctx:'repos', sinistre:null },
+    { car:'300 SL Gullwing', client:'Conducteur #A22', premium:2400,
+      expiresIn:147, ctx:'active · Tour Auto', sinistre:null },
+    { car:'Ferrari 456 GT', client:'Conducteur #A07', premium:1240,
+      expiresIn:12, ctx:'repos', sinistre:'ouvert · en attente expert' },
+    { car:'Porsche 959', client:'Conducteur #A31', premium:3200,
+      expiresIn:223, ctx:'repos', sinistre:null },
+  ];
+  const totalPremium = policies.reduce((s,p)=>s+p.premium,0);
+  const renewSoon = policies.filter(p=>p.expiresIn<=60).length;
+
+  return `
+    <div class="eyebrow">Vue portefeuille CARNET</div>
+    <div class="dash-row">
+      <div class="dash-kpi"><div class="dash-v">${policies.length}</div><div class="dash-k">Polices actives</div></div>
+      <div class="dash-kpi"><div class="dash-v" style="color:var(--orange-polo)">${renewSoon}</div><div class="dash-k">Renouvellements <60j</div></div>
+      <div class="dash-kpi"><div class="dash-v">${fmtEur(totalPremium)}</div><div class="dash-k">Primes annuelles</div></div>
+    </div>
+
+    <div class="eyebrow" style="margin-top:var(--s-5)">Polices — vue détaillée</div>
+    <div class="card card-tight">
+      ${policies.map(p=>`
+        <div class="tl-row">
+          <div class="tl-marker" style="background:${p.expiresIn<=14?'var(--rouge)':p.expiresIn<=60?'var(--orange-polo)':'var(--vert-anglais)'}"></div>
+          <div class="tl-body">
+            <div class="tl-title">${p.car} <span class="muted">· ${p.client}</span></div>
+            <div class="tl-meta">${p.ctx} · expire dans ${p.expiresIn}j</div>
+            ${p.sinistre?`<div style="font-size:10px;color:var(--rouge);font-family:var(--mono);margin-top:2px">⚠ sinistre ${p.sinistre}</div>`:''}
+          </div>
+          <span class="tl-price">${fmtEur(p.premium)}/an</span>
+        </div>`).join('')}
+    </div>
+
+    <div class="foot-note">
+      Les identités conducteurs sont anonymisées (§7 anti-collusion). Seules vos propres
+      polices CARNET sont visibles ici — jamais celles des assureurs concurrents.
+    </div>`;
+}
+
+function renderSinistralite(){
+  /* §17 — Boucle data sinistralité : ce que CARNET restitue aux assureurs partenaires
+     pour affiner leur pricing sur des modèles rarement assurés. */
+  const data=[
+    { model:'Porsche 993 RS', ctx:'circuit', claimRate:4.2, avgSettled:18400, volume:47 },
+    { model:'Porsche 964 RS', ctx:'circuit', claimRate:3.8, avgSettled:22100, volume:31 },
+    { model:'Ferrari 456 GT', ctx:'route', claimRate:1.1, avgSettled:8900, volume:28 },
+    { model:'Mercedes 300 SL', ctx:'expo / convoyage', claimRate:0.4, avgSettled:12300, volume:19 },
+    { model:'Porsche 356', ctx:'rallye historique', claimRate:2.9, avgSettled:6700, volume:15 },
+  ];
+  return `
+    <div class="eyebrow">Sinistralité agrégée — données CARNET</div>
+    <p class="lede" style="font-size:13px">
+      Ces données sont issues du réseau CARNET — agrégées, anonymisées, k-anonymité k=5 minimum.
+      Elles sont invisibles pour les acteurs classiques. Elles vous permettent de pricer
+      précisément des modèles que vous ne pouvez pas tarifer aujourd'hui.
+    </p>
+    <div class="card card-tight">
+      <div class="kv" style="border-bottom:1px solid var(--gris-line);padding-bottom:var(--s-2);margin-bottom:var(--s-2)">
+        <span class="kv-k" style="font-family:var(--mono);font-size:8px">MODÈLE · CONTEXTE</span>
+        <span class="kv-v" style="font-family:var(--mono);font-size:8px">TAUX · MONTANT MOY.</span>
+      </div>
+      ${data.map(d=>`
+        <div class="kv" style="align-items:flex-start">
+          <div>
+            <div class="kv-k">${d.model}</div>
+            <div style="font-size:10px;color:var(--gris);font-family:var(--mono)">${d.ctx} · ${d.volume} polices</div>
+          </div>
+          <div style="text-align:right">
+            <div class="kv-v" style="color:${d.claimRate>3?'var(--rouge)':d.claimRate>1.5?'var(--orange-polo)':'var(--vert-anglais)'}">${d.claimRate} %</div>
+            <div style="font-size:10px;color:var(--gris);font-family:var(--mono)">${fmtEur(d.avgSettled)} moy.</div>
+          </div>
+        </div>`).join('')}
+    </div>
+    <div class="foot-note">
+      Plus le réseau CARNET grossit, plus cette donnée est fiable. C'est l'incentive à
+      rester partenaire : les assureurs non-branchés tarifent à l'aveugle sur ces modèles.
+      Données non partagées entre assureurs — chaque partenaire voit l'agrégat, pas ses
+      concurrents individuellement.
+    </div>`;
+}
+
+function renderAssureurTransp(){
+  const a=State.assureur;
+  return `
+    ${passeHead(9,'Transparence & règlement')}
+    <h1 class="h-mid">Rien à cacher, par construction.</h1>
+    <p class="lede">La commission de l'association est la même pour tous, publiée, automatique.
+      Le règlement est instantané. Personne ne renégocie après coup.</p>
+
+    <div class="transp">
+      <div class="eyebrow" style="margin-bottom:var(--s-3)">Sur chaque police que vous émettez via CARNET</div>
+      <div class="transp-row"><span class="lbl">Prime encaissée</span><span class="val">100 %</span></div>
+      <div class="transp-row"><span class="lbl">→ Vous, l'assureur</span><span class="val">92,9 %</span></div>
+      <div class="transp-row"><span class="lbl">→ Asso CARNET · fonctionnement + caritatif</span><span class="val">7,1 %</span></div>
+      <div class="transp-row"><span class="lbl">Règlement</span><span class="val">RLUSD · transaction atomique</span></div>
+      <div class="transp-row"><span class="lbl">Délai de versement</span><span class="val">instantané · zéro litige possible</span></div>
+    </div>
+
+    <div class="eyebrow section-gap">Votre activité du mois</div>
+    <div class="transp">
+      <div class="transp-row"><span class="lbl">Devis émis</span><span class="val">${a.stats.quotes}</span></div>
+      <div class="transp-row"><span class="lbl">Devis retenus</span><span class="val">${a.stats.won} · ${Math.round(a.stats.won/a.stats.quotes*100)}%</span></div>
+      <div class="transp-row"><span class="lbl">Temps de réponse moyen</span><span class="val">${a.stats.avgResponseS} s</span></div>
+      <div class="transp-row"><span class="lbl">Sinistres en cours</span><span class="val">${a.stats.claims}</span></div>
+      <div class="transp-row"><span class="lbl">Segments actifs</span><span class="val">${a.segments.length}</span></div>
+    </div>
+
+    <div class="card section-gap">
+      <div class="eyebrow" style="margin-bottom:var(--s-3)">Anti-collusion — la règle du jeu</div>
+      <p style="font-family:var(--editorial);font-style:italic;font-size:15px;color:var(--encre-soft);line-height:1.5;margin:0">
+        Si deux assureurs alignent systématiquement leurs prix sur un même segment, une alerte
+        part vers le régulateur. Les statistiques publiques mensuelles — tarifs moyens, performance
+        sinistres — rendent tout arrangement visible. La transparence n'est pas une promesse,
+        c'est la structure.
+      </p>
+    </div>
+
+    <button class="cta cta-ghost" onclick="State.assureur.connected=false;renderAssureur();window.scrollTo(0,0)">
+      Revoir le branchement</button>
+
+    <div class="foot-note">
+      Association loi 1901, inscrite ORIAS, conforme DIA — CARNET ne distribue aucun dividende.<br>
+      Chaque euro de commission est réinvesti : infrastructure, événements, communauté.
+    </div>`;
+}
+
+/* ─── Boot ─────────────────────────────────────────────────────── */
+renderPilote();
+renderDashboard();
+</script>
+</body>
+</html>
