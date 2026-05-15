@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="CARNET · Assurance journée circuit. Trois jours au Nürburgring, deux après-midi à Spa, une session à Paul Ricard — couverte à la journée, paiement XRPL, zéro impayé. Devis trois assureurs partenaires en deux minutes." />
+  <meta name="theme-color" content="#faf6ef" />
+
+  <title>CARNET · Assurance journée circuit</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,400;1,500;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="carnet-tokens.css" />
+
+  <style>
+    main {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: var(--s-8) var(--s-5);
+    }
+    section { padding-block: var(--s-7); border-top: 1px solid var(--gris-line); }
+    section:first-of-type { border-top: none; padding-top: 0; }
+    .hero { padding-top: var(--s-3); padding-bottom: var(--s-7); border-top: none; }
+
+    .back-nav {
+      margin-bottom: var(--s-5);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .back-nav a { color: var(--gris); text-decoration: none; }
+    .back-nav a:hover { color: var(--encre); }
+
+    /* ───── Why-circuit (3 cards) ───── */
+    .why-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--s-4);
+      margin-top: var(--s-5);
+    }
+    @media (min-width: 720px) {
+      .why-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    .why-card {
+      background: var(--papier-bright);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      padding: var(--s-5) var(--s-4);
+    }
+    .why-card .num {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--orange-polo);
+      letter-spacing: 0.14em;
+    }
+    .why-card h3 {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 22px;
+      margin: var(--s-3) 0 var(--s-3);
+      line-height: 1.2;
+    }
+    .why-card p {
+      font-family: var(--editorial);
+      font-size: 16px;
+      line-height: 1.55;
+      color: var(--encre-soft);
+      margin: 0;
+    }
+
+    /* ───── Wizard ───── */
+    .wizard {
+      margin-top: var(--s-6);
+      background: var(--papier-bright);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      padding: var(--s-6) var(--s-5);
+    }
+    .step-indicator {
+      display: flex;
+      gap: var(--s-3);
+      margin-bottom: var(--s-5);
+      flex-wrap: wrap;
+    }
+    .step-dot {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      color: var(--gris);
+      padding: var(--s-2) var(--s-3);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+    }
+    .step-dot.active {
+      background: var(--encre);
+      color: var(--papier);
+      border-color: var(--encre);
+    }
+    .step-dot.done {
+      background: var(--vert-soft);
+      color: var(--vert-anglais);
+      border-color: var(--vert-anglais);
+    }
+    .step-panel { display: none; }
+    .step-panel.active { display: block; }
+
+    .step-panel h2 {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 28px;
+      margin: 0 0 var(--s-4);
+      line-height: 1.15;
+    }
+    .step-panel p.intro {
+      font-family: var(--editorial);
+      font-size: 17px;
+      color: var(--encre-soft);
+      line-height: 1.55;
+      margin: 0 0 var(--s-5);
+    }
+
+    .field {
+      margin-bottom: var(--s-4);
+    }
+    .field label {
+      display: block;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gris);
+      margin-bottom: var(--s-2);
+    }
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      box-sizing: border-box;
+      font-family: var(--sans);
+      font-size: 15px;
+      padding: var(--s-3) var(--s-3);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      background: var(--papier);
+      color: var(--encre);
+    }
+    .field textarea { min-height: 80px; resize: vertical; font-family: var(--editorial); font-size: 16px; }
+    .field input:focus, .field select:focus, .field textarea:focus {
+      outline: none;
+      border-color: var(--orange-polo);
+    }
+    .field-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3); }
+    @media (max-width: 480px) {
+      .field-grid-2 { grid-template-columns: 1fr; }
+    }
+
+    /* ───── Circuit grid (selection cards) ───── */
+    .circuit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s-3);
+      margin-bottom: var(--s-4);
+    }
+    @media (min-width: 600px) {
+      .circuit-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    .circuit-card {
+      background: var(--papier);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      padding: var(--s-3);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .circuit-card:hover {
+      border-color: var(--orange-polo);
+      background: var(--orange-soft);
+    }
+    .circuit-card.selected {
+      border-color: var(--encre);
+      background: var(--encre);
+      color: var(--papier);
+    }
+    .circuit-card .name {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 17px;
+      line-height: 1.15;
+      margin-bottom: var(--s-1);
+    }
+    .circuit-card .country {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+
+    /* ───── Context radio cards ───── */
+    .context-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--s-3);
+      margin-bottom: var(--s-4);
+    }
+    @media (min-width: 600px) {
+      .context-row { grid-template-columns: 1fr 1fr; }
+    }
+    .ctx-card {
+      background: var(--papier);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      padding: var(--s-4);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .ctx-card:hover { border-color: var(--orange-polo); }
+    .ctx-card.selected {
+      border-color: var(--encre);
+      background: var(--papier-deep);
+    }
+    .ctx-card .label {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 18px;
+      margin-bottom: var(--s-2);
+    }
+    .ctx-card .desc {
+      font-family: var(--editorial);
+      font-size: 14px;
+      color: var(--encre-soft);
+      line-height: 1.5;
+    }
+
+    /* ───── Navigation buttons ───── */
+    .wizard-nav {
+      display: flex;
+      gap: var(--s-3);
+      margin-top: var(--s-6);
+      padding-top: var(--s-5);
+      border-top: 1px solid var(--gris-line);
+    }
+    button.btn {
+      font-family: var(--mono);
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: var(--s-3) var(--s-5);
+      border-radius: var(--r);
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+    }
+    button.btn-primary {
+      background: var(--encre);
+      color: var(--papier);
+      border-color: var(--encre);
+    }
+    button.btn-primary:hover { background: var(--orange-polo); border-color: var(--orange-polo); }
+    button.btn-primary:disabled {
+      background: var(--gris-line); color: var(--gris); border-color: var(--gris-line);
+      cursor: not-allowed;
+    }
+    button.btn-ghost {
+      background: transparent;
+      color: var(--encre);
+      border-color: var(--gris-line);
+    }
+    button.btn-ghost:hover { border-color: var(--encre); }
+
+    /* ───── RFQ Result ───── */
+    .quote-stack {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-4);
+      margin-top: var(--s-5);
+    }
+    .quote-card {
+      background: var(--papier-bright);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      padding: var(--s-5);
+      position: relative;
+    }
+    .quote-card.best {
+      border-color: var(--vert-anglais);
+      background: var(--vert-soft);
+    }
+    .quote-card.best::before {
+      content: 'MEILLEUR TARIF';
+      position: absolute;
+      top: -10px;
+      right: var(--s-4);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      background: var(--vert-anglais);
+      color: var(--papier);
+      padding: 3px var(--s-3);
+      border-radius: var(--r);
+    }
+    .quote-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: var(--s-3);
+      gap: var(--s-3);
+      flex-wrap: wrap;
+    }
+    .quote-head .ins {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 22px;
+    }
+    .quote-head .price {
+      font-family: var(--mono);
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--orange-polo);
+    }
+    .quote-card .price-sub {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: var(--gris);
+      margin-bottom: var(--s-4);
+    }
+    .quote-card ul {
+      margin: 0 0 var(--s-4);
+      padding-left: var(--s-4);
+      font-family: var(--editorial);
+      font-size: 15px;
+      color: var(--encre-soft);
+      line-height: 1.6;
+    }
+    .quote-card .quote-cta {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: var(--encre);
+      color: var(--papier);
+      padding: var(--s-3) var(--s-4);
+      border-radius: var(--r);
+      text-decoration: none;
+      display: inline-block;
+      border: 1px solid var(--encre);
+      cursor: pointer;
+    }
+    .quote-card.best .quote-cta {
+      background: var(--vert-anglais);
+      border-color: var(--vert-anglais);
+    }
+    .quote-card .quote-cta:hover { background: var(--orange-polo); border-color: var(--orange-polo); }
+
+    .xrpl-box {
+      margin-top: var(--s-5);
+      padding: var(--s-4);
+      background: var(--papier-deep);
+      border-radius: var(--r);
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.7;
+      color: var(--encre-soft);
+    }
+    .xrpl-box code {
+      font-size: 11px;
+      background: var(--papier);
+      padding: 2px 6px;
+      border-radius: var(--r);
+      color: var(--orange-polo);
+    }
+
+    /* ───── Tarif logic ───── */
+    .logic-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--s-4);
+      margin-top: var(--s-5);
+    }
+    @media (min-width: 720px) {
+      .logic-grid { grid-template-columns: 1fr 1fr; }
+    }
+    .logic-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: var(--s-3) 0;
+      border-bottom: 1px dashed var(--gris-line);
+      font-family: var(--editorial);
+      font-size: 15px;
+    }
+    .logic-row:last-child { border-bottom: none; }
+    .logic-row .key { color: var(--encre); }
+    .logic-row .val { font-family: var(--mono); font-size: 13px; color: var(--orange-polo); font-weight: 500; }
+
+    /* ───── FAQ ───── */
+    details.faq-item {
+      border-bottom: 1px solid var(--gris-line);
+      padding: var(--s-4) 0;
+    }
+    details.faq-item summary {
+      cursor: pointer;
+      font-family: var(--display);
+      font-style: italic;
+      font-size: 18px;
+      color: var(--encre);
+      list-style: none;
+    }
+    details.faq-item summary::-webkit-details-marker { display: none; }
+    details.faq-item summary::after {
+      content: ' →';
+      color: var(--orange-polo);
+      font-family: var(--mono);
+    }
+    details.faq-item[open] summary::after { content: ' ↓'; }
+    details.faq-item p {
+      margin-top: var(--s-3);
+      font-family: var(--editorial);
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--encre-soft);
+    }
+
+    /* ───── Final CTA ───── */
+    .final-cta {
+      background: var(--encre);
+      color: var(--papier);
+      padding: var(--s-7) var(--s-5);
+      border-radius: var(--r);
+      text-align: center;
+      margin-top: var(--s-7);
+    }
+    .final-cta h2 {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 30px;
+      margin: 0 0 var(--s-4);
+      line-height: 1.2;
+    }
+    .final-cta p {
+      font-family: var(--editorial);
+      font-size: 17px;
+      line-height: 1.55;
+      margin: 0 0 var(--s-5);
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      opacity: 0.85;
+    }
+    .final-cta .cta-row {
+      display: flex;
+      gap: var(--s-3);
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .final-cta a.cta {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: var(--s-3) var(--s-5);
+      border: 1px solid var(--papier);
+      border-radius: var(--r);
+      text-decoration: none;
+      color: var(--papier);
+      transition: all 0.15s ease;
+    }
+    .final-cta a.cta-primary {
+      background: var(--orange-polo);
+      border-color: var(--orange-polo);
+    }
+    .final-cta a.cta:hover {
+      background: var(--papier);
+      color: var(--encre);
+    }
+  </style>
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Aller au contenu</a>
+
+  <main id="main">
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         HERO
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="hero">
+      <p class="back-nav"><a href="index.html">← Retour à l'affût</a></p>
+
+      <p class="eyebrow">Assurance · Journée circuit</p>
+
+      <h1 class="display-italic">
+        Trois jours <span style="color: var(--orange-polo)">au Nürburgring.</span><br />
+        Couverte à la journée.
+      </h1>
+
+      <p class="tagline-major">
+        Ta GT3, ta Caterham, ta R5 Maxi turbo de '83 — peu importe.
+        Le circuit ne te demande pas ton avis sur la météo, l'assurance non plus.
+      </p>
+
+      <p class="tagline-minor">
+        Devis de trois assureurs partenaires en deux minutes. Paiement à la journée, rail XRPL.
+        Tu paies les jours roulés. Tu annules la veille, on rembourse le reste.
+      </p>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         WHY CIRCUIT INSURANCE
+         ═══════════════════════════════════════════════════════════════ -->
+    <section>
+      <p class="eyebrow">Pourquoi à la journée</p>
+      <h2 class="display-italic">L'assurance annuelle ne te suit pas en piste.</h2>
+
+      <p class="tagline-minor" style="margin-top: var(--s-4)">
+        L'exclusion « circuit fermé » est dans toutes les polices route, en petits caractères.
+        Tu roules sans filet, ou tu prends une journée dédiée. CARNET fait la deuxième option,
+        en deux minutes, sans appeler personne.
+      </p>
+
+      <div class="why-grid">
+        <div class="why-card">
+          <p class="num">01</p>
+          <h3>À la journée vraie</h3>
+          <p>
+            Tu déclares un samedi à Spa, tu paies un samedi. Pas d'année minimum,
+            pas de prorata fumeux. Trois jours à l'Eifel = trois lignes XRPL distinctes.
+          </p>
+        </div>
+
+        <div class="why-card">
+          <p class="num">02</p>
+          <h3>Devis instantané</h3>
+          <p>
+            Voiture, circuit, dates, contexte (track day libre, séance encadrée, école).
+            Les trois assureurs partenaires répondent en moins de deux minutes.
+            Tu choisis, tu signes, tu roules.
+          </p>
+        </div>
+
+        <div class="why-card">
+          <p class="num">03</p>
+          <h3>Annulation propre</h3>
+          <p>
+            Pluie battante la veille, vol annulé, copain au plâtre — tu annules
+            jusqu'à J-1. Les journées non roulées te reviennent automatiquement,
+            même rail, sans formulaire.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         WIZARD
+         ═══════════════════════════════════════════════════════════════ -->
+    <section>
+      <p class="eyebrow">Devis</p>
+      <h2 class="display-italic">Quatre étapes. Deux minutes.</h2>
+
+      <div class="wizard">
+        <div class="step-indicator">
+          <span class="step-dot active" data-step="1">01 · Voiture</span>
+          <span class="step-dot" data-step="2">02 · Circuit</span>
+          <span class="step-dot" data-step="3">03 · Dates</span>
+          <span class="step-dot" data-step="4">04 · Contexte</span>
+        </div>
+
+        <!-- STEP 1: Vehicle -->
+        <div class="step-panel active" data-panel="1">
+          <h2>01 · Quelle voiture<span style="color: var(--orange-polo)">.</span></h2>
+          <p class="intro">
+            Modèle, année, valeur agréée. Si tu as déjà un dossier CARNET, on récupère tout.
+          </p>
+
+          <div class="field-grid-2">
+            <div class="field">
+              <label for="ci-marque">Marque</label>
+              <select id="ci-marque">
+                <option value="">Choisis...</option>
+                <option value="porsche">Porsche</option>
+                <option value="ferrari">Ferrari</option>
+                <option value="lamborghini">Lamborghini</option>
+                <option value="mclaren">McLaren</option>
+                <option value="bmw">BMW M</option>
+                <option value="mercedes">Mercedes-AMG</option>
+                <option value="audi">Audi RS</option>
+                <option value="aston">Aston Martin</option>
+                <option value="lotus">Lotus</option>
+                <option value="caterham">Caterham</option>
+                <option value="alpine">Alpine</option>
+                <option value="renault">Renault Sport</option>
+                <option value="peugeot">Peugeot Sport</option>
+                <option value="ford">Ford (Mustang/GT)</option>
+                <option value="chevrolet">Chevrolet (Corvette/Camaro)</option>
+                <option value="bugatti">Bugatti</option>
+                <option value="autre">Autre</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="ci-modele">Modèle</label>
+              <input type="text" id="ci-modele" placeholder="911 GT3 RS, R8 V10, Elise..." />
+            </div>
+          </div>
+
+          <div class="field-grid-2">
+            <div class="field">
+              <label for="ci-annee">Année</label>
+              <input type="number" id="ci-annee" min="1960" max="2026" placeholder="2018" />
+            </div>
+            <div class="field">
+              <label for="ci-valeur">Valeur agréée (€)</label>
+              <input type="number" id="ci-valeur" min="10000" placeholder="220000" />
+            </div>
+          </div>
+
+          <p style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; color: var(--gris); margin-top: var(--s-3)">
+            La valeur agréée détermine le plafond d'indemnisation en cas de perte totale.
+            Tu peux la calculer via la <a href="cote.html" style="color: var(--orange-polo)">cote CARNET</a>.
+          </p>
+
+          <div class="wizard-nav">
+            <button class="btn btn-primary" id="next-1">Suivant →</button>
+          </div>
+        </div>
+
+        <!-- STEP 2: Circuit -->
+        <div class="step-panel" data-panel="2">
+          <h2>02 · Quel circuit<span style="color: var(--orange-polo)">.</span></h2>
+          <p class="intro">
+            Les onze grands d'Europe sont couverts. Pour les autres (Goodwood, Magny-Cours Club,
+            Pau Arnos…), on traite à la pièce.
+          </p>
+
+          <div class="circuit-grid" id="circuit-grid">
+            <div class="circuit-card" data-circuit="nurburgring-gp" data-tier="A">
+              <div class="name">Nürburgring GP</div>
+              <div class="country">DE · Tier A</div>
+            </div>
+            <div class="circuit-card" data-circuit="nurburgring-nord" data-tier="A+">
+              <div class="name">Nordschleife</div>
+              <div class="country">DE · Tier A+</div>
+            </div>
+            <div class="circuit-card" data-circuit="spa" data-tier="A">
+              <div class="name">Spa-Francorchamps</div>
+              <div class="country">BE · Tier A</div>
+            </div>
+            <div class="circuit-card" data-circuit="paul-ricard" data-tier="B">
+              <div class="name">Paul Ricard</div>
+              <div class="country">FR · Tier B</div>
+            </div>
+            <div class="circuit-card" data-circuit="magny-cours" data-tier="B">
+              <div class="name">Magny-Cours GP</div>
+              <div class="country">FR · Tier B</div>
+            </div>
+            <div class="circuit-card" data-circuit="le-mans" data-tier="A">
+              <div class="name">Le Mans Bugatti</div>
+              <div class="country">FR · Tier A</div>
+            </div>
+            <div class="circuit-card" data-circuit="monza" data-tier="A">
+              <div class="name">Monza</div>
+              <div class="country">IT · Tier A</div>
+            </div>
+            <div class="circuit-card" data-circuit="imola" data-tier="B">
+              <div class="name">Imola</div>
+              <div class="country">IT · Tier B</div>
+            </div>
+            <div class="circuit-card" data-circuit="mugello" data-tier="B">
+              <div class="name">Mugello</div>
+              <div class="country">IT · Tier B</div>
+            </div>
+            <div class="circuit-card" data-circuit="zandvoort" data-tier="B">
+              <div class="name">Zandvoort</div>
+              <div class="country">NL · Tier B</div>
+            </div>
+            <div class="circuit-card" data-circuit="hockenheim" data-tier="B">
+              <div class="name">Hockenheim</div>
+              <div class="country">DE · Tier B</div>
+            </div>
+            <div class="circuit-card" data-circuit="autre" data-tier="C">
+              <div class="name">Autre circuit</div>
+              <div class="country">Sur devis</div>
+            </div>
+          </div>
+
+          <div class="wizard-nav">
+            <button class="btn btn-ghost" id="back-2">← Retour</button>
+            <button class="btn btn-primary" id="next-2" disabled>Suivant →</button>
+          </div>
+        </div>
+
+        <!-- STEP 3: Dates -->
+        <div class="step-panel" data-panel="3">
+          <h2>03 · Quels jours<span style="color: var(--orange-polo)">.</span></h2>
+          <p class="intro">
+            Un jour, trois jours, un weekend complet. Tu peux ajouter plusieurs dates non-contiguës.
+          </p>
+
+          <div class="field">
+            <label for="ci-date-start">Date d'entrée</label>
+            <input type="date" id="ci-date-start" />
+          </div>
+
+          <div class="field">
+            <label for="ci-jours">Nombre de jours roulés</label>
+            <select id="ci-jours">
+              <option value="1">1 jour</option>
+              <option value="2">2 jours</option>
+              <option value="3" selected>3 jours</option>
+              <option value="4">4 jours</option>
+              <option value="5">5 jours (semaine)</option>
+              <option value="7">7 jours (weekend long)</option>
+            </select>
+          </div>
+
+          <p style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; color: var(--gris); margin-top: var(--s-3)">
+            Pour des sessions non-contiguës (ex. samedi + le samedi d'après), tu pourras
+            ajouter une seconde réservation après ce devis.
+          </p>
+
+          <div class="wizard-nav">
+            <button class="btn btn-ghost" id="back-3">← Retour</button>
+            <button class="btn btn-primary" id="next-3">Suivant →</button>
+          </div>
+        </div>
+
+        <!-- STEP 4: Context -->
+        <div class="step-panel" data-panel="4">
+          <h2>04 · Quel contexte<span style="color: var(--orange-polo)">.</span></h2>
+          <p class="intro">
+            Le tarif dépend du cadre. Track day libre, séance encadrée, école — pas les mêmes risques,
+            pas les mêmes primes.
+          </p>
+
+          <div class="context-row" id="context-row">
+            <div class="ctx-card" data-context="libre" data-mult="1.0">
+              <div class="label">Track day libre</div>
+              <div class="desc">Sessions ouvertes, plusieurs voitures en piste sans pace car, niveau libre. Le standard du Nürburgring le samedi.</div>
+            </div>
+            <div class="ctx-card" data-context="encadre" data-mult="0.78">
+              <div class="label">Séance encadrée</div>
+              <div class="desc">Groupe homogène, instructeur, drapeaux respectés. Porsche Experience, Trackdays.de, Bridgestone Driving School.</div>
+            </div>
+            <div class="ctx-card" data-context="ecole" data-mult="0.65">
+              <div class="label">École de pilotage</div>
+              <div class="desc">Tu es élève, voiture école ou la tienne, instructeur à bord. Risque le plus faible.</div>
+            </div>
+            <div class="ctx-card" data-context="competition" data-mult="1.45">
+              <div class="label">Compétition amateur</div>
+              <div class="desc">Régularité, slalom, course de côte, série monomarque. Chrono, classement, drapeau à damier.</div>
+            </div>
+          </div>
+
+          <div class="field" style="margin-top: var(--s-5)">
+            <label for="ci-permis">Année du permis</label>
+            <input type="number" id="ci-permis" min="1960" max="2026" placeholder="2008" />
+          </div>
+
+          <div class="field">
+            <label for="ci-stages">Stages de pilotage validés (optionnel)</label>
+            <input type="text" id="ci-stages" placeholder="Centre Porsche Le Castellet 2024, Lohéac École de pilotage 2022..." />
+          </div>
+
+          <div class="wizard-nav">
+            <button class="btn btn-ghost" id="back-4">← Retour</button>
+            <button class="btn btn-primary" id="submit-rfq">Recevoir les devis →</button>
+          </div>
+        </div>
+
+        <!-- RESULT -->
+        <div class="step-panel" data-panel="result">
+          <p class="eyebrow" style="color: var(--vert-anglais)">✓ Trois devis reçus</p>
+          <h2>Voici tes trois devis<span style="color: var(--orange-polo)">.</span></h2>
+          <p class="intro" id="result-summary">
+            Pour <strong id="r-veh"></strong> · <strong id="r-circuit"></strong> · <strong id="r-jours"></strong>.
+          </p>
+
+          <div class="quote-stack" id="quote-stack">
+            <!-- Quotes injected by JS -->
+          </div>
+
+          <div class="xrpl-box">
+            ↳ Paiement par jour roulé sur le rail XRPL · wallet <code>rJBhnYvg5kq9PgWFZziEXu2EcdJfcq8WSU</code><br />
+            ↳ Contribution CARNET : 7,1 % de la prime, retenue à la source, fléchée vers l'infra de l'association<br />
+            ↳ Tu peux régler en XRP, RLUSD, EURØP ou virement SEPA (clearing XRPL/EURØP)
+          </div>
+
+          <div class="wizard-nav">
+            <button class="btn btn-ghost" id="reset-wiz">↺ Refaire un devis</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         TARIFICATION LOGIC
+         ═══════════════════════════════════════════════════════════════ -->
+    <section>
+      <p class="eyebrow">Méthode</p>
+      <h2 class="display-italic">Comment on tarife.</h2>
+
+      <p class="tagline-minor" style="margin-top: var(--s-4)">
+        Rien d'opaque. Le tarif sort d'une formule simple, recalibrée mensuellement
+        sur les sinistres réels remontés par les trois partenaires. Tu comprends ce que tu paies.
+      </p>
+
+      <div class="logic-grid">
+        <div>
+          <div class="logic-row"><span class="key">Base — % de la valeur agréée</span><span class="val">0,18 % / jour</span></div>
+          <div class="logic-row"><span class="key">Circuit Tier A (Spa, GP)</span><span class="val">× 1,20</span></div>
+          <div class="logic-row"><span class="key">Nordschleife (Tier A+)</span><span class="val">× 1,65</span></div>
+          <div class="logic-row"><span class="key">Tier B (Paul Ricard, Magny)</span><span class="val">× 1,00</span></div>
+        </div>
+        <div>
+          <div class="logic-row"><span class="key">Track day libre</span><span class="val">× 1,00</span></div>
+          <div class="logic-row"><span class="key">Séance encadrée</span><span class="val">× 0,78</span></div>
+          <div class="logic-row"><span class="key">École de pilotage</span><span class="val">× 0,65</span></div>
+          <div class="logic-row"><span class="key">Stages validés (5+)</span><span class="val">−12 %</span></div>
+        </div>
+      </div>
+
+      <p style="font-family: var(--editorial); font-size: 15px; color: var(--encre-soft); margin-top: var(--s-5); line-height: 1.6">
+        Exemple chiffré&nbsp;: GT3 valeur agréée 220 000 €, 3 jours Spa track day libre, permis 2008,
+        deux stages validés → base 0,18 % × 3 × 220 000 = 1 188 € · × 1,20 (Spa) = 1 425 € ·
+        × 1,00 (libre) = 1 425 € · sans réduction stages (seuil 5+) → <strong>1 425 € pour 3 jours</strong>,
+        soit 475 € par journée roulée à Spa, perte totale couverte.
+      </p>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         FAQ
+         ═══════════════════════════════════════════════════════════════ -->
+    <section>
+      <p class="eyebrow">Questions reçues</p>
+      <h2 class="display-italic">Ce qui revient.</h2>
+
+      <div style="margin-top: var(--s-5)">
+        <details class="faq-item">
+          <summary>Ça couvre quoi exactement&nbsp;?</summary>
+          <p>
+            Dommages tous accidents (sortie de piste, contact avec un autre véhicule, immobilisation
+            mécanique post-incident), vol pendant la journée, perte totale jusqu'à la valeur agréée.
+            Pas de couverture corporelle (c'est la licence FFSA ou ASN, à part).
+          </p>
+        </details>
+        <details class="faq-item">
+          <summary>Mon assurance route classique m'a dit qu'elle me couvrait, c'est vrai&nbsp;?</summary>
+          <p>
+            Quasiment toujours non. Cherche dans tes conditions générales « exclusions » →
+            « circuits, terrains fermés, compétitions ». La clause est universelle, parfois noyée
+            dans « usage non conforme au véhicule ». En cas de sinistre, l'expert le note, et c'est
+            payé par toi.
+          </p>
+        </details>
+        <details class="faq-item">
+          <summary>Pourquoi le Nordschleife est-il à part&nbsp;?</summary>
+          <p>
+            Parce que c'est la Nordschleife. 20,8 km, dénivelé de 300 m, configuration unique,
+            absence de pace car, mélange GT3 / Twingo turbo / vélo électrique le mardi soir.
+            Les assureurs traitent ce circuit comme une catégorie à lui seul. Le tarif reflète
+            la fréquence des sorties (élevée) et le coût moyen d'extraction (très élevé).
+          </p>
+        </details>
+        <details class="faq-item">
+          <summary>J'ai annulé la veille, je récupère vraiment l'argent&nbsp;?</summary>
+          <p>
+            Oui, automatiquement. Le rail XRPL permet une libération par jour : tant que le jour
+            n'a pas commencé (00h00 fuseau du circuit), il est annulable sans pénalité. Au-delà,
+            ce jour-là est dû. Les autres jours du séjour restent annulables.
+          </p>
+        </details>
+        <details class="faq-item">
+          <summary>Et si je crashe le premier jour, je perds aussi les deux suivants&nbsp;?</summary>
+          <p>
+            Non, chaque jour est traité comme un contrat distinct. Sinistre J1 = indemnisation
+            J1, et J2/J3 te sont remboursés (puisque tu ne rouleras pas). Si la voiture est en
+            état de repartir J2, libre à toi de continuer.
+          </p>
+        </details>
+        <details class="faq-item">
+          <summary>Combien de temps prennent les devis&nbsp;?</summary>
+          <p>
+            Moins de deux minutes. La RFQ part en parallèle vers les trois assureurs partenaires
+            via un canal dédié (pas d'agent au téléphone). Si l'un d'eux exige une expertise photo
+            (rare, surtout au-dessus de 500 000 €), le devis arrive sous 24h.
+          </p>
+        </details>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         FINAL CTA
+         ═══════════════════════════════════════════════════════════════ -->
+    <section style="border-top: none; padding-block: var(--s-6)">
+      <div class="final-cta">
+        <h2>Spa, Le Mans, le Ring.<br />Couverte à la journée.</h2>
+        <p>
+          Devis instantané, paiement par jour, annulation jusqu'à J-1.
+          Et si tu fais aussi un rallye derrière, regarde la page sociale.
+        </p>
+        <div class="cta-row">
+          <a href="#main" class="cta cta-primary">↑ Faire un devis</a>
+          <a href="rally-social.html" class="cta">Rallye social →</a>
+          <a href="rally-historique.html" class="cta">Rallyes historiques →</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════════════════════════ -->
+  <footer class="carnet-footer">
+    <p class="footer-tagline"><em>Une histoire de voitures.</em></p>
+
+    <nav class="footer-nav" aria-label="Pages utilitaires">
+      <a href="index.html">Affût</a>
+      <a href="cote.html">Cote</a>
+      <a href="assurance.html">Assurance</a>
+      <a href="discover.html">Discover</a>
+      <a href="archetypes.html">Archétypes</a>
+      <a href="launch.html">14·12·2026</a>
+      <a href="about.html">À propos</a>
+    </nav>
+
+    <p class="footer-legal">
+      CARNET · Association loi 1901 française non-lucrative familiale<br />
+      Trois assureurs partenaires actifs · Couverture EU 27 + UK + CH<br />
+      Wallet officiel multisig 3/3&nbsp;: <code>rJBhnYvg5kq9PgWFZziEXu2EcdJfcq8WSU</code>
+    </p>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       JAVASCRIPT — Wizard + RFQ simulation
+       ═══════════════════════════════════════════════════════════════ -->
+  <script>
+    'use strict';
+
+    /* ───────────────────────────────────────────────────────────────
+       Tarif logic
+       ─────────────────────────────────────────────────────────────── */
+    const TIER_MULT = { 'A+': 1.65, 'A': 1.20, 'B': 1.00, 'C': 1.30 };
+    const BASE_RATE = 0.0018;
+
+    /* ───────────────────────────────────────────────────────────────
+       State
+       ─────────────────────────────────────────────────────────────── */
+    const state = {
+      marque: '', modele: '', annee: 0, valeur: 0,
+      circuit: '', circuitName: '', tier: '',
+      dateStart: '', jours: 3,
+      context: '', contextMult: 1.0,
+      permis: 0, stages: ''
+    };
+
+    /* ───────────────────────────────────────────────────────────────
+       Step navigation
+       ─────────────────────────────────────────────────────────────── */
+    function goToStep(n) {
+      document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+      const target = document.querySelector(`.step-panel[data-panel="${n}"]`);
+      if (target) target.classList.add('active');
+
+      document.querySelectorAll('.step-dot').forEach(d => {
+        const step = d.getAttribute('data-step');
+        d.classList.remove('active', 'done');
+        if (n === 'result') {
+          d.classList.add('done');
+        } else if (parseInt(step) === parseInt(n)) {
+          d.classList.add('active');
+        } else if (parseInt(step) < parseInt(n)) {
+          d.classList.add('done');
+        }
+      });
+
+      window.scrollTo({ top: document.querySelector('.wizard').offsetTop - 40, behavior: 'smooth' });
+    }
+
+    /* ───────────────────────────────────────────────────────────────
+       Step 1 → 2
+       ─────────────────────────────────────────────────────────────── */
+    document.getElementById('next-1').addEventListener('click', () => {
+      state.marque = document.getElementById('ci-marque').value;
+      state.modele = document.getElementById('ci-modele').value.trim();
+      state.annee  = parseInt(document.getElementById('ci-annee').value) || 0;
+      state.valeur = parseInt(document.getElementById('ci-valeur').value) || 0;
+
+      if (!state.marque || !state.modele || !state.annee || !state.valeur) {
+        alert('Marque, modèle, année et valeur agréée sont nécessaires pour le devis.');
+        return;
+      }
+      goToStep(2);
+    });
+
+    /* ───────────────────────────────────────────────────────────────
+       Step 2 (circuit selection)
+       ─────────────────────────────────────────────────────────────── */
+    document.querySelectorAll('#circuit-grid .circuit-card').forEach(card => {
+      card.addEventListener('click', () => {
+        document.querySelectorAll('#circuit-grid .circuit-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        state.circuit = card.dataset.circuit;
+        state.circuitName = card.querySelector('.name').textContent;
+        state.tier = card.dataset.tier;
+        document.getElementById('next-2').disabled = false;
+      });
+    });
+
+    document.getElementById('back-2').addEventListener('click', () => goToStep(1));
+    document.getElementById('next-2').addEventListener('click', () => goToStep(3));
+
+    /* ───────────────────────────────────────────────────────────────
+       Step 3 → 4
+       ─────────────────────────────────────────────────────────────── */
+    document.getElementById('back-3').addEventListener('click', () => goToStep(2));
+    document.getElementById('next-3').addEventListener('click', () => {
+      state.dateStart = document.getElementById('ci-date-start').value;
+      state.jours = parseInt(document.getElementById('ci-jours').value) || 1;
+      if (!state.dateStart) {
+        alert('Indique une date d\'entrée — elle peut être modifiée plus tard.');
+        return;
+      }
+      goToStep(4);
+    });
+
+    /* ───────────────────────────────────────────────────────────────
+       Step 4 (context)
+       ─────────────────────────────────────────────────────────────── */
+    document.querySelectorAll('#context-row .ctx-card').forEach(card => {
+      card.addEventListener('click', () => {
+        document.querySelectorAll('#context-row .ctx-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        state.context = card.dataset.context;
+        state.contextMult = parseFloat(card.dataset.mult);
+      });
+    });
+
+    document.getElementById('back-4').addEventListener('click', () => goToStep(3));
+
+    /* ───────────────────────────────────────────────────────────────
+       Submit RFQ → generate 3 quotes
+       ─────────────────────────────────────────────────────────────── */
+    document.getElementById('submit-rfq').addEventListener('click', () => {
+      if (!state.context) {
+        alert('Choisis un contexte — track day libre, séance encadrée, école ou compétition.');
+        return;
+      }
+
+      state.permis = parseInt(document.getElementById('ci-permis').value) || 0;
+      state.stages = document.getElementById('ci-stages').value.trim();
+
+      generateQuotes();
+      goToStep('result');
+    });
+
+    function generateQuotes() {
+      const base = state.valeur * BASE_RATE * state.jours;
+      const tierMult = TIER_MULT[state.tier] || 1.0;
+      const stageCount = state.stages ? state.stages.split(',').length : 0;
+      const stageMult = stageCount >= 5 ? 0.88 : 1.0;
+
+      // Anciens permis = expérience routière + maturité
+      const yearsLicense = state.permis ? (2026 - state.permis) : 10;
+      const expMult = yearsLicense > 15 ? 0.94 : (yearsLicense > 8 ? 1.0 : 1.18);
+
+      const corePremium = base * tierMult * state.contextMult * stageMult * expMult;
+
+      // 3 quotes with slight variance
+      const quotes = [
+        { ins: 'Carene · Collection Sport', mult: 0.96, included: ['Perte totale jusqu\'à valeur agréée', 'Sortie de piste, contact véhicule, immobilisation mécanique', 'Vol pendant la journée', 'Frais de remorquage circuit → atelier (jusqu\'à 1 500 €)'] },
+        { ins: 'Hagerty UK · Track Day', mult: 1.00, included: ['Coverage to agreed value', 'Spin-outs, contact, mechanical breakdown', 'Theft during track session', 'Hot pit repairs covered up to £2 000'] },
+        { ins: 'Chubb · Premium Auto', mult: 1.12, included: ['Garantie tous accidents — valeur agréée', 'Couverture instructeur passager (option +50 €/jour)', 'Service conciergerie (rapatriement véhicule + chauffeur)', 'Plafond perte totale 1,5 M€ par défaut'] }
+      ];
+
+      const sorted = quotes.map(q => ({ ...q, total: Math.round(corePremium * q.mult) })).sort((a, b) => a.total - b.total);
+
+      document.getElementById('r-veh').textContent =
+        `${state.marque.charAt(0).toUpperCase() + state.marque.slice(1)} ${state.modele} (${state.annee})`;
+      document.getElementById('r-circuit').textContent = state.circuitName;
+      document.getElementById('r-jours').textContent = `${state.jours} jour${state.jours > 1 ? 's' : ''}`;
+
+      const stack = document.getElementById('quote-stack');
+      stack.innerHTML = '';
+      sorted.forEach((q, i) => {
+        const card = document.createElement('div');
+        card.className = 'quote-card' + (i === 0 ? ' best' : '');
+        const perDay = Math.round(q.total / state.jours);
+        card.innerHTML = `
+          <div class="quote-head">
+            <div class="ins">${q.ins}</div>
+            <div class="price">${q.total.toLocaleString('fr-FR')} €</div>
+          </div>
+          <div class="price-sub">${perDay.toLocaleString('fr-FR')} € PAR JOUR · ${state.jours} JOUR${state.jours > 1 ? 'S' : ''} · ANNULATION J-1</div>
+          <ul>
+            ${q.included.map(line => `<li>${line}</li>`).join('')}
+          </ul>
+          <a class="quote-cta" href="#" onclick="alert('Signature Xaman — branchement Sprint 2 NFT XLS-20. Le rail XRPL exécutera le contrat à la journée.'); return false;">Signer ce devis →</a>
+        `;
+        stack.appendChild(card);
+      });
+    }
+
+    /* ───────────────────────────────────────────────────────────────
+       Reset
+       ─────────────────────────────────────────────────────────────── */
+    document.getElementById('reset-wiz').addEventListener('click', () => {
+      ['ci-marque','ci-modele','ci-annee','ci-valeur','ci-date-start','ci-jours','ci-permis','ci-stages']
+        .forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+      document.querySelectorAll('.circuit-card, .ctx-card').forEach(c => c.classList.remove('selected'));
+      document.getElementById('next-2').disabled = true;
+      Object.keys(state).forEach(k => state[k] = typeof state[k] === 'number' ? 0 : '');
+      goToStep(1);
+    });
+
+    /* TODO production: replace alert() inside generateQuotes signer
+       with POST to /api/circuit-rfq → 3 partner endpoints in parallel.
+       Use Xaman payload signing for daily XRPL escrow contracts.
+       Wallet: rJBhnYvg5kq9PgWFZziEXu2EcdJfcq8WSU */
+  </script>
+</body>
+</html>

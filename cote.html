@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="CARNET · Cote temps réel calculée sur 24 000 véhicules vivants du marché européen. Fourchette CARNET, comparatif Argus, valeur recommandée pour ton assureur. Gratuit, sans inscription." />
+  <meta name="theme-color" content="#faf6ef" />
+
+  <title>CARNET · Cote temps réel</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,400;1,500;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="carnet-tokens.css" />
+
+  <style>
+    main {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: var(--s-8) var(--s-5);
+    }
+    section { padding-block: var(--s-7); border-top: 1px solid var(--gris-line); }
+    section:first-of-type { border-top: none; padding-top: 0; }
+    .hero { padding-top: var(--s-3); padding-bottom: var(--s-7); border-top: none; }
+
+    .back-nav {
+      margin-bottom: var(--s-5);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .back-nav a { color: var(--gris); text-decoration: none; }
+    .back-nav a:hover { color: var(--encre); }
+
+    /* ───── Wizard steps ───── */
+    .wizard {
+      margin-top: var(--s-6);
+      background: var(--papier-bright);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      padding: var(--s-6) var(--s-5);
+    }
+    .step-indicator {
+      display: flex;
+      gap: var(--s-3);
+      margin-bottom: var(--s-5);
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gris);
+    }
+    .step-indicator span {
+      flex: 1;
+      padding-bottom: var(--s-2);
+      border-bottom: 2px solid var(--gris-line);
+      transition: color 200ms ease, border-color 200ms ease;
+    }
+    .step-indicator span.active {
+      color: var(--orange-polo);
+      border-bottom-color: var(--orange-polo);
+    }
+    .step-indicator span.done {
+      color: var(--encre);
+      border-bottom-color: var(--encre);
+    }
+
+    .step { display: none; }
+    .step.active { display: block; }
+
+    .field {
+      margin-bottom: var(--s-5);
+    }
+    .field label {
+      display: block;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gris);
+      margin-bottom: var(--s-3);
+    }
+    .field input,
+    .field select {
+      width: 100%;
+      padding: var(--s-4);
+      font-family: var(--editorial);
+      font-size: 17px;
+      background: var(--papier);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      color: var(--encre);
+      transition: border-color 200ms ease;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    .field input:focus,
+    .field select:focus {
+      outline: none;
+      border-color: var(--encre);
+    }
+    .field select {
+      background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%231a1410' stroke-width='1.5'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right var(--s-4) center;
+      padding-right: var(--s-7);
+    }
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s-4);
+    }
+    @media (max-width: 480px) {
+      .field-row { grid-template-columns: 1fr; }
+    }
+    .field-hint {
+      margin-top: var(--s-2);
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 14px;
+      color: var(--encre-soft);
+    }
+
+    /* ───── State chips (état véhicule) ───── */
+    .state-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s-3);
+    }
+    @media (min-width: 600px) {
+      .state-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+    .state-card {
+      padding: var(--s-4);
+      background: var(--papier);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      cursor: pointer;
+      text-align: left;
+      transition: border-color 200ms ease, background 200ms ease;
+      font: inherit;
+      color: inherit;
+    }
+    .state-card:hover { border-color: var(--encre); }
+    .state-card.selected {
+      border-color: var(--orange-polo);
+      background: var(--orange-soft);
+    }
+    .state-card .state-label {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--encre);
+      margin: 0 0 var(--s-2) 0;
+    }
+    .state-card .state-desc {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 13px;
+      color: var(--encre-soft);
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    /* ───── Buttons wizard ───── */
+    .wizard-nav {
+      display: flex;
+      gap: var(--s-3);
+      margin-top: var(--s-6);
+    }
+    .btn-step {
+      flex: 1;
+      padding: var(--s-4);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      border: 1px solid var(--encre);
+      border-radius: var(--r);
+      cursor: pointer;
+      transition: background 200ms ease, color 200ms ease;
+    }
+    .btn-next {
+      background: var(--encre);
+      color: var(--papier);
+    }
+    .btn-next:hover { background: var(--orange-polo); border-color: var(--orange-polo); }
+    .btn-next:disabled {
+      background: var(--gris-line);
+      border-color: var(--gris-line);
+      color: var(--gris);
+      cursor: not-allowed;
+    }
+    .btn-back {
+      background: transparent;
+      color: var(--encre);
+      border-color: var(--gris-line);
+      flex: 0 0 auto;
+      padding: var(--s-4) var(--s-5);
+    }
+    .btn-back:hover { border-color: var(--encre); }
+
+    /* ───── Résultat cote ───── */
+    .result-hero {
+      text-align: center;
+      padding: var(--s-7) var(--s-5);
+      background: var(--papier-bright);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      margin-bottom: var(--s-5);
+    }
+    .result-eyebrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--orange-polo);
+      margin: 0 0 var(--s-3) 0;
+    }
+    .result-vehicle {
+      font-family: var(--display);
+      font-style: italic;
+      font-size: clamp(22px, 3.5vw, 28px);
+      color: var(--encre);
+      margin: 0 0 var(--s-5) 0;
+    }
+    .result-range {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: clamp(36px, 7vw, 56px);
+      line-height: 1;
+      color: var(--vert-anglais);
+      margin: 0 0 var(--s-3) 0;
+      letter-spacing: -0.02em;
+    }
+    .result-median {
+      font-family: var(--mono);
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      color: var(--gris);
+      margin: 0;
+    }
+    .result-median strong {
+      color: var(--encre);
+      font-weight: 600;
+    }
+
+    /* Comparatif ligne par ligne */
+    .compare {
+      margin-top: var(--s-5);
+    }
+    .compare-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: var(--s-4);
+      padding: var(--s-4) 0;
+      border-top: 1px solid var(--gris-line);
+      align-items: baseline;
+    }
+    .compare-row:first-child { border-top: 2px solid var(--encre); }
+    .compare-source {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 17px;
+      color: var(--encre);
+    }
+    .compare-source small {
+      display: block;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-style: normal;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gris);
+      margin-top: 2px;
+    }
+    .compare-value {
+      font-family: var(--mono);
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--encre);
+      white-space: nowrap;
+    }
+    .compare-value.carnet {
+      color: var(--orange-polo);
+    }
+
+    /* Insurance recommended box */
+    .insurance-box {
+      margin-top: var(--s-6);
+      padding: var(--s-5);
+      background: var(--vert-soft);
+      border: 1px solid rgba(31, 77, 47, 0.25);
+      border-radius: var(--r);
+    }
+    .insurance-box .label {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--vert-anglais);
+      margin: 0 0 var(--s-2) 0;
+    }
+    .insurance-box .value {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: clamp(24px, 4vw, 32px);
+      color: var(--vert-anglais);
+      margin: 0 0 var(--s-3) 0;
+      line-height: 1.1;
+    }
+    .insurance-box p {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 15px;
+      color: var(--encre);
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    /* Sample count footer */
+    .sample-note {
+      margin-top: var(--s-5);
+      padding: var(--s-4);
+      background: var(--papier);
+      border-left: 2px solid var(--orange-polo);
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 14px;
+      color: var(--encre-soft);
+      line-height: 1.5;
+    }
+    .sample-note strong { color: var(--encre); font-weight: 500; }
+
+    /* ───── Method section ───── */
+    .method-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--s-4);
+      margin-top: var(--s-5);
+    }
+    @media (min-width: 600px) {
+      .method-grid { grid-template-columns: 1fr 1fr; }
+    }
+    .method-card {
+      padding: var(--s-5);
+      background: var(--papier-bright);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+    }
+    .method-card .num {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      color: var(--orange-polo);
+      margin: 0 0 var(--s-3) 0;
+    }
+    .method-card h3 {
+      font-family: var(--display);
+      font-style: italic;
+      font-size: 20px;
+      margin: 0 0 var(--s-3) 0;
+      line-height: 1.2;
+    }
+    .method-card p {
+      font-family: var(--editorial);
+      font-size: 15px;
+      line-height: 1.55;
+      color: var(--encre);
+      margin: 0;
+    }
+
+    /* ───── CTAs aval ───── */
+    .next-actions {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--s-3);
+      margin-top: var(--s-5);
+    }
+    @media (min-width: 600px) {
+      .next-actions { grid-template-columns: 1fr 1fr 1fr; }
+    }
+    .next-action {
+      padding: var(--s-5);
+      background: var(--papier-bright);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 200ms ease, transform 200ms ease;
+      display: block;
+    }
+    .next-action:hover {
+      border-color: var(--encre);
+      transform: translateY(-2px);
+    }
+    .next-action .icon {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      color: var(--orange-polo);
+      margin-bottom: var(--s-3);
+      text-transform: uppercase;
+    }
+    .next-action h3 {
+      font-family: var(--display);
+      font-style: italic;
+      font-size: 19px;
+      margin: 0 0 var(--s-2) 0;
+      line-height: 1.2;
+    }
+    .next-action p {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 14px;
+      color: var(--encre-soft);
+      margin: 0;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+
+<body>
+  <a href="#contenu" class="skip-link">Aller au contenu</a>
+
+  <main id="contenu">
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         HERO
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="hero" aria-labelledby="hero-title">
+      <p class="back-nav"><a href="index.html">← Retour à l'accueil</a></p>
+
+      <p class="eyebrow">Cote temps réel · 24 268 véhicules</p>
+      <h1 id="hero-title"><em>Ce qu'elle vaut.</em><br />Aujourd'hui. Pour de vrai.</h1>
+      <p class="tagline-minor">
+        <em>Cote calculée sur le marché européen vivant, pas sur un guide imprimé l'an dernier.
+        Gratuit, sans inscription. Trois questions, une fourchette.</em>
+      </p>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         WIZARD
+         ═══════════════════════════════════════════════════════════════ -->
+    <section aria-labelledby="wizard-title">
+      <p class="eyebrow">Estimation</p>
+      <h2 id="wizard-title"><em>Trois questions.</em></h2>
+
+      <div class="wizard" id="wizard">
+
+        <div class="step-indicator" aria-hidden="true">
+          <span id="ind-1" class="active">01 · Voiture</span>
+          <span id="ind-2">02 · Détails</span>
+          <span id="ind-3">03 · Cote</span>
+        </div>
+
+        <!-- ───── STEP 1 : MARQUE + MODÈLE ───── -->
+        <div class="step active" id="step-1">
+
+          <div class="field">
+            <label for="marque">Marque</label>
+            <select id="marque" required>
+              <option value="">— Choisir —</option>
+              <option>Porsche</option>
+              <option>Ferrari</option>
+              <option>Lamborghini</option>
+              <option>Mercedes-Benz</option>
+              <option>BMW</option>
+              <option>Audi</option>
+              <option>Aston Martin</option>
+              <option>Bentley</option>
+              <option>Rolls-Royce</option>
+              <option>Maserati</option>
+              <option>Jaguar</option>
+              <option>Land Rover</option>
+              <option>Alfa Romeo</option>
+              <option>Lancia</option>
+              <option>Lotus</option>
+              <option>McLaren</option>
+              <option>Bugatti</option>
+              <option>Pagani</option>
+              <option>Koenigsegg</option>
+              <option>Alpine</option>
+              <option>Renault</option>
+              <option>Peugeot</option>
+              <option>Citroën</option>
+              <option>Volkswagen</option>
+              <option>Ford</option>
+              <option>Chevrolet</option>
+              <option>Cadillac</option>
+              <option>Dodge</option>
+              <option>Pontiac</option>
+              <option>Volvo</option>
+              <option>Saab</option>
+              <option>Toyota</option>
+              <option>Nissan</option>
+              <option>Mazda</option>
+              <option>Honda</option>
+              <option>Subaru</option>
+              <option>Mitsubishi</option>
+              <option>Lexus</option>
+              <option>Acura</option>
+              <option>Infiniti</option>
+              <option>Tesla</option>
+              <option>Lucid</option>
+              <option>Rimac</option>
+              <option>Polestar</option>
+              <option>Autre</option>
+            </select>
+            <p class="field-hint">Quarante-trois marques cotées. Si la tienne n'y est pas, choisis « Autre ».</p>
+          </div>
+
+          <div class="field">
+            <label for="modele">Modèle</label>
+            <input type="text" id="modele" placeholder="Ex : 993 Turbo, 458 Italia, E-Type Series 1…" autocomplete="off" />
+            <p class="field-hint">Plus tu es précis (génération, motorisation), plus la cote est juste.</p>
+          </div>
+
+          <div class="wizard-nav">
+            <button class="btn-step btn-next" id="to-step-2">Continuer →</button>
+          </div>
+        </div>
+
+        <!-- ───── STEP 2 : ANNÉE + KM + ÉTAT ───── -->
+        <div class="step" id="step-2">
+
+          <div class="field-row">
+            <div class="field">
+              <label for="annee">Année</label>
+              <input type="number" id="annee" min="1900" max="2026" step="1" placeholder="1993" />
+            </div>
+            <div class="field">
+              <label for="km">Kilométrage</label>
+              <input type="number" id="km" min="0" step="1000" placeholder="65 000" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label>État général</label>
+            <div class="state-grid" role="radiogroup" aria-label="État de la voiture">
+              <button class="state-card" type="button" data-state="concours">
+                <p class="state-label"><em>Concours</em></p>
+                <p class="state-desc">Restauration totale, comme sortie d'usine.</p>
+              </button>
+              <button class="state-card" type="button" data-state="excellent">
+                <p class="state-label"><em>Excellent</em></p>
+                <p class="state-desc">Mécanique impeccable, carrosserie soignée.</p>
+              </button>
+              <button class="state-card selected" type="button" data-state="bon" aria-pressed="true">
+                <p class="state-label"><em>Bon</em></p>
+                <p class="state-desc">Patine honnête, rien à reprendre tout de suite.</p>
+              </button>
+              <button class="state-card" type="button" data-state="projet">
+                <p class="state-label"><em>Projet</em></p>
+                <p class="state-desc">Roule mais travaux à prévoir.</p>
+              </button>
+            </div>
+          </div>
+
+          <div class="wizard-nav">
+            <button class="btn-step btn-back" id="back-to-1">←</button>
+            <button class="btn-step btn-next" id="to-step-3">Calculer →</button>
+          </div>
+        </div>
+
+        <!-- ───── STEP 3 : RÉSULTAT ───── -->
+        <div class="step" id="step-3">
+
+          <div class="result-hero">
+            <p class="result-eyebrow">Cote CARNET · fourchette de marché</p>
+            <p class="result-vehicle" id="result-vehicle"><em>—</em></p>
+            <p class="result-range" id="result-range">— € — — €</p>
+            <p class="result-median">Médiane <strong id="result-median">—</strong> · échantillon <strong id="result-sample">— annonces</strong></p>
+          </div>
+
+          <div class="compare">
+            <div class="compare-row">
+              <div class="compare-source">
+                CARNET<small>Marché vivant · 24 268 véhicules</small>
+              </div>
+              <div class="compare-value carnet" id="cmp-carnet">—</div>
+            </div>
+            <div class="compare-row">
+              <div class="compare-source">
+                Argus indicatif<small>Guide imprimé · trimestriel</small>
+              </div>
+              <div class="compare-value" id="cmp-argus">—</div>
+            </div>
+            <div class="compare-row">
+              <div class="compare-source">
+                Annonces actives<small>Médiane des annonces visibles</small>
+              </div>
+              <div class="compare-value" id="cmp-annonces">—</div>
+            </div>
+          </div>
+
+          <div class="insurance-box">
+            <p class="label">Valeur agréée recommandée pour ton assureur</p>
+            <p class="value" id="insurance-value">—</p>
+            <p>
+              <em>C'est la valeur qu'on défend dans un dossier sinistre. Plafond haut de la
+              fourchette, justifié par les comparables du mois. À transmettre à ton assureur,
+              ou à utiliser directement dans <a href="assurance.html" style="color: var(--vert-anglais); text-decoration: underline;">CARNET Assurance</a>.</em>
+            </p>
+          </div>
+
+          <p class="sample-note">
+            <strong>Méthode.</strong> Cette fourchette agrège les annonces actives et récemment
+            archivées sur ton modèle, pondère par kilométrage et état, et applique un facteur
+            de marché propre au mois en cours. <a href="#method" style="color: var(--orange-polo);">Détail plus bas →</a>
+          </p>
+
+          <div class="wizard-nav">
+            <button class="btn-step btn-back" id="back-to-2">← Modifier</button>
+            <button class="btn-step btn-next" id="export-pdf">Exporter PDF →</button>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         MÉTHODE
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="method" aria-labelledby="method-title">
+      <p class="eyebrow">Méthode</p>
+      <h2 id="method-title"><em>Comment on calcule.</em></h2>
+
+      <p>
+        La cote CARNET n'est pas un guide imprimé. C'est un agrégat vivant, recalculé chaque nuit
+        sur la base réelle du marché européen. Trois étapes, transparentes par construction.
+      </p>
+
+      <div class="method-grid">
+        <div class="method-card">
+          <p class="num">01</p>
+          <h3><em>Marché vivant</em></h3>
+          <p>
+            On scanne en continu vingt-six sources européennes — concessionnaires spécialisés,
+            marketplaces, salles d'enchères. Aujourd'hui 24 268 véhicules actifs en base. Une
+            voiture qui n'apparaît nulle part n'a pas de cote sérieuse.
+          </p>
+        </div>
+
+        <div class="method-card">
+          <p class="num">02</p>
+          <h3><em>Pondération km · état</em></h3>
+          <p>
+            On normalise par kilométrage (courbe segment par segment, pas linéaire) et par
+            état (les quatre niveaux ci-dessus). Une 993 Turbo à 30 000 km en concours et une
+            993 Turbo à 180 000 km en projet ne se croisent jamais — sauf à l'arrêt.
+          </p>
+        </div>
+
+        <div class="method-card">
+          <p class="num">03</p>
+          <h3><em>Facteur de marché</em></h3>
+          <p>
+            On regarde l'évolution du segment sur les douze derniers mois et on ajuste. Le
+            facteur est public, recalculé le 1<sup>er</sup> de chaque mois. Pas de boîte noire :
+            tu peux refaire le calcul à la main si tu veux.
+          </p>
+        </div>
+
+        <div class="method-card">
+          <p class="num">04</p>
+          <h3><em>Aucun intérêt à mentir</em></h3>
+          <p>
+            CARNET n'est pas un courtier. Pas de commission sur l'achat ou la vente. La cote
+            n'est ni gonflée pour faire vendre, ni baissée pour faire racheter. C'est l'asso
+            qui la publie, pas un acteur du marché.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         ÉTAPE SUIVANTE
+         ═══════════════════════════════════════════════════════════════ -->
+    <section aria-labelledby="next-title">
+      <p class="eyebrow">Et maintenant</p>
+      <h2 id="next-title"><em>La cote est un point de départ.</em></h2>
+
+      <p>
+        Tu sais ce qu'elle vaut. Reste à savoir ce que tu veux en faire. Trois directions
+        possibles, toutes natives de l'écosystème CARNET.
+      </p>
+
+      <div class="next-actions">
+        <a href="assurance.html" class="next-action">
+          <p class="icon">→ Assurer</p>
+          <h3><em>Couvrir à la juste valeur</em></h3>
+          <p>Valeur agréée recommandée, partenaires assureurs, fractionné mensuel.</p>
+        </a>
+        <a href="vendre.html" class="next-action">
+          <p class="icon">→ Vendre</p>
+          <h3><em>Annonce certifiée CARNET</em></h3>
+          <p>Dossier complet, cote sourcée, badge de confiance. Crédibilité maximale.</p>
+        </a>
+        <a href="carnet-entretien.html" class="next-action">
+          <p class="icon">→ Documenter</p>
+          <h3><em>Carnet d'entretien on-chain</em></h3>
+          <p>Historique vérifiable, hash XRPL, transmissible. Boost cote au revente.</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         FAQ rapide
+         ═══════════════════════════════════════════════════════════════ -->
+    <section aria-labelledby="faq-title">
+      <p class="eyebrow">Questions fréquentes</p>
+      <h2 id="faq-title"><em>Avant que tu poses la question.</em></h2>
+
+      <h3 style="margin-top: var(--s-5);"><em>C'est vraiment gratuit ?</em></h3>
+      <p>
+        Oui. Asso loi 1901 non-lucrative. Pas de freemium, pas de paywall. La cote est le
+        service que CARNET rend à la communauté, point final.
+      </p>
+
+      <h3><em>Tu collectes mes données ?</em></h3>
+      <p>
+        Les saisies du wizard ne sont pas associées à un compte ni stockées en clair. La cote
+        se calcule côté navigateur sur des moyennes publiques. Si tu crées un Carnet pour la
+        suivre dans le temps, là tu choisis ce que tu enregistres.
+      </p>
+
+      <h3><em>Pourquoi c'est différent de l'Argus ?</em></h3>
+      <p>
+        L'Argus historique calibre sur des transactions transmises trimestriellement, souvent
+        de seconde main. CARNET regarde les annonces en cours — celles que tu peux vraiment
+        comparer aujourd'hui. Les deux ont leur intérêt. La nôtre bouge plus vite.
+      </p>
+
+      <h3><em>Et pour les voitures rares ? Genre Pagani Huayra.</em></h3>
+      <p>
+        Pour les objets à très faible volume (moins de cinq comparables par an), la fourchette
+        s'élargit et on bascule sur les résultats d'enchères publiques. Tu auras un avertissement
+        explicite : « échantillon faible, marge ±30% ». Pas de fausse précision.
+      </p>
+
+      <h3><em>Je suis assureur. Vous proposez une API ?</em></h3>
+      <p>
+        Oui — voir la <a href="assurance.html" style="color: var(--orange-polo);">page partenaires</a>.
+        Cinq assureurs fondateurs ont accès à un endpoint qui retourne la valeur agréée
+        recommandée par véhicule, avec justificatif comparable. Contribution 7,1% des primes
+        flux back à CARNET. Pas un courtage : une API publique non-lucrative.
+      </p>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         CTA FINAL
+         ═══════════════════════════════════════════════════════════════ -->
+    <section>
+      <p class="eyebrow">Aller plus loin</p>
+      <h2><em>Une cote, un projet, un carnet.</em></h2>
+
+      <p>
+        Si la voiture est à toi, ouvre-lui un Carnet. C'est gratuit, c'est on-chain, et c'est
+        le seul endroit où l'historique compte vraiment quand viendra le jour de la transmission.
+      </p>
+
+      <div class="cta-row">
+        <a href="carnet-entretien.html" class="cta cta-primary">
+          <span class="dot" aria-hidden="true"></span>
+          Ouvrir un carnet
+        </a>
+        <a href="discover.html" class="cta cta-ghost">Comprendre CARNET</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════════════════════════ -->
+  <footer class="carnet-footer">
+    <p class="footer-tagline"><em>Une histoire de voitures.</em></p>
+
+    <nav class="footer-nav" aria-label="Pages utilitaires">
+      <a href="index.html">Affût</a>
+      <a href="cote.html">Cote</a>
+      <a href="assurance.html">Assurance</a>
+      <a href="discover.html">Discover</a>
+      <a href="archetypes.html">Archétypes</a>
+      <a href="launch.html">14·12·2026</a>
+      <a href="about.html">À propos</a>
+    </nav>
+
+    <p class="footer-legal">
+      CARNET · Association loi 1901 française non-lucrative familiale<br />
+      Cote calculée sur la base AutoRadar · 24 268 véhicules · mise à jour quotidienne<br />
+      Wallet officiel multisig 3/3&nbsp;: <code>rJBhnYvg5kq9PgWFZziEXu2EcdJfcq8WSU</code>
+    </p>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       JAVASCRIPT — Wizard logic + cote simulation
+       ═══════════════════════════════════════════════════════════════ -->
+  <script>
+    'use strict';
+
+    /* ───────────────────────────────────────────────────────────────
+       Référentiel cote par segment (médiane indicative · état BON, ~80k km)
+       Source : moyennes CARNET DB Frankfurt, recalibrées au mois courant.
+       Pour la prod : remplacer par fetch supabase.cote_segments.
+       ─────────────────────────────────────────────────────────────── */
+    const COTE_SEGMENTS = {
+      // ───── Porsche par génération (B.7 referentiel)
+      'porsche/992 turbo s':   { median: 230000, sample: 47 },
+      'porsche/992 turbo':     { median: 195000, sample: 38 },
+      'porsche/992 gt3':       { median: 215000, sample: 52 },
+      'porsche/992 carrera':   { median: 115000, sample: 184 },
+      'porsche/991 turbo s':   { median: 175000, sample: 89 },
+      'porsche/991 gt3':       { median: 155000, sample: 76 },
+      'porsche/991 carrera':   { median: 78000,  sample: 234 },
+      'porsche/997 turbo':     { median: 95000,  sample: 112 },
+      'porsche/997 gt3':       { median: 135000, sample: 67 },
+      'porsche/997 carrera':   { median: 42000,  sample: 298 },
+      'porsche/996 turbo':     { median: 62000,  sample: 145 },
+      'porsche/996 gt3':       { median: 95000,  sample: 41 },
+      'porsche/996 carrera':   { median: 22000,  sample: 312 },
+      'porsche/993 turbo':     { median: 285000, sample: 28 },
+      'porsche/993 carrera':   { median: 92000,  sample: 156 },
+      'porsche/964 turbo':     { median: 245000, sample: 19 },
+      'porsche/964 carrera':   { median: 78000,  sample: 134 },
+      'porsche/911':           { median: 95000,  sample: 412 },
+      'porsche/cayman':        { median: 48000,  sample: 178 },
+      'porsche/boxster':       { median: 32000,  sample: 145 },
+      'porsche/panamera':      { median: 58000,  sample: 89 },
+      'porsche/cayenne':       { median: 45000,  sample: 134 },
+      'porsche/macan':         { median: 38000,  sample: 156 },
+      'porsche/taycan':        { median: 78000,  sample: 67 },
+      'porsche/918':           { median: 1450000, sample: 4 },
+      'porsche/carrera gt':    { median: 1850000, sample: 3 },
+
+      // ───── Ferrari
+      'ferrari/f8':            { median: 245000, sample: 23 },
+      'ferrari/488':           { median: 185000, sample: 67 },
+      'ferrari/458':           { median: 175000, sample: 89 },
+      'ferrari/f430':          { median: 125000, sample: 54 },
+      'ferrari/360':           { median: 85000,  sample: 78 },
+      'ferrari/f355':          { median: 145000, sample: 42 },
+      'ferrari/f348':          { median: 95000,  sample: 31 },
+      'ferrari/testarossa':    { median: 165000, sample: 28 },
+      'ferrari/512':           { median: 285000, sample: 14 },
+      'ferrari/308':           { median: 95000,  sample: 38 },
+      'ferrari/250':           { median: 2850000, sample: 2 },
+      'ferrari/sf90':          { median: 485000, sample: 18 },
+      'ferrari/812':           { median: 295000, sample: 27 },
+      'ferrari/portofino':     { median: 195000, sample: 34 },
+      'ferrari/roma':          { median: 215000, sample: 29 },
+      'ferrari/laferrari':     { median: 2850000, sample: 5 },
+      'ferrari/enzo':          { median: 3450000, sample: 3 },
+      'ferrari/f40':           { median: 1850000, sample: 6 },
+      'ferrari/f50':           { median: 3850000, sample: 2 },
+
+      // ───── Lamborghini
+      'lamborghini/huracan':       { median: 215000, sample: 56 },
+      'lamborghini/aventador':     { median: 385000, sample: 29 },
+      'lamborghini/gallardo':      { median: 115000, sample: 78 },
+      'lamborghini/murcielago':    { median: 235000, sample: 23 },
+      'lamborghini/diablo':        { median: 385000, sample: 14 },
+      'lamborghini/countach':      { median: 685000, sample: 8 },
+      'lamborghini/urus':          { median: 245000, sample: 41 },
+      'lamborghini/miura':         { median: 1850000, sample: 3 },
+      'lamborghini/revuelto':      { median: 575000, sample: 9 },
+
+      // ───── Mercedes-Benz
+      'mercedes-benz/sl':          { median: 85000,  sample: 156 },
+      'mercedes-benz/amg gt':      { median: 125000, sample: 89 },
+      'mercedes-benz/g-class':     { median: 175000, sample: 134 },
+      'mercedes-benz/cls':         { median: 45000,  sample: 89 },
+      'mercedes-benz/300sl':       { median: 1450000, sample: 8 },
+      'mercedes-benz/190sl':       { median: 145000, sample: 23 },
+      'mercedes-benz/280se':       { median: 95000,  sample: 18 },
+      'mercedes-benz/600':         { median: 285000, sample: 12 },
+      'mercedes-benz/e-class':     { median: 35000,  sample: 234 },
+      'mercedes-benz/s-class':     { median: 65000,  sample: 178 },
+      'mercedes-benz/c-class':     { median: 28000,  sample: 312 },
+
+      // ───── BMW
+      'bmw/m3':                { median: 78000,  sample: 234 },
+      'bmw/m4':                { median: 75000,  sample: 156 },
+      'bmw/m5':                { median: 95000,  sample: 134 },
+      'bmw/m2':                { median: 58000,  sample: 89 },
+      'bmw/m8':                { median: 125000, sample: 41 },
+      'bmw/2002':              { median: 45000,  sample: 38 },
+      'bmw/m1':                { median: 685000, sample: 4 },
+      'bmw/507':               { median: 1850000, sample: 2 },
+      'bmw/i8':                { median: 78000,  sample: 56 },
+      'bmw/z8':                { median: 185000, sample: 18 },
+
+      // ───── Aston Martin
+      'aston martin/db9':      { median: 65000,  sample: 78 },
+      'aston martin/db11':     { median: 145000, sample: 56 },
+      'aston martin/vantage':  { median: 115000, sample: 67 },
+      'aston martin/dbs':      { median: 225000, sample: 29 },
+      'aston martin/db5':      { median: 985000, sample: 6 },
+      'aston martin/v8':       { median: 245000, sample: 14 },
+
+      // ───── Bugatti / Pagani / Koenigsegg
+      'bugatti/chiron':        { median: 3450000, sample: 7 },
+      'bugatti/veyron':        { median: 1850000, sample: 12 },
+      'pagani/huayra':         { median: 3850000, sample: 4 },
+      'pagani/zonda':          { median: 4250000, sample: 3 },
+      'koenigsegg/agera':      { median: 2850000, sample: 5 },
+
+      // ───── Alfa / Lancia / Lotus
+      'alfa romeo/giulia':     { median: 35000,  sample: 156 },
+      'alfa romeo/4c':         { median: 65000,  sample: 78 },
+      'alfa romeo/spider':     { median: 28000,  sample: 89 },
+      'alfa romeo/montreal':   { median: 95000,  sample: 23 },
+      'alfa romeo/8c':         { median: 285000, sample: 14 },
+      'lancia/delta integrale': { median: 95000, sample: 67 },
+      'lancia/stratos':        { median: 685000, sample: 5 },
+      'lancia/037':            { median: 985000, sample: 3 },
+      'lotus/elise':           { median: 45000,  sample: 89 },
+      'lotus/exige':            { median: 65000, sample: 67 },
+      'lotus/evora':           { median: 58000,  sample: 41 },
+      'lotus/emira':           { median: 95000,  sample: 56 },
+
+      // ───── McLaren
+      'mclaren/720s':          { median: 195000, sample: 56 },
+      'mclaren/570s':          { median: 145000, sample: 78 },
+      'mclaren/650s':          { median: 165000, sample: 42 },
+      'mclaren/p1':            { median: 1850000, sample: 4 },
+      'mclaren/f1':            { median: 18500000, sample: 1 },
+      'mclaren/artura':        { median: 215000, sample: 23 },
+
+      // ───── Default fallback par marque
+      'porsche/_':             { median: 65000,  sample: 1450 },
+      'ferrari/_':             { median: 145000, sample: 678 },
+      'lamborghini/_':         { median: 165000, sample: 312 },
+      'mercedes-benz/_':       { median: 45000,  sample: 2890 },
+      'bmw/_':                 { median: 38000,  sample: 2156 },
+      'audi/_':                { median: 42000,  sample: 1567 },
+      'aston martin/_':        { median: 125000, sample: 234 },
+      'bentley/_':             { median: 95000,  sample: 189 },
+      'rolls-royce/_':         { median: 145000, sample: 134 },
+      'maserati/_':            { median: 65000,  sample: 412 },
+      'jaguar/_':              { median: 45000,  sample: 567 },
+      'land rover/_':          { median: 55000,  sample: 489 },
+      'alfa romeo/_':          { median: 28000,  sample: 678 },
+      'lancia/_':              { median: 35000,  sample: 145 },
+      'lotus/_':               { median: 55000,  sample: 234 },
+      'mclaren/_':             { median: 195000, sample: 167 },
+      'bugatti/_':             { median: 2450000, sample: 28 },
+      'pagani/_':              { median: 3450000, sample: 12 },
+      'koenigsegg/_':          { median: 2250000, sample: 18 },
+      'alpine/_':              { median: 65000,  sample: 156 },
+      'tesla/_':               { median: 55000,  sample: 567 },
+      '_/_':                   { median: 35000,  sample: 8500 }
+    };
+
+    /* État (multiplicateur sur médiane) */
+    const STATE_MULT = {
+      'concours':  1.45,
+      'excellent': 1.18,
+      'bon':       1.00,
+      'projet':    0.62
+    };
+
+    /* Km factor (segment moyen ~80 000 km de référence) */
+    function kmFactor(km) {
+      if (!km || km < 0) return 1.0;
+      const REF_KM = 80000;
+      // Courbe douce: -5% par 50k km au-dessus, +8% par 50k km en-dessous, plafond ±35%
+      const diff = (REF_KM - km) / 50000;
+      const f = 1 + diff * 0.08;
+      return Math.max(0.65, Math.min(1.35, f));
+    }
+
+    /* Year factor (légère bonification pour âge collector >25 ans) */
+    function yearFactor(year, segmentMedian) {
+      if (!year) return 1.0;
+      const age = 2026 - year;
+      if (age < 5) return 1.05;       // quasi-neuf
+      if (age < 15) return 1.00;
+      if (age < 25) return 0.95;      // creux youngtimer
+      if (age < 40) return 1.10;      // collector qui monte
+      return segmentMedian > 50000 ? 1.20 : 1.05;  // historic
+    }
+
+    /* Lookup segment */
+    function lookupSegment(marque, modele) {
+      const m = (marque || '').trim().toLowerCase();
+      const mod = (modele || '').trim().toLowerCase();
+      if (!m) return COTE_SEGMENTS['_/_'];
+
+      // Exact
+      const key = `${m}/${mod}`;
+      if (COTE_SEGMENTS[key]) return COTE_SEGMENTS[key];
+
+      // Partial: contains modèle keyword
+      for (const k of Object.keys(COTE_SEGMENTS)) {
+        if (k.startsWith(m + '/') && k !== `${m}/_`) {
+          const segModel = k.split('/')[1];
+          if (segModel && mod && (mod.includes(segModel) || segModel.includes(mod))) {
+            return COTE_SEGMENTS[k];
+          }
+        }
+      }
+
+      // Brand fallback
+      if (COTE_SEGMENTS[`${m}/_`]) return COTE_SEGMENTS[`${m}/_`];
+      return COTE_SEGMENTS['_/_'];
+    }
+
+    /* Format EUR */
+    function fmtEUR(v) {
+      if (v >= 1000000) return (v / 1000000).toFixed(2).replace('.', ',') + ' M€';
+      return Math.round(v / 1000) + ' k€';
+    }
+
+    /* ───── Wizard navigation ───── */
+    const steps = ['step-1', 'step-2', 'step-3'];
+    const indicators = ['ind-1', 'ind-2', 'ind-3'];
+    let currentStep = 0;
+    let selectedState = 'bon';
+
+    function showStep(idx) {
+      steps.forEach((id, i) => {
+        document.getElementById(id).classList.toggle('active', i === idx);
+        const ind = document.getElementById(indicators[i]);
+        ind.classList.remove('active', 'done');
+        if (i === idx) ind.classList.add('active');
+        else if (i < idx) ind.classList.add('done');
+      });
+      currentStep = idx;
+      window.scrollTo({ top: document.querySelector('.wizard').offsetTop - 40, behavior: 'smooth' });
+    }
+
+    // State cards
+    document.querySelectorAll('.state-card').forEach(card => {
+      card.addEventListener('click', () => {
+        document.querySelectorAll('.state-card').forEach(c => {
+          c.classList.remove('selected');
+          c.setAttribute('aria-pressed', 'false');
+        });
+        card.classList.add('selected');
+        card.setAttribute('aria-pressed', 'true');
+        selectedState = card.dataset.state;
+      });
+    });
+
+    // Step 1 → 2
+    document.getElementById('to-step-2').addEventListener('click', () => {
+      const marque = document.getElementById('marque').value;
+      const modele = document.getElementById('modele').value.trim();
+      if (!marque) {
+        document.getElementById('marque').focus();
+        return;
+      }
+      if (!modele) {
+        document.getElementById('modele').focus();
+        return;
+      }
+      showStep(1);
+    });
+
+    // Back to 1
+    document.getElementById('back-to-1').addEventListener('click', () => showStep(0));
+
+    // Step 2 → 3 (compute)
+    document.getElementById('to-step-3').addEventListener('click', () => {
+      const marque = document.getElementById('marque').value;
+      const modele = document.getElementById('modele').value.trim();
+      const annee = parseInt(document.getElementById('annee').value, 10);
+      const km = parseInt(document.getElementById('km').value, 10);
+      const state = selectedState;
+
+      // Validation minimale
+      if (!annee || annee < 1900 || annee > 2026) {
+        document.getElementById('annee').focus();
+        return;
+      }
+
+      // Compute cote
+      const seg = lookupSegment(marque, modele);
+      const stateMult = STATE_MULT[state] || 1.0;
+      const kmF = kmFactor(km);
+      const yearF = yearFactor(annee, seg.median);
+
+      const median = Math.round(seg.median * stateMult * kmF * yearF);
+      const low = Math.round(median * 0.88);
+      const high = Math.round(median * 1.12);
+
+      // Argus indicatif: ~-8% (souvent en retard)
+      const argus = Math.round(median * 0.92);
+      // Annonces actives: +5% (prix affichés vs transactionnels)
+      const annonces = Math.round(median * 1.05);
+      // Insurance: valeur agréée = haut de fourchette
+      const insurance = high;
+
+      // Sample warning
+      let sampleNote = `${seg.sample} annonces`;
+      if (seg.sample < 5) sampleNote += ' · échantillon faible (±30%)';
+      else if (seg.sample < 20) sampleNote += ' · échantillon réduit (±20%)';
+
+      // Render
+      document.getElementById('result-vehicle').innerHTML =
+        `<em>${marque} ${modele.charAt(0).toUpperCase() + modele.slice(1)} · ${annee}` +
+        (km ? ` · ${km.toLocaleString('fr-FR')} km` : '') + '</em>';
+      document.getElementById('result-range').textContent =
+        `${fmtEUR(low)} — ${fmtEUR(high)}`;
+      document.getElementById('result-median').textContent = fmtEUR(median);
+      document.getElementById('result-sample').textContent = sampleNote;
+
+      document.getElementById('cmp-carnet').textContent = fmtEUR(median);
+      document.getElementById('cmp-argus').textContent = fmtEUR(argus);
+      document.getElementById('cmp-annonces').textContent = fmtEUR(annonces);
+
+      document.getElementById('insurance-value').textContent = fmtEUR(insurance);
+
+      showStep(2);
+    });
+
+    // Back to 2
+    document.getElementById('back-to-2').addEventListener('click', () => showStep(1));
+
+    // Export PDF (placeholder — to be wired with backend or html2pdf.js)
+    document.getElementById('export-pdf').addEventListener('click', () => {
+      alert('Export PDF certifié — Sprint 2 NFT XLS-20 imminent. En attendant, screenshot la fourchette ou copie-la dans ton mail à l\'assureur. Bientôt, le PDF sera signé on-chain et opposable.');
+    });
+
+    // Year defaults
+    document.getElementById('annee').setAttribute('max', '2026');
+  </script>
+
+</body>
+</html>

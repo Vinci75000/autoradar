@@ -8563,8 +8563,6 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 </style>
   <!-- v6.0 : Supabase JS SDK pour connexion live à carnet.life DB -->
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-  <!-- Carnet archetypes module (8 archétypes canonical + persistence localStorage carnet:v1:profiles) -->
-  <script src="carnet-archetypes.js"></script>
 </head>
 <body>
 <div class="app">
@@ -8587,51 +8585,6 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
       </button>
     </div>
   </header>
-
-  <!-- ===== TOP NAV ÉDITORIALE (Discover / Archétypes / 14·12·2026 / À propos) ===== -->
-  <style>
-    .editorial-nav{
-      display:flex;
-      align-items:center;
-      gap:21px;
-      padding:8px 16px;
-      background:var(--papier);
-      border-bottom:1px solid var(--gris-line);
-      overflow-x:auto;
-      -webkit-overflow-scrolling:touch;
-      scrollbar-width:none;
-      position:sticky;
-      top:48px;
-      z-index:40;
-    }
-    .editorial-nav::-webkit-scrollbar{display:none}
-    .editorial-nav a{
-      font-family:var(--mono);
-      font-size:11px;
-      font-weight:500;
-      letter-spacing:0.12em;
-      text-transform:uppercase;
-      color:var(--gris);
-      text-decoration:none;
-      white-space:nowrap;
-      padding:4px 0;
-      transition:color 200ms ease;
-    }
-    .editorial-nav a:hover{color:var(--encre)}
-    .editorial-nav a.featured{color:var(--orange-polo)}
-    .editorial-nav a.featured:hover{color:var(--encre)}
-    @media (max-width:380px){
-      .editorial-nav{gap:13px;padding:6px 13px}
-      .editorial-nav a{font-size:10px;letter-spacing:0.1em}
-    }
-  </style>
-  <nav class="editorial-nav" aria-label="Navigation éditoriale">
-    <a href="discover.html">Découvrir</a>
-    <a href="archetypes.html">Archétypes</a>
-    <a href="launch.html" class="featured">14·12·2026</a>
-    <a href="about.html">À propos</a>
-    <a href="assurance.html">Partenaires</a>
-  </nav>
 
   <!-- ===== MAIN SCROLLABLE ===== -->
   <main class="main">
@@ -10830,7 +10783,7 @@ function renderDiscoverSheet() {
         <li>Pas de tracking publicitaire.</li>
         <li>Pas de revente de données.</li>
         <li>Pas de simili-cote inflationniste.</li>
-        <li>Pas de frais cachés &mdash; les contributions sont fixées et publiées par l'association.</li>
+        <li>Pas de commission cachée.</li>
         <li>Pas de custody de tes fonds.</li>
         <li>Pas de KYC superflu.</li>
         <li>Pas de dividendes, ni de salaires.</li>
@@ -10905,40 +10858,10 @@ function renderDiscoverSheet() {
         <p>Pour le texte officiel complet (incluant la politique <em>Anti-Bribery & Corruption</em> de Ripple Labs Inc.), voir la documentation Ripple Europe.</p>
       </details>
 
-
-      <details class="discover-faq">
-        <summary>Quel est le modèle légal de CARNET&nbsp;?</summary>
-        <p>CARNET est un <strong>SaaS non-profit d’un genre nouveau</strong> &mdash; ni courtier, ni comparateur, ni intermédiaire.</p>
-        <p>Le XRP Ledger exécute les contrats automatiquement. CARNET ne touche pas aux transactions, ne porte pas le risque, ne détient pas tes fonds.</p>
-        <p>Les utilisateurs qui trouvent de la valeur dans l’infrastructure contribuent à l’association, au taux suggéré et publié &mdash; de bonne foi. Comme on soutient Wikipedia ou Let’s Encrypt.</p>
-        <p>Inscrit ORIAS par choix de qualité. Structuration juridique par <strong>Cabinet CSBC &mdash; Maître Salim Boufenara</strong>, partenaire juridique fondateur de l’association.</p>
-      </details>
-
       <details class="discover-faq">
         <summary>Comment aider autrement ?</summary>
         <p>Partage l\u2019app à des passionnés qui aiment les voitures autant que toi.<br><em>Embarque-les dans la tribu.</em></p>
       </details>
-
-
-      <div class="discover-divider"></div>
-
-      <div style="text-align:center;padding:var(--s-4) 0">
-        <div style="font-family:var(--mono);font-size:9px;letter-spacing:.12em;
-                    color:var(--gris);text-transform:uppercase;margin-bottom:var(--s-3)">
-          Partenaire juridique fondateur
-        </div>
-        <div style="font-family:var(--editorial);font-style:italic;font-size:16px;
-                    color:var(--encre);margin-bottom:var(--s-2)">
-          Cabinet CSBC
-        </div>
-        <div style="font-family:var(--mono);font-size:9px;color:var(--gris);line-height:1.9">
-          Ma&icirc;tre Salim Boufenara<br>
-          1 rue de Sfax &mdash; 75116 Paris<br>
-          +33(0)1.45.00.01.40 &middot; Lun&ndash;Ven 10h&ndash;19h<br>
-          <a href="https://cabinet-csbc.fr" target="_blank" rel="noopener"
-             style="color:var(--orange-polo);text-decoration:none">cabinet-csbc.fr</a>
-        </div>
-      </div>
 
       <div class="discover-signature">
         <div class="discover-sig-line"></div>
@@ -11397,10 +11320,6 @@ function renderUserMenuSheet() {
         </div>
 
         <div class="user-menu-actions">
-          <a class="user-menu-item" href="archetypes.html" style="text-decoration:none;">
-            <span>Mes archétypes</span>
-            <span class="user-menu-chevron">→</span>
-          </a>
           <button class="user-menu-item" data-action="signOut">
             <span>Se déconnecter</span>
             <span class="user-menu-chevron">→</span>

@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="CARNET · Rallye social. Organiser une sortie, rejoindre une bande. Un pour tous, tous pour un — l'archétype Mousquetaire trouve son terrain. Routes, dates, niveau, voitures admises. Assurance journée en option, rail XRPL pour les frais partagés." />
+  <meta name="theme-color" content="#faf6ef" />
+
+  <title>CARNET · Rallye social</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,400;1,500;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="carnet-tokens.css" />
+
+  <style>
+    main {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: var(--s-8) var(--s-5);
+    }
+    section { padding-block: var(--s-7); border-top: 1px solid var(--gris-line); }
+    section:first-of-type { border-top: none; padding-top: 0; }
+    .hero { padding-top: var(--s-3); padding-bottom: var(--s-7); border-top: none; }
+
+    .back-nav {
+      margin-bottom: var(--s-5);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .back-nav a { color: var(--gris); text-decoration: none; }
+    .back-nav a:hover { color: var(--encre); }
+
+    /* ───── Mode switch ───── */
+    .mode-switch {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s-3);
+      margin-top: var(--s-5);
+      margin-bottom: var(--s-5);
+    }
+    .mode-card {
+      background: var(--papier-bright);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      padding: var(--s-5);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .mode-card:hover { border-color: var(--orange-polo); }
+    .mode-card.active {
+      border-color: var(--encre);
+      background: var(--encre);
+      color: var(--papier);
+    }
+    .mode-card .num {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      color: var(--orange-polo);
+    }
+    .mode-card.active .num { color: var(--papier); opacity: 0.8; }
+    .mode-card h3 {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 22px;
+      margin: var(--s-2) 0 var(--s-2);
+      line-height: 1.15;
+    }
+    .mode-card p {
+      font-family: var(--editorial);
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 0;
+      color: var(--encre-soft);
+    }
+    .mode-card.active p { color: var(--papier); opacity: 0.85; }
+
+    .mode-panel { display: none; }
+    .mode-panel.active { display: block; }
+
+    /* ───── Rally cards (browse) ───── */
+    .rally-stack {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-4);
+      margin-top: var(--s-5);
+    }
+    .rally-card {
+      background: var(--papier-bright);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      padding: var(--s-5);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      position: relative;
+    }
+    .rally-card:hover { border-color: var(--orange-polo); }
+    .rally-card .rally-meta {
+      display: flex;
+      gap: var(--s-3);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gris);
+      margin-bottom: var(--s-3);
+      flex-wrap: wrap;
+    }
+    .rally-card .rally-meta .badge {
+      color: var(--orange-polo);
+    }
+    .rally-card .rally-meta .badge.live {
+      background: var(--vert-anglais);
+      color: var(--papier);
+      padding: 2px 6px;
+      border-radius: var(--r);
+    }
+    .rally-card h3 {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 24px;
+      margin: 0 0 var(--s-3);
+      line-height: 1.15;
+    }
+    .rally-card .rally-route {
+      font-family: var(--editorial);
+      font-size: 16px;
+      line-height: 1.55;
+      color: var(--encre-soft);
+      margin-bottom: var(--s-3);
+    }
+    .rally-card .rally-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-top: var(--s-3);
+      border-top: 1px dashed var(--gris-line);
+      gap: var(--s-3);
+      flex-wrap: wrap;
+    }
+    .rally-card .rally-bottom .organizer {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--gris);
+    }
+    .rally-card .rally-bottom .seats {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--encre);
+      font-weight: 500;
+    }
+    .rally-card .rally-bottom .seats.full {
+      color: var(--rouge);
+    }
+
+    /* ───── Wizard (create) ───── */
+    .wizard {
+      margin-top: var(--s-5);
+      background: var(--papier-bright);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      padding: var(--s-6) var(--s-5);
+    }
+    .step-indicator {
+      display: flex;
+      gap: var(--s-3);
+      margin-bottom: var(--s-5);
+      flex-wrap: wrap;
+    }
+    .step-dot {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      color: var(--gris);
+      padding: var(--s-2) var(--s-3);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+    }
+    .step-dot.active {
+      background: var(--encre);
+      color: var(--papier);
+      border-color: var(--encre);
+    }
+    .step-dot.done {
+      background: var(--vert-soft);
+      color: var(--vert-anglais);
+      border-color: var(--vert-anglais);
+    }
+    .step-panel { display: none; }
+    .step-panel.active { display: block; }
+
+    .step-panel h2 {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 26px;
+      margin: 0 0 var(--s-4);
+      line-height: 1.15;
+    }
+    .step-panel p.intro {
+      font-family: var(--editorial);
+      font-size: 16px;
+      color: var(--encre-soft);
+      line-height: 1.55;
+      margin: 0 0 var(--s-5);
+    }
+
+    .field { margin-bottom: var(--s-4); }
+    .field label {
+      display: block;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gris);
+      margin-bottom: var(--s-2);
+    }
+    .field input, .field select, .field textarea {
+      width: 100%;
+      box-sizing: border-box;
+      font-family: var(--sans);
+      font-size: 15px;
+      padding: var(--s-3);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      background: var(--papier);
+      color: var(--encre);
+    }
+    .field textarea { min-height: 80px; resize: vertical; font-family: var(--editorial); font-size: 16px; }
+    .field-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3); }
+    @media (max-width: 480px) {
+      .field-grid-2 { grid-template-columns: 1fr; }
+    }
+
+    /* ───── Niveau cards ───── */
+    .niveau-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s-3);
+    }
+    @media (min-width: 600px) {
+      .niveau-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+    .niv-card {
+      background: var(--papier);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      padding: var(--s-3);
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .niv-card:hover { border-color: var(--orange-polo); }
+    .niv-card.selected {
+      background: var(--encre);
+      color: var(--papier);
+      border-color: var(--encre);
+    }
+    .niv-card .niv-name {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 18px;
+      margin-bottom: var(--s-2);
+    }
+    .niv-card .niv-desc {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      opacity: 0.8;
+    }
+
+    /* ───── Voitures admises chips ───── */
+    .chips-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--s-2);
+      margin-top: var(--s-3);
+    }
+    .chip-tog {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.05em;
+      padding: var(--s-2) var(--s-3);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      cursor: pointer;
+      background: var(--papier);
+      transition: all 0.15s ease;
+    }
+    .chip-tog:hover { border-color: var(--orange-polo); }
+    .chip-tog.selected {
+      background: var(--encre);
+      color: var(--papier);
+      border-color: var(--encre);
+    }
+
+    /* ───── Buttons ───── */
+    .wizard-nav {
+      display: flex;
+      gap: var(--s-3);
+      margin-top: var(--s-6);
+      padding-top: var(--s-5);
+      border-top: 1px solid var(--gris-line);
+    }
+    button.btn {
+      font-family: var(--mono);
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: var(--s-3) var(--s-5);
+      border-radius: var(--r);
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+    }
+    button.btn-primary {
+      background: var(--encre);
+      color: var(--papier);
+      border-color: var(--encre);
+    }
+    button.btn-primary:hover { background: var(--orange-polo); border-color: var(--orange-polo); }
+    button.btn-ghost {
+      background: transparent;
+      color: var(--encre);
+      border-color: var(--gris-line);
+    }
+    button.btn-ghost:hover { border-color: var(--encre); }
+
+    /* ───── Mousquetaire highlight ───── */
+    .mousquetaire-box {
+      background: var(--orange-soft);
+      border-left: 3px solid var(--orange-polo);
+      padding: var(--s-4) var(--s-5);
+      border-radius: 0 var(--r) var(--r) 0;
+      margin-top: var(--s-5);
+    }
+    .mousquetaire-box .arch {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      color: var(--orange-polo);
+      text-transform: uppercase;
+      margin-bottom: var(--s-2);
+    }
+    .mousquetaire-box .quote {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 400;
+      font-size: 22px;
+      line-height: 1.3;
+      margin: 0 0 var(--s-3);
+      color: var(--encre);
+    }
+    .mousquetaire-box p {
+      font-family: var(--editorial);
+      font-size: 15px;
+      line-height: 1.55;
+      color: var(--encre-soft);
+      margin: 0;
+    }
+
+    /* ───── Detail view (Mock) ───── */
+    .rally-detail {
+      display: none;
+      margin-top: var(--s-5);
+      background: var(--papier-bright);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      padding: var(--s-6) var(--s-5);
+    }
+    .rally-detail.active { display: block; }
+    .rally-detail .detail-head {
+      padding-bottom: var(--s-4);
+      border-bottom: 1px solid var(--gris-line);
+      margin-bottom: var(--s-5);
+    }
+    .rally-detail h2 {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 28px;
+      margin: 0 0 var(--s-3);
+      line-height: 1.15;
+    }
+    .detail-stat-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s-3);
+      margin-top: var(--s-4);
+    }
+    @media (min-width: 600px) { .detail-stat-row { grid-template-columns: repeat(4, 1fr); } }
+    .detail-stat {
+      background: var(--papier);
+      padding: var(--s-3);
+      border-radius: var(--r);
+      text-align: center;
+    }
+    .detail-stat .lbl {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: var(--gris);
+      text-transform: uppercase;
+    }
+    .detail-stat .val {
+      font-family: var(--display);
+      font-style: italic;
+      font-size: 22px;
+      color: var(--encre);
+      margin-top: var(--s-2);
+    }
+    .roster {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-2);
+      margin-top: var(--s-4);
+    }
+    .roster-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--s-3);
+      background: var(--papier);
+      border-radius: var(--r);
+      font-family: var(--editorial);
+      font-size: 15px;
+    }
+    .roster-row .car {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--orange-polo);
+    }
+
+    /* ───── Final CTA ───── */
+    .final-cta {
+      background: var(--encre);
+      color: var(--papier);
+      padding: var(--s-7) var(--s-5);
+      border-radius: var(--r);
+      text-align: center;
+      margin-top: var(--s-7);
+    }
+    .final-cta h2 {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 28px;
+      margin: 0 0 var(--s-4);
+      line-height: 1.2;
+    }
+    .final-cta p {
+      font-family: var(--editorial);
+      font-size: 17px;
+      line-height: 1.55;
+      margin: 0 0 var(--s-5);
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      opacity: 0.85;
+    }
+    .final-cta .cta-row { display: flex; gap: var(--s-3); justify-content: center; flex-wrap: wrap; }
+    .final-cta a.cta {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: var(--s-3) var(--s-5);
+      border: 1px solid var(--papier);
+      border-radius: var(--r);
+      text-decoration: none;
+      color: var(--papier);
+      transition: all 0.15s ease;
+    }
+    .final-cta a.cta-primary {
+      background: var(--orange-polo);
+      border-color: var(--orange-polo);
+    }
+    .final-cta a.cta:hover {
+      background: var(--papier);
+      color: var(--encre);
+    }
+  </style>
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Aller au contenu</a>
+
+  <main id="main">
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         HERO
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="hero">
+      <p class="back-nav"><a href="index.html">← Retour à l'affût</a></p>
+
+      <p class="eyebrow">Sorties · Rallyes sociaux</p>
+
+      <h1 class="display-italic">
+        Un pour tous, <span style="color: var(--orange-polo)">tous pour un.</span>
+      </h1>
+
+      <p class="tagline-major">
+        Six bagnoles, trois cols, un week-end. Ou seul de Lyon à Paris parce que la route est belle.
+        Le Mousquetaire roule en bande, mais sait aussi partir devant.
+      </p>
+
+      <p class="tagline-minor">
+        Crée une sortie en cinq champs. Rejoins celle des autres en deux clics.
+        Itinéraire, niveau, voitures admises, dîner du samedi soir — tout est partagé.
+        L'assurance journée arrive en option si vous attaquez un col.
+      </p>
+
+      <div class="mousquetaire-box">
+        <p class="arch">Archétype · Mousquetaire</p>
+        <p class="quote">« On part à six pour rentrer à six. »</p>
+        <p>
+          Le rallye social CARNET n'est pas un événement avec billetterie. C'est l'outil
+          pour que la bande se forme, choisisse un cap, et s'y tienne. Les Mousquetaires
+          se reconnaissent — ils sont rarement seuls très longtemps.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         MODE SWITCH (Create | Join)
+         ═══════════════════════════════════════════════════════════════ -->
+    <section>
+      <p class="eyebrow">Deux entrées</p>
+      <h2 class="display-italic">Tu organises, ou tu rejoins.</h2>
+
+      <div class="mode-switch">
+        <div class="mode-card active" data-mode="join">
+          <p class="num">01 · Rejoindre</p>
+          <h3>Voir les sorties ouvertes</h3>
+          <p>Quatorze sorties actives ce mois. Filtre par région, niveau, voitures admises.</p>
+        </div>
+        <div class="mode-card" data-mode="create">
+          <p class="num">02 · Organiser</p>
+          <h3>Créer ta propre sortie</h3>
+          <p>Route, date, niveau, voitures. Tu balances le lien à tes copains, ou tu ouvres au public.</p>
+        </div>
+      </div>
+
+      <!-- ─── JOIN PANEL ─── -->
+      <div class="mode-panel active" data-panel="join">
+        <p class="eyebrow" style="margin-top: var(--s-5)">Sorties ouvertes</p>
+        <h3 class="display-italic" style="margin: var(--s-2) 0 var(--s-4); font-size: 22px;">Quatorze ce mois. En voici quatre.</h3>
+
+        <div class="rally-stack" id="rally-stack">
+          <div class="rally-card" data-rally="r1">
+            <div class="rally-meta">
+              <span>18·19·20 JUIN 2026</span>
+              <span class="badge">CONFIRMÉ</span>
+              <span>NIVEAU INTERMÉDIAIRE</span>
+            </div>
+            <h3>Les Trois Cols</h3>
+            <p class="rally-route">
+              Genève → Iseran → Galibier → Izoard → Briançon.
+              Trois jours, deux nuits, hôtel Mont-Cenis vendredi soir.
+            </p>
+            <div class="rally-bottom">
+              <span class="organizer">Organisé par <strong>Mathieu V.</strong> · Lyon</span>
+              <span class="seats">6 places · 4 inscrits</span>
+            </div>
+          </div>
+
+          <div class="rally-card" data-rally="r2">
+            <div class="rally-meta">
+              <span>27 JUIN 2026</span>
+              <span class="badge live">OUVERTURE INSCRIPTIONS</span>
+              <span>NIVEAU LIBRE</span>
+            </div>
+            <h3>Aube en Cévennes</h3>
+            <p class="rally-route">
+              Départ Anduze 6h30, Mont Aigoual, descente sur Florac, café à 9h chez Lucette.
+              Une demi-journée, retour libre.
+            </p>
+            <div class="rally-bottom">
+              <span class="organizer">Organisé par <strong>Camille R.</strong> · Nîmes</span>
+              <span class="seats">Illimité · 11 inscrits</span>
+            </div>
+          </div>
+
+          <div class="rally-card" data-rally="r3">
+            <div class="rally-meta">
+              <span>4·5·6·7 JUILLET 2026</span>
+              <span class="badge">CONFIRMÉ</span>
+              <span>NIVEAU CONFIRMÉ</span>
+            </div>
+            <h3>Tour de Sicile</h3>
+            <p class="rally-route">
+              Catane → Etna → Enna → Taormina → Cefalù → Palerme.
+              Le tracé qui sent l'huile chaude. Voitures &lt; 1990 préférées.
+            </p>
+            <div class="rally-bottom">
+              <span class="organizer">Organisé par <strong>Stefano B.</strong> · Milano</span>
+              <span class="seats full">8 places · 8 inscrits (liste d'attente)</span>
+            </div>
+          </div>
+
+          <div class="rally-card" data-rally="r4">
+            <div class="rally-meta">
+              <span>12 JUILLET 2026</span>
+              <span class="badge">CONFIRMÉ</span>
+              <span>NIVEAU DÉCOUVERTE</span>
+            </div>
+            <h3>Petit déjeuner à Senlis</h3>
+            <p class="rally-route">
+              Paris (Tuileries) 8h30 → Chantilly → Senlis (croissants).
+              Deux heures aller, brunch, retour libre l'après-midi.
+            </p>
+            <div class="rally-bottom">
+              <span class="organizer">Organisé par <strong>Antoine D.</strong> · Paris</span>
+              <span class="seats">12 places · 7 inscrits</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rally detail (Les Trois Cols) -->
+        <div class="rally-detail" id="rally-detail">
+          <div class="detail-head">
+            <p style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; color: var(--gris); margin: 0 0 var(--s-2)">18·19·20 JUIN 2026 · 3 JOURS</p>
+            <h2>Les Trois Cols</h2>
+            <p style="font-family: var(--editorial); font-size: 16px; color: var(--encre-soft); margin: 0">
+              Genève → Iseran (2 770 m) → Galibier (2 645 m) → Izoard (2 360 m) → Briançon.
+              Hôtel Mont-Cenis vendredi soir, refuge Galibier samedi midi (Mathieu connaît le patron).
+              Dimanche descente sur Briançon, déjeuner et chacun rentre à son rythme.
+            </p>
+          </div>
+
+          <div class="detail-stat-row">
+            <div class="detail-stat"><div class="lbl">Distance</div><div class="val">540 km</div></div>
+            <div class="detail-stat"><div class="lbl">Cols</div><div class="val">3</div></div>
+            <div class="detail-stat"><div class="lbl">Inscrits</div><div class="val">4 / 6</div></div>
+            <div class="detail-stat"><div class="lbl">Coût partagé</div><div class="val">280 €</div></div>
+          </div>
+
+          <p class="eyebrow" style="margin-top: var(--s-5)">Voitures admises</p>
+          <p style="font-family: var(--editorial); font-size: 15px; color: var(--encre-soft); margin: var(--s-2) 0 var(--s-4)">
+            Sportives — agréées pour les cols. Pas de break familial avec famille, pas de Twingo en pneus toutes saisons.
+            Mathieu valide chaque inscription.
+          </p>
+
+          <p class="eyebrow">Roster actuel</p>
+          <div class="roster">
+            <div class="roster-row"><span>Mathieu V. <em>organisateur</em></span><span class="car">911 SC 1981</span></div>
+            <div class="roster-row"><span>Élodie P.</span><span class="car">GT3 992</span></div>
+            <div class="roster-row"><span>Sébastien M.</span><span class="car">M3 E46</span></div>
+            <div class="roster-row"><span>Jean-Luc T.</span><span class="car">R5 Turbo 2</span></div>
+          </div>
+
+          <div class="wizard-nav">
+            <button class="btn btn-ghost" onclick="document.getElementById('rally-detail').classList.remove('active'); window.scrollTo({ top: document.querySelector('.mode-switch').offsetTop - 40, behavior: 'smooth' });">← Retour aux sorties</button>
+            <button class="btn btn-primary" onclick="alert('Inscription branchée sur Supabase + paiement participation XRPL — Sprint 2 NFT.\n\nTu seras notifié par auth@carnet.life avec le programme détaillé.');">Demander à rejoindre →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── CREATE PANEL ─── -->
+      <div class="mode-panel" data-panel="create">
+        <div class="wizard">
+          <div class="step-indicator">
+            <span class="step-dot active" data-step="1">01 · Route</span>
+            <span class="step-dot" data-step="2">02 · Date</span>
+            <span class="step-dot" data-step="3">03 · Niveau</span>
+            <span class="step-dot" data-step="4">04 · Voitures</span>
+            <span class="step-dot" data-step="5">05 · Détails</span>
+          </div>
+
+          <!-- STEP 1: Route -->
+          <div class="step-panel active" data-panel="1">
+            <h2>01 · Quelle route<span style="color: var(--orange-polo)">.</span></h2>
+            <p class="intro">
+              Donne un nom à ta sortie, le départ, l'arrivée, et la trace si tu l'as.
+              GPX en pièce jointe accepté.
+            </p>
+
+            <div class="field">
+              <label for="rs-nom">Nom de la sortie</label>
+              <input type="text" id="rs-nom" placeholder="Les Trois Cols, Aube en Cévennes, La Petite Boucle..." />
+            </div>
+
+            <div class="field-grid-2">
+              <div class="field">
+                <label for="rs-depart">Départ</label>
+                <input type="text" id="rs-depart" placeholder="Genève · place du Bourg-de-Four" />
+              </div>
+              <div class="field">
+                <label for="rs-arrivee">Arrivée</label>
+                <input type="text" id="rs-arrivee" placeholder="Briançon · place du Champ de Mars" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="rs-route">Itinéraire</label>
+              <textarea id="rs-route" placeholder="Décris la route — cols, étapes, points d'intérêt, restos. Si tu as un lien Google Maps ou GPX, colle-le ici."></textarea>
+            </div>
+
+            <div class="wizard-nav">
+              <button class="btn btn-primary" id="next-rs-1">Suivant →</button>
+            </div>
+          </div>
+
+          <!-- STEP 2: Date -->
+          <div class="step-panel" data-panel="2">
+            <h2>02 · Quand<span style="color: var(--orange-polo)">.</span></h2>
+            <p class="intro">
+              Un jour, un weekend, une semaine. Indique l'heure de RDV au départ.
+            </p>
+
+            <div class="field-grid-2">
+              <div class="field">
+                <label for="rs-date-start">Date de départ</label>
+                <input type="date" id="rs-date-start" />
+              </div>
+              <div class="field">
+                <label for="rs-jours">Durée</label>
+                <select id="rs-jours">
+                  <option value="0.5">Demi-journée</option>
+                  <option value="1">1 jour</option>
+                  <option value="2">2 jours</option>
+                  <option value="3" selected>3 jours</option>
+                  <option value="4">4 jours</option>
+                  <option value="5">5 jours et plus</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="rs-heure">Heure de RDV au départ</label>
+              <input type="time" id="rs-heure" value="08:00" />
+            </div>
+
+            <div class="wizard-nav">
+              <button class="btn btn-ghost" onclick="goToStep(1)">← Retour</button>
+              <button class="btn btn-primary" id="next-rs-2">Suivant →</button>
+            </div>
+          </div>
+
+          <!-- STEP 3: Niveau -->
+          <div class="step-panel" data-panel="3">
+            <h2>03 · Quel niveau<span style="color: var(--orange-polo)">.</span></h2>
+            <p class="intro">
+              Pour cadrer les inscriptions. Pas de jugement de valeur — juste un signal pour
+              que personne ne se retrouve au mauvais endroit.
+            </p>
+
+            <div class="niveau-grid" id="niveau-grid">
+              <div class="niv-card" data-niv="decouverte">
+                <div class="niv-name">Découverte</div>
+                <div class="niv-desc">Routes calmes, pauses fréquentes</div>
+              </div>
+              <div class="niv-card" data-niv="libre">
+                <div class="niv-name">Libre</div>
+                <div class="niv-desc">Chacun roule à son rythme</div>
+              </div>
+              <div class="niv-card" data-niv="intermediaire">
+                <div class="niv-name">Intermédiaire</div>
+                <div class="niv-desc">Cols, allure soutenue</div>
+              </div>
+              <div class="niv-card" data-niv="confirme">
+                <div class="niv-name">Confirmé</div>
+                <div class="niv-desc">Cadence élevée, pas pour débuter</div>
+              </div>
+            </div>
+
+            <div class="wizard-nav">
+              <button class="btn btn-ghost" onclick="goToStep(2)">← Retour</button>
+              <button class="btn btn-primary" id="next-rs-3">Suivant →</button>
+            </div>
+          </div>
+
+          <!-- STEP 4: Voitures admises -->
+          <div class="step-panel" data-panel="4">
+            <h2>04 · Voitures admises<span style="color: var(--orange-polo)">.</span></h2>
+            <p class="intro">
+              Sélectionne ce qui colle à la sortie. Tu peux en cocher plusieurs.
+              Tu valides ensuite chaque inscription au cas par cas.
+            </p>
+
+            <p class="eyebrow">Famille</p>
+            <div class="chips-row" id="chips-famille">
+              <span class="chip-tog" data-chip="ancienne">Ancienne (&lt; 1990)</span>
+              <span class="chip-tog" data-chip="youngtimer">Youngtimer (1990-2005)</span>
+              <span class="chip-tog" data-chip="moderne-sport">Moderne sportive</span>
+              <span class="chip-tog" data-chip="moderne-touring">Moderne touring</span>
+              <span class="chip-tog" data-chip="supercar">Supercar</span>
+              <span class="chip-tog" data-chip="ev">Électrique sportive</span>
+            </div>
+
+            <p class="eyebrow" style="margin-top: var(--s-5)">Configuration</p>
+            <div class="chips-row" id="chips-config">
+              <span class="chip-tog" data-chip="coupe">Coupé</span>
+              <span class="chip-tog" data-chip="cabriolet">Cabriolet</span>
+              <span class="chip-tog" data-chip="berline">Berline sport</span>
+              <span class="chip-tog" data-chip="roadster">Roadster</span>
+              <span class="chip-tog" data-chip="break">Break sport</span>
+              <span class="chip-tog" data-chip="suv-sport">SUV sport</span>
+            </div>
+
+            <div class="wizard-nav">
+              <button class="btn btn-ghost" onclick="goToStep(3)">← Retour</button>
+              <button class="btn btn-primary" id="next-rs-4">Suivant →</button>
+            </div>
+          </div>
+
+          <!-- STEP 5: Détails -->
+          <div class="step-panel" data-panel="5">
+            <h2>05 · Quelques détails<span style="color: var(--orange-polo)">.</span></h2>
+            <p class="intro">
+              Pour clarifier ce qui est inclus et ce qui ne l'est pas.
+            </p>
+
+            <div class="field">
+              <label for="rs-places">Nombre de places</label>
+              <select id="rs-places">
+                <option value="illimite">Illimité</option>
+                <option value="6">6 voitures (parfait pour un groupe serré)</option>
+                <option value="8">8 voitures</option>
+                <option value="12">12 voitures</option>
+                <option value="20">20 voitures</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="rs-cout">Coût partagé estimé (€ par voiture)</label>
+              <input type="number" id="rs-cout" min="0" placeholder="280" />
+              <p style="font-family: var(--mono); font-size: 11px; color: var(--gris); margin-top: var(--s-2); letter-spacing: 0.1em">
+                Hôtels + dîners groupe. L'essence reste à chacun. Versement par XRPL au pot commun de l'organisateur.
+              </p>
+            </div>
+
+            <div class="field">
+              <label for="rs-visi">Visibilité</label>
+              <select id="rs-visi">
+                <option value="public">Publique — visible dans le feed</option>
+                <option value="lien">Lien privé — uniquement par invitation</option>
+                <option value="archetype">Réservée Mousquetaires (archétype validé)</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="rs-notes">Notes pour les participants</label>
+              <textarea id="rs-notes" placeholder="Hôtel Mont-Cenis vendredi soir, refuge Galibier samedi midi. Bagages réduits, on dort en altitude. Bottes mini-mini-altitude souhaitées si la météo bascule."></textarea>
+            </div>
+
+            <p style="font-family: var(--mono); font-size: 11px; color: var(--gris); margin-top: var(--s-3); letter-spacing: 0.1em; line-height: 1.6">
+              ↳ Pense à proposer l'<a href="circuit.html" style="color: var(--orange-polo)">assurance journée</a>
+              si vous attaquez un circuit pendant la sortie.<br />
+              ↳ Contribution CARNET : 0 € sur les rallyes sociaux. La plateforme prend zéro.
+            </p>
+
+            <div class="wizard-nav">
+              <button class="btn btn-ghost" onclick="goToStep(4)">← Retour</button>
+              <button class="btn btn-primary" id="publish-rs">Publier la sortie →</button>
+            </div>
+          </div>
+
+          <!-- CONFIRMATION -->
+          <div class="step-panel" data-panel="done">
+            <p class="eyebrow" style="color: var(--vert-anglais)">✓ Sortie publiée</p>
+            <h2>C'est en ligne<span style="color: var(--orange-polo)">.</span></h2>
+            <p class="intro">
+              Ta sortie <strong id="rs-final-nom"></strong> est visible dans le feed.
+              Identifiant&nbsp;: <code style="font-family: var(--mono); font-size: 13px; color: var(--orange-polo)" id="rs-final-id">RS-2026-0142</code>
+            </p>
+
+            <p style="font-family: var(--editorial); font-size: 16px; color: var(--encre-soft); line-height: 1.6; margin-bottom: var(--s-5)">
+              Tu recevras un e-mail à chaque demande d'inscription. Tu valides ou non au cas par cas.
+              Les participants confirmés reçoivent automatiquement le programme détaillé et le lien
+              du pot commun XRPL.
+            </p>
+
+            <div class="wizard-nav">
+              <button class="btn btn-ghost" onclick="location.reload()">↺ Créer une autre sortie</button>
+              <a href="#main" class="btn btn-primary" style="text-decoration: none">↑ Retour en haut</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         PHILOSOPHIE
+         ═══════════════════════════════════════════════════════════════ -->
+    <section>
+      <p class="eyebrow">Philosophie</p>
+      <h2 class="display-italic">Ce que ce n'est pas.</h2>
+
+      <p class="tagline-minor" style="margin-top: var(--s-4)">
+        Pas un site de billetterie. Pas un agrégateur d'événements payants.
+        Pas un club fermé avec cooptation à l'ancienne. CARNET fournit l'outil ;
+        ce qui se passe en haut du col reste entre vous.
+      </p>
+
+      <div style="margin-top: var(--s-5); font-family: var(--editorial); font-size: 16px; line-height: 1.7; color: var(--encre-soft)">
+        <p>
+          ↳ Aucune commission sur les sorties sociales. Le pot commun va de l'organisateur
+          aux participants en direct, rail XRPL, traçabilité totale, zéro intermédiaire.
+        </p>
+        <p>
+          ↳ Aucun classement, aucun chrono, aucun défi de drone. Si tu veux du chrono,
+          c'est <a href="rally-historique.html" style="color: var(--orange-polo)">là</a>.
+        </p>
+        <p>
+          ↳ Les organisateurs valident manuellement les inscriptions. Un Mousquetaire
+          ne fait pas équipe au hasard, et CARNET ne force personne.
+        </p>
+        <p>
+          ↳ Les sorties annulées sont annulées proprement. Le pot commun est restitué
+          automatiquement, plus tard que jamais 24h après la décision.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         FINAL CTA
+         ═══════════════════════════════════════════════════════════════ -->
+    <section style="border-top: none; padding-block: var(--s-6)">
+      <div class="final-cta">
+        <h2>Le col attend.<br />Les copains aussi.</h2>
+        <p>
+          Crée ta sortie, ou rejoins une bande qui part bientôt.
+          Et si vous tapez un circuit, l'assurance journée est juste à côté.
+        </p>
+        <div class="cta-row">
+          <a href="#main" class="cta cta-primary">↑ Créer une sortie</a>
+          <a href="circuit.html" class="cta">Assurance journée →</a>
+          <a href="rally-historique.html" class="cta">Rallyes historiques →</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════════════════════════ -->
+  <footer class="carnet-footer">
+    <p class="footer-tagline"><em>Une histoire de voitures.</em></p>
+
+    <nav class="footer-nav" aria-label="Pages utilitaires">
+      <a href="index.html">Affût</a>
+      <a href="cote.html">Cote</a>
+      <a href="assurance.html">Assurance</a>
+      <a href="discover.html">Discover</a>
+      <a href="archetypes.html">Archétypes</a>
+      <a href="launch.html">14·12·2026</a>
+      <a href="about.html">À propos</a>
+    </nav>
+
+    <p class="footer-legal">
+      CARNET · Association loi 1901 française non-lucrative familiale<br />
+      Rallyes sociaux : zéro commission, zéro intermédiaire, rail XRPL en direct<br />
+      Wallet officiel multisig 3/3&nbsp;: <code>rJBhnYvg5kq9PgWFZziEXu2EcdJfcq8WSU</code>
+    </p>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       JAVASCRIPT
+       ═══════════════════════════════════════════════════════════════ -->
+  <script>
+    'use strict';
+
+    /* ───── Mode switch (Join / Create) ───── */
+    document.querySelectorAll('.mode-card').forEach(card => {
+      card.addEventListener('click', () => {
+        document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.mode-panel').forEach(p => p.classList.remove('active'));
+        card.classList.add('active');
+        const mode = card.dataset.mode;
+        document.querySelector(`.mode-panel[data-panel="${mode}"]`).classList.add('active');
+      });
+    });
+
+    /* ───── Rally card → detail view ───── */
+    document.querySelectorAll('.rally-card').forEach(card => {
+      card.addEventListener('click', () => {
+        // For demo: only r1 (Les Trois Cols) opens detail
+        if (card.dataset.rally === 'r1') {
+          document.getElementById('rally-detail').classList.add('active');
+          window.scrollTo({ top: document.getElementById('rally-detail').offsetTop - 40, behavior: 'smooth' });
+        } else {
+          alert('Détail rallye branché sur Supabase real — Sprint 2 NFT XLS-20.\n\nPour la démo, seul "Les Trois Cols" affiche un roster détaillé.');
+        }
+      });
+    });
+
+    /* ───── Wizard create — state ───── */
+    const rsState = {
+      nom: '', depart: '', arrivee: '', route: '',
+      dateStart: '', jours: 3, heure: '08:00',
+      niveau: '',
+      famille: [], config: [],
+      places: 'illimite', cout: 0, visi: 'public', notes: ''
+    };
+
+    function goToStep(n) {
+      const createPanel = document.querySelector('.mode-panel[data-panel="create"]');
+      createPanel.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+      const target = createPanel.querySelector(`.step-panel[data-panel="${n}"]`);
+      if (target) target.classList.add('active');
+
+      createPanel.querySelectorAll('.step-dot').forEach(d => {
+        const step = d.getAttribute('data-step');
+        d.classList.remove('active', 'done');
+        if (n === 'done') {
+          d.classList.add('done');
+        } else if (parseInt(step) === parseInt(n)) {
+          d.classList.add('active');
+        } else if (parseInt(step) < parseInt(n)) {
+          d.classList.add('done');
+        }
+      });
+
+      window.scrollTo({ top: createPanel.querySelector('.wizard').offsetTop - 40, behavior: 'smooth' });
+    }
+
+    /* ───── Steps navigation ───── */
+    document.getElementById('next-rs-1').addEventListener('click', () => {
+      rsState.nom = document.getElementById('rs-nom').value.trim();
+      rsState.depart = document.getElementById('rs-depart').value.trim();
+      rsState.arrivee = document.getElementById('rs-arrivee').value.trim();
+      rsState.route = document.getElementById('rs-route').value.trim();
+      if (!rsState.nom || !rsState.depart || !rsState.arrivee) {
+        alert('Nom, départ et arrivée sont nécessaires pour publier.');
+        return;
+      }
+      goToStep(2);
+    });
+
+    document.getElementById('next-rs-2').addEventListener('click', () => {
+      rsState.dateStart = document.getElementById('rs-date-start').value;
+      rsState.jours = parseFloat(document.getElementById('rs-jours').value) || 1;
+      rsState.heure = document.getElementById('rs-heure').value || '08:00';
+      if (!rsState.dateStart) {
+        alert('Indique une date de départ.');
+        return;
+      }
+      goToStep(3);
+    });
+
+    /* ───── Niveau cards ───── */
+    document.querySelectorAll('#niveau-grid .niv-card').forEach(card => {
+      card.addEventListener('click', () => {
+        document.querySelectorAll('#niveau-grid .niv-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        rsState.niveau = card.dataset.niv;
+      });
+    });
+
+    document.getElementById('next-rs-3').addEventListener('click', () => {
+      if (!rsState.niveau) {
+        alert('Choisis un niveau pour cadrer les inscriptions.');
+        return;
+      }
+      goToStep(4);
+    });
+
+    /* ───── Chips toggle ───── */
+    document.querySelectorAll('.chip-tog').forEach(chip => {
+      chip.addEventListener('click', () => {
+        chip.classList.toggle('selected');
+      });
+    });
+
+    document.getElementById('next-rs-4').addEventListener('click', () => {
+      rsState.famille = Array.from(document.querySelectorAll('#chips-famille .chip-tog.selected')).map(c => c.dataset.chip);
+      rsState.config = Array.from(document.querySelectorAll('#chips-config .chip-tog.selected')).map(c => c.dataset.chip);
+      if (rsState.famille.length === 0) {
+        alert('Choisis au moins une famille de véhicules admis (tu peux ouvrir large).');
+        return;
+      }
+      goToStep(5);
+    });
+
+    /* ───── Publish ───── */
+    document.getElementById('publish-rs').addEventListener('click', () => {
+      rsState.places = document.getElementById('rs-places').value;
+      rsState.cout = parseInt(document.getElementById('rs-cout').value) || 0;
+      rsState.visi = document.getElementById('rs-visi').value;
+      rsState.notes = document.getElementById('rs-notes').value.trim();
+
+      document.getElementById('rs-final-nom').textContent = rsState.nom || 'Sans nom';
+      const randomId = 'RS-2026-' + String(Math.floor(Math.random() * 9000) + 1000);
+      document.getElementById('rs-final-id').textContent = randomId;
+
+      goToStep('done');
+    });
+
+    /* TODO production: POST to /api/rallies + Supabase + notification email
+       to organizer's auth@carnet.life. Real-time roster updates via Supabase
+       Realtime. Pot commun = XRPL multisig 2/3 with organizer + 2 participants. */
+  </script>
+</body>
+</html>

@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="CARNET · Rallyes historiques. FFVE, FIA Historic, Tour Auto, Critérium des Cévennes — agrégés au même endroit. Filtre par discipline, pays, niveau, éligibilité véhicule. Ta voiture est-elle admise ? On croise avec ton garage." />
+  <meta name="theme-color" content="#faf6ef" />
+
+  <title>CARNET · Rallyes historiques EU</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,400;1,500;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="carnet-tokens.css" />
+
+  <style>
+    main {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: var(--s-8) var(--s-5);
+    }
+    section { padding-block: var(--s-7); border-top: 1px solid var(--gris-line); }
+    section:first-of-type { border-top: none; padding-top: 0; }
+    .hero { padding-top: var(--s-3); padding-bottom: var(--s-7); border-top: none; }
+
+    .back-nav {
+      margin-bottom: var(--s-5);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .back-nav a { color: var(--gris); text-decoration: none; }
+    .back-nav a:hover { color: var(--encre); }
+
+    /* ───── Filters ───── */
+    .filters {
+      background: var(--papier-bright);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      padding: var(--s-5);
+      margin-top: var(--s-5);
+    }
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--s-3);
+      align-items: flex-end;
+    }
+    .filter-group {
+      flex: 1;
+      min-width: 130px;
+    }
+    .filter-group label {
+      display: block;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gris);
+      margin-bottom: var(--s-2);
+    }
+    .filter-group select {
+      width: 100%;
+      box-sizing: border-box;
+      font-family: var(--sans);
+      font-size: 14px;
+      padding: var(--s-3);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      background: var(--papier);
+      color: var(--encre);
+    }
+    .filter-result-count {
+      margin-top: var(--s-4);
+      padding-top: var(--s-3);
+      border-top: 1px dashed var(--gris-line);
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      color: var(--gris);
+    }
+    .filter-result-count strong {
+      color: var(--orange-polo);
+      font-weight: 600;
+    }
+
+    /* ───── Eligibility check ───── */
+    .eligibility-box {
+      background: var(--orange-soft);
+      border: 1px solid var(--orange-line);
+      border-radius: var(--r);
+      padding: var(--s-5);
+      margin-top: var(--s-5);
+    }
+    .eligibility-box .arch {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      color: var(--orange-polo);
+      text-transform: uppercase;
+      margin-bottom: var(--s-3);
+    }
+    .eligibility-box h3 {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 22px;
+      margin: 0 0 var(--s-3);
+      line-height: 1.2;
+    }
+    .eligibility-box p {
+      font-family: var(--editorial);
+      font-size: 15px;
+      line-height: 1.55;
+      color: var(--encre-soft);
+      margin: 0 0 var(--s-4);
+    }
+    .eligibility-row {
+      display: flex;
+      gap: var(--s-3);
+      flex-wrap: wrap;
+    }
+    .eligibility-row select, .eligibility-row input {
+      flex: 1;
+      min-width: 140px;
+      box-sizing: border-box;
+      font-family: var(--sans);
+      font-size: 14px;
+      padding: var(--s-3);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      background: var(--papier);
+      color: var(--encre);
+    }
+    .eligibility-row button {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: var(--s-3) var(--s-4);
+      border-radius: var(--r);
+      cursor: pointer;
+      border: 1px solid var(--encre);
+      background: var(--encre);
+      color: var(--papier);
+    }
+    .eligibility-row button:hover { background: var(--orange-polo); border-color: var(--orange-polo); }
+
+    .eligibility-result {
+      display: none;
+      margin-top: var(--s-4);
+      padding: var(--s-4);
+      background: var(--papier);
+      border-radius: var(--r);
+      font-family: var(--editorial);
+      font-size: 15px;
+      line-height: 1.55;
+    }
+    .eligibility-result.active { display: block; }
+    .eligibility-result .verdict {
+      font-family: var(--display);
+      font-style: italic;
+      font-size: 22px;
+      margin-bottom: var(--s-3);
+    }
+    .eligibility-result.match .verdict { color: var(--vert-anglais); }
+    .eligibility-result.partial .verdict { color: var(--orange-polo); }
+
+    /* ───── Event cards ───── */
+    .event-stack {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-4);
+      margin-top: var(--s-5);
+    }
+    .event-card {
+      background: var(--papier-bright);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      padding: var(--s-5);
+      position: relative;
+    }
+    .event-card.featured {
+      border-left: 3px solid var(--orange-polo);
+    }
+    .event-meta {
+      display: flex;
+      gap: var(--s-3);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gris);
+      margin-bottom: var(--s-3);
+      flex-wrap: wrap;
+    }
+    .event-meta .org-badge {
+      background: var(--encre);
+      color: var(--papier);
+      padding: 2px var(--s-3);
+      border-radius: var(--r);
+    }
+    .event-meta .org-badge.ffve { background: var(--orange-polo); }
+    .event-meta .org-badge.fia { background: var(--vert-anglais); }
+    .event-meta .org-badge.peter { background: var(--gris); }
+    .event-meta .discipline {
+      color: var(--orange-polo);
+    }
+    .event-card h3 {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 24px;
+      margin: 0 0 var(--s-3);
+      line-height: 1.15;
+    }
+    .event-card .event-desc {
+      font-family: var(--editorial);
+      font-size: 16px;
+      line-height: 1.55;
+      color: var(--encre-soft);
+      margin-bottom: var(--s-4);
+    }
+    .event-card .event-meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s-3);
+      padding: var(--s-3) 0;
+      border-top: 1px dashed var(--gris-line);
+      border-bottom: 1px dashed var(--gris-line);
+      margin-bottom: var(--s-4);
+    }
+    @media (min-width: 600px) { .event-card .event-meta-grid { grid-template-columns: repeat(4, 1fr); } }
+    .event-meta-cell .lbl {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: var(--gris);
+      text-transform: uppercase;
+    }
+    .event-meta-cell .val {
+      font-family: var(--display);
+      font-style: italic;
+      font-size: 16px;
+      color: var(--encre);
+      margin-top: var(--s-1);
+    }
+    .event-card .event-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--s-3);
+      flex-wrap: wrap;
+    }
+    .event-card .event-bottom .eligibles {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--gris);
+      flex: 1;
+      min-width: 240px;
+    }
+    .event-card .event-bottom .eligibles strong { color: var(--encre); }
+    .event-card .event-cta {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: var(--encre);
+      color: var(--papier);
+      padding: var(--s-2) var(--s-4);
+      border-radius: var(--r);
+      text-decoration: none;
+      display: inline-block;
+      border: 1px solid var(--encre);
+    }
+    .event-card .event-cta:hover { background: var(--orange-polo); border-color: var(--orange-polo); }
+
+    /* ───── Disciplines explainer ───── */
+    .disc-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--s-3);
+      margin-top: var(--s-5);
+    }
+    @media (min-width: 720px) { .disc-grid { grid-template-columns: 1fr 1fr; } }
+    .disc-card {
+      background: var(--papier-bright);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      padding: var(--s-4);
+    }
+    .disc-card h4 {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 20px;
+      margin: 0 0 var(--s-2);
+      color: var(--encre);
+    }
+    .disc-card p {
+      font-family: var(--editorial);
+      font-size: 15px;
+      line-height: 1.55;
+      color: var(--encre-soft);
+      margin: 0;
+    }
+
+    /* ───── Partner highlight ───── */
+    .partner-box {
+      background: var(--encre);
+      color: var(--papier);
+      padding: var(--s-7) var(--s-5);
+      border-radius: var(--r);
+      margin-top: var(--s-7);
+    }
+    .partner-box .lbl {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      color: var(--orange-polo);
+      text-transform: uppercase;
+      margin-bottom: var(--s-3);
+    }
+    .partner-box h2 {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 28px;
+      margin: 0 0 var(--s-4);
+      line-height: 1.2;
+    }
+    .partner-box p {
+      font-family: var(--editorial);
+      font-size: 16px;
+      line-height: 1.6;
+      opacity: 0.85;
+      margin: 0 0 var(--s-4);
+    }
+    .partner-box .cta-row {
+      display: flex;
+      gap: var(--s-3);
+      flex-wrap: wrap;
+    }
+    .partner-box a.cta {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: var(--s-3) var(--s-5);
+      border: 1px solid var(--papier);
+      border-radius: var(--r);
+      text-decoration: none;
+      color: var(--papier);
+    }
+    .partner-box a.cta-primary {
+      background: var(--orange-polo);
+      border-color: var(--orange-polo);
+    }
+    .partner-box a.cta:hover {
+      background: var(--papier);
+      color: var(--encre);
+    }
+
+    /* ───── FAQ ───── */
+    details.faq-item {
+      border-bottom: 1px solid var(--gris-line);
+      padding: var(--s-4) 0;
+    }
+    details.faq-item summary {
+      cursor: pointer;
+      font-family: var(--display);
+      font-style: italic;
+      font-size: 18px;
+      color: var(--encre);
+      list-style: none;
+    }
+    details.faq-item summary::-webkit-details-marker { display: none; }
+    details.faq-item summary::after {
+      content: ' →';
+      color: var(--orange-polo);
+      font-family: var(--mono);
+    }
+    details.faq-item[open] summary::after { content: ' ↓'; }
+    details.faq-item p {
+      margin-top: var(--s-3);
+      font-family: var(--editorial);
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--encre-soft);
+    }
+
+    /* ───── Final CTA ───── */
+    .final-cta {
+      background: var(--papier-deep);
+      padding: var(--s-7) var(--s-5);
+      border-radius: var(--r);
+      text-align: center;
+      margin-top: var(--s-7);
+    }
+    .final-cta h2 {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 28px;
+      margin: 0 0 var(--s-4);
+      line-height: 1.2;
+    }
+    .final-cta p {
+      font-family: var(--editorial);
+      font-size: 17px;
+      line-height: 1.55;
+      margin: 0 0 var(--s-5);
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      color: var(--encre-soft);
+    }
+    .final-cta .cta-row {
+      display: flex;
+      gap: var(--s-3);
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .final-cta a.cta {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: var(--s-3) var(--s-5);
+      border: 1px solid var(--encre);
+      border-radius: var(--r);
+      text-decoration: none;
+      color: var(--encre);
+      transition: all 0.15s ease;
+    }
+    .final-cta a.cta-primary {
+      background: var(--encre);
+      color: var(--papier);
+    }
+    .final-cta a.cta:hover {
+      background: var(--orange-polo);
+      border-color: var(--orange-polo);
+      color: var(--papier);
+    }
+  </style>
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Aller au contenu</a>
+
+  <main id="main">
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         HERO
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="hero">
+      <p class="back-nav"><a href="index.html">← Retour à l'affût</a></p>
+
+      <p class="eyebrow">Compétition · Rallyes historiques EU</p>
+
+      <h1 class="display-italic">
+        Régularité, courses de côte,<br />
+        <span style="color: var(--orange-polo)">historic</span> rallyes.
+      </h1>
+
+      <p class="tagline-major">
+        FFVE, FIA Historic, Tour Auto, Critérium des Cévennes,
+        Coupes des Alpes, Targa Florio Classica. Pas l'aspirateur du dimanche.
+        Le calendrier vivant des épreuves qui acceptent encore une 911 RS de 1973.
+      </p>
+
+      <p class="tagline-minor">
+        Quatre-vingt-onze épreuves sur l'année 2026, agrégées et filtrables.
+        Croise ton garage avec les règlements pour savoir si ta voiture est éligible
+        avant de t'inscrire.
+      </p>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         FILTERS
+         ═══════════════════════════════════════════════════════════════ -->
+    <section>
+      <p class="eyebrow">Filtres</p>
+      <h2 class="display-italic">Trouve ce qui te ressemble.</h2>
+
+      <div class="filters">
+        <div class="filter-row">
+          <div class="filter-group">
+            <label for="f-discipline">Discipline</label>
+            <select id="f-discipline">
+              <option value="">Toutes</option>
+              <option value="regularite">Régularité</option>
+              <option value="course-cote">Course de côte</option>
+              <option value="rallye">Rallye historique</option>
+              <option value="circuit">Circuit historique</option>
+              <option value="concours">Concours d'élégance</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="f-pays">Pays</label>
+            <select id="f-pays">
+              <option value="">Tous</option>
+              <option value="fr">France</option>
+              <option value="it">Italie</option>
+              <option value="de">Allemagne</option>
+              <option value="uk">Royaume-Uni</option>
+              <option value="es">Espagne</option>
+              <option value="ch">Suisse</option>
+              <option value="be">Belgique</option>
+              <option value="au">Autriche</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="f-niveau">Niveau</label>
+            <select id="f-niveau">
+              <option value="">Tous</option>
+              <option value="decouverte">Découverte</option>
+              <option value="club">Club</option>
+              <option value="national">National</option>
+              <option value="international">International</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="f-periode">Période véhicule</label>
+            <select id="f-periode">
+              <option value="">Toutes</option>
+              <option value="vintage">Vintage (avant 1947)</option>
+              <option value="postwar">Post-war (1947-1961)</option>
+              <option value="classic">Classic (1962-1971)</option>
+              <option value="youngtimer">Youngtimer (1972-1990)</option>
+              <option value="moderne-classic">Moderne classic (1991-2000)</option>
+            </select>
+          </div>
+        </div>
+        <p class="filter-result-count">
+          <strong id="result-count">14</strong> épreuves correspondent · sur 91 dans le calendrier 2026
+        </p>
+      </div>
+
+      <!-- ─── Eligibility ─── -->
+      <div class="eligibility-box">
+        <p class="arch">Ta voiture est-elle éligible</p>
+        <h3>On croise avec les règlements.</h3>
+        <p>
+          Donne ta voiture, on indique pour chaque épreuve si elle est admise, sous quelles
+          conditions (PTH, FIA HTP, équipement complémentaire), et si une mise en conformité
+          est faisable. Les courses de côte sont souvent plus strictes que la régularité.
+        </p>
+        <div class="eligibility-row">
+          <select id="el-marque">
+            <option value="">Marque...</option>
+            <option value="porsche">Porsche</option>
+            <option value="ferrari">Ferrari</option>
+            <option value="alfa">Alfa Romeo</option>
+            <option value="lancia">Lancia</option>
+            <option value="bmw">BMW</option>
+            <option value="mercedes">Mercedes</option>
+            <option value="ford">Ford</option>
+            <option value="renault">Renault</option>
+            <option value="peugeot">Peugeot</option>
+            <option value="lotus">Lotus</option>
+            <option value="austin">Austin/Mini</option>
+            <option value="jaguar">Jaguar</option>
+            <option value="aston">Aston Martin</option>
+            <option value="autre">Autre</option>
+          </select>
+          <input type="text" id="el-modele" placeholder="Modèle (911 RS, 911 ST, Stratos...)" />
+          <input type="number" id="el-annee" min="1900" max="2026" placeholder="Année" />
+          <button id="el-check">Vérifier →</button>
+        </div>
+
+        <div class="eligibility-result" id="el-result">
+          <!-- Result injected by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         CALENDAR — Event cards
+         ═══════════════════════════════════════════════════════════════ -->
+    <section>
+      <p class="eyebrow">Calendrier 2026</p>
+      <h2 class="display-italic">Les rendez-vous qui comptent.</h2>
+
+      <p class="tagline-minor" style="margin-top: var(--s-4)">
+        Sélection éditoriale. Les épreuves majeures, signalées en bord orange.
+        Le calendrier complet (91 entrées) se télécharge en ICS.
+      </p>
+
+      <div class="event-stack">
+        <!-- Tour Auto -->
+        <div class="event-card featured">
+          <div class="event-meta">
+            <span class="org-badge peter">PETER AUTO</span>
+            <span class="discipline">RALLYE HISTORIQUE</span>
+            <span>20·25 AVRIL 2026</span>
+          </div>
+          <h3>Tour Auto Optic 2000</h3>
+          <p class="event-desc">
+            Paris → Aix-les-Bains. Six jours, 2 300 km, étapes circuits (Bugatti, Charade,
+            Bresse) et spéciales routières. L'événement le plus difficile à intégrer
+            (sélection éditoriale Peter Auto) et le plus convoité.
+          </p>
+          <div class="event-meta-grid">
+            <div class="event-meta-cell"><div class="lbl">Pays</div><div class="val">France</div></div>
+            <div class="event-meta-cell"><div class="lbl">Niveau</div><div class="val">International</div></div>
+            <div class="event-meta-cell"><div class="lbl">Voitures admises</div><div class="val">1951-1985</div></div>
+            <div class="event-meta-cell"><div class="lbl">Engagement</div><div class="val">~ 16 000 €</div></div>
+          </div>
+          <div class="event-bottom">
+            <span class="eligibles">Éligible : voitures ayant participé à l'épreuve d'origine (homologuées par Peter Auto). <strong>Régularité ou Compétition.</strong></span>
+            <a href="#" class="event-cta" onclick="alert('Lien externe vers le site officiel Peter Auto, branchement en production.'); return false;">Inscription →</a>
+          </div>
+        </div>
+
+        <!-- Le Mans Classic -->
+        <div class="event-card featured">
+          <div class="event-meta">
+            <span class="org-badge peter">PETER AUTO</span>
+            <span class="discipline">CIRCUIT HISTORIQUE</span>
+            <span>3·4·5 JUILLET 2026</span>
+          </div>
+          <h3>Le Mans Classic</h3>
+          <p class="event-desc">
+            Les 24 Heures revisitées : six plateaux par tranche d'âge, du roadster d'avant-guerre
+            au Groupe C. 250 000 spectateurs, 700 voitures admises, le rendez-vous le plus
+            sélectif d'Europe. Édition biennale, place obtenue par tirage.
+          </p>
+          <div class="event-meta-grid">
+            <div class="event-meta-cell"><div class="lbl">Pays</div><div class="val">France</div></div>
+            <div class="event-meta-cell"><div class="lbl">Niveau</div><div class="val">International</div></div>
+            <div class="event-meta-cell"><div class="lbl">Voitures admises</div><div class="val">1923-1981</div></div>
+            <div class="event-meta-cell"><div class="lbl">Engagement</div><div class="val">~ 4 500 €</div></div>
+          </div>
+          <div class="event-bottom">
+            <span class="eligibles">Éligibilité : FIA HTP obligatoire + dossier sportif. <strong>Refus fréquents même avec voiture correcte.</strong></span>
+            <a href="#" class="event-cta" onclick="alert('Lien externe vers le site Le Mans Classic, branchement en production.'); return false;">Inscription →</a>
+          </div>
+        </div>
+
+        <!-- Coupe des Alpes -->
+        <div class="event-card">
+          <div class="event-meta">
+            <span class="org-badge fia">FIA HISTORIC</span>
+            <span class="discipline">RÉGULARITÉ</span>
+            <span>22·26 JUIN 2026</span>
+          </div>
+          <h3>Coupe des Alpes</h3>
+          <p class="event-desc">
+            Évian → Cannes par les vingt-deux cols mythiques. Régularité chronométrée
+            à la seconde. Sept catégories de 1933 à 1990. L'équilibre parfait : exigeant
+            mais accessible si la voiture est saine.
+          </p>
+          <div class="event-meta-grid">
+            <div class="event-meta-cell"><div class="lbl">Pays</div><div class="val">France/Italie</div></div>
+            <div class="event-meta-cell"><div class="lbl">Niveau</div><div class="val">National</div></div>
+            <div class="event-meta-cell"><div class="lbl">Voitures admises</div><div class="val">1933-1990</div></div>
+            <div class="event-meta-cell"><div class="lbl">Engagement</div><div class="val">~ 4 800 €</div></div>
+          </div>
+          <div class="event-bottom">
+            <span class="eligibles">PTH ou FIA HTP. Casque & ceintures FIA. <strong>14 voitures françaises engagées en 2025.</strong></span>
+            <a href="#" class="event-cta" onclick="alert('Inscription via FIA Historic — partenariat en cours côté CARNET.'); return false;">Inscription →</a>
+          </div>
+        </div>
+
+        <!-- Critérium des Cévennes -->
+        <div class="event-card">
+          <div class="event-meta">
+            <span class="org-badge ffve">FFVE</span>
+            <span class="discipline">RALLYE HISTORIQUE</span>
+            <span>15·17 OCTOBRE 2026</span>
+          </div>
+          <h3>Critérium des Cévennes Historique</h3>
+          <p class="event-desc">
+            Le rallye français le plus exigeant des années 70, ressuscité en version historique.
+            Trois étapes, douze spéciales, dénivelés violents. Cars éligibles : véhicules ayant
+            disputé le Critérium d'origine ou identiques.
+          </p>
+          <div class="event-meta-grid">
+            <div class="event-meta-cell"><div class="lbl">Pays</div><div class="val">France</div></div>
+            <div class="event-meta-cell"><div class="lbl">Niveau</div><div class="val">Club / National</div></div>
+            <div class="event-meta-cell"><div class="lbl">Voitures admises</div><div class="val">1965-1985</div></div>
+            <div class="event-meta-cell"><div class="lbl">Engagement</div><div class="val">~ 2 200 €</div></div>
+          </div>
+          <div class="event-bottom">
+            <span class="eligibles">Licence VHC FFSA ou équivalent. Régularité historique ouverte sans licence.</span>
+            <a href="#" class="event-cta" onclick="alert('Inscription via FFVE — branchement en production.'); return false;">Inscription →</a>
+          </div>
+        </div>
+
+        <!-- Mille Miglia -->
+        <div class="event-card featured">
+          <div class="event-meta">
+            <span class="org-badge peter">ACI</span>
+            <span class="discipline">RÉGULARITÉ</span>
+            <span>10·14 JUIN 2026</span>
+          </div>
+          <h3>Mille Miglia</h3>
+          <p class="event-desc">
+            Brescia → Rome → Brescia. 1 800 km, 250 régularités chronométrées,
+            quatre jours de marathon. Voitures admises : modèles ayant participé entre 1927 et 1957.
+            La plus belle course du monde, dixit Enzo Ferrari.
+          </p>
+          <div class="event-meta-grid">
+            <div class="event-meta-cell"><div class="lbl">Pays</div><div class="val">Italie</div></div>
+            <div class="event-meta-cell"><div class="lbl">Niveau</div><div class="val">International</div></div>
+            <div class="event-meta-cell"><div class="lbl">Voitures admises</div><div class="val">1927-1957</div></div>
+            <div class="event-meta-cell"><div class="lbl">Engagement</div><div class="val">~ 11 000 €</div></div>
+          </div>
+          <div class="event-bottom">
+            <span class="eligibles">Sélection éditoriale ACI. Refus fréquents même pour modèles éligibles. <strong>440 voitures, 600+ dossiers.</strong></span>
+            <a href="#" class="event-cta" onclick="alert('Lien externe vers le site officiel Mille Miglia.'); return false;">Inscription →</a>
+          </div>
+        </div>
+
+        <!-- Goodwood Revival -->
+        <div class="event-card">
+          <div class="event-meta">
+            <span class="org-badge peter">GOODWOOD</span>
+            <span class="discipline">CIRCUIT HISTORIQUE</span>
+            <span>12·14 SEPTEMBRE 2026</span>
+          </div>
+          <h3>Goodwood Revival</h3>
+          <p class="event-desc">
+            Course de circuit pré-1966 sur l'autodrome de Lord March. Tenue d'époque
+            obligatoire pour les spectateurs et pilotes. Plus un événement qu'une compétition,
+            mais on roule vite. Plateau St Mary's Trophy : Cooper, Lotus, Ford Galaxie, Mini.
+          </p>
+          <div class="event-meta-grid">
+            <div class="event-meta-cell"><div class="lbl">Pays</div><div class="val">Royaume-Uni</div></div>
+            <div class="event-meta-cell"><div class="lbl">Niveau</div><div class="val">International</div></div>
+            <div class="event-meta-cell"><div class="lbl">Voitures admises</div><div class="val">avant 1966</div></div>
+            <div class="event-meta-cell"><div class="lbl">Engagement</div><div class="val">Sur invitation</div></div>
+          </div>
+          <div class="event-bottom">
+            <span class="eligibles">Invitation Goodwood Estate. <strong>Dossier presse + historique propriétaires + photos d'époque.</strong></span>
+            <a href="#" class="event-cta" onclick="alert('Goodwood ne prend pas d\\'inscriptions ouvertes. Dossier d\\'invitation à constituer en amont.'); return false;">Procédure →</a>
+          </div>
+        </div>
+
+        <!-- Course de côte du Mont Ventoux -->
+        <div class="event-card">
+          <div class="event-meta">
+            <span class="org-badge ffve">FFVE</span>
+            <span class="discipline">COURSE DE CÔTE</span>
+            <span>5·6 SEPTEMBRE 2026</span>
+          </div>
+          <h3>Mont Ventoux Historique</h3>
+          <p class="event-desc">
+            Bédoin → Chalet Reynard, 21,6 km, dénivelé 1 600 m. La doyenne des courses de
+            côte françaises (1902), version historique. Chronométrage par catégorie, pas de
+            sortie de classement individuel — l'esprit prime sur la performance.
+          </p>
+          <div class="event-meta-grid">
+            <div class="event-meta-cell"><div class="lbl">Pays</div><div class="val">France</div></div>
+            <div class="event-meta-cell"><div class="lbl">Niveau</div><div class="val">Club</div></div>
+            <div class="event-meta-cell"><div class="lbl">Voitures admises</div><div class="val">1902-1985</div></div>
+            <div class="event-meta-cell"><div class="lbl">Engagement</div><div class="val">~ 850 €</div></div>
+          </div>
+          <div class="event-bottom">
+            <span class="eligibles">Licence FFSA UNE journée. Casque et ceintures FIA obligatoires.</span>
+            <a href="#" class="event-cta" onclick="alert('Inscription via FFVE.'); return false;">Inscription →</a>
+          </div>
+        </div>
+      </div>
+
+      <p style="text-align: center; margin-top: var(--s-6); font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; color: var(--gris);">
+        ↓ <a href="#" onclick="alert('Téléchargement ICS du calendrier complet 91 épreuves — branchement Sprint 2.'); return false;" style="color: var(--orange-polo)">Télécharger le calendrier complet (ICS, 91 épreuves)</a>
+      </p>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         DISCIPLINES EXPLAINER
+         ═══════════════════════════════════════════════════════════════ -->
+    <section>
+      <p class="eyebrow">Comprendre</p>
+      <h2 class="display-italic">Quatre disciplines, quatre univers.</h2>
+
+      <p class="tagline-minor" style="margin-top: var(--s-4)">
+        On ne s'inscrit pas à un rallye historique comme on s'inscrit à un track day.
+        Le règlement, le matériel exigé, la cadence et le risque varient massivement.
+      </p>
+
+      <div class="disc-grid">
+        <div class="disc-card">
+          <h4>Régularité</h4>
+          <p>
+            Tu suis une moyenne imposée sur des secteurs chronométrés à la seconde. Pas de vitesse pure,
+            pas de drapeau à damier — tu perds si tu es 0,3 sec en avance ou en retard. Discipline royale
+            des épreuves historiques (Coupe des Alpes, Mille Miglia). Voiture d'origine, équipage tranquille.
+          </p>
+        </div>
+        <div class="disc-card">
+          <h4>Course de côte</h4>
+          <p>
+            Une montée chronométrée, deux ou trois passages. Mont Ventoux, Limonest, Saint-Antonin Noble-Val.
+            Tu pars seul, tu fonces, tu compares ton chrono dans ta catégorie. Discipline brute mais courte —
+            casque et ceintures obligatoires, licence d'un jour suffisante en catégorie historique.
+          </p>
+        </div>
+        <div class="disc-card">
+          <h4>Rallye historique</h4>
+          <p>
+            Spéciales chronométrées (rythme rallye moderne mais voitures anciennes) et liaisons sur route ouverte.
+            Tour Auto, Critérium des Cévennes, Rallye Monte-Carlo Historique. Exigence sportive maximale,
+            licence VHC FFSA, voiture préparée selon FIA Annexe K.
+          </p>
+        </div>
+        <div class="disc-card">
+          <h4>Circuit historique</h4>
+          <p>
+            Plateaux par tranche d'âge sur circuits. Le Mans Classic, Goodwood Revival, Monza Historic.
+            FIA HTP obligatoire (homologation technique de la voiture). Coût élevé (préparation, transport,
+            assurance) mais l'unique façon de faire rouler vraiment vite une voiture pré-1980 en sécurité.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         PARTNER HIGHLIGHT — FIA Historic / CSBC
+         ═══════════════════════════════════════════════════════════════ -->
+    <section style="border-top: none; padding-block: 0">
+      <div class="partner-box">
+        <p class="lbl">Partenariat en construction</p>
+        <h2>FIA Historic + CARNET, ça se prépare.</h2>
+        <p>
+          Maître Salim Boufenara (CSBC, partenaire fondateur CARNET) instruit
+          un protocole d'accréditation FIA Historic Trust pour les véhicules
+          inscrits sur CARNET et bénéficiant d'un carnet d'entretien on-chain.
+          L'objectif : que le NFT Vehicle Certificate vaille preuve d'historique
+          pour les commissions techniques des grandes épreuves.
+        </p>
+        <p>
+          Première reconnaissance visée pour la saison 2027. D'ici là, ton carnet
+          numérique reste utile pour constituer le dossier d'inscription le plus
+          solide possible — photos, factures, propriétaires successifs, FIA HTP
+          si tu l'as déjà.
+        </p>
+        <div class="cta-row">
+          <a href="carnet-entretien.html" class="cta cta-primary">Ouvrir mon carnet →</a>
+          <a href="about.html#partenaires" class="cta">CSBC en savoir plus →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         FAQ
+         ═══════════════════════════════════════════════════════════════ -->
+    <section>
+      <p class="eyebrow">Questions reçues</p>
+      <h2 class="display-italic">Avant de t'inscrire.</h2>
+
+      <div style="margin-top: var(--s-5)">
+        <details class="faq-item">
+          <summary>PTH, FIA HTP, FIVA — c'est quoi la différence&nbsp;?</summary>
+          <p>
+            PTH (Passeport Technique Historique) : document FFSA français, valable pour les épreuves nationales.
+            FIA HTP (Historic Technical Passport) : document FIA international, requis pour les épreuves
+            internationales. FIVA Identity Card : reconnaissance internationale de la conformité d'époque,
+            sans visée sportive — utile pour les concours et les visas de douane. Beaucoup d'épreuves
+            exigent FIA HTP + assurance compétition (souvent une couverture distincte de l'assurance route).
+          </p>
+        </details>
+        <details class="faq-item">
+          <summary>Ma 911 SC de 1978 est-elle éligible à la Coupe des Alpes&nbsp;?</summary>
+          <p>
+            Oui dans la catégorie « Sport 1972-1981 » sous réserve qu'elle soit en configuration d'origine
+            (carrosserie, mécanique, intérieur). Une 911 SC modifiée 3,2 l ou châssis backdate sera refusée.
+            Compte 8 à 12 mois pour préparer le dossier (FIA HTP, ceintures, extincteur, coupe-circuit).
+          </p>
+        </details>
+        <details class="faq-item">
+          <summary>Combien coûte vraiment une saison historique&nbsp;?</summary>
+          <p>
+            Engagement seul : 800 € (course de côte locale) à 16 000 € (Tour Auto). Ajoute le transport
+            (300 à 4 000 €), l'hôtellerie, la préparation annuelle de la voiture (2 000 à 15 000 € selon
+            l'épreuve), l'assurance compétition (1 à 3 % de la valeur agréée), et les pièces de rechange.
+            Une saison régulier avec 4 épreuves coûte 25 000 à 80 000 € selon le niveau.
+          </p>
+        </details>
+        <details class="faq-item">
+          <summary>Pourquoi le Tour Auto et la Mille Miglia refusent autant de dossiers&nbsp;?</summary>
+          <p>
+            Les organisateurs (Peter Auto, ACI) reçoivent 2 à 3 fois plus de dossiers que de places.
+            Ils sélectionnent sur trois critères : l'historique de la voiture (a-t-elle participé à
+            l'épreuve d'origine ?), l'esthétique générale (livrée, conformité), et la régularité du
+            participant (a-t-il déjà fini une épreuve avec eux ?). Un premier refus ne ferme pas la
+            porte ; certains équipages tentent 3 ans avant d'être pris.
+          </p>
+        </details>
+        <details class="faq-item">
+          <summary>Et l'assurance pour les courses, c'est CARNET&nbsp;?</summary>
+          <p>
+            Pour les épreuves de circuit, oui — voir la page <a href="circuit.html" style="color: var(--orange-polo)">assurance journée</a>.
+            Pour les rallyes historiques sur route ouverte et les courses de côte, c'est l'assurance
+            compétition annuelle (souscrite via la licence FFSA ou un assureur spécialisé : Lockton,
+            Reis, Heico). CARNET ne propose pas encore cette ligne — elle arrivera quand la base
+            d'utilisateurs justifiera un produit annuel négocié.
+          </p>
+        </details>
+        <details class="faq-item">
+          <summary>Le calendrier ICS, je peux le synchroniser&nbsp;?</summary>
+          <p>
+            Oui — Google Calendar, Apple Calendar, Outlook, ProtonCalendar. L'URL ICS se met à jour
+            automatiquement avec les modifications (ajouts, annulations, changements de dates).
+            Tu peux filtrer par discipline ou par pays côté client si ton calendrier le permet.
+          </p>
+        </details>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         FINAL CTA
+         ═══════════════════════════════════════════════════════════════ -->
+    <section style="border-top: none; padding-block: var(--s-6)">
+      <div class="final-cta">
+        <h2>Une saison se prépare un an à l'avance.</h2>
+        <p>
+          Ouvre ton carnet d'entretien, vérifie l'éligibilité de ta voiture,
+          marque le calendrier. Le Tour Auto 2026 ferme les inscriptions en janvier.
+        </p>
+        <div class="cta-row">
+          <a href="#main" class="cta cta-primary">↑ Filtrer le calendrier</a>
+          <a href="carnet-entretien.html" class="cta">Ouvrir mon carnet →</a>
+          <a href="circuit.html" class="cta">Assurance journée →</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════════════════════════ -->
+  <footer class="carnet-footer">
+    <p class="footer-tagline"><em>Une histoire de voitures.</em></p>
+
+    <nav class="footer-nav" aria-label="Pages utilitaires">
+      <a href="index.html">Affût</a>
+      <a href="cote.html">Cote</a>
+      <a href="assurance.html">Assurance</a>
+      <a href="discover.html">Discover</a>
+      <a href="archetypes.html">Archétypes</a>
+      <a href="launch.html">14·12·2026</a>
+      <a href="about.html">À propos</a>
+    </nav>
+
+    <p class="footer-legal">
+      CARNET · Association loi 1901 française non-lucrative familiale<br />
+      91 épreuves agrégées · Sources FFVE, FIA Historic, Peter Auto, ACI, Goodwood, organisateurs locaux<br />
+      Wallet officiel multisig 3/3&nbsp;: <code>rJBhnYvg5kq9PgWFZziEXu2EcdJfcq8WSU</code>
+    </p>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       JAVASCRIPT — Filters + Eligibility check
+       ═══════════════════════════════════════════════════════════════ -->
+  <script>
+    'use strict';
+
+    /* ───── Filter UX (mock count update) ───── */
+    function updateCount() {
+      const f1 = document.getElementById('f-discipline').value;
+      const f2 = document.getElementById('f-pays').value;
+      const f3 = document.getElementById('f-niveau').value;
+      const f4 = document.getElementById('f-periode').value;
+      const filters = [f1, f2, f3, f4].filter(Boolean).length;
+      // Mock decreasing count based on filters set
+      const counts = [91, 47, 23, 11, 4];
+      const result = counts[Math.min(filters, counts.length - 1)];
+      document.getElementById('result-count').textContent = result;
+    }
+
+    ['f-discipline','f-pays','f-niveau','f-periode'].forEach(id => {
+      document.getElementById(id).addEventListener('change', updateCount);
+    });
+
+    /* ───── Eligibility check ───── */
+    const ELIGIBLE = {
+      'porsche/911 rs': { ok: ['Coupe des Alpes', 'Tour Auto', 'Mille Miglia', 'Le Mans Classic', 'Mont Ventoux'], ko: [], note: 'Une 911 RS 2.7 (1973) est éligible à toutes les grandes épreuves historiques. Si tu n\'as pas encore le FIA HTP, prévoir 4 à 6 mois de procédure.' },
+      'porsche/911 sc': { ok: ['Coupe des Alpes', 'Tour Auto', 'Mont Ventoux', 'Critérium des Cévennes Historique'], ko: ['Le Mans Classic (limite 1981, vérifier millésime)', 'Mille Miglia (postérieure à 1957)'], note: 'La 911 SC est très bien placée pour la saison française et la Coupe des Alpes. Vérifier l\'année (1978-1983) pour Le Mans Classic.' },
+      'lancia/stratos': { ok: ['Tour Auto', 'Coupe des Alpes', 'Critérium des Cévennes Historique', 'Mont Ventoux'], ko: ['Mille Miglia (postérieure à 1957)'], note: 'Voiture de légende, queue à toutes les commissions techniques. Très demandée, dossier solide nécessaire.' },
+      'alfa/giulia': { ok: ['Mille Miglia (versions pré-1957 uniquement)', 'Tour Auto', 'Coupe des Alpes', 'Goodwood Revival', 'Mont Ventoux'], ko: [], note: 'Selon le modèle exact : Giulietta SS, Giulia Sprint GTA, ou TZ — l\'éligibilité varie. Sois précis sur le modèle pour affiner.' },
+      'ferrari/250': { ok: ['Mille Miglia', 'Le Mans Classic', 'Goodwood Revival', 'Tour Auto', 'Coupe des Alpes'], ko: [], note: 'Toutes portes ouvertes — sélection éditoriale par contre, dossier complet et historique propriétaires demandé.' },
+      'bmw/2002': { ok: ['Tour Auto', 'Coupe des Alpes', 'Mont Ventoux', 'Critérium des Cévennes Historique'], ko: ['Mille Miglia', 'Le Mans Classic (à vérifier selon année)'], note: 'Excellente base pour débuter le historique français. Préparation FIA Annexe K relativement accessible.' },
+      'ford/escort': { ok: ['Critérium des Cévennes Historique', 'Tour Auto (Escort RS1600/RS2000)', 'Coupe des Alpes', 'Mont Ventoux'], ko: ['Mille Miglia', 'Le Mans Classic'], note: 'Reine du rallye historique côté nord, surtout en version Mk1 et Mk2. Dispo et préparation faciles côté UK.' }
+    };
+
+    function checkEligibility() {
+      const marque = document.getElementById('el-marque').value;
+      const modele = document.getElementById('el-modele').value.trim().toLowerCase();
+      const annee = parseInt(document.getElementById('el-annee').value) || 0;
+      const resultBox = document.getElementById('el-result');
+
+      if (!marque || !modele) {
+        resultBox.classList.remove('match', 'partial');
+        resultBox.classList.add('active');
+        resultBox.innerHTML = `<div class="verdict" style="color: var(--gris)">Marque et modèle nécessaires.</div>
+          <p style="font-family: var(--editorial); font-size: 15px; color: var(--encre-soft)">Indique au moins la marque et le modèle (ex. Porsche 911 RS, Alfa Giulia, Lancia Stratos).</p>`;
+        return;
+      }
+
+      // Look up
+      const key1 = `${marque}/${modele}`;
+      let match = ELIGIBLE[key1];
+      if (!match) {
+        // Partial : key starting with marque/keyword
+        const partial = Object.keys(ELIGIBLE).find(k => k.startsWith(marque + '/') && modele.includes(k.split('/')[1]));
+        if (partial) match = ELIGIBLE[partial];
+      }
+
+      if (match) {
+        resultBox.classList.remove('partial');
+        resultBox.classList.add('active', 'match');
+        const okList = match.ok.length ? `<p><strong style="color: var(--vert-anglais)">Admise sur</strong> ${match.ok.length} épreuves majeures&nbsp;:<br />→ ${match.ok.join('<br />→ ')}</p>` : '';
+        const koList = match.ko.length ? `<p style="margin-top: var(--s-3)"><strong style="color: var(--rouge)">Non éligible</strong> sur&nbsp;:<br />→ ${match.ko.join('<br />→ ')}</p>` : '';
+        resultBox.innerHTML = `
+          <div class="verdict">✓ Ta voiture passe.</div>
+          ${okList}
+          ${koList}
+          <p style="margin-top: var(--s-4); font-family: var(--editorial); font-style: italic; color: var(--encre-soft); font-size: 14px">
+            ${match.note}
+          </p>
+        `;
+      } else {
+        // Fallback: generic age-based answer
+        resultBox.classList.remove('match');
+        resultBox.classList.add('active', 'partial');
+        let verdict, msg;
+        if (annee && annee < 1957) {
+          verdict = '✓ Éligible Mille Miglia';
+          msg = `Une voiture de ${annee} est éligible à la Mille Miglia (1927-1957) sous réserve qu'il s'agisse d'un modèle ayant participé à l'épreuve d'origine. Pour les autres épreuves (Tour Auto, Coupe des Alpes), à vérifier au cas par cas.`;
+        } else if (annee && annee <= 1981) {
+          verdict = '✓ Sans doute éligible Le Mans Classic';
+          msg = `Une voiture de ${annee} entre dans la fenêtre Le Mans Classic (jusqu'à 1981). Pour Tour Auto (1951-1985) et Coupe des Alpes (1933-1990), les chances sont bonnes. FIA HTP probablement nécessaire.`;
+        } else if (annee && annee <= 1990) {
+          verdict = 'Éligible côté français';
+          msg = `Pour une voiture de ${annee}, regarde du côté Coupe des Alpes (jusqu'à 1990), Critérium des Cévennes Historique, et courses de côte FFVE. Le marché italien et anglais est plus restrictif.`;
+        } else {
+          verdict = 'Trop récente pour la plupart';
+          msg = `Les rallyes historiques EU s'arrêtent généralement à 1990. Une voiture postérieure relève des rallyes de régularité moderne, ou des courses GT historiques (peu nombreuses). Tu peux te tourner vers les <a href="rally-social.html" style="color: var(--orange-polo)">rallyes sociaux CARNET</a> qui n'imposent pas de période.`;
+        }
+        resultBox.innerHTML = `
+          <div class="verdict">${verdict}</div>
+          <p style="font-family: var(--editorial); font-size: 15px; line-height: 1.55">
+            ${msg}
+          </p>
+          <p style="margin-top: var(--s-3); font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; color: var(--gris)">
+            ↳ Référentiel CARNET en cours d'enrichissement. Si tu as un modèle pointu, écris-nous via la page À propos.
+          </p>
+        `;
+      }
+    }
+
+    document.getElementById('el-check').addEventListener('click', checkEligibility);
+
+    /* TODO production:
+       - Real calendar ingestion (FFVE iCal, FIA Historic API, Peter Auto scraping).
+       - Cross-reference user's garage from Supabase auth.users → cars JOIN.
+       - Eligibility referential maintained in dedicated table cars_eligibility with
+         (model_canonical, period_start, period_end, events_eligible[], events_excluded[]).
+       - ICS export endpoint at /api/historic-rallies.ics with user filters baked in.
+    */
+  </script>
+</body>
+</html>

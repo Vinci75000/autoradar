@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="CARNET · Carnet d'entretien numérique on-chain. Historique vérifiable, factures hashées sur XRPL, transmission patrimoniale inscrite. Gratuit, ouvert à toutes les voitures européennes." />
+  <meta name="theme-color" content="#faf6ef" />
+
+  <title>CARNET · Carnet d'entretien on-chain</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,400;1,500;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="carnet-tokens.css" />
+
+  <style>
+    main {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: var(--s-8) var(--s-5);
+    }
+    section { padding-block: var(--s-7); border-top: 1px solid var(--gris-line); }
+    section:first-of-type { border-top: none; padding-top: 0; }
+    .hero { padding-top: var(--s-3); padding-bottom: var(--s-7); border-top: none; }
+
+    .back-nav {
+      margin-bottom: var(--s-5);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .back-nav a { color: var(--gris); text-decoration: none; }
+    .back-nav a:hover { color: var(--encre); }
+
+    /* ───── 3 raisons d'avoir un carnet ───── */
+    .why-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--s-4);
+      margin-top: var(--s-5);
+    }
+    @media (min-width: 600px) {
+      .why-grid { grid-template-columns: 1fr 1fr 1fr; }
+    }
+    .why-card {
+      padding: var(--s-5);
+      background: var(--papier-bright);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+    }
+    .why-card .icon-num {
+      font-family: var(--display);
+      font-style: italic;
+      font-size: 32px;
+      color: var(--orange-polo);
+      margin: 0 0 var(--s-3) 0;
+      line-height: 1;
+    }
+    .why-card h3 {
+      font-family: var(--display);
+      font-style: italic;
+      font-size: 20px;
+      margin: 0 0 var(--s-3) 0;
+      line-height: 1.2;
+    }
+    .why-card p {
+      font-family: var(--editorial);
+      font-size: 15px;
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    /* ───── Timeline preview ───── */
+    .timeline {
+      margin-top: var(--s-5);
+      position: relative;
+      padding-left: 0;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 11px;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: var(--gris-line);
+    }
+    .tl-entry {
+      position: relative;
+      padding: var(--s-4) 0 var(--s-4) var(--s-7);
+    }
+    .tl-entry::before {
+      content: '';
+      position: absolute;
+      left: 5px;
+      top: var(--s-5);
+      width: 14px;
+      height: 14px;
+      background: var(--papier);
+      border: 2px solid var(--orange-polo);
+      border-radius: var(--r);
+    }
+    .tl-entry.major::before {
+      background: var(--orange-polo);
+    }
+    .tl-date {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gris);
+      margin: 0 0 var(--s-2) 0;
+    }
+    .tl-title {
+      font-family: var(--display);
+      font-style: italic;
+      font-size: 19px;
+      color: var(--encre);
+      margin: 0 0 var(--s-2) 0;
+      line-height: 1.2;
+    }
+    .tl-detail {
+      font-family: var(--editorial);
+      font-size: 15px;
+      line-height: 1.5;
+      color: var(--encre);
+      margin: 0 0 var(--s-3) 0;
+    }
+    .tl-meta {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: var(--gris);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--s-3);
+    }
+    .tl-meta .hash {
+      color: var(--orange-polo);
+      cursor: pointer;
+      text-decoration: underline;
+      text-decoration-color: var(--gris-line);
+      text-underline-offset: 3px;
+    }
+    .tl-meta .hash:hover { text-decoration-color: var(--orange-polo); }
+
+    /* ───── Wizard simplifié ───── */
+    .wizard {
+      margin-top: var(--s-5);
+      background: var(--papier-bright);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      padding: var(--s-6) var(--s-5);
+    }
+    .field { margin-bottom: var(--s-5); }
+    .field label {
+      display: block;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gris);
+      margin-bottom: var(--s-3);
+    }
+    .field input,
+    .field select {
+      width: 100%;
+      padding: var(--s-4);
+      font-family: var(--editorial);
+      font-size: 17px;
+      background: var(--papier);
+      border: 1px solid var(--gris-line);
+      border-radius: var(--r);
+      color: var(--encre);
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    .field input:focus,
+    .field select:focus {
+      outline: none;
+      border-color: var(--encre);
+    }
+    .field select {
+      background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%231a1410' stroke-width='1.5'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right var(--s-4) center;
+      padding-right: var(--s-7);
+    }
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s-4);
+    }
+    @media (max-width: 480px) {
+      .field-row { grid-template-columns: 1fr; }
+    }
+
+    /* Hash demo */
+    .hash-demo {
+      padding: var(--s-5);
+      background: var(--encre);
+      color: var(--papier);
+      border-radius: var(--r);
+      font-family: var(--mono);
+      font-size: 11px;
+      line-height: 1.7;
+      letter-spacing: 0.04em;
+      margin: var(--s-5) 0;
+      overflow-x: auto;
+    }
+    .hash-demo .hash-label {
+      color: var(--orange-polo);
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: var(--s-3);
+      font-size: 10px;
+    }
+    .hash-demo code {
+      color: var(--papier);
+      background: rgba(255,255,255,0.05);
+      padding: 2px 6px;
+      border-radius: var(--r);
+      word-break: break-all;
+    }
+
+    /* When-it-matters use cases */
+    .uc-list { margin-top: var(--s-5); }
+    .uc-row {
+      padding: var(--s-5) 0;
+      border-top: 1px solid var(--gris-line);
+    }
+    .uc-row:first-child { border-top: 2px solid var(--encre); }
+    .uc-tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--orange-polo);
+      margin: 0 0 var(--s-2) 0;
+    }
+    .uc-title {
+      font-family: var(--display);
+      font-style: italic;
+      font-size: 22px;
+      color: var(--encre);
+      margin: 0 0 var(--s-3) 0;
+      line-height: 1.2;
+    }
+    .uc-row p {
+      font-family: var(--editorial);
+      font-size: 16px;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    /* Step counter */
+    .step-counter {
+      display: flex;
+      gap: var(--s-2);
+      margin-bottom: var(--s-5);
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gris);
+    }
+    .step-counter span {
+      flex: 1;
+      padding-bottom: var(--s-2);
+      border-bottom: 2px solid var(--gris-line);
+      text-align: center;
+    }
+    .step-counter span.active {
+      color: var(--orange-polo);
+      border-bottom-color: var(--orange-polo);
+    }
+    .step-counter span.done {
+      color: var(--encre);
+      border-bottom-color: var(--encre);
+    }
+
+    .wstep { display: none; }
+    .wstep.active { display: block; }
+
+    .wizard-nav {
+      display: flex;
+      gap: var(--s-3);
+      margin-top: var(--s-6);
+    }
+    .btn-step {
+      flex: 1;
+      padding: var(--s-4);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      border: 1px solid var(--encre);
+      border-radius: var(--r);
+      cursor: pointer;
+    }
+    .btn-next { background: var(--encre); color: var(--papier); }
+    .btn-next:hover { background: var(--orange-polo); border-color: var(--orange-polo); }
+    .btn-back {
+      background: transparent;
+      color: var(--encre);
+      border-color: var(--gris-line);
+      flex: 0 0 auto;
+      padding: var(--s-4) var(--s-5);
+    }
+    .btn-back:hover { border-color: var(--encre); }
+
+    /* Upload boxes */
+    .upload-box {
+      padding: var(--s-5);
+      background: var(--papier);
+      border: 2px dashed var(--gris-line);
+      border-radius: var(--r);
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 200ms ease;
+      margin-bottom: var(--s-4);
+    }
+    .upload-box:hover { border-color: var(--encre); }
+    .upload-box .icon {
+      font-family: var(--display);
+      font-style: italic;
+      font-size: 36px;
+      color: var(--gris);
+      margin: 0 0 var(--s-3) 0;
+      line-height: 1;
+    }
+    .upload-box .title {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 17px;
+      color: var(--encre);
+      margin: 0 0 var(--s-2) 0;
+    }
+    .upload-box .sub {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gris);
+      margin: 0;
+    }
+    .upload-box.filled {
+      border-style: solid;
+      border-color: var(--orange-polo);
+      background: var(--orange-soft);
+    }
+    .upload-box.filled .icon { color: var(--orange-polo); }
+
+    /* Confirm */
+    .confirm-hero {
+      text-align: center;
+      padding: var(--s-7) var(--s-5);
+      background: var(--vert-soft);
+      border: 2px solid var(--vert-anglais);
+      border-radius: var(--r);
+      margin-bottom: var(--s-5);
+    }
+    .confirm-icon {
+      font-family: var(--display);
+      font-style: italic;
+      font-size: clamp(56px, 11vw, 80px);
+      color: var(--vert-anglais);
+      line-height: 1;
+      margin: 0 0 var(--s-3) 0;
+    }
+    .confirm-title {
+      font-family: var(--display);
+      font-style: italic;
+      font-size: clamp(24px, 4vw, 32px);
+      color: var(--encre);
+      margin: 0 0 var(--s-3) 0;
+      line-height: 1.2;
+    }
+    .confirm-sub {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 16px;
+      color: var(--encre-soft);
+      margin: 0 0 var(--s-4) 0;
+    }
+    .vc-id {
+      font-family: var(--mono);
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      color: var(--orange-polo);
+      padding: var(--s-3) var(--s-4);
+      background: var(--papier);
+      border-radius: var(--r);
+      display: inline-block;
+    }
+  </style>
+</head>
+
+<body>
+  <a href="#contenu" class="skip-link">Aller au contenu</a>
+
+  <main id="contenu">
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         HERO
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="hero" aria-labelledby="hero-title">
+      <p class="back-nav"><a href="index.html">← Retour à l'accueil</a></p>
+
+      <p class="eyebrow">Carnet d'entretien on-chain</p>
+      <h1 id="hero-title"><em>Tout ce qu'elle a vécu.</em><br />Inscrit pour de bon.</h1>
+      <p class="tagline-minor">
+        <em>Le carnet papier qui se mouille, le tampon concessionnaire qui s'efface, le tableur
+        qu'on perd avec le mobile. Une voiture vit cinquante ans. Son histoire doit tenir.</em>
+      </p>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         POURQUOI ON-CHAIN
+         ═══════════════════════════════════════════════════════════════ -->
+    <section aria-labelledby="why-title">
+      <p class="eyebrow">Pourquoi on-chain</p>
+      <h2 id="why-title"><em>Trois choses qu'aucun PDF ne sait faire.</em></h2>
+
+      <div class="why-grid">
+        <div class="why-card">
+          <p class="icon-num"><em>01</em></p>
+          <h3><em>Antériorité prouvée</em></h3>
+          <p>
+            Quand tu inscris une facture, son hash part sur XRPL. Tu peux prouver à un acheteur,
+            un assureur, un juge — que ce document existait à cette date. Personne ne peut le
+            réécrire après coup.
+          </p>
+        </div>
+        <div class="why-card">
+          <p class="icon-num"><em>02</em></p>
+          <h3><em>Kilométrage scellé</em></h3>
+          <p>
+            Chaque entrée porte le km relevé. Une régression du compteur saute aux yeux. La
+            fraude au kilométrage représente un véhicule sur trois en occasion européenne. Sur
+            CARNET, elle devient impossible sans laisser de trace.
+          </p>
+        </div>
+        <div class="why-card">
+          <p class="icon-num"><em>03</em></p>
+          <h3><em>Transmissible 100 ans</em></h3>
+          <p>
+            XRPL existe depuis 2012 et ne s'éteint pas. Le carnet de ta 911 sera lisible par
+            ton petit-fils en 2126. Tu ne dépends d'aucun éditeur, d'aucune app à vendre, d'aucun
+            cloud à fermer.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         TIMELINE PREVIEW (exemple Mercedes Genesis VC-001)
+         ═══════════════════════════════════════════════════════════════ -->
+    <section aria-labelledby="example-title">
+      <p class="eyebrow">Exemple · Genesis VC-001</p>
+      <h2 id="example-title"><em>À quoi ça ressemble.</em></h2>
+
+      <p>
+        Voici un extrait du carnet de la Mercedes E250 CGI Carlsson 2011, premier Vehicle
+        Certificate du registre européen — propriété co-multisig Sylvain & Christian Chaillout.
+        Ouvert le 14 décembre 2026. Public sur consentement des co-propriétaires.
+      </p>
+
+      <div class="timeline">
+
+        <div class="tl-entry major">
+          <p class="tl-date">14 · 12 · 2026</p>
+          <p class="tl-title"><em>Genesis · ouverture du Carnet</em></p>
+          <p class="tl-detail">
+            Premier Vehicle Certificate enregistré sur le registre CARNET. Co-propriété
+            multisig 2/2 Sylvain Chaillout / Christian Chaillout. Cérémonie inaugurale Cité de
+            l'Automobile de Mulhouse.
+          </p>
+          <p class="tl-meta">
+            <span>55 320 km</span>
+            <span>· Mulhouse, FR</span>
+            <span class="hash">VC-001 · hash XRPL ↗</span>
+          </p>
+        </div>
+
+        <div class="tl-entry">
+          <p class="tl-date">22 · 11 · 2026</p>
+          <p class="tl-title"><em>Révision annuelle complète</em></p>
+          <p class="tl-detail">
+            Vidange moteur 5W-30 Mobil 1, filtre à huile Mahle, filtre à air Mann, filtre habitacle,
+            contrôle plaquettes et disques avant, mise à niveau liquide de frein. Aucune
+            intervention extra-révision.
+          </p>
+          <p class="tl-meta">
+            <span>55 102 km</span>
+            <span>· Garage Carlsson Munich</span>
+            <span>· 1 247 €</span>
+            <span class="hash">Facture #2026-11-447 ↗</span>
+          </p>
+        </div>
+
+        <div class="tl-entry">
+          <p class="tl-date">03 · 06 · 2025</p>
+          <p class="tl-title"><em>Pneus avant remplacés</em></p>
+          <p class="tl-detail">
+            Continental SportContact 7 · 245/40 R18 · 4 mm avant, 5 mm arrière au démontage.
+            Géométrie contrôlée à la suite, parallélisme OK.
+          </p>
+          <p class="tl-meta">
+            <span>49 880 km</span>
+            <span>· Speedy Mulhouse</span>
+            <span>· 720 €</span>
+            <span class="hash">Facture #2025-06-2891 ↗</span>
+          </p>
+        </div>
+
+        <div class="tl-entry">
+          <p class="tl-date">17 · 03 · 2025</p>
+          <p class="tl-title"><em>Contrôle technique · vierge</em></p>
+          <p class="tl-detail">
+            Aucune défaillance. Procès-verbal scanné, validité 2 ans.
+          </p>
+          <p class="tl-meta">
+            <span>48 520 km</span>
+            <span>· DEKRA Mulhouse</span>
+            <span class="hash">PV CT #2025-MUL-1187 ↗</span>
+          </p>
+        </div>
+
+        <div class="tl-entry major">
+          <p class="tl-date">14 · 09 · 2011</p>
+          <p class="tl-title"><em>Préparation Carlsson · première mise en route</em></p>
+          <p class="tl-detail">
+            Reprogrammation moteur Carlsson +47 ch, échappement inox, jantes Carlsson 1/16
+            forgées 18 pouces, abaissement Eibach -25mm. Numéro de série Carlsson 2011-0312-CGI.
+          </p>
+          <p class="tl-meta">
+            <span>0 km (livraison)</span>
+            <span>· Carlsson Werkstatt, Merzig DE</span>
+            <span>· Dossier complet 47 documents</span>
+            <span class="hash">Hash original Carlsson ↗</span>
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         HASH PÉDAGOGIE
+         ═══════════════════════════════════════════════════════════════ -->
+    <section aria-labelledby="how-title">
+      <p class="eyebrow">Sous le capot</p>
+      <h2 id="how-title"><em>Comment XRPL conserve une facture.</em></h2>
+
+      <p>
+        Sans entrer dans le technique : quand tu uploades une facture, CARNET calcule son
+        empreinte numérique (un code de 64 caractères qui ne désigne que ce fichier-là) et
+        l'inscrit sur le XRP Ledger. À la moindre modification du fichier — un pixel changé, un
+        chiffre corrigé — l'empreinte ne correspond plus. La fraude est mathématiquement détectable.
+      </p>
+
+      <div class="hash-demo">
+        <p class="hash-label">→ Facture vidange 22/11/2026 · empreinte SHA-256</p>
+        <code>a4f2d8c91b6e3f47e1d2a8b9c5f6e7d8a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e</code>
+        <p class="hash-label" style="margin-top: var(--s-4);">→ Transaction XRPL d'inscription</p>
+        <code>4F2A8D91B6E3F47E1D2A8B9C5F6E7D8A1B2C3D4E5F6A7B8C9D0E1F2A3B4C5D6E7</code>
+        <p class="hash-label" style="margin-top: var(--s-4);">→ Coût d'inscription</p>
+        <code>0.000012 XRP ≈ 0,000005 €</code>
+      </div>
+
+      <p>
+        <em>L'inscription coûte zéro. CARNET prend en charge les frais de transaction. La
+        preuve, elle, est éternelle.</em>
+      </p>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         QUAND ÇA COMPTE
+         ═══════════════════════════════════════════════════════════════ -->
+    <section aria-labelledby="when-title">
+      <p class="eyebrow">Quand ça compte</p>
+      <h2 id="when-title"><em>Quatre moments où le Carnet sauve la mise.</em></h2>
+
+      <div class="uc-list">
+
+        <div class="uc-row">
+          <p class="uc-tag">Cas 01 · Revente</p>
+          <p class="uc-title"><em>« Vous avez les factures ? »</em></p>
+          <p>
+            La question qui tue 60% des transactions au-dessus de 50 k€. Avec CARNET, tu
+            réponds en partageant un lien public chiffré : timeline complète, factures vérifiables,
+            km scellés. Une 993 Carrera avec carnet complet se vend 12 à 18% au-dessus du marché.
+          </p>
+        </div>
+
+        <div class="uc-row">
+          <p class="uc-tag">Cas 02 · Sinistre</p>
+          <p class="uc-title"><em>Expertise après accident.</em></p>
+          <p>
+            L'expert assurance arrive. Tu lui ouvres ton Carnet. Il voit l'historique, les
+            entretiens à jour, l'état avant choc. La valeur agréée tient. Les conflits sur la
+            qualité d'entretien — premier motif de litige avec les assureurs — disparaissent.
+          </p>
+        </div>
+
+        <div class="uc-row">
+          <p class="uc-tag">Cas 03 · Transmission</p>
+          <p class="uc-title"><em>Héritage, donation, divorce.</em></p>
+          <p>
+            Quand la voiture change de mains pour autre chose qu'une vente, le notaire ou le
+            juge a besoin de l'historique. Avec un Carnet on-chain, tu produis le dossier en
+            cinq minutes. Sans, tu repars chez le concessionnaire chercher les souches.
+          </p>
+        </div>
+
+        <div class="uc-row">
+          <p class="uc-tag">Cas 04 · Concours</p>
+          <p class="uc-title"><em>Provenance et palmarès.</em></p>
+          <p>
+            Tu présentes à Chantilly, Villa d'Este, La Sarthe Classic. Le jury évalue la
+            provenance. Un Carnet CARNET, c'est une provenance présentable, structurée, vérifiable.
+            Pour les voitures de concours, c'est devenu une attente.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         OUVRIR UN CARNET (wizard 3 steps)
+         ═══════════════════════════════════════════════════════════════ -->
+    <section aria-labelledby="open-title">
+      <p class="eyebrow">Ouvrir un Carnet</p>
+      <h2 id="open-title"><em>Trois étapes. Dix minutes.</em></h2>
+
+      <p>
+        Gratuit, sans abonnement, ouvert à toutes les voitures européennes. Tu peux laisser le
+        Carnet privé (seul toi y accèdes), ou le partager via lien à un acheteur, un expert,
+        un partenaire.
+      </p>
+
+      <div class="wizard" id="wizard">
+
+        <div class="step-counter" aria-hidden="true">
+          <span id="s-1" class="active">01 · Identité</span>
+          <span id="s-2">02 · Import</span>
+          <span id="s-3">03 · Sceller</span>
+        </div>
+
+        <!-- STEP 1 -->
+        <div class="wstep active" id="w-1">
+
+          <div class="field-row">
+            <div class="field">
+              <label for="marque">Marque</label>
+              <select id="marque">
+                <option value="">— Choisir —</option>
+                <option>Porsche</option>
+                <option>Ferrari</option>
+                <option>Lamborghini</option>
+                <option>Mercedes-Benz</option>
+                <option>BMW</option>
+                <option>Audi</option>
+                <option>Aston Martin</option>
+                <option>Bentley</option>
+                <option>Maserati</option>
+                <option>Jaguar</option>
+                <option>Alfa Romeo</option>
+                <option>Lancia</option>
+                <option>Lotus</option>
+                <option>McLaren</option>
+                <option>Alpine</option>
+                <option>Renault</option>
+                <option>Peugeot</option>
+                <option>Citroën</option>
+                <option>Autre</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="modele">Modèle</label>
+              <input type="text" id="modele" placeholder="993 Carrera 4S" />
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="annee">Année</label>
+              <input type="number" id="annee" min="1900" max="2026" placeholder="1997" />
+            </div>
+            <div class="field">
+              <label for="km">Kilométrage actuel</label>
+              <input type="number" id="km" min="0" placeholder="78 000" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="vin">Numéro de châssis · VIN <span style="text-transform: none; letter-spacing: 0; color: var(--encre-soft); font-family: var(--editorial); font-style: italic;">(optionnel — recommandé pour la traçabilité)</span></label>
+            <input type="text" id="vin" placeholder="WP0ZZZ99ZVS390123" autocomplete="off" />
+          </div>
+
+          <div class="wizard-nav">
+            <button class="btn-step btn-next" data-go="2">Continuer →</button>
+          </div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="wstep" id="w-2">
+
+          <p style="font-family: var(--editorial); font-style: italic; color: var(--encre-soft); margin: 0 0 var(--s-5) 0;">
+            Importe ce que tu as. Carnet d'origine scanné, factures concessionnaire, contrôles
+            techniques, photos d'époque. Tout ce qui raconte la voiture. CARNET reconnaît
+            automatiquement les concessionnaires partenaires et indexe les interventions.
+          </p>
+
+          <div class="upload-box" data-uploaded="false">
+            <p class="icon">+</p>
+            <p class="title"><em>Carnet d'entretien d'origine</em></p>
+            <p class="sub">PDF · JPG · scan papier</p>
+          </div>
+
+          <div class="upload-box" data-uploaded="false">
+            <p class="icon">+</p>
+            <p class="title"><em>Factures d'entretien</em></p>
+            <p class="sub">PDF · plusieurs fichiers possibles</p>
+          </div>
+
+          <div class="upload-box" data-uploaded="false">
+            <p class="icon">+</p>
+            <p class="title"><em>Procès-verbaux de contrôle technique</em></p>
+            <p class="sub">PDF · 2 dernières années</p>
+          </div>
+
+          <div class="upload-box" data-uploaded="false">
+            <p class="icon">+</p>
+            <p class="title"><em>Photos d'époque · provenance</em></p>
+            <p class="sub">JPG · acquisition, salons, anciens propriétaires</p>
+          </div>
+
+          <p style="font-family: var(--editorial); font-style: italic; color: var(--encre-soft); font-size: 14px; margin-top: var(--s-5);">
+            <em>Tu peux passer cette étape et remplir progressivement. Les ajouts ultérieurs
+            sont aussi hashés et horodatés.</em>
+          </p>
+
+          <div class="wizard-nav">
+            <button class="btn-step btn-back" data-back="1">←</button>
+            <button class="btn-step btn-next" data-go="3">Continuer →</button>
+          </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="wstep" id="w-3">
+
+          <p style="font-family: var(--editorial); font-style: italic; color: var(--encre-soft); margin: 0 0 var(--s-5) 0;">
+            Dernière étape avant inscription. Trois choix à faire — modifiables à tout moment.
+          </p>
+
+          <div class="field">
+            <label for="visib">Visibilité du Carnet</label>
+            <select id="visib">
+              <option value="private" selected>Privé — seul toi y accèdes</option>
+              <option value="link">Sur lien — partage choisi</option>
+              <option value="public">Public — référencé dans l'archive CARNET</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="multisig">Co-propriété</label>
+            <select id="multisig">
+              <option value="solo" selected>Propriétaire unique</option>
+              <option value="2-2">Co-propriété 2/2 multisig (couple, père-fils)</option>
+              <option value="3-3">Co-propriété 3/3 multisig (3 propriétaires, indivision)</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="notify">Rappels d'entretien</label>
+            <select id="notify">
+              <option value="annual">Annuels (révision, CT, assurance)</option>
+              <option value="km">Kilométriques (vidange, distribution, freins)</option>
+              <option value="both" selected>Les deux</option>
+              <option value="none">Aucun</option>
+            </select>
+          </div>
+
+          <div class="wizard-nav">
+            <button class="btn-step btn-back" data-back="2">←</button>
+            <button class="btn-step btn-next" id="seal-btn">Sceller →</button>
+          </div>
+        </div>
+
+        <!-- STEP 4 : CONFIRMATION -->
+        <div class="wstep" id="w-4">
+
+          <div class="confirm-hero">
+            <p class="confirm-icon"><em>—</em></p>
+            <p class="confirm-title"><em>Carnet ouvert.</em></p>
+            <p class="confirm-sub">
+              <em>Inscription XRPL effectuée. Ton numéro de Vehicle Certificate :</em>
+            </p>
+            <p class="vc-id" id="vc-id">VC-—</p>
+          </div>
+
+          <p style="font-family: var(--editorial); font-style: italic; font-size: 15px; line-height: 1.6; color: var(--encre); margin: 0 0 var(--s-5) 0;">
+            <em>Tu reçois par mail le lien d'accès, le hash de transaction XRPL, et le QR code
+            à coller sous le capot. Bienvenue dans le registre européen.</em>
+          </p>
+
+          <div class="cta-row">
+            <a href="index.html" class="cta cta-primary">
+              <span class="dot" aria-hidden="true"></span>
+              Aller au garage
+            </a>
+            <a href="vendre.html" class="cta cta-ghost">Publier une annonce</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         CONFIDENTIALITÉ
+         ═══════════════════════════════════════════════════════════════ -->
+    <section aria-labelledby="privacy-title">
+      <p class="eyebrow">Confidentialité</p>
+      <h2 id="privacy-title"><em>On-chain ne veut pas dire public.</em></h2>
+
+      <p>
+        Seuls les hash partent sur XRPL — pas les fichiers eux-mêmes. Tes factures restent
+        chiffrées, hébergées sur un stockage IPFS dont seul toi (et les co-propriétaires
+        désignés) possèdes la clé. CARNET ne peut pas lire ce que tu uploades, et personne
+        d'extérieur non plus.
+      </p>
+
+      <p>
+        Quand tu partages ton Carnet — pour vendre, pour un expert, pour le concours — tu
+        génères un lien à expiration. L'invité peut consulter, jamais télécharger, et l'accès
+        se révoque en un clic. <em>Hippocratique par défaut.</em>
+      </p>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         FAQ
+         ═══════════════════════════════════════════════════════════════ -->
+    <section aria-labelledby="faq-title">
+      <p class="eyebrow">Questions fréquentes</p>
+      <h2 id="faq-title"><em>Avant que tu poses la question.</em></h2>
+
+      <h3 style="margin-top: var(--s-5);"><em>Si CARNET ferme, je perds mon Carnet ?</em></h3>
+      <p>
+        Non. Les hash sont sur XRPL, qui existerait sans CARNET. Tes fichiers sont sur IPFS,
+        un réseau distribué également indépendant. CARNET est l'interface — le contenu vit
+        ailleurs. C'est volontaire et inscrit aux statuts.
+      </p>
+
+      <h3><em>Et si je n'ai aucun document existant ?</em></h3>
+      <p>
+        Tu démarres avec ce que tu as. Une plaque châssis, une photo, le kilométrage actuel.
+        Puis tu enrichis au fil des révisions. Un Carnet vide aujourd'hui peut devenir
+        irréprochable dans deux ans. C'est l'inverse : la voiture sans Carnet aujourd'hui
+        sera celle qu'on regardera de travers en 2030.
+      </p>
+
+      <h3><em>Le carnet papier d'origine, je le jette ?</em></h3>
+      <p>
+        Jamais. Tu le scannes, tu l'uploades, tu le ranges. Le papier reste la pièce
+        patrimoniale ; le Carnet on-chain en est la copie vivante, indexée, et vérifiable.
+      </p>
+
+      <h3><em>Mon concessionnaire peut-il inscrire directement ?</em></h3>
+      <p>
+        Si c'est un partenaire CARNET, oui : il scanne la facture, l'horodate, et tu valides
+        depuis ton mobile. Sinon, tu uploades à la main après l'intervention. Une trentaine
+        de concessionnaires spécialisés ont rejoint le programme — voir la liste sur la page
+        Discover.
+      </p>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════════════════════════ -->
+  <footer class="carnet-footer">
+    <p class="footer-tagline"><em>Une histoire de voitures.</em></p>
+
+    <nav class="footer-nav" aria-label="Pages utilitaires">
+      <a href="index.html">Affût</a>
+      <a href="cote.html">Cote</a>
+      <a href="assurance.html">Assurance</a>
+      <a href="discover.html">Discover</a>
+      <a href="archetypes.html">Archétypes</a>
+      <a href="launch.html">14·12·2026</a>
+      <a href="about.html">À propos</a>
+    </nav>
+
+    <p class="footer-legal">
+      CARNET · Association loi 1901 française non-lucrative familiale<br />
+      Vehicle Certificates inscrits sur XRP Ledger · contenus chiffrés sur IPFS<br />
+      Wallet officiel multisig 3/3&nbsp;: <code>rJBhnYvg5kq9PgWFZziEXu2EcdJfcq8WSU</code>
+    </p>
+  </footer>
+
+  <script>
+    'use strict';
+
+    /* Wizard navigation */
+    function showStep(n) {
+      for (let i = 1; i <= 4; i++) {
+        const s = document.getElementById('w-'+i);
+        if (s) s.classList.toggle('active', i === n);
+        const ind = document.getElementById('s-'+i);
+        if (ind) {
+          ind.classList.remove('active','done');
+          if (i === n) ind.classList.add('active');
+          else if (i < n) ind.classList.add('done');
+        }
+      }
+      window.scrollTo({ top: document.querySelector('.wizard').offsetTop - 40, behavior: 'smooth' });
+    }
+
+    document.querySelectorAll('[data-go]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = parseInt(btn.dataset.go, 10);
+        if (target === 2) {
+          if (!document.getElementById('marque').value) { document.getElementById('marque').focus(); return; }
+          if (!document.getElementById('modele').value.trim()) { document.getElementById('modele').focus(); return; }
+        }
+        showStep(target);
+      });
+    });
+
+    document.querySelectorAll('[data-back]').forEach(btn => {
+      btn.addEventListener('click', () => showStep(parseInt(btn.dataset.back, 10)));
+    });
+
+    /* Upload boxes simulation */
+    document.querySelectorAll('.upload-box').forEach(box => {
+      box.addEventListener('click', () => {
+        box.classList.toggle('filled');
+        box.dataset.uploaded = box.classList.contains('filled') ? 'true' : 'false';
+      });
+    });
+
+    /* Hash hover */
+    document.querySelectorAll('.tl-meta .hash').forEach(el => {
+      el.addEventListener('click', () => {
+        alert('Hash XRPL — En prod, ce lien ouvrira xrpscan.com/tx/<hash> et permettra à n\'importe qui de vérifier l\'antériorité du document.');
+      });
+    });
+
+    /* Seal */
+    document.getElementById('seal-btn').addEventListener('click', () => {
+      // TODO: real XRPL inscription + IPFS pin via carnet-payements worker
+      // Generate fake VC ID
+      const n = Math.floor(Math.random() * 9000) + 1000;
+      document.getElementById('vc-id').textContent = 'VC-' + n.toString().padStart(4, '0');
+      showStep(4);
+    });
+  </script>
+
+</body>
+</html>
