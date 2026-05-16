@@ -14209,9 +14209,10 @@ const LISTING_DURATION_DAYS = 90;
 
 // Sprint « Boucler la boucle Vendre » — mapping plan annonce → durée + tarif paywall
 const LISTING_PLANS = {
-  'premium-30':   { days: 30, amount: 17, label: 'Premium 30 jours' },
-  'premium-60':   { days: 60, amount: 28, label: 'Premium 60 jours · mise en avant 7 jours' },
-  'premium-90':   { days: 90, amount: 42, label: 'Premium 90 jours · boost mensuel' },
+  'free':         { days: 90, amount: 0,  label: 'Gratuit', tagline: 'Baseline viable. 1 annonce à la fois, 3 photos, 280 caractères.' },
+  'premium-30':   { days: 30, amount: 17, label: 'Premium 30 jours', tagline: '7 photos + vidéo 60sec, description 1900 car., mini-cote, notification users segment.' },
+  'premium-60':   { days: 60, amount: 28, label: 'Premium 60 jours', tagline: 'Toutes features Premium 30j · économie 6€ vs 2×30j.' },
+  'premium-90':   { days: 90, amount: 42, label: 'Premium 90 jours', tagline: 'Toutes features Premium 30j · boost mensuel · économie 9€ vs 3×30j.' },
   'pro-standard': { days: 60, amount: 28, label: 'Pro standard' },
   'pro':          { days: 90, amount: 42, label: 'Pro' }
 };
@@ -16878,6 +16879,27 @@ function renderManageAuctionSheet(carId){
 function renderListForSaleSheet(carId){
   const car = (State.garage || []).find(x => x.id === carId);
   if(!car) return '';
+  // Sprint Boucler la boucle Vendre : picker aligné sur la grille de vendre.html.
+  // 4 cards annonce (free + 3 premium) + 1 card enchère séparée. Le plan choisi est
+  // injecté via State.pendingSaleIntent, qui est ensuite consommé par
+  // renderSaleListingFormSheet et nettoyé à la publication.
+  const planCard = (planKey, popular) => {
+    const p = LISTING_PLANS[planKey];
+    if(!p) return '';
+    const priceLabel = p.amount === 0 ? 'Gratuit' : `${p.amount}€`;
+    const chip = popular ? `${p.label.toUpperCase()} · POPULAIRE` : p.label.toUpperCase();
+    const borderStyle = popular ? 'border-color:var(--orange-polo);' : '';
+    return `
+      <button class="sale-mode-card" data-action="chooseSalePlan" data-id="${esc(carId)}" data-plan="${esc(planKey)}" style="${borderStyle}">
+        <div class="sale-mode-top">
+          <span class="sale-mode-chip">${esc(chip)}</span>
+          <span class="sale-mode-price">${esc(priceLabel)} · ${p.days} j</span>
+        </div>
+        <div class="sale-mode-title">${esc(p.label)}</div>
+        <div class="sale-mode-text">${esc(p.tagline || '')}</div>
+      </button>
+    `;
+  };
   return `
     <div class="sheet-handle-area" data-sheet-drag>
       <div class="sheet-handle"></div>
@@ -16891,22 +16913,22 @@ function renderListForSaleSheet(carId){
       <button class="sheet-close" data-action="closeSheet" aria-label="Fermer">×</button>
     </div>
     <div class="sheet-content">
+      <div class="sheet-section-label">ANNONCE</div>
       <div class="sale-mode-grid">
-        <button class="sale-mode-card" data-action="chooseSaleMode" data-id="${esc(carId)}" data-mode="listing">
+        ${planCard('free', false)}
+        ${planCard('premium-30', true)}
+        ${planCard('premium-60', false)}
+        ${planCard('premium-90', false)}
+      </div>
+      <div class="sheet-section-label" style="margin-top:var(--s-6)">ENCHÈRE</div>
+      <div class="sale-mode-grid">
+        <button class="sale-mode-card" data-action="chooseSalePlan" data-id="${esc(carId)}" data-plan="auction">
           <div class="sale-mode-top">
-            <span class="sale-mode-chip">ANNONCE</span>
-            <span class="sale-mode-price">Gratuit · 90 j</span>
+            <span class="sale-mode-chip">ENCHÈRE CARNET</span>
+            <span class="sale-mode-price">8,8 %</span>
           </div>
-          <div class="sale-mode-title">Annonce 90 jours</div>
-          <div class="sale-mode-text">Tu fixes le prix demandé, tu reçois les contacts. Si elle ne trouve pas preneur à la fin, transition aux enchères en interne.</div>
-        </button>
-        <button class="sale-mode-card" data-action="chooseSaleMode" data-id="${esc(carId)}" data-mode="auction">
-          <div class="sale-mode-top">
-            <span class="sale-mode-chip">ENCHÈRE</span>
-            <span class="sale-mode-price">Commission douce</span>
-          </div>
-          <div class="sale-mode-title">Enchère CARNET</div>
-          <div class="sale-mode-text">Estimation, durée, prix de réserve. Tu donnes le rythme, le marché répond. La commission est prélevée à la vente.</div>
+          <div class="sale-mode-title">Vente aux enchères</div>
+          <div class="sale-mode-text">Estimation, durée, prix de réserve. 7,1 % vendeur + 1,7 % acheteur. Settlement immédiat. Anti-shill cryptographique.</div>
         </button>
       </div>
       <div style="font-family:var(--editorial);font-style:italic;font-size:11px;color:var(--gris);margin-top:var(--s-3);line-height:1.5">
@@ -18848,6 +18870,30 @@ const Actions = {
     if(mode === 'listing') Sheet.open('saleListingForm', id);
     else if(mode === 'auction') Sheet.open('saleAuctionForm', id);
   },
+  chooseSalePlan(id, plan){
+    // Sprint Boucler la boucle Vendre : appelé depuis le picker interne quand
+    // l'user clique une card plan. On réutilise pendingSaleIntent pour passer
+    // le plan choisi à renderSaleListingFormSheet (même code path que vendre.html).
+    if(!id || !plan) return;
+    if(plan === 'auction'){
+      State.pendingSaleIntent = null; // pas de plan attaché pour les enchères
+      Sheet.open('saleAuctionForm', id);
+      return;
+    }
+    if(!LISTING_PLANS[plan]){
+      // plan inconnu : fallback sur l'ouverture classique du form listing
+      Sheet.open('saleListingForm', id);
+      return;
+    }
+    State.pendingSaleIntent = {
+      plan: plan,
+      mode: 'listing',
+      amount: LISTING_PLANS[plan].amount,
+      label: LISTING_PLANS[plan].label,
+      ts: Date.now()
+    };
+    Sheet.open('saleListingForm', id);
+  },
   toggleTuner(formId, name){
     const state = formId === 'auction' ? SaleAuctionFormState : SaleListingFormState;
     if(state.tunerName === name){
@@ -20184,6 +20230,7 @@ function handleClick(e){
   if(action === 'toggleGarageCondition'){ Actions.toggleGarageCondition(t.dataset.field); return; }
   // Sale flow
   if(action === 'chooseSaleMode'){ Actions.chooseSaleMode(t.dataset.id, t.dataset.mode); return; }
+  if(action === 'chooseSalePlan'){ Actions.chooseSalePlan(t.dataset.id, t.dataset.plan); return; }
   if(action === 'saleAuctionFormChange' && t.dataset.value !== undefined){
     Actions.saleAuctionFormChange(t.dataset.field, t.dataset.value); return;
   }
