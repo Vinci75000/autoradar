@@ -1073,6 +1073,127 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   border-bottom-color:var(--orange-polo);
 }
 
+/* Sprint Axe 3 : banner action à prévoir (annonces qui expirent <7j) */
+.expiring-banner{
+  border:1px solid var(--orange-polo);
+  background:var(--papier);
+  border-left:4px solid var(--orange-polo);
+  border-radius:2px;
+  padding:18px 20px;
+  margin-bottom:14px;
+}
+.expiring-banner-head{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:10px;
+}
+.expiring-banner-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--orange-polo);
+  flex-shrink:0;
+  animation:expiring-pulse 2s ease-in-out infinite;
+}
+@keyframes expiring-pulse{
+  0%, 100%{opacity:1;transform:scale(1)}
+  50%{opacity:0.5;transform:scale(0.85)}
+}
+.expiring-banner-tag{
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--orange-polo);
+}
+.expiring-banner-msg{
+  font-family:var(--editorial);
+  font-style:italic;
+  font-size:13.5px;
+  color:var(--encre);
+  line-height:1.55;
+  margin:0 0 14px;
+}
+.expiring-banner-msg strong{
+  font-style:normal;
+  font-family:var(--sans);
+  font-weight:500;
+}
+.expiring-banner-actions{
+  display:flex;
+  gap:16px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.expiring-banner-cta{
+  background:var(--orange-polo);
+  color:var(--papier-bright);
+  border:none;
+  cursor:pointer;
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  padding:10px 18px;
+  border-radius:2px;
+  transition:background 200ms ease;
+}
+.expiring-banner-cta:hover{filter:brightness(0.92)}
+.expiring-banner-link{
+  background:transparent;
+  border:none;
+  cursor:pointer;
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--encre);
+  border-bottom:1px solid var(--encre);
+  padding:0 0 2px;
+}
+.expiring-banner-link:hover{
+  color:var(--orange-polo);
+  border-bottom-color:var(--orange-polo);
+}
+
+/* Sprint Axe 4 : note contextualisée par profil dans le picker Mettre en vente */
+.picker-profile-note{
+  background:var(--papier);
+  border:1px solid rgba(50,35,25,0.10);
+  border-left:3px solid var(--vert-anglais);
+  border-radius:2px;
+  padding:12px 14px;
+  margin-bottom:18px;
+}
+.picker-profile-note-tag{
+  display:inline-block;
+  font-family:var(--mono);
+  font-size:9.5px;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--vert-anglais);
+  margin-bottom:6px;
+}
+.picker-profile-note-text{
+  font-family:var(--editorial);
+  font-style:italic;
+  font-size:12.5px;
+  color:var(--encre);
+  line-height:1.55;
+  margin:0;
+}
+
+/* Sprint Axe 4 : ligne de tonalité profil sous le hero Garage (déjà branché) */
+.hero-profile-tagline{
+  font-family:var(--editorial);
+  font-style:italic;
+  font-size:12.5px;
+  color:var(--gris);
+  margin:4px 0 12px;
+  letter-spacing:0.01em;
+}
+
 /* ===== ENCHÈRES FILTER BAR (Chunk 8.c) ===== */
 .encheres-filter-bar{
   display:flex;
@@ -3210,6 +3331,16 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
       cursor: pointer;
       /* Évite que le texte long passe sous le badge LIVE */
       white-space: nowrap;
+    }
+    /* Sprint Axe 4 : tagline subtile alignée sur le profil dominant */
+    .hero-profile-tagline {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 13px;
+      color: var(--gris);
+      margin-top: var(--s-1);
+      margin-bottom: 0;
+      letter-spacing: 0.01em;
     }
     .hero-profile-chips {
       display: flex;
@@ -14468,6 +14599,111 @@ function fmtSaleDate(ts){
   if(!ts) return '—';
   return new Date(ts).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' });
 }
+// Sprint Axe 3 : helper unique qui synthétise le contexte de l'user.
+// Utilisé par les hero, banners et empty states pour adapter l'UI à l'état réel.
+// Sprint Axe 4 : voix par archétype. Subtile — pas du Hey Track Rat, plutôt un wording aligné.
+// Si multi-profil sélectionné, on prend le premier (l'user a fait son ordre dans Discover).
+// IDs alignés avec COLLECTOR_PROFILES du code (collector/flipper/track_rat/builder/enthusiast/driver/non_driver/social).
+const PROFILE_VOICE = {
+  collector: {
+    garageHook: 'Conservation, lignée, lente patine.',
+    emptyTitle: 'Une collection commence ici.',
+    emptyText: "Entre ta première voiture. CARNET en tiendra la mémoire — origine, factures, photos, parfois la cote. Le reste viendra avec le temps.",
+    pickerNote: 'Pour toi qui collectionnes : Premium 90 j met en avant provenance et carnet d\u2019entretien.'
+  },
+  flipper: {
+    garageHook: 'Acheter, attendre, revendre.',
+    emptyTitle: 'Ton inventaire de travail.',
+    emptyText: "Entre tes voitures actives. Tu suis leur cote, tu repères les fenêtres de revente, et tu publies depuis CARNET quand le moment vient.",
+    pickerNote: 'Pour ta rotation : Premium 30 j si tu vises rapide, enchère si tu maximises.'
+  },
+  track_rat: {
+    garageHook: 'Pas de vitrine. Du circuit.',
+    emptyTitle: 'Ta compagne de chrono.',
+    emptyText: "Entre ta première voiture de piste. CARNET tient le carnet d'entretien serré, le suivi des consommables, l'historique des sessions. Toi tu roules.",
+    pickerNote: 'Le marché de la piste cherche du concret : Premium 60 j avec photos circuit et palmarès.'
+  },
+  builder: {
+    garageHook: 'Build not bought.',
+    emptyTitle: 'Le châssis avant tout.',
+    emptyText: "Entre ta voiture — base saine, projet en cours, ou outlaw assumée. CARNET archive les étapes, les pièces, les factures. Ce que tu en fais reste ton affaire.",
+    pickerNote: 'Ton build se raconte : Premium 90 j pour l\u2019histoire complète, étapes et choix.'
+  },
+  enthusiast: {
+    garageHook: 'Numéros de châssis, options usine, séries spéciales.',
+    emptyTitle: 'Une voiture, un dossier.',
+    emptyText: "Entre ta première pièce. Numéros, configuration d'origine, options d'usine — CARNET garde la trace. La crème-de-la-crème mérite sa documentation.",
+    pickerNote: 'Les spécialistes lisent les détails : Premium 90 j avec narrative riche (châssis, options, matching numbers).'
+  },
+  driver: {
+    garageHook: 'Les kilomètres sont une médaille.',
+    emptyTitle: 'Ta première utilisée.',
+    emptyText: "Entre la voiture qui te suit au quotidien. Pas un musée — un compagnon de route. CARNET note les entretiens, les pannes, les souvenirs. Tu roules.",
+    pickerNote: 'Le kilométrage parle de toi — assume-le franchement. Premium 60 j suffit largement.'
+  },
+  non_driver: {
+    garageHook: 'Contempler, protéger.',
+    emptyTitle: 'Une voiture digne d\'être préservée.',
+    emptyText: "Entre la pièce que tu protèges. Garage climatisé ou salon — peu importe. CARNET veille sur la provenance et l'historique pendant que tu veilles sur la voiture.",
+    pickerNote: 'Tu vendras à un autre gardien : Premium 90 j avec narrative posée et photos d\u2019état.'
+  },
+  social: {
+    garageHook: 'Voyager, partager, manger bien.',
+    emptyTitle: 'Ta compagne de route.',
+    emptyText: "Entre la voiture qui t'emmène en rallye. CARNET tient le journal des routes, des arrivées, des copains. Le reste se vit en convoi.",
+    pickerNote: 'L\u2019acheteur cherche une voiture vivante : Premium 60 j avec photos de rallies et routes.'
+  }
+};
+function getProfileVoice(){
+  const ids = State.userProfiles || [];
+  if(ids.length === 0) return null;
+  const first = ids[0];
+  return PROFILE_VOICE[first] || null;
+}
+
+function getContextualState(){
+  const garage = State.garage || [];
+  const owned = garage.filter(c => c.ownership !== 'wishlist');
+  const wishlist = garage.filter(c => c.ownership === 'wishlist');
+  const inListing = owned.filter(c => c.saleStatus === 'listing');
+  const inAuction = owned.filter(c => c.saleStatus === 'auction');
+  const sold = owned.filter(c => c.saleStatus === 'sold');
+  const idle = owned.filter(c => !c.saleStatus);
+  // Annonces qui expirent dans <7j (action utilisateur potentielle)
+  const expiringSoon = inListing.filter(c => {
+    if(!c.saleData || !c.saleData.expiresAt) return false;
+    const days = Math.ceil((c.saleData.expiresAt - Date.now()) / 86400000);
+    return days >= 0 && days <= 7;
+  });
+  // Alertes
+  const alertsActive = (State.alerts || []).filter(a => !a.paused);
+  const alertsPaused = (State.alerts || []).filter(a => a.paused);
+  const matches = (State.liveMatches !== null && State.liveMatches !== undefined)
+    ? State.liveMatches.length
+    : (State.matches || []).length;
+  return {
+    cars: {
+      total: owned.length,
+      idle: idle.length,
+      inListing: inListing.length,
+      inAuction: inAuction.length,
+      sold: sold.length,
+      wishlist: wishlist.length,
+      expiringSoon: expiringSoon.length,
+      expiringList: expiringSoon
+    },
+    alerts: {
+      active: alertsActive.length,
+      paused: alertsPaused.length,
+      total: alertsActive.length + alertsPaused.length,
+      matches: matches
+    },
+    hasGarage: owned.length > 0,
+    hasAnySale: inListing.length + inAuction.length > 0,
+    isNew: owned.length === 0 && (alertsActive.length + alertsPaused.length) === 0
+  };
+}
+
 function getDaysRemaining(expiresAt){
   if(!expiresAt) return 0;
   const ms = expiresAt - Date.now();
@@ -17147,6 +17383,17 @@ function renderListForSaleSheet(carId){
       <button class="sheet-close" data-action="closeSheet" aria-label="Fermer">×</button>
     </div>
     <div class="sheet-content">
+      ${(() => {
+        // Sprint Axe 4 : tip contextualisée selon le profil principal (si défini)
+        const voice = getProfileVoice();
+        if(!voice || !voice.pickerNote) return '';
+        return `
+          <div class="picker-profile-note">
+            <span class="picker-profile-note-tag">À TON PROFIL</span>
+            <p class="picker-profile-note-text"><em>${esc(voice.pickerNote)}</em></p>
+          </div>
+        `;
+      })()}
       <div class="sheet-section-label">ANNONCE</div>
       <div class="sale-mode-grid">
         ${planCard('free', false)}
@@ -19723,8 +19970,17 @@ function renderEncheresPage(){
   m.innerHTML = `
     <section class="hero">
       <div class="hero-tag">ENCHÈRES</div>
-      <h1 class="hero-title">Le marché en direct.</h1>
-      <p class="hero-sub">Bring a Trailer, RM Sotheby's, Artcurial, Bonhams, Gooding, Aguttes, Oldtimer Galerie — les enchères collector agrégées.</p>
+      <h1 class="hero-title">${myAuctions.length > 0 ? 'Tes enchères et le marché.' : 'Le marché en direct.'}</h1>
+      <p class="hero-sub">${(() => {
+        const ctx = getContextualState();
+        if(ctx.cars.inAuction > 0){
+          return `${ctx.cars.inAuction} de tes enchères en cours · ${live.length} lot${live.length > 1 ? 's' : ''} live sur le marché collector ci-dessous.`;
+        }
+        if(live.length > 0){
+          return `${live.length} lot${live.length > 1 ? 's' : ''} en direct · BaT, RM Sotheby's, Artcurial, Bonhams, Gooding, Aguttes, Oldtimer Galerie.`;
+        }
+        return `Bring a Trailer, RM Sotheby's, Artcurial, Bonhams, Gooding, Aguttes, Oldtimer Galerie — les enchères collector agrégées.`;
+      })()}</p>
     </section>
     <div class="encheres-filter-bar">${filterChips}</div>
     ${myAuctions.length > 0 ? `
@@ -19868,8 +20124,19 @@ function renderListingsPage(){
   m.innerHTML = `
     <section class="hero">
       <div class="hero-tag">ANNONCES</div>
-      <h1 class="hero-title">Le stock.</h1>
-      <p class="hero-sub">${allListings.length} voitures sélectionnées · marchands premium et marketplaces collector.</p>
+      <h1 class="hero-title">${myListings.length > 0 ? 'Tes annonces et le stock.' : 'Le stock.'}</h1>
+      <p class="hero-sub">${(() => {
+        const ctx = getContextualState();
+        if(ctx.cars.inListing > 0){
+          const exp = ctx.cars.expiringSoon;
+          if(exp > 0) return `${ctx.cars.inListing} de tes annonces en ligne · <strong style="color:var(--orange-polo);font-style:normal">${exp} expire${exp > 1 ? 'nt' : ''} bientôt</strong> · ${allListings.length} au stock public ci-dessous.`;
+          return `${ctx.cars.inListing} de tes annonces en ligne · ${allListings.length} voitures sélectionnées au stock public ci-dessous.`;
+        }
+        if(ctx.cars.idle > 0){
+          return `${allListings.length} voitures sélectionnées · ${ctx.cars.idle} voiture${ctx.cars.idle > 1 ? 's' : ''} dans ton garage prête${ctx.cars.idle > 1 ? 's' : ''} à être publiée${ctx.cars.idle > 1 ? 's' : ''}.`;
+        }
+        return `${allListings.length} voitures sélectionnées · marchands premium et marketplaces collector.`;
+      })()}</p>
     </section>
     ${myListings.length > 0 ? `
       <section class="section section-my-sales">
@@ -20057,6 +20324,36 @@ function renderListingCard(l){
 
 
 // ─── v6.16 : Completion banner ─────────────────────────────────────
+// Sprint Axe 3 : banner d'action requise quand annonces user expirent <7j.
+// Apparaît seulement s'il y a quelque chose à faire — sinon retourne '' (UI propre).
+function renderExpiringSoonBanner(){
+  const ctx = getContextualState();
+  if(!ctx.cars.expiringList || ctx.cars.expiringList.length === 0) return '';
+  // Tri par échéance la plus proche d'abord
+  const sorted = [...ctx.cars.expiringList].sort((a, b) => (a.saleData?.expiresAt || 0) - (b.saleData?.expiresAt || 0));
+  const first = sorted[0];
+  const days = Math.ceil((first.saleData.expiresAt - Date.now()) / 86400000);
+  const dayLabel = days <= 0 ? "aujourd'hui" : (days === 1 ? 'demain' : `dans ${days} jours`);
+  const restCount = sorted.length - 1;
+  return `
+    <div class="expiring-banner">
+      <div class="expiring-banner-head">
+        <span class="expiring-banner-dot"></span>
+        <span class="expiring-banner-tag">ACTION À PRÉVOIR</span>
+      </div>
+      <p class="expiring-banner-msg">
+        Ton annonce sur <strong>${esc(first.brand)} ${esc(first.model)}</strong> expire ${dayLabel}.
+        ${restCount > 0 ? ` Et ${restCount} autre${restCount > 1 ? 's' : ''} dans les jours qui suivent.` : ''}
+        Si elle ne trouve pas preneur, CARNET te propose la bascule en enchère.
+      </p>
+      <div class="expiring-banner-actions">
+        <button class="expiring-banner-cta" data-action="openGarageCar" data-id="${esc(first.id)}">Voir l'annonce</button>
+        <button class="expiring-banner-link" data-action="switchToAnnonces">Toutes mes annonces \u2192</button>
+      </div>
+    </div>
+  `;
+}
+
 function renderCompletionBanner(car) {
   if (!car) return '';
   // Marque comme "vu" pour respecter la cadence 1×/mois
@@ -20188,9 +20485,13 @@ function renderGaragePage(){
 
   let body;
   if(garage.length === 0 && wishlistCars.length === 0){
+    // Sprint Axe 4 : empty state adapté au profil dominant si défini, sinon générique
+    const profileVoice = getProfileVoice();
     body = renderPendingSaleIntentBanner() + renderProfileOnboardingBanner() + renderEmptyState({
-      title: 'Garage à remplir',
-      text: "Entre ta première voiture. Suivi de cote, entretien, photos, factures — tout reste là, accessible. Plus tard, fouille annonces et enchères pour étoffer, ou prépare une revente depuis CARNET.",
+      title: profileVoice ? profileVoice.emptyTitle : 'Garage à remplir',
+      text: profileVoice
+        ? profileVoice.emptyText
+        : "Entre ta première voiture. Suivi de cote, entretien, photos, factures — tout reste là, accessible. Plus tard, fouille annonces et enchères pour étoffer, ou prépare une revente depuis CARNET.",
       cta: { label: '+ Ajouter ma première voiture', action: 'openAddGarage', primary: true }
     }) + `
       <div class="garage-empty-portes" style="display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-top:24px;padding:18px 0;border-top:1px solid rgba(50,35,25,0.08)">
@@ -20270,6 +20571,7 @@ function renderGaragePage(){
         <span class="garage-card-add-label">Ajouter une voiture</span>
       </button>
       ${renderProfileOnboardingBanner()}
+      ${renderExpiringSoonBanner()}
       ${(() => { const _c = findCarNeedingCompletion(); return _c ? renderCompletionBanner(_c) : ''; })()}
       ${renderGarageAdviceSection(activeCars)}
       ${inSaleSection}
@@ -20286,6 +20588,10 @@ function renderGaragePage(){
       </div>
       <h1 class="hero-title">Ma collection.</h1>
       <p class="hero-sub"><em class="garage-sub-lead">${frCarsCount(activeCars.length)}</em> Leur cote, leur carnet, leur place sur le march\u00e9.</p>
+      ${(() => {
+        const v = getProfileVoice();
+        return v ? `<p class="hero-profile-tagline"><em>${esc(v.garageHook)}</em></p>` : '';
+      })()}
       <a class="garage-discover-link" data-action="openDiscoverCarnet">Pourquoi CARNET \u2192</a>
       <a class="garage-discover-link" href="vendre.html" style="margin-left:14px">Vendre \u2192</a>
       <a class="garage-discover-link" href="cote.html" style="margin-left:14px">Cote \u2192</a>
