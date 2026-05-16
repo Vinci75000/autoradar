@@ -976,6 +976,103 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 }
 .empty-state-cta.primary:active{background:#000}
 
+/* Sprint Axe 2 : liens secondaires sous l'empty state (cross-links contextuels) */
+.empty-state-extras{
+  display:flex;
+  justify-content:center;
+  gap:18px 24px;
+  flex-wrap:wrap;
+  margin-top:18px;
+  padding-top:14px;
+  border-top:1px solid rgba(50,35,25,0.08);
+}
+.empty-state-extra-link{
+  background:transparent;
+  border:none;
+  cursor:pointer;
+  font-family:var(--mono);
+  font-size:10.5px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--encre);
+  text-decoration:none;
+  border-bottom:1px solid var(--encre);
+  padding:0 0 2px;
+  transition:color 200ms ease, border-color 200ms ease;
+}
+.empty-state-extra-link:hover{
+  color:var(--orange-polo);
+  border-bottom-color:var(--orange-polo);
+}
+
+/* Sprint Axe 2 : teaser publication/enchère dans Annonces/Enchères quand user a voitures sans vente */
+.section-my-sales-teaser{padding-top:0}
+.my-sales-teaser{
+  border:1px solid rgba(50,35,25,0.12);
+  background:var(--papier);
+  border-radius:2px;
+  padding:22px 20px;
+  margin-bottom:10px;
+}
+.my-sales-teaser-tag{
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--orange-polo);
+  margin-bottom:8px;
+}
+.my-sales-teaser-title{
+  font-family:var(--display);
+  font-style:italic;
+  font-size:20px;
+  color:var(--encre);
+  line-height:1.25;
+  margin-bottom:10px;
+}
+.my-sales-teaser-text{
+  font-family:var(--editorial);
+  font-style:italic;
+  font-size:13px;
+  color:var(--encre);
+  line-height:1.6;
+  margin-bottom:16px;
+}
+.my-sales-teaser-actions{
+  display:flex;
+  gap:18px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.my-sales-teaser-cta{
+  background:var(--encre);
+  color:var(--papier-bright);
+  border:none;
+  cursor:pointer;
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  padding:10px 18px;
+  border-radius:2px;
+  transition:background 200ms ease;
+}
+.my-sales-teaser-cta:hover{background:#000}
+.my-sales-teaser-link{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--encre);
+  text-decoration:none;
+  border-bottom:1px solid var(--encre);
+  padding-bottom:2px;
+}
+.my-sales-teaser-link:hover{
+  color:var(--orange-polo);
+  border-bottom-color:var(--orange-polo);
+}
+
 /* ===== ENCHÈRES FILTER BAR (Chunk 8.c) ===== */
 .encheres-filter-bar{
   display:flex;
@@ -17070,6 +17167,7 @@ function renderListForSaleSheet(carId){
       </div>
       <div style="font-family:var(--editorial);font-style:italic;font-size:11px;color:var(--gris);margin-top:var(--s-3);line-height:1.5">
         Tu peux changer de mode plus tard. Annule la mise en vente à tout moment depuis la fiche.
+        <br><a href="vendre.html" style="color:var(--orange-polo);text-decoration:none;border-bottom:1px solid var(--orange-polo);padding-bottom:1px">Voir le détail des plans sur Vendre \u2192</a>
       </div>
     </div>
   `;
@@ -18222,6 +18320,11 @@ const Actions = {
     if(State.activeTab === 'garage' && typeof renderGaragePage === 'function') renderGaragePage();
     showToastFloat('Intention de publication annulée.');
   },
+  // Sprint Axe 2 : raccourcis utilisés dans les empty states extras
+  switchToAnnonces(){ this.switchTab('annonces'); },
+  switchToEncheres(){ this.switchTab('encheres'); },
+  switchToAffut(){ this.switchTab('affut'); },
+  switchToGarage(){ this.switchTab('garage'); },
   garageFormChange(field, value){
     if(!field || typeof GarageFormState[field] === 'undefined') return;
     GarageFormState[field] = String(value || '');
@@ -19267,7 +19370,22 @@ function renderEmptyState(opts){
     const dataAttrs = (opts.cta.dataAttrs || []).map(a => `${esc(a.name)}="${esc(a.value)}"`).join(' ');
     ctaHtml = `<button class="${ctaClass}" data-action="${esc(opts.cta.action)}" ${dataAttrs}>${esc(opts.cta.label)}</button>`;
   }
-  return `<div class="empty-state">${ornamentHtml}${titleHtml}${textHtml}${ctaHtml}</div>`;
+  // Sprint Axe 2 : extras = array de cross-links secondaires affichés sous le CTA principal.
+  // Chaque entry : { label, action?, href? } — soit data-action soit href.
+  let extrasHtml = '';
+  if(opts.extras && Array.isArray(opts.extras) && opts.extras.length > 0){
+    const links = opts.extras.map(ex => {
+      if(ex.href){
+        return `<a class="empty-state-extra-link" href="${esc(ex.href)}">${esc(ex.label)} \u2192</a>`;
+      }
+      if(ex.action){
+        return `<button class="empty-state-extra-link" data-action="${esc(ex.action)}">${esc(ex.label)} \u2192</button>`;
+      }
+      return '';
+    }).filter(Boolean).join('');
+    if(links) extrasHtml = `<div class="empty-state-extras">${links}</div>`;
+  }
+  return `<div class="empty-state">${ornamentHtml}${titleHtml}${textHtml}${ctaHtml}${extrasHtml}</div>`;
 }
 
 function renderKpis(){
@@ -19344,9 +19462,18 @@ function renderMatches(){
   const source = (State.liveMatches !== null) ? State.liveMatches : State.matches;
   document.querySelector('.matches-count').textContent = source.length;
   if(source.length === 0){
+    const hasAlerts = (State.alerts || []).filter(a => !a.paused).length > 0;
     container.innerHTML = renderEmptyState({
-      title: "Rien n'est encore remonté",
-      text: "Tes alertes scrutent les marchés en continu. Les premières détections apparaîtront ici."
+      title: hasAlerts ? "Rien n'est encore remonté" : "Aucune alerte active",
+      text: hasAlerts
+        ? "Tes alertes scrutent les marchés en continu. Les premières détections apparaîtront ici."
+        : "Crée ta première alerte. Marque, budget, kilométrage, état — tu affines ce qui doit te remonter. CARNET fait le reste.",
+      cta: hasAlerts ? null : { label: '+ Créer une alerte', action: 'openNewAlert', primary: true },
+      extras: [
+        { label: 'Explorer les annonces', action: 'switchToAnnonces' },
+        { label: 'Voir les enchères', action: 'switchToEncheres' },
+        { label: 'Découvrir CARNET', href: 'discover.html' }
+      ]
     });
     return;
   }
@@ -19610,7 +19737,24 @@ function renderEncheresPage(){
           ${myAuctions.map(renderMyAuctionCard).join('')}
         </div>
       </section>
-    ` : ''}
+    ` : (() => {
+      // Sprint Axe 2 : teaser enchère si user a des voitures sans enchère active
+      const garageCars = (State.garage || []).filter(c => c.ownership !== 'wishlist' && !c.saleStatus);
+      if(garageCars.length === 0) return '';
+      return `
+        <section class="section section-my-sales-teaser">
+          <div class="my-sales-teaser">
+            <div class="my-sales-teaser-tag">TES ENCHÈRES</div>
+            <div class="my-sales-teaser-title"><em>Tu n\u2019as aucune enchère en cours.</em></div>
+            <div class="my-sales-teaser-text">Commission 8,8 % à la vente — 7,1 % vendeur + 1,7 % acheteur. Aucun frais d\u2019entrée. ${garageCars.length === 1 ? 'Une voiture' : `${garageCars.length} voitures`} prêtes à partir.</div>
+            <div class="my-sales-teaser-actions">
+              <button class="my-sales-teaser-cta" data-action="switchToGarage">Aller au Garage \u2192</button>
+              <a class="my-sales-teaser-link" href="vendre.html">Détails enchères \u2192</a>
+            </div>
+          </div>
+        </section>
+      `;
+    })()}
     <section class="section">
       <div class="section-header">
         <h2 class="section-title">${myAuctions.length > 0 ? 'Le marché · En direct' : 'En direct'}</h2>
@@ -19702,12 +19846,20 @@ function renderListingsPage(){
     if(hasQuery){
       body = renderEmptyState({
         title: 'Aucun résultat pour « ' + search + ' »',
-        text: hasFilter ? 'Élargis le tier ou modifie la recherche.' : 'Modifie ta recherche pour parcourir l\u2019ensemble du stock.'
+        text: hasFilter ? 'Élargis le tier ou modifie la recherche.' : 'Modifie ta recherche pour parcourir l\u2019ensemble du stock.',
+        extras: [
+          { label: 'Voir les enchères', action: 'switchToEncheres' },
+          { label: 'Estimer une cote', href: 'cote.html' }
+        ]
       });
     } else {
       body = renderEmptyState({
         title: 'Aucune voiture dans ce tier',
-        text: 'Élargis le tier pour voir plus de voitures du stock.'
+        text: 'Élargis le tier pour voir plus de voitures du stock.',
+        extras: [
+          { label: 'Vendre une voiture', href: 'vendre.html' },
+          { label: 'Voir les enchères', action: 'switchToEncheres' }
+        ]
       });
     }
   } else {
@@ -19729,7 +19881,24 @@ function renderListingsPage(){
           ${myListings.map(renderMyListingCard).join('')}
         </div>
       </section>
-    ` : ''}
+    ` : (() => {
+      // Sprint Axe 2 : teaser publication si user a des voitures sans annonce active
+      const garageCars = (State.garage || []).filter(c => c.ownership !== 'wishlist' && !c.saleStatus);
+      if(garageCars.length === 0) return '';
+      return `
+        <section class="section section-my-sales-teaser">
+          <div class="my-sales-teaser">
+            <div class="my-sales-teaser-tag">TES ANNONCES</div>
+            <div class="my-sales-teaser-title"><em>Tu n\u2019as encore rien publié.</em></div>
+            <div class="my-sales-teaser-text">${garageCars.length === 1 ? 'Une voiture' : `${garageCars.length} voitures`} dans ton garage. Mets-en une en vente quand tu veux — Premium 30/60/90 jours ou enchère.</div>
+            <div class="my-sales-teaser-actions">
+              <button class="my-sales-teaser-cta" data-action="switchToGarage">Aller au Garage \u2192</button>
+              <a class="my-sales-teaser-link" href="vendre.html">Voir les plans \u2192</a>
+            </div>
+          </div>
+        </section>
+      `;
+    })()}
     <section class="section">
       ${myListings.length > 0 ? `
         <div class="section-header" style="margin-bottom:var(--s-2)">
@@ -20023,7 +20192,13 @@ function renderGaragePage(){
       title: 'Garage à remplir',
       text: "Entre ta première voiture. Suivi de cote, entretien, photos, factures — tout reste là, accessible. Plus tard, fouille annonces et enchères pour étoffer, ou prépare une revente depuis CARNET.",
       cta: { label: '+ Ajouter ma première voiture', action: 'openAddGarage', primary: true }
-    });
+    }) + `
+      <div class="garage-empty-portes" style="display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-top:24px;padding:18px 0;border-top:1px solid rgba(50,35,25,0.08)">
+        <a href="vendre.html" style="font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--orange-polo);text-decoration:none;border-bottom:1px solid var(--orange-polo);padding-bottom:2px">Vendre une voiture \u2192</a>
+        <a href="cote.html" style="font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--encre);text-decoration:none;border-bottom:1px solid var(--encre);padding-bottom:2px">Estimer une cote \u2192</a>
+        <a href="discover.html" style="font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--encre);text-decoration:none;border-bottom:1px solid var(--encre);padding-bottom:2px">Découvrir Carnet \u2192</a>
+      </div>
+    `;
   } else {
     const totalDocs = valuableCars.reduce((a,c) => a + (c.docsCount||0), 0);
     const totalPhotos = valuableCars.reduce((a,c) => a + (c.photosCount||0), 0);
@@ -20112,6 +20287,8 @@ function renderGaragePage(){
       <h1 class="hero-title">Ma collection.</h1>
       <p class="hero-sub"><em class="garage-sub-lead">${frCarsCount(activeCars.length)}</em> Leur cote, leur carnet, leur place sur le march\u00e9.</p>
       <a class="garage-discover-link" data-action="openDiscoverCarnet">Pourquoi CARNET \u2192</a>
+      <a class="garage-discover-link" href="vendre.html" style="margin-left:14px">Vendre \u2192</a>
+      <a class="garage-discover-link" href="cote.html" style="margin-left:14px">Cote \u2192</a>
       ${(State.userProfiles || []).length === 0 ? `<a class="garage-discover-link" data-action="openSelectProfile" style="margin-left:14px;color:var(--gris);border-bottom-color:var(--gris);">Mon profil \u2192</a>` : ''}
       ${(State.userProfiles || []).length > 0 ? `
         <div class="hero-profile-chips">
