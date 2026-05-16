@@ -7818,6 +7818,87 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
       font-size: 18px;
       font-weight: bold;
     }
+    .paywall-method-icon-europ {
+      background: var(--orange-polo);
+      color: var(--papier);
+      border-color: var(--orange-polo);
+      font-size: 18px;
+      font-weight: bold;
+    }
+    /* Sprint Paywall : section transparence tarifaire (style Vendre) */
+    .paywall-transparency {
+      margin-top: 28px;
+      padding: 20px 18px;
+      background: var(--papier);
+      border: 1px solid rgba(50, 35, 25, 0.12);
+      border-radius: 2px;
+    }
+    .paywall-transparency-title {
+      font-family: var(--display);
+      font-style: italic;
+      font-size: 18px;
+      color: var(--encre);
+      margin-bottom: 4px;
+      line-height: 1.2;
+    }
+    .paywall-transparency-sub {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 12px;
+      color: var(--gris);
+      margin-bottom: 16px;
+    }
+    .paywall-transparency-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-bottom: 18px;
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+    .paywall-transparency-row {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr 1fr 1.3fr;
+      gap: 8px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(50, 35, 25, 0.08);
+      color: var(--encre);
+      align-items: center;
+    }
+    .paywall-transparency-row:last-of-type { border-bottom: none; }
+    .paywall-transparency-head {
+      font-size: 9.5px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gris);
+      border-bottom: 1px solid var(--encre);
+    }
+    .paywall-transparency-row strong { font-weight: 500; }
+    .paywall-transparency-allocation {
+      padding-top: 14px;
+      border-top: 1px solid rgba(50, 35, 25, 0.08);
+    }
+    .paywall-transparency-allocation-title {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--orange-polo);
+      margin-bottom: 8px;
+    }
+    .paywall-transparency-allocation-body {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 12.5px;
+      line-height: 1.55;
+      color: var(--encre);
+      margin: 0;
+    }
+    .paywall-transparency-allocation-body strong {
+      font-style: normal;
+      font-family: var(--sans);
+      font-weight: 500;
+    }
     .paywall-method-body { flex: 1; }
     .paywall-method-title {
       font-family: var(--mono);
@@ -8627,11 +8708,11 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
     }
   </style>
   <nav class="editorial-nav" aria-label="Navigation éditoriale">
+    <a href="vendre.html">Vendre</a>
+    <a href="cote.html">Cote</a>
     <a href="discover.html">Découvrir</a>
-    <a href="archetypes.html">Archétypes</a>
     <a href="launch.html" class="featured">14·12·2026</a>
     <a href="about.html">À propos</a>
-    <a href="assurance.html">Partenaires</a>
   </nav>
 
   <!-- ===== MAIN SCROLLABLE ===== -->
@@ -11060,7 +11141,7 @@ function renderPaywallStep2() {
       <div class="paywall-amount-pill">${formatEur(eur)}</div>
 
       <h2 class="paywall-h1"><em>Méthode de paiement</em></h2>
-      <p class="paywall-lead">Trois options. Tu choisis.</p>
+      <p class="paywall-lead">Quatre options. Tu choisis.</p>
 
       <div class="paywall-methods">
         <button class="paywall-method" data-action="paywallSelectMethod" data-method="card">
@@ -11089,6 +11170,62 @@ function renderPaywallStep2() {
           </div>
           <div class="paywall-method-arrow">→</div>
         </button>
+
+        <button class="paywall-method" data-action="paywallSelectMethod" data-method="europ">
+          <div class="paywall-method-icon paywall-method-icon-europ">€</div>
+          <div class="paywall-method-body">
+            <div class="paywall-method-title">EURØP <span class="paywall-method-tag">MiCA</span></div>
+            <div class="paywall-method-sub">Stablecoin euro régulé MiCA. 1 EURØP = 1 €. Schuman Financial.</div>
+          </div>
+          <div class="paywall-method-arrow">→</div>
+        </button>
+      </div>
+
+      <!-- Sprint Paywall : transparence tarifaire dans l'esprit de la page Vendre -->
+      <div class="paywall-transparency">
+        <div class="paywall-transparency-title">Tarification. Sans surprise.</div>
+        <div class="paywall-transparency-sub">Tous les frais et l'allocation, avant de payer.</div>
+        <div class="paywall-transparency-grid">
+          <div class="paywall-transparency-row paywall-transparency-head">
+            <span>Méthode</span>
+            <span>Frais réseau</span>
+            <span>Vitesse</span>
+            <span>Finalité</span>
+          </div>
+          <div class="paywall-transparency-row">
+            <span><strong>Carte</strong></span>
+            <span>~2,9 % + 0,25 €</span>
+            <span>2–5 jours</span>
+            <span>Réversible 60 j</span>
+          </div>
+          <div class="paywall-transparency-row">
+            <span><strong>XRP</strong></span>
+            <span>~0,0001 €</span>
+            <span>3–5 secondes</span>
+            <span>Définitive on-chain</span>
+          </div>
+          <div class="paywall-transparency-row">
+            <span><strong>RLUSD</strong></span>
+            <span>~0,0001 €</span>
+            <span>3–5 secondes</span>
+            <span>Définitive on-chain</span>
+          </div>
+          <div class="paywall-transparency-row">
+            <span><strong>EURØP</strong></span>
+            <span>~0,0001 €</span>
+            <span>3–5 secondes</span>
+            <span>Définitive on-chain</span>
+          </div>
+        </div>
+        <div class="paywall-transparency-allocation">
+          <div class="paywall-transparency-allocation-title">Où va ton paiement</div>
+          <p class="paywall-transparency-allocation-body">
+            CARNET est une association loi 1901 à but non lucratif. Aucun salaire, aucun dividende.
+            Ton paiement sert à <strong>l'infrastructure technique</strong> (serveurs, indexation, photos),
+            au <strong>développement open-source</strong> et à des <strong>événements automobiles avec des enfants</strong>.
+            Les transactions XRPL sont publiques et vérifiables.
+          </p>
+        </div>
       </div>
 
       <div class="paywall-footer-note">
@@ -17494,15 +17631,18 @@ const Actions = {
     const inner = document.querySelector('.sheet-inner');
     if (inner) inner.innerHTML = renderPaywallStep2();
   },
-  async paywallSelectMethod(){
-    const method = event.currentTarget.dataset.method;
+  async paywallSelectMethod(method){
+    // Sprint Paywall : action appelée par le dispatcher avec t.dataset.method.
+    // Auparavant utilisait event.currentTarget qui plantait silencieusement.
+    if(!method) return;
+    if(!State.paywallState) return;
     State.paywallState.method = method;
     State.paywallState.step = 3;
     State.paywallState.loading = true;
     State.paywallState.error = null;
     State.paywallState.expiredOrRejected = null;
 
-    if (method === 'xrp' || method === 'rlusd') {
+    if (method === 'xrp' || method === 'rlusd' || method === 'europ') {
       // Render loading state immédiat
       const innerLoading = document.querySelector('.sheet-inner');
       if (innerLoading) innerLoading.innerHTML = renderPaywallStep3();
@@ -20231,6 +20371,7 @@ function handleClick(e){
   // Sale flow
   if(action === 'chooseSaleMode'){ Actions.chooseSaleMode(t.dataset.id, t.dataset.mode); return; }
   if(action === 'chooseSalePlan'){ Actions.chooseSalePlan(t.dataset.id, t.dataset.plan); return; }
+  if(action === 'paywallSelectMethod'){ Actions.paywallSelectMethod(t.dataset.method); return; }
   if(action === 'saleAuctionFormChange' && t.dataset.value !== undefined){
     Actions.saleAuctionFormChange(t.dataset.field, t.dataset.value); return;
   }
