@@ -1194,6 +1194,115 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   letter-spacing:0.01em;
 }
 
+/* Sprint Axe 5 : footer éditorial réutilisable (Affût + Annonces + Enchères + Garage) */
+.carnet-footer{
+  margin-top:48px;
+  padding:36px 0 100px;
+  border-top:1px solid rgba(50,35,25,0.1);
+  background:var(--papier);
+}
+.carnet-footer-inner{
+  max-width:920px;
+  margin:0 auto;
+  padding:0 20px;
+}
+.carnet-footer-brand{
+  text-align:center;
+  margin-bottom:28px;
+  padding-bottom:24px;
+  border-bottom:1px solid rgba(50,35,25,0.08);
+}
+.carnet-footer-wordmark{
+  font-family:var(--display);
+  font-style:italic;
+  font-size:24px;
+  color:var(--encre);
+  letter-spacing:0.01em;
+}
+.carnet-footer-dot{
+  color:var(--orange-polo);
+  font-style:normal;
+  display:inline-block;
+  transform:translateY(-2px);
+  margin-left:2px;
+}
+.carnet-footer-tagline{
+  font-family:var(--editorial);
+  font-size:13px;
+  color:var(--encre);
+  margin-top:4px;
+}
+.carnet-footer-asso{
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:0.06em;
+  color:var(--gris);
+  margin-top:10px;
+  line-height:1.5;
+}
+.carnet-footer-grid{
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:24px;
+  margin-bottom:28px;
+}
+@media (max-width:640px){
+  .carnet-footer-grid{grid-template-columns:repeat(2, 1fr); gap:20px 14px}
+}
+.carnet-footer-col{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.carnet-footer-col-title{
+  font-family:var(--mono);
+  font-size:9.5px;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--orange-polo);
+  margin-bottom:4px;
+}
+.carnet-footer-link{
+  background:transparent;
+  border:none;
+  cursor:pointer;
+  text-align:left;
+  padding:0;
+  font-family:var(--sans);
+  font-size:12.5px;
+  color:var(--encre);
+  text-decoration:none;
+  transition:color 200ms ease;
+  line-height:1.5;
+}
+.carnet-footer-link:hover{color:var(--orange-polo)}
+.carnet-footer-meta{
+  font-family:var(--mono);
+  font-size:10px;
+  color:var(--gris);
+  letter-spacing:0.02em;
+  line-height:1.5;
+}
+.carnet-footer-bottom{
+  border-top:1px solid rgba(50,35,25,0.08);
+  padding-top:18px;
+  text-align:center;
+}
+.carnet-footer-onchain{
+  font-family:var(--mono);
+  font-size:9.5px;
+  letter-spacing:0.06em;
+  color:var(--gris);
+  margin-bottom:8px;
+  line-height:1.6;
+}
+.carnet-footer-copyright{
+  font-family:var(--editorial);
+  font-size:11px;
+  color:var(--encre);
+  line-height:1.5;
+}
+
 /* ===== ENCHÈRES FILTER BAR (Chunk 8.c) ===== */
 .encheres-filter-bar{
   display:flex;
@@ -8998,6 +9107,55 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
       </div>
       <div class="watched-rail"></div>
     </section>
+
+    <!-- Sprint Axe 5 : footer éditorial (capturé dans affutShellSnapshot) -->
+    <footer class="carnet-footer">
+      <div class="carnet-footer-inner">
+        <div class="carnet-footer-brand">
+          <div class="carnet-footer-wordmark">Carnet <span class="carnet-footer-dot">·</span></div>
+          <div class="carnet-footer-tagline"><em>Une histoire de voitures.</em></div>
+          <div class="carnet-footer-asso">Association loi 1901 à but non lucratif. Bénévoles uniquement, aucun salaire ni dividende.</div>
+        </div>
+        <div class="carnet-footer-grid">
+          <div class="carnet-footer-col">
+            <div class="carnet-footer-col-title">PRODUIT</div>
+            <button class="carnet-footer-link" data-action="switchToAffut">L'Affût</button>
+            <button class="carnet-footer-link" data-action="switchToAnnonces">Annonces</button>
+            <button class="carnet-footer-link" data-action="switchToEncheres">Enchères</button>
+            <button class="carnet-footer-link" data-action="switchToGarage">Garage</button>
+          </div>
+          <div class="carnet-footer-col">
+            <div class="carnet-footer-col-title">CARNET</div>
+            <a class="carnet-footer-link" href="vendre.html">Vendre</a>
+            <a class="carnet-footer-link" href="cote.html">Cote</a>
+            <a class="carnet-footer-link" href="discover.html">Découvrir</a>
+            <a class="carnet-footer-link" href="archetypes.html">Archétypes</a>
+          </div>
+          <div class="carnet-footer-col">
+            <div class="carnet-footer-col-title">ASSOCIATION</div>
+            <a class="carnet-footer-link" href="about.html">À propos</a>
+            <a class="carnet-footer-link" href="launch.html">14·12·2026 · Mulhouse</a>
+            <button class="carnet-footer-link" data-action="openPaywall">Contribuer</button>
+            <a class="carnet-footer-link" href="assurance.html">Partenaires</a>
+          </div>
+          <div class="carnet-footer-col">
+            <div class="carnet-footer-col-title">LÉGAL</div>
+            <a class="carnet-footer-link" href="terms.html">Conditions</a>
+            <a class="carnet-footer-link" href="privacy.html">Confidentialité</a>
+            <span class="carnet-footer-meta">CSBC Paris</span>
+            <span class="carnet-footer-meta">1 rue Sfax, 75116</span>
+          </div>
+        </div>
+        <div class="carnet-footer-bottom">
+          <div class="carnet-footer-onchain">
+            Transactions XRPL publiques · royalties NFT XLS-20 1,7 % · contributions 7,1 % bonne foi
+          </div>
+          <div class="carnet-footer-copyright">
+            <em>Curated Automotive Records Network for Exchange and Trust.</em>
+          </div>
+        </div>
+      </div>
+    </footer>
 
   </main>
 
@@ -19605,6 +19763,62 @@ const Actions = {
 };
 
 // ===== RENDERERS =====
+// Sprint Axe 5 : footer éditorial réutilisable inclus à la fin de chaque page rendue.
+// Donne accès à tout l'écosystème Carnet (produit + éditorial + asso + légal).
+function renderEditorialFooter(){
+  return `
+    <footer class="carnet-footer">
+      <div class="carnet-footer-inner">
+        <div class="carnet-footer-brand">
+          <div class="carnet-footer-wordmark">Carnet <span class="carnet-footer-dot">·</span></div>
+          <div class="carnet-footer-tagline"><em>Une histoire de voitures.</em></div>
+          <div class="carnet-footer-asso">Association loi 1901 \u00e0 but non lucratif. Bénévoles uniquement, aucun salaire ni dividende.</div>
+        </div>
+
+        <div class="carnet-footer-grid">
+          <div class="carnet-footer-col">
+            <div class="carnet-footer-col-title">PRODUIT</div>
+            <button class="carnet-footer-link" data-action="switchToAffut">L'Affût</button>
+            <button class="carnet-footer-link" data-action="switchToAnnonces">Annonces</button>
+            <button class="carnet-footer-link" data-action="switchToEncheres">Enchères</button>
+            <button class="carnet-footer-link" data-action="switchToGarage">Garage</button>
+          </div>
+          <div class="carnet-footer-col">
+            <div class="carnet-footer-col-title">CARNET</div>
+            <a class="carnet-footer-link" href="vendre.html">Vendre</a>
+            <a class="carnet-footer-link" href="cote.html">Cote</a>
+            <a class="carnet-footer-link" href="discover.html">Découvrir</a>
+            <a class="carnet-footer-link" href="archetypes.html">Archétypes</a>
+          </div>
+          <div class="carnet-footer-col">
+            <div class="carnet-footer-col-title">ASSOCIATION</div>
+            <a class="carnet-footer-link" href="about.html">À propos</a>
+            <a class="carnet-footer-link" href="launch.html">14·12·2026 · Mulhouse</a>
+            <button class="carnet-footer-link" data-action="openPaywall">Contribuer</button>
+            <a class="carnet-footer-link" href="assurance.html">Partenaires</a>
+          </div>
+          <div class="carnet-footer-col">
+            <div class="carnet-footer-col-title">LÉGAL</div>
+            <a class="carnet-footer-link" href="terms.html">Conditions</a>
+            <a class="carnet-footer-link" href="privacy.html">Confidentialité</a>
+            <span class="carnet-footer-meta">CSBC Paris</span>
+            <span class="carnet-footer-meta">1 rue Sfax, 75116</span>
+          </div>
+        </div>
+
+        <div class="carnet-footer-bottom">
+          <div class="carnet-footer-onchain">
+            Transactions XRPL publiques · royalties NFT XLS-20 1,7 % · contributions 7,1 % bonne foi
+          </div>
+          <div class="carnet-footer-copyright">
+            <em>Curated Automotive Records Network for Exchange and Trust.</em>
+          </div>
+        </div>
+      </div>
+    </footer>
+  `;
+}
+
 function renderEmptyState(opts){
   opts = opts || {};
   const showOrnament = opts.ornament !== false;
@@ -20032,6 +20246,7 @@ function renderEncheresPage(){
       </div>
       <div class="encheres-feed encheres-feed-sold">${soldBody}</div>
     </section>
+    ${renderEditorialFooter()}
   `;
 }
 
@@ -20181,6 +20396,7 @@ function renderListingsPage(){
       <div class="listings-count">${filtered.length} ${filtered.length === 1 ? 'voiture' : 'voitures'}${hasFilter || hasQuery ? ' · sur ' + allListings.length + ' au stock' : ''}</div>
       ${body}
     </section>
+    ${renderEditorialFooter()}
   `;
 }
 
@@ -20608,6 +20824,7 @@ function renderGaragePage(){
     <section class="section">
       ${body}
     </section>
+    ${renderEditorialFooter()}
   `;
 }
 
