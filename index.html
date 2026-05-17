@@ -18972,19 +18972,30 @@ const Actions = {
     if(!id) return;
     State.userProfiles = State.userProfiles || [];
     const idx = State.userProfiles.indexOf(id);
-    if(idx === -1) State.userProfiles.push(id);
-    else State.userProfiles.splice(idx, 1);
-    // Re-render le sheet courant : onboarding ou selectProfile
+    const wasSelected = idx !== -1;
+    if(wasSelected) State.userProfiles.splice(idx, 1);
+    else State.userProfiles.push(id);
+
     const currentView = State.sheetView;
     if(currentView === 'onboarding'){
-      // Re-render onboarding mais conserver le scroll position du track
-      const track = document.getElementById('onboarding-track');
-      const scrollLeft = track ? track.scrollLeft : 0;
-      Sheet.open('onboarding');
-      setTimeout(() => {
-        const newTrack = document.getElementById('onboarding-track');
-        if(newTrack) newTrack.scrollLeft = scrollLeft;
-      }, 0);
+      // DOM in-place : pas de re-render → scroll préservé (vertical + horizontal)
+      const card = document.querySelector(`.onboarding-profile-card[data-id="${id}"]`);
+      if(card){
+        card.classList.toggle('selected', !wasSelected);
+        const tick = card.querySelector('.onboarding-profile-tick');
+        if(tick) tick.textContent = !wasSelected ? '✓' : '';
+      }
+      // Maj du CTA si on est sur le Panel V
+      const ctaBtn = document.getElementById('onboarding-cta');
+      const activeDot = document.querySelector('.onboarding-dot.active');
+      const isProfilePanel = activeDot && parseInt(activeDot.dataset.idx, 10) === ONBOARDING_PANELS.length;
+      if(ctaBtn && isProfilePanel){
+        const selected = State.userProfiles.length;
+        ctaBtn.textContent = selected === 0
+          ? "C'est parti"
+          : `C'est parti · ${selected} profil${selected > 1 ? 's' : ''}`;
+      }
+      if(navigator.vibrate) navigator.vibrate(8);
     } else {
       Sheet.open('selectProfile');
     }
