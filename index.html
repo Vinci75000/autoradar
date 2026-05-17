@@ -3531,6 +3531,103 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
       color: var(--gris);
       line-height: 1.45;
     }
+    .sale-mode-card.selected {
+      border-color: var(--orange-polo);
+      background: rgba(232, 90, 31, 0.04);
+    }
+
+    /* === BOUCLE VENDRE · plans cards === */
+    .publish-plans-section {
+      margin-top: var(--s-3);
+      padding-top: var(--s-3);
+      border-top: 1px solid rgba(26, 20, 16, 0.08);
+    }
+    .publish-plans-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      color: var(--gris);
+      text-transform: uppercase;
+      margin-bottom: var(--s-2);
+      font-weight: 500;
+    }
+    .publish-plans-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .publish-plan-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 12px 14px;
+      background: var(--papier);
+      border: 1px solid rgba(26, 20, 16, 0.12);
+      border-radius: 2px;
+      text-align: left;
+      cursor: pointer;
+      transition: border-color 160ms ease, background 160ms ease, transform 100ms ease;
+      width: 100%;
+      font-family: inherit;
+    }
+    .publish-plan-card:hover { border-color: var(--orange-polo); }
+    .publish-plan-card:active { transform: scale(0.99); }
+    .publish-plan-card.selected {
+      border-color: var(--orange-polo);
+      background: rgba(232, 90, 31, 0.06);
+    }
+    .publish-plan-card.highlight:not(.selected) {
+      border-color: rgba(232, 90, 31, 0.35);
+    }
+    .publish-plan-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .publish-plan-tier {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      color: var(--encre);
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    .publish-plan-price {
+      font-family: var(--display);
+      font-style: italic;
+      font-size: 18px;
+      color: var(--encre);
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+    .publish-plan-card.selected .publish-plan-price {
+      color: var(--orange-polo);
+    }
+    .publish-plan-duration {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      color: var(--gris);
+      text-transform: uppercase;
+    }
+    .publish-plan-features {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 12px;
+      color: var(--gris);
+      line-height: 1.4;
+      margin-top: 4px;
+    }
+    .publish-plan-check {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      font-family: var(--mono);
+      font-size: 14px;
+      color: var(--orange-polo);
+      font-weight: 500;
+    }
 
     /* Sale check list (dossier acheteur) */
     .sale-check-list {
@@ -4245,6 +4342,58 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
       font-family: var(--mono);
       font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
       color: var(--orange-polo); text-transform: uppercase;
+    }
+
+    /* === BOUCLE VENDRE · banner intent === */
+    .publish-intent-banner {
+      position: relative;
+      background: var(--encre);
+      border: 1px solid var(--encre);
+      border-radius: var(--r);
+      padding: 21px;
+      margin-bottom: 21px;
+      color: var(--papier);
+    }
+    .publish-intent-close {
+      position: absolute;
+      top: 8px; right: 8px;
+      width: 32px; height: 32px;
+      background: transparent;
+      border: none;
+      color: rgba(250, 246, 239, 0.6);
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
+      border-radius: 50%;
+      transition: background 160ms ease, color 160ms ease;
+    }
+    .publish-intent-close:hover { background: rgba(250, 246, 239, 0.08); color: var(--papier); }
+    .publish-intent-kicker {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      color: var(--orange-polo);
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .publish-intent-title {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 22px;
+      line-height: 1.15;
+      color: var(--papier);
+      margin: 0 0 8px 0;
+      letter-spacing: -0.005em;
+    }
+    .publish-intent-text {
+      font-family: var(--editorial);
+      font-style: italic;
+      font-size: 14px;
+      line-height: 1.5;
+      color: rgba(250, 246, 239, 0.78);
+      margin: 0;
     }
     .advice-feed { display: flex; flex-direction: column; gap: var(--s-2); margin-bottom: 21px; }
     .advice-card {
@@ -8967,6 +9116,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
     <a href="archetypes.html">Archétypes</a>
     <a href="launch.html" class="featured">14·12·2026</a>
     <a href="about.html">À propos</a>
+    <a href="vendre.html">Vendre</a>
   </nav>
 
   <!-- ===== MAIN SCROLLABLE ===== -->
@@ -10085,7 +10235,9 @@ const STORAGE_KEYS = {
   // v6.17 : Donations + badges
   DONATIONS: STORAGE_KEY_PREFIX + 'donations',
   USER_BADGES: STORAGE_KEY_PREFIX + 'user-badges',
-  SUPPORTER_FLAG: STORAGE_KEY_PREFIX + 'supporter'
+  SUPPORTER_FLAG: STORAGE_KEY_PREFIX + 'supporter',
+  // Boucle Vendre : plan/mode pré-sélectionné depuis vendre.html (?plan=&mode=)
+  PUBLISH_INTENT: STORAGE_KEY_PREFIX + 'publish-intent'
 };
 function safeStorageGet(key, fallback){
   try {
@@ -12649,6 +12801,38 @@ function renderProfileOnboardingBanner(){
       <h3 class="profile-onboarding-title">D\u00e9finis ton profil de collectionneur.</h3>
       <p class="profile-onboarding-text">CARNET adapte ses conseils \u00e0 ta fa\u00e7on de vivre ta passion. Le pilote, le b\u00e2tisseur, le gardien \u2014 ils ne re\u00e7oivent pas les m\u00eames suggestions.</p>
       <div class="profile-onboarding-cta">D\u00e9finir mon profil \u2192</div>
+    </div>
+  `;
+}
+
+function renderPublishIntentBanner(){
+  // Boucle Vendre · banner si State.selectedPlan ou State.publishMode est set
+  // (l'user vient de cliquer un CTA depuis vendre.html)
+  const plan = State.selectedPlan;
+  const mode = State.publishMode;
+  if(!plan && !mode) return '';
+  const planInfo = plan && window.PUBLISH_PLAN_BY_ID ? window.PUBLISH_PLAN_BY_ID[plan] : null;
+  let kicker = '';
+  let title = '';
+  let text = '';
+  if(planInfo){
+    const priceLabel = planInfo.price === 0 ? 'gratuit' : `${planInfo.price}€${planInfo.recurring ? '/mois' : ''}`;
+    kicker = 'PLAN RETENU';
+    title = `${planInfo.label} \u00b7 ${priceLabel}`;
+    text = "Choisis la voiture \u00e0 publier — son fichier doit \u00eatre dans le garage. Clique \u00ab Mettre en vente \u00bb sur sa fiche, le plan est d\u00e9j\u00e0 pr\u00ear\u00e9gl\u00e9.";
+  } else if(mode === 'enchere'){
+    kicker = 'MODE ENCH\u00c8RE';
+    title = "Pr\u00eat pour l'ench\u00e8re \u00b7 commission 8,8 %";
+    text = "Choisis la voiture \u00e0 inscrire en ench\u00e8re. Sur sa fiche, clique \u00ab Mettre en vente \u00bb \u2192 \u00ab Ench\u00e8re CARNET \u00bb.";
+  } else {
+    return '';
+  }
+  return `
+    <div class="publish-intent-banner" data-publish-banner>
+      <button class="publish-intent-close" data-action="dismissPublishIntent" aria-label="Annuler">\u00d7</button>
+      <div class="publish-intent-kicker">${kicker}</div>
+      <h3 class="publish-intent-title">${esc(title)}</h3>
+      <p class="publish-intent-text">${esc(text)}</p>
     </div>
   `;
 }
@@ -17157,6 +17341,33 @@ function renderManageAuctionSheet(carId){
 function renderListForSaleSheet(carId){
   const car = (State.garage || []).find(x => x.id === carId);
   if(!car) return '';
+  // Pré-sélection depuis State (URL params depuis vendre.html, ou persist)
+  const preselectedPlan = State.selectedPlan || null;
+  const preselectedMode = State.publishMode || null;
+  // Filtrer les plans annonce uniquement (les pro sont des abonnements, ailleurs)
+  const annoncePlans = (window.PUBLISH_PLANS || []).filter(p => p.tier === 'annonce');
+  // Plan cards HTML — chaque card est tappable, pré-cochée si State.selectedPlan matche
+  const planCardsHtml = annoncePlans.map(p => {
+    const isOn = preselectedPlan === p.id;
+    const priceLabel = p.price === 0 ? 'Gratuit' : `${p.price}€`;
+    const durationLabel = `${p.duration} j`;
+    return `
+      <button class="publish-plan-card${isOn ? ' selected' : ''}${p.highlight ? ' highlight' : ''}"
+              data-action="selectPublishPlan"
+              data-id="${esc(carId)}"
+              data-plan="${esc(p.id)}"
+              type="button"
+              aria-pressed="${isOn ? 'true' : 'false'}">
+        <div class="publish-plan-top">
+          <span class="publish-plan-tier">${esc(p.label)}</span>
+          <span class="publish-plan-price">${priceLabel}</span>
+        </div>
+        <div class="publish-plan-duration">${durationLabel}</div>
+        <div class="publish-plan-features">${esc(p.features)}</div>
+        ${isOn ? '<span class="publish-plan-check">✓</span>' : ''}
+      </button>
+    `;
+  }).join('');
   return `
     <div class="sheet-handle-area" data-sheet-drag>
       <div class="sheet-handle"></div>
@@ -17171,22 +17382,28 @@ function renderListForSaleSheet(carId){
     </div>
     <div class="sheet-content">
       <div class="sale-mode-grid">
-        <button class="sale-mode-card" data-action="chooseSaleMode" data-id="${esc(carId)}" data-mode="listing">
+        <button class="sale-mode-card${preselectedMode === 'annonce' ? ' selected' : ''}" data-action="chooseSaleMode" data-id="${esc(carId)}" data-mode="listing">
           <div class="sale-mode-top">
             <span class="sale-mode-chip">ANNONCE</span>
-            <span class="sale-mode-price">Gratuit · 90 j</span>
+            <span class="sale-mode-price">Choisis ta durée</span>
           </div>
-          <div class="sale-mode-title">Annonce 90 jours</div>
-          <div class="sale-mode-text">Tu fixes le prix demandé, tu reçois les contacts. Si elle ne trouve pas preneur à la fin, transition aux enchères en interne.</div>
+          <div class="sale-mode-title">Annonce premium</div>
+          <div class="sale-mode-text">Tu fixes le prix demandé, tu reçois les contacts. Plusieurs durées · gratuit ou premium pour visibilité.</div>
         </button>
-        <button class="sale-mode-card" data-action="chooseSaleMode" data-id="${esc(carId)}" data-mode="auction">
+        <button class="sale-mode-card${preselectedMode === 'enchere' ? ' selected' : ''}" data-action="chooseSaleMode" data-id="${esc(carId)}" data-mode="auction">
           <div class="sale-mode-top">
             <span class="sale-mode-chip">ENCHÈRE</span>
-            <span class="sale-mode-price">Commission douce</span>
+            <span class="sale-mode-price">Commission 8,8 %</span>
           </div>
           <div class="sale-mode-title">Enchère CARNET</div>
-          <div class="sale-mode-text">Estimation, durée, prix de réserve. Tu donnes le rythme, le marché répond. La commission est prélevée à la vente.</div>
+          <div class="sale-mode-text">Estimation, durée, prix de réserve. 8,8 % au passage de relais — 7,1 % asso, 1,7 % royalties NFT au premier minter à vie.</div>
         </button>
+      </div>
+      <div class="publish-plans-section" data-mode-visible="annonce">
+        <div class="publish-plans-label">PLANS ANNONCE</div>
+        <div class="publish-plans-grid">
+          ${planCardsHtml}
+        </div>
       </div>
       <div style="font-family:var(--editorial);font-style:italic;font-size:11px;color:var(--gris);margin-top:var(--s-3);line-height:1.5">
         Tu peux changer de mode plus tard. Annule la mise en vente à tout moment depuis la fiche.
@@ -19267,6 +19484,55 @@ const Actions = {
     if(mode === 'listing') Sheet.open('saleListingForm', id);
     else if(mode === 'auction') Sheet.open('saleAuctionForm', id);
   },
+  selectPublishPlan(id, plan){
+    // Toggle de plan dans renderListForSaleSheet, sans re-render complet (scale-friendly)
+    if(!id || !plan) return;
+    if(!window.PUBLISH_PLAN_BY_ID || !window.PUBLISH_PLAN_BY_ID[plan]) return;
+    const wasSelected = State.selectedPlan === plan;
+    State.selectedPlan = wasSelected ? null : plan;
+    State.publishMode = 'annonce';
+    // Persist (survit reload)
+    try {
+      if(typeof safeStorageSet === 'function'){
+        safeStorageSet(STORAGE_KEYS.PUBLISH_INTENT, {
+          plan: State.selectedPlan,
+          mode: State.publishMode,
+          carId: id,
+          at: Date.now()
+        });
+      }
+    } catch(_){}
+    // DOM in-place : toggle .selected sur la card cliquée + retirer des autres
+    document.querySelectorAll('.publish-plan-card[data-id="' + id + '"]').forEach(card => {
+      const isThis = card.dataset.plan === plan;
+      const shouldBeOn = isThis && !wasSelected;
+      card.classList.toggle('selected', shouldBeOn);
+      card.setAttribute('aria-pressed', shouldBeOn ? 'true' : 'false');
+      // Maj du checkmark
+      const existingCheck = card.querySelector('.publish-plan-check');
+      if(shouldBeOn && !existingCheck){
+        const span = document.createElement('span');
+        span.className = 'publish-plan-check';
+        span.textContent = '✓';
+        card.appendChild(span);
+      } else if(!shouldBeOn && existingCheck){
+        existingCheck.remove();
+      }
+    });
+    if(navigator.vibrate) navigator.vibrate(10);
+  },
+  dismissPublishIntent(){
+    State.selectedPlan = null;
+    State.publishMode = null;
+    try {
+      if(typeof safeStorageSet === 'function'){
+        safeStorageSet(STORAGE_KEYS.PUBLISH_INTENT, null);
+      }
+    } catch(_){}
+    if(State.activeTab === 'garage' && typeof renderGaragePage === 'function'){
+      renderGaragePage();
+    }
+  },
   toggleTuner(formId, name){
     const state = formId === 'auction' ? SaleAuctionFormState : SaleListingFormState;
     if(state.tunerName === name){
@@ -20220,7 +20486,7 @@ function renderGaragePage(){
 
   let body;
   if(garage.length === 0 && wishlistCars.length === 0){
-    body = renderProfileOnboardingBanner() + renderEmptyState({
+    body = renderPublishIntentBanner() + renderProfileOnboardingBanner() + renderEmptyState({
       title: 'Garage à remplir',
       text: "Entre ta première voiture. Suivi de cote, entretien, photos, factures — tout reste là, accessible. Plus tard, fouille annonces et enchères pour étoffer, ou prépare une revente depuis CARNET.",
       cta: { label: '+ Ajouter ma première voiture', action: 'openAddGarage', primary: true }
@@ -20276,6 +20542,7 @@ function renderGaragePage(){
     ` : '';
 
     body = `
+      ${renderPublishIntentBanner()}
       <div class="garage-summary">
         <div class="garage-summary-label">VALEUR ESTIM\u00c9E \u00b7 COTE CARNET</div>
         <div class="garage-summary-value">${esc(fmtPrice(totalValue))}</div>
@@ -20570,6 +20837,8 @@ function handleClick(e){
   if(action === 'toggleGarageCondition'){ Actions.toggleGarageCondition(t.dataset.field); return; }
   // Sale flow
   if(action === 'chooseSaleMode'){ Actions.chooseSaleMode(t.dataset.id, t.dataset.mode); return; }
+  if(action === 'selectPublishPlan'){ Actions.selectPublishPlan(t.dataset.id, t.dataset.plan); return; }
+  if(action === 'dismissPublishIntent'){ Actions.dismissPublishIntent(); return; }
   if(action === 'saleAuctionFormChange' && t.dataset.value !== undefined){
     Actions.saleAuctionFormChange(t.dataset.field, t.dataset.value); return;
   }
@@ -20749,6 +21018,77 @@ function init(){
   });
   // Moteur d'auto-transition annonce → enchère
   const transitions = checkSaleTransitions();
+
+  // === BOUCLE VENDRE · constants + URL params + persist ===
+  // Source unique de vérité pour les plans de publication. Pensé scale.
+  // Toute modif de pricing se fait ici, propage partout.
+  const PUBLISH_PLANS = [
+    { id: 'free',         tier: 'annonce', label: 'Annonce 90 j',  duration: 90, price: 0,  recurring: false, features: 'Gratuit · transition enchère si invendue' },
+    { id: 'premium-30',   tier: 'annonce', label: 'Premium 30 j',  duration: 30, price: 17, recurring: false, features: 'Visibilité normale, pas de boost' },
+    { id: 'premium-60',   tier: 'annonce', label: 'Premium 60 j',  duration: 60, price: 28, recurring: false, features: 'Mise en avant 7 premiers jours', highlight: true },
+    { id: 'premium-90',   tier: 'annonce', label: 'Premium 90 j',  duration: 90, price: 42, recurring: false, features: 'Visibilité max · boost mensuel' },
+    { id: 'pro-standard', tier: 'pro',     label: 'Pro Standard',  duration: 30, price: 28, recurring: true,  features: '8 annonces · 28€/mois' },
+    { id: 'pro',          tier: 'pro',     label: 'Pro',           duration: 30, price: 42, recurring: true,  features: '28 annonces · 42€/mois' }
+  ];
+  // Cache pour lookup O(1)
+  const PUBLISH_PLAN_BY_ID = PUBLISH_PLANS.reduce((acc, p) => (acc[p.id] = p, acc), {});
+  window.PUBLISH_PLANS = PUBLISH_PLANS;
+  window.PUBLISH_PLAN_BY_ID = PUBLISH_PLAN_BY_ID;
+
+  // Restore intent depuis localStorage (au cas où user a quitté/reload)
+  try {
+    const persistedIntent = safeStorageGet(STORAGE_KEYS.PUBLISH_INTENT, null);
+    if(persistedIntent && typeof persistedIntent === 'object'){
+      if(persistedIntent.plan && PUBLISH_PLAN_BY_ID[persistedIntent.plan]) State.selectedPlan = persistedIntent.plan;
+      if(persistedIntent.mode === 'enchere' || persistedIntent.mode === 'annonce') State.publishMode = persistedIntent.mode;
+    }
+  } catch(_){}
+
+  // Override depuis l'URL (?tab=&plan=&mode=) — précédence sur le persist
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const requestedTab = urlParams.get('tab');
+    const validTabs = ['affut', 'annonces', 'encheres', 'garage'];
+    if(requestedTab && validTabs.indexOf(requestedTab) !== -1){
+      State.activeTab = requestedTab;
+    }
+    const requestedPlan = urlParams.get('plan');
+    if(requestedPlan && PUBLISH_PLAN_BY_ID[requestedPlan]){
+      State.selectedPlan = requestedPlan;
+    }
+    const requestedMode = urlParams.get('mode');
+    if(requestedMode === 'enchere' || requestedMode === 'annonce'){
+      State.publishMode = requestedMode;
+    }
+    // Persist l'intent (survit reload)
+    if(requestedPlan || requestedMode){
+      try {
+        safeStorageSet(STORAGE_KEYS.PUBLISH_INTENT, {
+          plan: State.selectedPlan || null,
+          mode: State.publishMode || null,
+          at: Date.now()
+        });
+      } catch(_){}
+    }
+    // Nettoyer l'URL pour ne pas garder les params au reload
+    if(urlParams.has('tab') || urlParams.has('plan') || urlParams.has('mode')){
+      try { window.history.replaceState({}, '', window.location.pathname); } catch(_){}
+    }
+    // Toast de confirmation différé (UX claire user vient de cliquer un CTA)
+    if(requestedPlan && PUBLISH_PLAN_BY_ID[requestedPlan]){
+      const planInfo = PUBLISH_PLAN_BY_ID[requestedPlan];
+      const priceLabel = planInfo.price === 0 ? 'gratuit' : `${planInfo.price}€${planInfo.recurring ? '/mois' : ''}`;
+      setTimeout(() => {
+        if(typeof showToastFloat === 'function') showToastFloat(`Plan retenu · ${planInfo.label} · ${priceLabel}`);
+      }, 600);
+    } else if(requestedMode === 'enchere'){
+      setTimeout(() => {
+        if(typeof showToastFloat === 'function') showToastFloat('Mode enchère · commission 8,8 % (7,1 % asso + 1,7 % royalties)');
+      }, 600);
+    }
+  } catch(e){
+    console.warn('[init] URL params parsing failed', e);
+  }
 
   renderAll();
   captureAffutSnapshot();
