@@ -789,30 +789,49 @@
     }
     
     .pricing-tabs {
+      display: inline-flex;
+      gap: 0;
+      margin: 0 auto var(--fib-4);
+      background: var(--white);
+      border: 1px solid var(--papier-creme-deep);
+      border-radius: 100px;
+      padding: 4px;
+      position: relative;
+      box-shadow: 0 2px 8px rgba(26, 26, 26, 0.04);
+    }
+    
+    .pricing-tabs-wrapper {
       display: flex;
       justify-content: center;
-      gap: var(--fib-2);
       margin-bottom: var(--fib-4);
     }
     
     .pricing-tab {
       font-family: var(--font-mono);
-      font-size: 12px;
+      font-size: 13px;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      padding: var(--fib-2) var(--fib-3);
-      border-radius: var(--radius-md);
-      border: 2px solid transparent;
+      letter-spacing: 0.08em;
+      padding: var(--fib-2) var(--fib-4);
+      border-radius: 100px;
+      border: none;
       background: transparent;
-      color: #666;
+      color: rgba(26, 26, 26, 0.55);
       cursor: pointer;
-      transition: all var(--transition-base);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      font-weight: 500;
+      position: relative;
+      z-index: 1;
+      white-space: nowrap;
+    }
+    
+    .pricing-tab:hover:not(.active) {
+      color: var(--encre-noir);
     }
     
     .pricing-tab.active {
-      border-color: var(--orange-polo);
-      color: var(--orange-polo);
-      background: rgba(232, 90, 31, 0.05);
+      background: var(--encre-noir);
+      color: var(--white);
+      box-shadow: 0 2px 12px rgba(26, 26, 26, 0.15);
     }
     
     .pricing-grid {
@@ -1097,6 +1116,184 @@
       color: #666;
     }
     
+
+    /* === MODAL OVERLAY "CHOISIS TON INTENTION" === */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(26, 26, 26, 0.75);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: var(--fib-3);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .modal-overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+    
+    .modal-content {
+      background: var(--papier-creme-light);
+      border-radius: var(--radius-md);
+      max-width: 740px;
+      width: 100%;
+      padding: var(--fib-5);
+      position: relative;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+      transform: scale(0.95);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    
+    .modal-overlay.active .modal-content {
+      transform: scale(1);
+    }
+    
+    .modal-close {
+      position: absolute;
+      top: var(--fib-3);
+      right: var(--fib-3);
+      background: transparent;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: rgba(26, 26, 26, 0.5);
+      transition: color 0.2s ease, transform 0.2s ease;
+      line-height: 1;
+      padding: var(--fib-1);
+      font-family: var(--font-mono);
+    }
+    
+    .modal-close:hover {
+      color: var(--encre-noir);
+      transform: rotate(90deg);
+    }
+    
+    .modal-header {
+      text-align: center;
+      margin-bottom: var(--fib-4);
+    }
+    
+    .modal-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--orange-polo);
+      margin-bottom: var(--fib-2);
+    }
+    
+    .modal-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.2;
+      color: var(--encre-noir);
+      margin-bottom: var(--fib-2);
+    }
+    
+    .modal-desc {
+      font-family: var(--font-body);
+      font-size: 17px;
+      color: rgba(26, 26, 26, 0.7);
+      line-height: 1.5;
+    }
+    
+    .modal-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--fib-3);
+      margin-bottom: var(--fib-3);
+    }
+    
+    .modal-option {
+      background: var(--white);
+      border: 1px solid var(--papier-creme-deep);
+      border-radius: var(--radius-md);
+      padding: var(--fib-4);
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      font-family: inherit;
+      width: 100%;
+    }
+    
+    .modal-option:hover {
+      border-color: var(--orange-polo);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(232, 90, 31, 0.15);
+    }
+    
+    .modal-option-amount {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: clamp(36px, 4vw, 48px);
+      color: var(--encre-noir);
+      line-height: 1;
+      margin-bottom: var(--fib-2);
+    }
+    
+    .modal-option-title {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--orange-polo);
+      margin-bottom: var(--fib-3);
+    }
+    
+    .modal-option-desc {
+      font-family: var(--font-body);
+      font-size: 16px;
+      color: rgba(26, 26, 26, 0.75);
+      line-height: 1.6;
+      margin-bottom: var(--fib-3);
+    }
+    
+    .modal-option-cta {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--orange-polo);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: var(--fib-1);
+      transition: gap 0.2s ease;
+    }
+    
+    .modal-option:hover .modal-option-cta {
+      gap: var(--fib-2);
+    }
+    
+    .modal-footer-note {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(26, 26, 26, 0.45);
+      text-align: center;
+      margin-top: var(--fib-3);
+    }
+    
+    @media (max-width: 600px) {
+      .modal-options {
+        grid-template-columns: 1fr;
+      }
+      .modal-content {
+        padding: var(--fib-4);
+        padding-top: var(--fib-5);
+      }
+    }
+    
     /* === FOOTER === */
     footer {
       background: var(--encre-noir);
@@ -1216,13 +1413,13 @@
   <!-- === HERO === -->
   <section class="hero">
     <div class="hero-content container-narrow">
-      <div class="hero-eyebrow">Vendre ta voiture,<br/>Annonces & Enchères.</div>
+      <div class="hero-eyebrow">Vendre ta voiture · Annonces & Enchères</div>
       <h1>Égalité pour tous,<br/>Transparence totale.</h1>
       <p class="hero-desc">
         Ton bénéfice : commissions équitables, prix transparents et règlement en 5 secondes.
       </p>
       <div class="hero-cta">
-        <a href="#wizard" class="btn btn-primary">Commencer</a>
+        <a href="#pricing" class="btn btn-primary" data-modal-trigger="intention">Commencer</a>
       </div>
     </div>
   </section>
@@ -1231,16 +1428,18 @@
   <section class="pricing-section" id="pricing">
     <div class="container">
       <div class="section-header">
-        <div class="section-eyebrow">Tarification</div>
+        <div class="section-eyebrow">Tarification annonces</div>
         <h2 class="section-title">Totalement transparente</h2>
         <p class="section-desc">
           Tous les frais calculés avant chaque validation.
         </p>
       </div>
       
-      <div class="pricing-tabs">
-        <button class="pricing-tab active" data-tab="particulier">Particulier</button>
-        <button class="pricing-tab" data-tab="concessionnaire">Concessionnaire</button>
+      <div class="pricing-tabs-wrapper">
+        <div class="pricing-tabs">
+          <button class="pricing-tab active" data-tab="particulier">Particulier</button>
+          <button class="pricing-tab" data-tab="concessionnaire">Concessionnaire</button>
+        </div>
       </div>
       
       <!-- Particulier Pricing -->
@@ -1249,7 +1448,7 @@
           <div class="pricing-header">
             <div class="pricing-tier">Gratuit</div>
             <div class="pricing-amount">0€</div>
-            <div class="pricing-desc">Baseline viable</div>
+            <div class="pricing-desc">Pour tester</div>
           </div>
           <ul class="pricing-features">
             <li class="pricing-feature">
@@ -1266,10 +1465,10 @@
             </li>
             <li class="pricing-feature">
               <span class="pricing-feature-icon">✓</span>
-              <span>Position organique</span>
+              <span>Visibilité normale</span>
             </li>
           </ul>
-          <button class="btn btn-secondary pricing-cta">Publier</button>
+          <a href="/?tab=garage" class="btn btn-secondary pricing-cta">Publier</a>
         </div>
         
         <div class="pricing-card featured">
@@ -1277,7 +1476,7 @@
           <div class="pricing-header">
             <div class="pricing-tier">Premium 30j</div>
             <div class="pricing-amount">17€</div>
-            <div class="pricing-desc">10 × 1.7% signature</div>
+            <div class="pricing-desc">10 × 1.7% · Asso loi 1901</div>
           </div>
           <ul class="pricing-features">
             <li class="pricing-feature">
@@ -1298,10 +1497,10 @@
             </li>
             <li class="pricing-feature">
               <span class="pricing-feature-icon">✓</span>
-              <span>Position boost</span>
+              <span>Mise en avant</span>
             </li>
           </ul>
-          <button class="btn btn-primary pricing-cta">Publier premium</button>
+          <a href="/?tab=garage&plan=premium-30" class="btn btn-primary pricing-cta">Publier premium</a>
         </div>
         
         <div class="pricing-card">
@@ -1313,18 +1512,26 @@
           <ul class="pricing-features">
             <li class="pricing-feature">
               <span class="pricing-feature-icon">✓</span>
-              <span>Toutes features 30j</span>
+              <span>7 photos + vidéo 60sec</span>
             </li>
             <li class="pricing-feature">
               <span class="pricing-feature-icon">✓</span>
-              <span>Durée 60 jours</span>
+              <span>1500 caractères + Histoire</span>
             </li>
             <li class="pricing-feature">
               <span class="pricing-feature-icon">✓</span>
-              <span>Sweet spot vente</span>
+              <span>Mini-cote contextuelle</span>
+            </li>
+            <li class="pricing-feature">
+              <span class="pricing-feature-icon">✓</span>
+              <span>Mise en avant 60 jours</span>
+            </li>
+            <li class="pricing-feature">
+              <span class="pricing-feature-icon">✓</span>
+              <span>Durée idéale</span>
             </li>
           </ul>
-          <button class="btn btn-secondary pricing-cta">Publier 60j</button>
+          <a href="/?tab=garage&plan=premium-60" class="btn btn-secondary pricing-cta">Publier 60j</a>
         </div>
         
         <div class="pricing-card">
@@ -1336,18 +1543,26 @@
           <ul class="pricing-features">
             <li class="pricing-feature">
               <span class="pricing-feature-icon">✓</span>
-              <span>Toutes features 30j</span>
+              <span>7 photos + vidéo 60sec</span>
             </li>
             <li class="pricing-feature">
               <span class="pricing-feature-icon">✓</span>
-              <span>Durée 90 jours</span>
+              <span>1500 caractères + Histoire</span>
             </li>
             <li class="pricing-feature">
               <span class="pricing-feature-icon">✓</span>
-              <span>Max visibility</span>
+              <span>Mini-cote contextuelle</span>
+            </li>
+            <li class="pricing-feature">
+              <span class="pricing-feature-icon">✓</span>
+              <span>Mise en avant 90 jours</span>
+            </li>
+            <li class="pricing-feature">
+              <span class="pricing-feature-icon">✓</span>
+              <span>Visibilité maximale</span>
             </li>
           </ul>
-          <button class="btn btn-secondary pricing-cta">Publier 90j</button>
+          <a href="/?tab=garage&plan=premium-90" class="btn btn-secondary pricing-cta">Publier 90j</a>
         </div>
       </div>
       
@@ -1377,7 +1592,7 @@
               <span>3.50€/annonce</span>
             </li>
           </ul>
-          <button class="btn btn-secondary pricing-cta">S'abonner</button>
+          <a href="/?tab=garage&plan=pro-standard" class="btn btn-secondary pricing-cta">S'abonner</a>
         </div>
         
         <div class="pricing-card featured">
@@ -1409,7 +1624,7 @@
               <span>1.50€/annonce</span>
             </li>
           </ul>
-          <button class="btn btn-primary pricing-cta">S'abonner Pro</button>
+          <a href="/?tab=garage&plan=pro" class="btn btn-primary pricing-cta">S'abonner Pro</a>
         </div>
         
         <div class="pricing-card" style="border-color: var(--vert-anglais);">
@@ -1432,17 +1647,42 @@
               <span>Sur invitation</span>
             </li>
           </ul>
-          <button class="btn btn-secondary pricing-cta" style="border-color: var(--vert-anglais); color: var(--vert-anglais);">Candidater</button>
+          <a href="mailto:asso@carnet.life?subject=Candidature%20Charter%20Member" class="btn btn-secondary pricing-cta" style="border-color: var(--vert-anglais); color: var(--vert-anglais);">Candidater</a>
         </div>
       </div>
     </div>
-  </section>
+  
+      <!-- Transparence breakdown ANNONCE -->
+      <div class="container-narrow" style="margin-top: var(--fib-5); padding: 0;">
+        <div class="wizard-breakdown">
+          <div class="wizard-breakdown-title">Modèle cible @ 1M users · Asso loi 1901</div>
+          <div class="wizard-breakdown-tree">
+            <div><strong>17€</strong> annonce premium 30 jours</div>
+            <div>├─ <span class="wizard-breakdown-amount">1.21€</span> <strong>Don signature</strong> (7.1%) → mission asso</div>
+            <div>├─ <span class="wizard-breakdown-amount">0.29€</span> <strong>Royalties NFT</strong> (1.7%) → smart contract XLS-20</div>
+            <div>├─ <span class="wizard-breakdown-amount">0.78€</span> <strong>Coûts opérationnels</strong> (4.6%)</div>
+            <div style="padding-left: var(--fib-3); color: rgba(26, 26, 26, 0.55); font-size: 13px; line-height: 1.7;">
+              ├─ Stripe (~3%) · 0.51€<br/>
+              ├─ Infrastructure (Hetzner + Cloudflare + Supabase + API) · 0.14€<br/>
+              ├─ Modération (outils, bénévoles équipés) · 0.03€<br/>
+              └─ Légal RGPD / MiCA (amorti) · 0.10€
+            </div>
+            <div>└─ <span class="wizard-breakdown-amount">14.72€</span> <strong>Excédent → asso</strong> (86.6%) → projets, événements, mission long terme</div>
+          </div>
+          <div class="wizard-breakdown-note">
+            <strong>15.93€ sur 17€ (93.7%) reversés à la mission asso</strong><br/>
+            Aucun salaire · Aucun dividende · Aucune publicité. 17 = 10 × 1.7 (signature CARNET 7.1% + 1.7% = 8.8%). Comptes publics sur <a href="/transparence.html" style="color: var(--orange-polo);">transparence.html</a>.
+          </div>
+        </div>
+      </div>
+      
+    </section>
 
-  <!-- === COMPARISON SLIDER === -->
-  <section class="comparison-slider-section" id="comparaison">
+  <!-- === TARIFICATION ENCHÈRES === -->
+  <section class="comparison-slider-section" id="tarification-encheres">
     <div class="container-narrow">
       <div class="section-header">
-        <div class="section-eyebrow">Le shift Web3</div>
+        <div class="section-eyebrow">Tarification enchères</div>
         <h2 class="section-title">Nouveaux modèles économiques</h2>
         <p class="section-desc">
           Le Web3 redéfinit les marchés. Égalité structurelle, infrastructure on-chain, transparence radicale.
@@ -1459,10 +1699,10 @@
             type="range" 
             class="slider-input" 
             id="sale-price-slider"
-            min="50000" 
-            max="500000" 
-            value="150000" 
-            step="10000"
+            min="0" 
+            max="1000" 
+            value="500" 
+            step="1"
           />
         </div>
         
@@ -1489,133 +1729,29 @@
           <div class="comparison-difference-amount" id="difference-amount">+11 850€</div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- === WIZARD PREVIEW === -->
-  <section class="wizard-section" id="wizard">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-eyebrow">Commencer</div>
-        <h2 class="section-title">Choisis ton flow</h2>
+      
+      <div class="text-center" style="margin-top: var(--fib-4); margin-bottom: var(--fib-3);">
+        <a href="/?tab=garage&mode=enchere" class="btn btn-primary">Inscrire en enchère →</a>
       </div>
       
-      <div class="wizard-tabs">
-        <div class="wizard-tab active" data-wizard="annonce">
-          <div class="wizard-tab-icon">📋</div>
-          <div class="wizard-tab-title">Annonce premium</div>
-          <div class="wizard-tab-desc">7 étapes · 17-42€</div>
-        </div>
-        <div class="wizard-tab" data-wizard="enchere">
-          <div class="wizard-tab-icon">🔨</div>
-          <div class="wizard-tab-title">Enchère</div>
-          <div class="wizard-tab-desc">8 étapes · 8.8% commission</div>
-        </div>
-      </div>
-      
-      <!-- Annonce Wizard -->
-      <div class="wizard-content" id="annonce-wizard">
-        <div class="wizard-steps">
-          <div class="wizard-step active">
-            <div class="wizard-step-number">1</div>
-            <div class="wizard-step-label">Type</div>
-          </div>
-          <div class="wizard-step">
-            <div class="wizard-step-number">2</div>
-            <div class="wizard-step-label">Voiture</div>
-          </div>
-          <div class="wizard-step">
-            <div class="wizard-step-number">3</div>
-            <div class="wizard-step-label">Photos</div>
-          </div>
-          <div class="wizard-step">
-            <div class="wizard-step-number">4</div>
-            <div class="wizard-step-label">Description</div>
-          </div>
-          <div class="wizard-step">
-            <div class="wizard-step-number">5</div>
-            <div class="wizard-step-label">Pricing</div>
-          </div>
-          <div class="wizard-step">
-            <div class="wizard-step-number">6</div>
-            <div class="wizard-step-label">Durée</div>
-          </div>
-          <div class="wizard-step">
-            <div class="wizard-step-number">7</div>
-            <div class="wizard-step-label">Confirmation</div>
-          </div>
-        </div>
-        
+      <!-- Transparence breakdown ENCHÈRE -->
+      <div style="margin-top: var(--fib-5);">
         <div class="wizard-breakdown">
-          <div class="wizard-breakdown-title">Tarification transparente · Signature 8.8%</div>
+          <div class="wizard-breakdown-title">Modèle cible @ 1M users · Asso loi 1901</div>
           <div class="wizard-breakdown-tree">
-            <div><strong>17€</strong> annonce premium 30 jours</div>
-            <div>├─ <span class="wizard-breakdown-amount">1.21€</span> asso (7.1%)</div>
-            <div>├─ <span class="wizard-breakdown-amount">0.29€</span> royalties NFT (1.7%)</div>
-            <div>└─ <span class="wizard-breakdown-amount">15.50€</span> infrastructure (91.2%)</div>
+            <div>Si vente à <strong id="bk-sale-price">150 000€</strong> :</div>
+            <div>├─ Tu reçois : <span class="wizard-breakdown-amount" id="bk-seller-receives">139 350€</span> (92.9%)</div>
+            <div>├─ <strong>Don à l'asso</strong> : <span class="wizard-breakdown-amount" id="bk-asso">10 650€</span> (7.1%) → mission CARNET</div>
+            <div style="padding-left: var(--fib-3); color: rgba(26, 26, 26, 0.55); font-size: 13px; line-height: 1.7;">
+              ├─ Coûts opérationnels (modération, notaire, escrow) · ~600€<br/>
+              └─ Excédent reversé à l'asso · <span id="bk-excedent">~10 050€</span> → projets, événements
+            </div>
+            <div>└─ <strong>Royalties NFT</strong> : <span class="wizard-breakdown-amount" id="bk-royalties">2 550€</span> (1.7%) → smart contract XLS-20 (XRPL)</div>
           </div>
           <div class="wizard-breakdown-note">
-            <strong>17 = 10 × 1.7</strong> · Notre tarif reflète directement la signature CARNET (7.1% + 1.7% = 8.8%)
+            <strong><span id="bk-mission-total">12 600€</span> sur <span id="bk-commission-total">13 200€</span> commission (<span id="bk-mission-percent">95.5%</span>) reversés à la mission asso</strong><br/>
+            Aucun salaire · Aucun dividende · Aucune publicité. Avec une maison traditionnelle (~15%), tu recevrais <span id="bk-traditional">~127 500€</span> → <strong>+<span id="bk-gain">11 850€</span> avec CARNET</strong>. Comptes publics sur <a href="/transparence.html" style="color: var(--orange-polo);">transparence.html</a>.
           </div>
-        </div>
-        
-        <div class="text-center">
-          <a href="#wizard" class="btn btn-primary">Commencer l'annonce →</a>
-        </div>
-      </div>
-      
-      <!-- Enchère Wizard -->
-      <div class="wizard-content hidden" id="enchere-wizard">
-        <div class="wizard-steps">
-          <div class="wizard-step active">
-            <div class="wizard-step-number">1</div>
-            <div class="wizard-step-label">Voiture</div>
-          </div>
-          <div class="wizard-step">
-            <div class="wizard-step-number">2</div>
-            <div class="wizard-step-label">Photos</div>
-          </div>
-          <div class="wizard-step">
-            <div class="wizard-step-number">3</div>
-            <div class="wizard-step-label">Carnet</div>
-          </div>
-          <div class="wizard-step">
-            <div class="wizard-step-number">4</div>
-            <div class="wizard-step-label">Prix</div>
-          </div>
-          <div class="wizard-step">
-            <div class="wizard-step-number">5</div>
-            <div class="wizard-step-label">Réserve</div>
-          </div>
-          <div class="wizard-step">
-            <div class="wizard-step-number">6</div>
-            <div class="wizard-step-label">Timing</div>
-          </div>
-          <div class="wizard-step">
-            <div class="wizard-step-number">7</div>
-            <div class="wizard-step-label">Frais</div>
-          </div>
-          <div class="wizard-step">
-            <div class="wizard-step-number">8</div>
-            <div class="wizard-step-label">Signature</div>
-          </div>
-        </div>
-        
-        <div class="wizard-breakdown">
-          <div class="wizard-breakdown-title">Commission 8.8% (7.1% + 1.7%)</div>
-          <div class="wizard-breakdown-tree">
-            <div>Si vente à <strong>150 000€</strong> :</div>
-            <div>├─ Tu reçois : <span class="wizard-breakdown-amount">139 350€</span></div>
-            <div>├─ Asso : <span class="wizard-breakdown-amount">10 650€</span> (7.1%)</div>
-            <div>└─ Acheteur paie : <span class="wizard-breakdown-amount">152 550€</span> (prix + 1.7%)</div>
-          </div>
-          <div class="wizard-breakdown-note">
-            Avec une maison traditionnelle (~15% commission), tu recevrais ~127 500€ → <strong>+11 850€ avec CARNET</strong>
-          </div>
-        </div>
-        
-        <div class="text-center">
-          <a href="#wizard" class="btn btn-primary">Inscrire en enchère →</a>
         </div>
       </div>
     </div>
@@ -1628,9 +1764,10 @@
         <div class="section-eyebrow">Le shift structurel</div>
         <h2 class="section-title">Ce que le Web3 résout</h2>
         <p class="section-desc">
-          Le Web3 répond au self-sovereign trilemma :<br/>
-          plus on partage nos données en ligne, plus on perd le contrôle.<br/>
-          CARNET applique ces principes à l'automobile.
+          Le Web3 relève le défi de l'identité souveraine :<br/>
+          plus tu partages tes données, plus tu en gardes le contrôle et la valeur.<br/>
+          CARNET applique cette vision à l'automobile,<br/>
+          en te redonnant la maîtrise totale de ta voiture et de ses données.
         </p>
       </div>
       
@@ -1762,8 +1899,8 @@
       
       <div class="manifesto-application">
         <p class="manifesto-statement">
-          Web3 : Possédez votre voiture.<br/>
-          Rejoignez sa communauté.
+          Web3 : Redeviens pleinement propriétaire de ta voiture.<br/>
+          Rejoins sa communauté.
         </p>
         <div class="manifesto-pillars">
           <span class="manifesto-pillar">Vérité on-chain</span>
@@ -1803,15 +1940,6 @@
         </div>
         
         <div class="footer-section">
-          <h4>Vendre</h4>
-          <ul>
-            <li><a href="#pricing">Tarifs</a></li>
-            <li><a href="#comparaison">Comparaison</a></li>
-            <li><a href="#wizard">Commencer</a></li>
-          </ul>
-        </div>
-        
-        <div class="footer-section">
           <h4>Légal</h4>
           <ul>
             <li><a href="/terms.html">CGU</a></li>
@@ -1829,16 +1957,69 @@
     </div>
   </footer>
 
+  <!-- === MODAL OVERLAY "CHOISIS TON INTENTION" === -->
+  <div class="modal-overlay" id="intention-modal" aria-hidden="true" role="dialog" aria-labelledby="modal-title">
+    <div class="modal-content">
+      <button class="modal-close" aria-label="Fermer">✕</button>
+      
+      <div class="modal-header">
+        <div class="modal-eyebrow">Choisis ton intention</div>
+        <h2 class="modal-title" id="modal-title">Comment veux-tu vendre ?</h2>
+        <p class="modal-desc">Deux flow pensés pour ta voiture.</p>
+      </div>
+      
+      <div class="modal-options">
+        <button class="modal-option" data-mode="annonce">
+          <div class="modal-option-amount">17€<span style="font-size: 0.5em;">+</span></div>
+          <div class="modal-option-title">Annonce premium</div>
+          <div class="modal-option-desc">
+            Tu fixes le prix. Visibilité maximale auprès des connaisseurs. 7 photos, vidéo 60sec, mini-cote contextuelle.
+          </div>
+          <div class="modal-option-cta">Continuer <span>→</span></div>
+        </button>
+        
+        <button class="modal-option" data-mode="enchere">
+          <div class="modal-option-amount">8.8<span style="font-size: 0.5em;">%</span></div>
+          <div class="modal-option-title">Enchère</div>
+          <div class="modal-option-desc">
+            Le marché fixe le prix. Compétition entre acheteurs. Idéal pour les voitures rares qui méritent leur juste valeur.
+          </div>
+          <div class="modal-option-cta">Continuer <span>→</span></div>
+        </button>
+      </div>
+      
+      <p class="modal-footer-note">Aucun engagement · Tu pourras tout changer en cours</p>
+    </div>
+  </div>
+
   <script>
-    // === COMPARISON SLIDER ===
+    // === COMPARISON SLIDER (log scale 8k€ → 8M€) ===
     const slider = document.getElementById('sale-price-slider');
     const priceDisplay = document.getElementById('sale-price-display');
     const carnetAmount = document.getElementById('carnet-seller-amount');
     const traditionalAmount = document.getElementById('traditional-seller-amount');
     const differenceAmount = document.getElementById('difference-amount');
     
+    const PRICE_MIN = 8000;
+    const PRICE_MAX = 8000000;
+    
+    // Slider position (0-1000) → Prix log
+    function sliderToPrice(sliderVal) {
+      const ratio = sliderVal / 1000;
+      const minLog = Math.log10(PRICE_MIN);
+      const maxLog = Math.log10(PRICE_MAX);
+      const rawPrice = Math.pow(10, minLog + ratio * (maxLog - minLog));
+      
+      // Round to nice numbers based on magnitude (CARNET sobre)
+      if (rawPrice < 20000) return Math.round(rawPrice / 500) * 500;
+      if (rawPrice < 100000) return Math.round(rawPrice / 2500) * 2500;
+      if (rawPrice < 500000) return Math.round(rawPrice / 10000) * 10000;
+      if (rawPrice < 2000000) return Math.round(rawPrice / 50000) * 50000;
+      return Math.round(rawPrice / 100000) * 100000;
+    }
+    
     function updateComparison() {
-      const price = parseInt(slider.value);
+      const price = sliderToPrice(parseInt(slider.value));
       
       // Format display
       priceDisplay.textContent = price.toLocaleString('fr-FR') + '€';
@@ -1854,6 +2035,32 @@
       // Difference
       const diff = carnetSeller - traditionalSeller;
       differenceAmount.textContent = '+' + Math.round(diff).toLocaleString('fr-FR') + '€';
+      
+      // === BREAKDOWN ENCHÈRE DYNAMIQUE ===
+      const assoAmount = price * 0.071;        // 7.1% à l'asso
+      const royaltiesAmount = price * 0.017;   // 1.7% royalties NFT
+      const operationalCosts = 600;            // Constant (modération + notaire + escrow)
+      const excedent = Math.max(0, assoAmount - operationalCosts);
+      const commissionTotal = assoAmount + royaltiesAmount;
+      const missionTotal = excedent + royaltiesAmount;
+      const missionPercent = commissionTotal > 0 ? (missionTotal / commissionTotal * 100) : 0;
+      
+      // Helper for breakdown updates
+      const setText = (id, value) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = value;
+      };
+      
+      setText('bk-sale-price', price.toLocaleString('fr-FR') + '€');
+      setText('bk-seller-receives', Math.round(carnetSeller).toLocaleString('fr-FR') + '€');
+      setText('bk-asso', Math.round(assoAmount).toLocaleString('fr-FR') + '€');
+      setText('bk-excedent', '~' + Math.round(excedent).toLocaleString('fr-FR') + '€');
+      setText('bk-royalties', Math.round(royaltiesAmount).toLocaleString('fr-FR') + '€');
+      setText('bk-mission-total', Math.round(missionTotal).toLocaleString('fr-FR') + '€');
+      setText('bk-commission-total', Math.round(commissionTotal).toLocaleString('fr-FR') + '€');
+      setText('bk-mission-percent', missionPercent.toFixed(1) + '%');
+      setText('bk-traditional', '~' + Math.round(traditionalSeller).toLocaleString('fr-FR') + '€');
+      setText('bk-gain', Math.round(diff).toLocaleString('fr-FR') + '€');
     }
     
     slider.addEventListener('input', updateComparison);
@@ -1882,31 +2089,8 @@
       });
     });
     
-    // === WIZARD TABS ===
-    const wizardTabs = document.querySelectorAll('.wizard-tab');
-    const annonceWizard = document.getElementById('annonce-wizard');
-    const enchereWizard = document.getElementById('enchere-wizard');
-    
-    wizardTabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        // Update active state
-        wizardTabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        
-        // Show/hide wizards
-        const wizardType = tab.dataset.wizard;
-        if (wizardType === 'annonce') {
-          annonceWizard.classList.remove('hidden');
-          enchereWizard.classList.add('hidden');
-        } else {
-          annonceWizard.classList.add('hidden');
-          enchereWizard.classList.remove('hidden');
-        }
-      });
-    });
-    
     // === SMOOTH SCROLL WITH STICKY HEADER OFFSET ===
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    document.querySelectorAll('a[href^="#"]:not([data-modal-trigger])').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
         e.preventDefault();
         const targetId = this.getAttribute('href');
@@ -1953,5 +2137,73 @@
     document.querySelectorAll('section').forEach(section => {
       observer.observe(section);
     });
+
+    // === MODAL OVERLAY "CHOISIS TON INTENTION" ===
+    const heroCommencerBtn = document.querySelector('.hero .btn-primary');
+    const intentionModal = document.getElementById('intention-modal');
+    const modalCloseBtn = document.querySelector('.modal-close');
+    
+    function openIntentionModal(e) {
+      if (e) e.preventDefault();
+      intentionModal.classList.add('active');
+      intentionModal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+    
+    function closeIntentionModal() {
+      intentionModal.classList.remove('active');
+      intentionModal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+    
+    // Open on hero Commencer click
+    if (heroCommencerBtn) {
+      heroCommencerBtn.addEventListener('click', openIntentionModal);
+    }
+    
+    // Close button
+    if (modalCloseBtn) {
+      modalCloseBtn.addEventListener('click', closeIntentionModal);
+    }
+    
+    // Close on backdrop click
+    intentionModal.addEventListener('click', (e) => {
+      if (e.target === intentionModal) closeIntentionModal();
+    });
+    
+    // Close on ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && intentionModal.classList.contains('active')) {
+        closeIntentionModal();
+      }
+    });
+    
+    // Option selection → close modal + smooth scroll vers la bonne section
+    document.querySelectorAll('.modal-option').forEach(option => {
+      option.addEventListener('click', () => {
+        const mode = option.dataset.mode;
+        const targetId = mode === 'annonce' ? 'pricing' : 'tarification-encheres';
+        
+        // Close modal
+        closeIntentionModal();
+        
+        // Smooth scroll to target section
+        setTimeout(() => {
+          const target = document.getElementById(targetId);
+          if (target) {
+            const headerHeight = document.querySelector('header').offsetHeight;
+            const targetPosition = target.getBoundingClientRect().top + window.pageYOffset;
+            window.scrollTo({
+              top: targetPosition - headerHeight - 21,
+              behavior: 'smooth'
+            });
+          }
+        }, 300);
+      });
+    });
+    
   </script>
+
+  
 </body>
+</html>
