@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- 28 -->
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -976,333 +975,6 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 }
 .empty-state-cta.primary:active{background:#000}
 
-/* Sprint Axe 2 : liens secondaires sous l'empty state (cross-links contextuels) */
-.empty-state-extras{
-  display:flex;
-  justify-content:center;
-  gap:18px 24px;
-  flex-wrap:wrap;
-  margin-top:18px;
-  padding-top:14px;
-  border-top:1px solid rgba(50,35,25,0.08);
-}
-.empty-state-extra-link{
-  background:transparent;
-  border:none;
-  cursor:pointer;
-  font-family:var(--mono);
-  font-size:10.5px;
-  letter-spacing:0.08em;
-  text-transform:uppercase;
-  color:var(--encre);
-  text-decoration:none;
-  border-bottom:1px solid var(--encre);
-  padding:0 0 2px;
-  transition:color 200ms ease, border-color 200ms ease;
-}
-.empty-state-extra-link:hover{
-  color:var(--orange-polo);
-  border-bottom-color:var(--orange-polo);
-}
-
-/* Sprint Axe 2 : teaser publication/enchère dans Annonces/Enchères quand user a voitures sans vente */
-.section-my-sales-teaser{padding-top:0}
-.my-sales-teaser{
-  border:1px solid rgba(50,35,25,0.12);
-  background:var(--papier);
-  border-radius:2px;
-  padding:22px 20px;
-  margin-bottom:10px;
-}
-.my-sales-teaser-tag{
-  font-family:var(--mono);
-  font-size:10px;
-  letter-spacing:0.1em;
-  text-transform:uppercase;
-  color:var(--orange-polo);
-  margin-bottom:8px;
-}
-.my-sales-teaser-title{
-  font-family:var(--display);
-  font-style:italic;
-  font-size:20px;
-  color:var(--encre);
-  line-height:1.25;
-  margin-bottom:10px;
-}
-.my-sales-teaser-text{
-  font-family:var(--editorial);
-  font-style:italic;
-  font-size:13px;
-  color:var(--encre);
-  line-height:1.6;
-  margin-bottom:16px;
-}
-.my-sales-teaser-actions{
-  display:flex;
-  gap:18px;
-  align-items:center;
-  flex-wrap:wrap;
-}
-.my-sales-teaser-cta{
-  background:var(--encre);
-  color:var(--papier-bright);
-  border:none;
-  cursor:pointer;
-  font-family:var(--mono);
-  font-size:11px;
-  letter-spacing:0.08em;
-  text-transform:uppercase;
-  padding:10px 18px;
-  border-radius:2px;
-  transition:background 200ms ease;
-}
-.my-sales-teaser-cta:hover{background:#000}
-.my-sales-teaser-link{
-  font-family:var(--mono);
-  font-size:11px;
-  letter-spacing:0.08em;
-  text-transform:uppercase;
-  color:var(--encre);
-  text-decoration:none;
-  border-bottom:1px solid var(--encre);
-  padding-bottom:2px;
-}
-.my-sales-teaser-link:hover{
-  color:var(--orange-polo);
-  border-bottom-color:var(--orange-polo);
-}
-
-/* Sprint Axe 3 : banner action à prévoir (annonces qui expirent <7j) */
-.expiring-banner{
-  border:1px solid var(--orange-polo);
-  background:var(--papier);
-  border-left:4px solid var(--orange-polo);
-  border-radius:2px;
-  padding:18px 20px;
-  margin-bottom:14px;
-}
-.expiring-banner-head{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin-bottom:10px;
-}
-.expiring-banner-dot{
-  width:8px;
-  height:8px;
-  border-radius:50%;
-  background:var(--orange-polo);
-  flex-shrink:0;
-  animation:expiring-pulse 2s ease-in-out infinite;
-}
-@keyframes expiring-pulse{
-  0%, 100%{opacity:1;transform:scale(1)}
-  50%{opacity:0.5;transform:scale(0.85)}
-}
-.expiring-banner-tag{
-  font-family:var(--mono);
-  font-size:10px;
-  letter-spacing:0.1em;
-  text-transform:uppercase;
-  color:var(--orange-polo);
-}
-.expiring-banner-msg{
-  font-family:var(--editorial);
-  font-style:italic;
-  font-size:13.5px;
-  color:var(--encre);
-  line-height:1.55;
-  margin:0 0 14px;
-}
-.expiring-banner-msg strong{
-  font-style:normal;
-  font-family:var(--sans);
-  font-weight:500;
-}
-.expiring-banner-actions{
-  display:flex;
-  gap:16px;
-  align-items:center;
-  flex-wrap:wrap;
-}
-.expiring-banner-cta{
-  background:var(--orange-polo);
-  color:var(--papier-bright);
-  border:none;
-  cursor:pointer;
-  font-family:var(--mono);
-  font-size:11px;
-  letter-spacing:0.08em;
-  text-transform:uppercase;
-  padding:10px 18px;
-  border-radius:2px;
-  transition:background 200ms ease;
-}
-.expiring-banner-cta:hover{filter:brightness(0.92)}
-.expiring-banner-link{
-  background:transparent;
-  border:none;
-  cursor:pointer;
-  font-family:var(--mono);
-  font-size:11px;
-  letter-spacing:0.08em;
-  text-transform:uppercase;
-  color:var(--encre);
-  border-bottom:1px solid var(--encre);
-  padding:0 0 2px;
-}
-.expiring-banner-link:hover{
-  color:var(--orange-polo);
-  border-bottom-color:var(--orange-polo);
-}
-
-/* Sprint Axe 4 : note contextualisée par profil dans le picker Mettre en vente */
-.picker-profile-note{
-  background:var(--papier);
-  border:1px solid rgba(50,35,25,0.10);
-  border-left:3px solid var(--vert-anglais);
-  border-radius:2px;
-  padding:12px 14px;
-  margin-bottom:18px;
-}
-.picker-profile-note-tag{
-  display:inline-block;
-  font-family:var(--mono);
-  font-size:9.5px;
-  letter-spacing:0.1em;
-  text-transform:uppercase;
-  color:var(--vert-anglais);
-  margin-bottom:6px;
-}
-.picker-profile-note-text{
-  font-family:var(--editorial);
-  font-style:italic;
-  font-size:12.5px;
-  color:var(--encre);
-  line-height:1.55;
-  margin:0;
-}
-
-/* Sprint Axe 4 : ligne de tonalité profil sous le hero Garage (déjà branché) */
-.hero-profile-tagline{
-  font-family:var(--editorial);
-  font-style:italic;
-  font-size:12.5px;
-  color:var(--gris);
-  margin:4px 0 12px;
-  letter-spacing:0.01em;
-}
-
-/* Sprint Axe 5 : footer éditorial réutilisable (Affût + Annonces + Enchères + Garage) */
-.carnet-footer{
-  margin-top:48px;
-  padding:36px 0 100px;
-  border-top:1px solid rgba(50,35,25,0.1);
-  background:var(--papier);
-}
-.carnet-footer-inner{
-  max-width:920px;
-  margin:0 auto;
-  padding:0 20px;
-}
-.carnet-footer-brand{
-  text-align:center;
-  margin-bottom:28px;
-  padding-bottom:24px;
-  border-bottom:1px solid rgba(50,35,25,0.08);
-}
-.carnet-footer-wordmark{
-  font-family:var(--display);
-  font-style:italic;
-  font-size:24px;
-  color:var(--encre);
-  letter-spacing:0.01em;
-}
-.carnet-footer-dot{
-  color:var(--orange-polo);
-  font-style:normal;
-  display:inline-block;
-  transform:translateY(-2px);
-  margin-left:2px;
-}
-.carnet-footer-tagline{
-  font-family:var(--editorial);
-  font-size:13px;
-  color:var(--encre);
-  margin-top:4px;
-}
-.carnet-footer-asso{
-  font-family:var(--mono);
-  font-size:10px;
-  letter-spacing:0.06em;
-  color:var(--gris);
-  margin-top:10px;
-  line-height:1.5;
-}
-.carnet-footer-grid{
-  display:grid;
-  grid-template-columns:repeat(4, 1fr);
-  gap:24px;
-  margin-bottom:28px;
-}
-@media (max-width:640px){
-  .carnet-footer-grid{grid-template-columns:repeat(2, 1fr); gap:20px 14px}
-}
-.carnet-footer-col{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
-.carnet-footer-col-title{
-  font-family:var(--mono);
-  font-size:9.5px;
-  letter-spacing:0.1em;
-  text-transform:uppercase;
-  color:var(--orange-polo);
-  margin-bottom:4px;
-}
-.carnet-footer-link{
-  background:transparent;
-  border:none;
-  cursor:pointer;
-  text-align:left;
-  padding:0;
-  font-family:var(--sans);
-  font-size:12.5px;
-  color:var(--encre);
-  text-decoration:none;
-  transition:color 200ms ease;
-  line-height:1.5;
-}
-.carnet-footer-link:hover{color:var(--orange-polo)}
-.carnet-footer-meta{
-  font-family:var(--mono);
-  font-size:10px;
-  color:var(--gris);
-  letter-spacing:0.02em;
-  line-height:1.5;
-}
-.carnet-footer-bottom{
-  border-top:1px solid rgba(50,35,25,0.08);
-  padding-top:18px;
-  text-align:center;
-}
-.carnet-footer-onchain{
-  font-family:var(--mono);
-  font-size:9.5px;
-  letter-spacing:0.06em;
-  color:var(--gris);
-  margin-bottom:8px;
-  line-height:1.6;
-}
-.carnet-footer-copyright{
-  font-family:var(--editorial);
-  font-size:11px;
-  color:var(--encre);
-  line-height:1.5;
-}
-
 /* ===== ENCHÈRES FILTER BAR (Chunk 8.c) ===== */
 .encheres-filter-bar{
   display:flex;
@@ -1407,11 +1079,344 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   height:6px;
   border-radius:50%;
   background:var(--gris-line);
+  border:none;
+  padding:0;
+  cursor:pointer;
+  position:relative;
   transition:background var(--duration-fast) ease,transform var(--duration-fast) ease;
 }
+.onboarding-dot::after{
+  content:'';
+  position:absolute;
+  inset:-12px;
+}
 .onboarding-dot.active{
-  background:var(--encre);
+  background:var(--orange-polo);
   transform:scale(1.4);
+}
+.onboarding-dot:hover:not(.active){background:var(--gris-soft);}
+
+/* ===== ONBOARDING v3 · romain + PASSER + back + mockups ===== */
+.onboarding-roman{
+  font-family:var(--display);
+  font-style:italic;
+  font-weight:400;
+  font-size:64px;
+  line-height:0.85;
+  color:var(--encre);
+  letter-spacing:-0.04em;
+  margin-bottom:var(--s-3);
+  user-select:none;
+}
+.onboarding-passer{
+  position:absolute;
+  top:var(--s-2);
+  right:var(--s-3);
+  z-index:3;
+  background:transparent;
+  border:none;
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:0.18em;
+  color:var(--gris-soft);
+  text-transform:uppercase;
+  padding:14px 12px;
+  min-height:44px;
+  min-width:44px;
+  cursor:pointer;
+  transition:color 160ms ease;
+}
+.onboarding-passer:hover{color:var(--encre);}
+.onboarding-actions{
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:var(--s-2);
+}
+.onboarding-back{
+  flex-shrink:0;
+  width:44px;
+  height:44px;
+  border:none;
+  background:transparent;
+  font-family:var(--display);
+  font-style:italic;
+  font-size:22px;
+  color:var(--gris-soft);
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  transition:color 160ms ease, background 160ms ease;
+}
+.onboarding-back:hover{color:var(--encre); background:var(--papier-soft);}
+.onboarding-mockup{
+  margin-top:var(--s-3);
+  display:flex;
+  flex-direction:column;
+}
+
+/* Preview label */
+.ob-preview-label{
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:0.18em;
+  color:var(--gris-soft);
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+
+/* Panel I — Frontispice Genesis */
+.ob-ornament-frontispiece{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  flex:1;
+  gap:14px;
+  padding:20px 0;
+}
+.ob-ornament-line{
+  width:80px;
+  height:1px;
+  background:var(--gris-line);
+}
+.ob-ornament-square{
+  width:10px;
+  height:10px;
+  background:var(--orange-polo);
+  cursor:pointer;
+}
+.ob-ornament-stamp{
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:0.18em;
+  color:var(--gris-soft);
+  text-transform:uppercase;
+  margin-top:8px;
+  text-align:center;
+  line-height:1.6;
+}
+.ob-ornament-stamp-emphasis{
+  color:var(--encre);
+  font-weight:500;
+}
+
+/* Panel II — Garage hero + cards */
+.ob-garage-hero{
+  background:var(--encre);
+  border-radius:8px;
+  padding:18px 18px 14px;
+  margin-bottom:12px;
+  color:#f4f1ea;
+}
+.ob-garage-hero-kicker{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:0.14em;
+  color:rgba(244,241,234,0.55);
+}
+.ob-garage-hero-kicker-left strong{color:#f4f1ea; font-weight:500;}
+.ob-garage-hero-sync{display:inline-flex; align-items:center; gap:5px;}
+.ob-garage-hero-sync-dot{
+  display:inline-block; width:5px; height:5px;
+  background:var(--vert-anglais); border-radius:50%;
+  animation:ob-badge-pulse 1.8s ease-in-out infinite;
+}
+.ob-garage-summary-label{
+  font-family:var(--mono); font-size:9px;
+  letter-spacing:0.16em; color:rgba(244,241,234,0.55);
+  text-transform:uppercase; margin-bottom:6px;
+}
+.ob-garage-summary-value{
+  font-family:var(--display); font-style:italic; font-size:32px;
+  font-weight:500; line-height:1; letter-spacing:-0.025em;
+  margin-bottom:4px; color:#f4f1ea;
+}
+.ob-garage-summary-delta{
+  font-family:var(--mono); font-size:10px;
+  letter-spacing:0.04em; margin-top:4px; margin-bottom:10px;
+  color:#9FD3AC;
+}
+.ob-garage-sparkline{width:100%; height:32px; display:block; margin-bottom:10px;}
+.ob-garage-sparkline circle{
+  transform-origin:center; transform-box:fill-box;
+  animation:ob-spark-pulse 2.2s ease-in-out infinite;
+}
+.ob-garage-summary-meta{
+  display:flex; justify-content:space-between; align-items:center;
+  padding-top:10px; border-top:1px solid rgba(244,241,234,0.15);
+  font-family:var(--mono); font-size:10px;
+  color:rgba(244,241,234,0.55); letter-spacing:0.04em;
+}
+.ob-garage-card-mini{
+  background:var(--papier-soft);
+  border:1px solid var(--gris-line);
+  border-radius:2px;
+  padding:12px 14px;
+  display:flex; flex-direction:column; gap:4px;
+  margin-bottom:8px;
+}
+.ob-mini-tag{
+  font-family:var(--mono); font-size:10px;
+  letter-spacing:0.14em; font-weight:500; color:var(--encre);
+}
+.ob-mini-model{
+  font-family:var(--display); font-style:italic;
+  font-size:17px; color:var(--encre);
+  letter-spacing:-0.015em; line-height:1.1;
+}
+.ob-mini-sub{
+  font-family:var(--mono); font-size:10px;
+  letter-spacing:0.04em; color:var(--gris-soft);
+  margin-bottom:8px;
+}
+.ob-mini-money{
+  display:flex; justify-content:space-between; align-items:baseline;
+  padding-top:8px; border-top:1px solid var(--gris-line-soft);
+}
+.ob-mini-cote{
+  font-family:var(--mono); font-size:12px;
+  font-weight:500; color:var(--encre); letter-spacing:0.02em;
+}
+.ob-mini-cote-label{
+  font-family:var(--mono); font-size:9px;
+  letter-spacing:0.12em; color:var(--gris-soft); text-transform:uppercase;
+}
+.ob-garage-card-peek{
+  background:var(--papier-soft);
+  border:1px solid var(--gris-line); border-bottom:none;
+  border-radius:2px 2px 0 0;
+  padding:12px 14px 16px;
+  display:flex; flex-direction:column; gap:4px;
+  position:relative; max-height:68px; overflow:hidden;
+  -webkit-mask-image:linear-gradient(to bottom, #000 0%, #000 50%, transparent 100%);
+  mask-image:linear-gradient(to bottom, #000 0%, #000 50%, transparent 100%);
+}
+
+/* Panel III / IV — Match card */
+.ob-match-card{
+  background:var(--papier-soft);
+  border:1px solid var(--gris-line);
+  border-radius:2px;
+  overflow:hidden;
+  display:flex; flex-direction:column;
+}
+.ob-match-thumb{
+  height:160px;
+  background:linear-gradient(135deg,#3a3530 0%,#1a1410 60%,#0e0a07 100%);
+}
+.ob-match-thumb-red{
+  background:linear-gradient(135deg,#5a1a14 0%,#2a0a08 60%,#160505 100%);
+}
+.ob-match-body{padding:14px 16px 16px;}
+.ob-match-strip{
+  display:flex; justify-content:space-between; align-items:center;
+  margin-bottom:8px;
+  font-family:var(--mono); font-size:9px; letter-spacing:0.14em;
+}
+.ob-match-source{color:var(--orange-polo-text); font-weight:500;}
+.ob-match-source-live{
+  color:var(--vert-anglais) !important;
+  animation:ob-badge-pulse 1.6s ease-in-out infinite;
+}
+.ob-match-since{color:var(--gris-soft);}
+.ob-match-tag{
+  font-family:var(--mono); font-size:10px;
+  letter-spacing:0.16em; font-weight:500;
+  color:var(--encre); margin-bottom:4px;
+}
+.ob-match-model{
+  font-family:var(--display); font-style:italic;
+  font-size:18px; color:var(--encre);
+  letter-spacing:-0.015em; line-height:1.1;
+  margin-bottom:6px;
+}
+.ob-match-sub{
+  font-family:var(--mono); font-size:10px;
+  letter-spacing:0.04em; color:var(--gris-soft); margin-bottom:10px;
+}
+.ob-match-divider{border-top:1px solid var(--gris-line-soft); margin-bottom:10px;}
+.ob-match-money{
+  display:flex; justify-content:space-between; align-items:flex-end;
+  margin-bottom:10px;
+}
+.ob-match-money-side{display:flex; flex-direction:column; gap:2px;}
+.ob-match-money-side.right{text-align:right;}
+.ob-match-price{
+  font-family:var(--mono); font-size:15px;
+  font-weight:500; color:var(--encre); letter-spacing:0.02em;
+}
+.ob-match-opp{
+  font-family:var(--mono); font-size:13px;
+  font-weight:500; color:var(--vert-anglais); letter-spacing:0.02em;
+}
+.ob-match-opp-neutral{color:var(--gris-soft) !important;}
+.ob-match-label{
+  font-family:var(--mono); font-size:9px;
+  letter-spacing:0.12em; color:var(--gris-soft); text-transform:uppercase;
+}
+.ob-match-cote-row{
+  display:flex; justify-content:space-between; align-items:baseline;
+  padding:8px 0 12px;
+  border-bottom:1px solid var(--gris-line-soft); margin-bottom:10px;
+}
+.ob-match-cote-label{
+  font-family:var(--mono); font-size:9px;
+  letter-spacing:0.16em; color:var(--gris-soft); text-transform:uppercase;
+}
+.ob-match-cote-value{
+  font-family:var(--mono); font-size:11px;
+  letter-spacing:0.04em; color:var(--encre); font-weight:500;
+}
+.ob-match-scoring{
+  display:inline-block;
+  font-family:var(--mono); font-size:9px;
+  letter-spacing:0.16em; font-weight:500;
+  padding:4px 10px; border-radius:2px;
+  background:transparent; color:var(--encre);
+  border:1px solid var(--gris-line);
+  margin-bottom:10px;
+}
+.ob-vente-stats{
+  display:grid; grid-template-columns:repeat(4, 1fr); gap:6px;
+  padding:12px 0 6px; margin-bottom:6px;
+}
+.ob-vente-stat{display:flex; flex-direction:column; gap:2px;}
+.ob-vente-val{
+  font-family:var(--display); font-style:italic;
+  font-size:18px; color:var(--encre); line-height:1;
+}
+.ob-vente-lbl{
+  font-family:var(--mono); font-size:9px;
+  letter-spacing:0.14em; color:var(--gris-soft); text-transform:uppercase;
+}
+.ob-match-alert{
+  padding-top:10px;
+  border-top:1px solid var(--gris-line-soft);
+  font-family:var(--editorial); font-style:italic;
+  font-size:12px; color:var(--encre-soft);
+}
+
+/* Animations partagées */
+@keyframes ob-badge-pulse{
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.45; }
+}
+@keyframes ob-spark-pulse{
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.4); }
+}
+@keyframes ob-ornament-spin{
+  to { transform: rotate(360deg); }
+}
+.ob-ornament-square.easter-egg{
+  animation:ob-ornament-spin 800ms cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 /* ===== NOTIFS SHEET (Chunk 11.b) ===== */
@@ -3440,16 +3445,6 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
       cursor: pointer;
       /* Évite que le texte long passe sous le badge LIVE */
       white-space: nowrap;
-    }
-    /* Sprint Axe 4 : tagline subtile alignée sur le profil dominant */
-    .hero-profile-tagline {
-      font-family: var(--editorial);
-      font-style: italic;
-      font-size: 13px;
-      color: var(--gris);
-      margin-top: var(--s-1);
-      margin-bottom: 0;
-      letter-spacing: 0.01em;
     }
     .hero-profile-chips {
       display: flex;
@@ -7206,13 +7201,9 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
       padding: 34px 21px 21px !important;
       gap: 13px !important;
     }
-    .onboarding-ornament {
-      width: 56px !important;
-      height: 56px !important;
-      border: 1px solid var(--gris-line) !important;
-      background: var(--papier-bright) !important;
-      color: var(--encre) !important;
-      font-size: 28px !important;
+    .onboarding-roman {
+      font-size: 64px !important;
+      line-height: 0.85 !important;
       margin-bottom: 13px !important;
     }
     .onboarding-tag {
@@ -8155,87 +8146,6 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
       font-size: 18px;
       font-weight: bold;
     }
-    .paywall-method-icon-europ {
-      background: var(--orange-polo);
-      color: var(--papier);
-      border-color: var(--orange-polo);
-      font-size: 18px;
-      font-weight: bold;
-    }
-    /* Sprint Paywall : section transparence tarifaire (style Vendre) */
-    .paywall-transparency {
-      margin-top: 28px;
-      padding: 20px 18px;
-      background: var(--papier);
-      border: 1px solid rgba(50, 35, 25, 0.12);
-      border-radius: 2px;
-    }
-    .paywall-transparency-title {
-      font-family: var(--display);
-      font-style: italic;
-      font-size: 18px;
-      color: var(--encre);
-      margin-bottom: 4px;
-      line-height: 1.2;
-    }
-    .paywall-transparency-sub {
-      font-family: var(--editorial);
-      font-style: italic;
-      font-size: 12px;
-      color: var(--gris);
-      margin-bottom: 16px;
-    }
-    .paywall-transparency-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      margin-bottom: 18px;
-      font-family: var(--mono);
-      font-size: 11px;
-    }
-    .paywall-transparency-row {
-      display: grid;
-      grid-template-columns: 1fr 1.2fr 1fr 1.3fr;
-      gap: 8px;
-      padding: 10px 0;
-      border-bottom: 1px solid rgba(50, 35, 25, 0.08);
-      color: var(--encre);
-      align-items: center;
-    }
-    .paywall-transparency-row:last-of-type { border-bottom: none; }
-    .paywall-transparency-head {
-      font-size: 9.5px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--gris);
-      border-bottom: 1px solid var(--encre);
-    }
-    .paywall-transparency-row strong { font-weight: 500; }
-    .paywall-transparency-allocation {
-      padding-top: 14px;
-      border-top: 1px solid rgba(50, 35, 25, 0.08);
-    }
-    .paywall-transparency-allocation-title {
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--orange-polo);
-      margin-bottom: 8px;
-    }
-    .paywall-transparency-allocation-body {
-      font-family: var(--editorial);
-      font-style: italic;
-      font-size: 12.5px;
-      line-height: 1.55;
-      color: var(--encre);
-      margin: 0;
-    }
-    .paywall-transparency-allocation-body strong {
-      font-style: normal;
-      font-family: var(--sans);
-      font-weight: 500;
-    }
     .paywall-method-body { flex: 1; }
     .paywall-method-title {
       font-family: var(--mono);
@@ -9045,9 +8955,8 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
     }
   </style>
   <nav class="editorial-nav" aria-label="Navigation éditoriale">
-    <a href="vendre.html">Vendre</a>
-    <a href="cote.html">Cote</a>
     <a href="discover.html">Découvrir</a>
+    <a href="archetypes.html">Archétypes</a>
     <a href="launch.html" class="featured">14·12·2026</a>
     <a href="about.html">À propos</a>
   </nav>
@@ -9107,55 +9016,6 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
       </div>
       <div class="watched-rail"></div>
     </section>
-
-    <!-- Sprint Axe 5 : footer éditorial (capturé dans affutShellSnapshot) -->
-    <footer class="carnet-footer">
-      <div class="carnet-footer-inner">
-        <div class="carnet-footer-brand">
-          <div class="carnet-footer-wordmark">Carnet <span class="carnet-footer-dot">·</span></div>
-          <div class="carnet-footer-tagline"><em>Une histoire de voitures.</em></div>
-          <div class="carnet-footer-asso">Association loi 1901 à but non lucratif. Bénévoles uniquement, aucun salaire ni dividende.</div>
-        </div>
-        <div class="carnet-footer-grid">
-          <div class="carnet-footer-col">
-            <div class="carnet-footer-col-title">PRODUIT</div>
-            <button class="carnet-footer-link" data-action="switchToAffut">L'Affût</button>
-            <button class="carnet-footer-link" data-action="switchToAnnonces">Annonces</button>
-            <button class="carnet-footer-link" data-action="switchToEncheres">Enchères</button>
-            <button class="carnet-footer-link" data-action="switchToGarage">Garage</button>
-          </div>
-          <div class="carnet-footer-col">
-            <div class="carnet-footer-col-title">CARNET</div>
-            <a class="carnet-footer-link" href="vendre.html">Vendre</a>
-            <a class="carnet-footer-link" href="cote.html">Cote</a>
-            <a class="carnet-footer-link" href="discover.html">Découvrir</a>
-            <a class="carnet-footer-link" href="archetypes.html">Archétypes</a>
-          </div>
-          <div class="carnet-footer-col">
-            <div class="carnet-footer-col-title">ASSOCIATION</div>
-            <a class="carnet-footer-link" href="about.html">À propos</a>
-            <a class="carnet-footer-link" href="launch.html">14·12·2026 · Mulhouse</a>
-            <button class="carnet-footer-link" data-action="openPaywall">Contribuer</button>
-            <a class="carnet-footer-link" href="assurance.html">Partenaires</a>
-          </div>
-          <div class="carnet-footer-col">
-            <div class="carnet-footer-col-title">LÉGAL</div>
-            <a class="carnet-footer-link" href="terms.html">Conditions</a>
-            <a class="carnet-footer-link" href="privacy.html">Confidentialité</a>
-            <span class="carnet-footer-meta">CSBC Paris</span>
-            <span class="carnet-footer-meta">1 rue Sfax, 75116</span>
-          </div>
-        </div>
-        <div class="carnet-footer-bottom">
-          <div class="carnet-footer-onchain">
-            Transactions XRPL publiques · royalties NFT XLS-20 1,7 % · contributions 7,1 % bonne foi
-          </div>
-          <div class="carnet-footer-copyright">
-            <em>Curated Automotive Records Network for Exchange and Trust.</em>
-          </div>
-        </div>
-      </div>
-    </footer>
 
   </main>
 
@@ -9415,23 +9275,23 @@ const COLLECTOR_PROFILES = [
 const ONBOARDING_PANELS = [
   {
     tag: 'BIENVENUE',
-    title: 'CARNET, le carnet de bord de ta collection.',
-    text: "Un endroit où ranger tes voitures, suivre leur cote, archiver leurs entretiens et photos. Et qui reste connecté au marché réel — pour acheter, vendre, à ton rythme."
+    title: 'CARNET, le carnet de bord de ton Garage.',
+    text: "Un endroit où ranger tes voitures, suivre leurs cotes, archiver leurs entretiens et photos. Tout en restant connecté au marché réel — pour acheter, vendre, à ton rythme."
   },
   {
     tag: 'GARAGE',
-    title: 'Catalogue tes voitures, documente leur vie.',
+    title: 'Catalogue tes voitures, documente leurs vies.',
     text: "Photos, factures, kilomètres, entretiens, bons souvenirs — tout reste rangé au même endroit. CARNET tient l'intendance, tu profites de tes voitures."
   },
   {
     tag: 'MARCHÉ',
-    title: 'Fouille les annonces, place des enchères.',
-    text: "Un assortiment trié de marchands et maisons d\u2019enchères. CARNET pense les filtres comme un passionné, remonte ce qui compte, écarte le reste."
+    title: 'Le marché, trié à la main.',
+    text: "Marchands sérieux, maisons d\u2019enchères, particuliers passionnés. Des filtres pensés comme on cherche vraiment — par châssis, par option d\u2019origine, par lignée."
   },
   {
     tag: 'VENTE',
-    title: 'Quand vient le moment, revends.',
-    text: "90 jours d\u2019annonce offerts ; bascule en enchères si besoin, sans changer d\u2019appli. Commission douce. La trajectoire complète, dans le même carnet de bord — la voiture sort, ses souvenirs restent."
+    title: 'Et un jour, peut-être, elle repart.',
+    text: "90 jours d\u2019annonce offerts ; bascule en enchères si l\u2019envie vient, sans changer d\u2019appli. Commission mesurée. La voiture s\u2019en va ; ses souvenirs te restent."
   }
 ];
 
@@ -11175,10 +11035,7 @@ const State = {
   encheresFilter: 'all',
   garage: GARAGE.slice(),
   listingsFilter: 'all',
-  listingsSearch: '',
-  // Sprint « Boucler la boucle Vendre » — intent de publication depuis vendre.html
-  // shape : { plan: 'premium-30'|'premium-60'|'premium-90', mode: 'listing'|'auction', amount: 17|28|42, ts: Date.now() } | null
-  pendingSaleIntent: null
+  listingsSearch: ''
 };
 
 // ===== SHEET API =====
@@ -11301,7 +11158,7 @@ function renderDiscoverSheet() {
         <li>Pas de tracking publicitaire.</li>
         <li>Pas de revente de données.</li>
         <li>Pas de simili-cote inflationniste.</li>
-        <li>Pas de frais cachés &mdash; les contributions sont fixées et publiées par l'association.</li>
+        <li>Pas de commission cachée.</li>
         <li>Pas de custody de tes fonds.</li>
         <li>Pas de KYC superflu.</li>
         <li>Pas de dividendes, ni de salaires.</li>
@@ -11376,40 +11233,10 @@ function renderDiscoverSheet() {
         <p>Pour le texte officiel complet (incluant la politique <em>Anti-Bribery & Corruption</em> de Ripple Labs Inc.), voir la documentation Ripple Europe.</p>
       </details>
 
-
-      <details class="discover-faq">
-        <summary>Quel est le modèle légal de CARNET&nbsp;?</summary>
-        <p>CARNET est un <strong>SaaS non-profit d’un genre nouveau</strong> &mdash; ni courtier, ni comparateur, ni intermédiaire.</p>
-        <p>Le XRP Ledger exécute les contrats automatiquement. CARNET ne touche pas aux transactions, ne porte pas le risque, ne détient pas tes fonds.</p>
-        <p>Les utilisateurs qui trouvent de la valeur dans l’infrastructure contribuent à l’association, au taux suggéré et publié &mdash; de bonne foi. Comme on soutient Wikipedia ou Let’s Encrypt.</p>
-        <p>Inscrit ORIAS par choix de qualité. Structuration juridique par <strong>Cabinet CSBC &mdash; Maître Salim Boufenara</strong>, partenaire juridique fondateur de l’association.</p>
-      </details>
-
       <details class="discover-faq">
         <summary>Comment aider autrement ?</summary>
         <p>Partage l\u2019app à des passionnés qui aiment les voitures autant que toi.<br><em>Embarque-les dans la tribu.</em></p>
       </details>
-
-
-      <div class="discover-divider"></div>
-
-      <div style="text-align:center;padding:var(--s-4) 0">
-        <div style="font-family:var(--mono);font-size:9px;letter-spacing:.12em;
-                    color:var(--gris);text-transform:uppercase;margin-bottom:var(--s-3)">
-          Partenaire juridique fondateur
-        </div>
-        <div style="font-family:var(--editorial);font-style:italic;font-size:16px;
-                    color:var(--encre);margin-bottom:var(--s-2)">
-          Cabinet CSBC
-        </div>
-        <div style="font-family:var(--mono);font-size:9px;color:var(--gris);line-height:1.9">
-          Ma&icirc;tre Salim Boufenara<br>
-          1 rue de Sfax &mdash; 75116 Paris<br>
-          +33(0)1.45.00.01.40 &middot; Lun&ndash;Ven 10h&ndash;19h<br>
-          <a href="https://cabinet-csbc.fr" target="_blank" rel="noopener"
-             style="color:var(--orange-polo);text-decoration:none">cabinet-csbc.fr</a>
-        </div>
-      </div>
 
       <div class="discover-signature">
         <div class="discover-sig-line"></div>
@@ -11527,7 +11354,7 @@ function renderPaywallStep2() {
       <div class="paywall-amount-pill">${formatEur(eur)}</div>
 
       <h2 class="paywall-h1"><em>Méthode de paiement</em></h2>
-      <p class="paywall-lead">Quatre options. Tu choisis.</p>
+      <p class="paywall-lead">Trois options. Tu choisis.</p>
 
       <div class="paywall-methods">
         <button class="paywall-method" data-action="paywallSelectMethod" data-method="card">
@@ -11556,62 +11383,6 @@ function renderPaywallStep2() {
           </div>
           <div class="paywall-method-arrow">→</div>
         </button>
-
-        <button class="paywall-method" data-action="paywallSelectMethod" data-method="europ">
-          <div class="paywall-method-icon paywall-method-icon-europ">€</div>
-          <div class="paywall-method-body">
-            <div class="paywall-method-title">EURØP <span class="paywall-method-tag">MiCA</span></div>
-            <div class="paywall-method-sub">Stablecoin euro régulé MiCA. 1 EURØP = 1 €. Schuman Financial.</div>
-          </div>
-          <div class="paywall-method-arrow">→</div>
-        </button>
-      </div>
-
-      <!-- Sprint Paywall : transparence tarifaire dans l'esprit de la page Vendre -->
-      <div class="paywall-transparency">
-        <div class="paywall-transparency-title">Tarification. Sans surprise.</div>
-        <div class="paywall-transparency-sub">Tous les frais et l'allocation, avant de payer.</div>
-        <div class="paywall-transparency-grid">
-          <div class="paywall-transparency-row paywall-transparency-head">
-            <span>Méthode</span>
-            <span>Frais réseau</span>
-            <span>Vitesse</span>
-            <span>Finalité</span>
-          </div>
-          <div class="paywall-transparency-row">
-            <span><strong>Carte</strong></span>
-            <span>~2,9 % + 0,25 €</span>
-            <span>2–5 jours</span>
-            <span>Réversible 60 j</span>
-          </div>
-          <div class="paywall-transparency-row">
-            <span><strong>XRP</strong></span>
-            <span>~0,0001 €</span>
-            <span>3–5 secondes</span>
-            <span>Définitive on-chain</span>
-          </div>
-          <div class="paywall-transparency-row">
-            <span><strong>RLUSD</strong></span>
-            <span>~0,0001 €</span>
-            <span>3–5 secondes</span>
-            <span>Définitive on-chain</span>
-          </div>
-          <div class="paywall-transparency-row">
-            <span><strong>EURØP</strong></span>
-            <span>~0,0001 €</span>
-            <span>3–5 secondes</span>
-            <span>Définitive on-chain</span>
-          </div>
-        </div>
-        <div class="paywall-transparency-allocation">
-          <div class="paywall-transparency-allocation-title">Où va ton paiement</div>
-          <p class="paywall-transparency-allocation-body">
-            CARNET est une association loi 1901 à but non lucratif. Aucun salaire, aucun dividende.
-            Ton paiement sert à <strong>l'infrastructure technique</strong> (serveurs, indexation, photos),
-            au <strong>développement open-source</strong> et à des <strong>événements automobiles avec des enfants</strong>.
-            Les transactions XRPL sont publiques et vérifiables.
-          </p>
-        </div>
       </div>
 
       <div class="paywall-footer-note">
@@ -14658,7 +14429,6 @@ const SaleListingFormState = {
   narrative: '',
   tunerName: '',
   tunerCategories: [],
-  plan: '', // 'premium-30' | 'premium-60' | 'premium-90' — pré-réglé depuis vendre.html
   _submitting: false
 };
 function resetSaleListingForm(){
@@ -14667,7 +14437,6 @@ function resetSaleListingForm(){
   SaleListingFormState.narrative = '';
   SaleListingFormState.tunerName = '';
   SaleListingFormState.tunerCategories = [];
-  SaleListingFormState.plan = '';
   SaleListingFormState._submitting = false;
 }
 function saleListingFormIsValid(){
@@ -14730,138 +14499,11 @@ const SALE_DURATIONS = [
 ];
 const LISTING_DURATION_DAYS = 90;
 
-// Sprint « Boucler la boucle Vendre » — mapping plan annonce → durée + tarif paywall
-const LISTING_PLANS = {
-  'free':         { days: 90, amount: 0,  label: 'Gratuit', tagline: 'Baseline viable. 1 annonce à la fois, 3 photos, 280 caractères.' },
-  'premium-30':   { days: 30, amount: 17, label: 'Premium 30 jours', tagline: '7 photos + vidéo 60sec, description 1900 car., mini-cote, notification users segment.' },
-  'premium-60':   { days: 60, amount: 28, label: 'Premium 60 jours', tagline: 'Toutes features Premium 30j · économie 6€ vs 2×30j.' },
-  'premium-90':   { days: 90, amount: 42, label: 'Premium 90 jours', tagline: 'Toutes features Premium 30j · boost mensuel · économie 9€ vs 3×30j.' },
-  'pro-standard': { days: 60, amount: 28, label: 'Pro standard' },
-  'pro':          { days: 90, amount: 42, label: 'Pro' }
-};
-function getListingDurationForPlan(plan){
-  if(plan && LISTING_PLANS[plan]) return LISTING_PLANS[plan].days;
-  return LISTING_DURATION_DAYS; // fallback historique
-}
-function getListingAmountForPlan(plan){
-  if(plan && LISTING_PLANS[plan]) return LISTING_PLANS[plan].amount;
-  return null;
-}
-function getListingLabelForPlan(plan){
-  if(plan && LISTING_PLANS[plan]) return LISTING_PLANS[plan].label;
-  return null;
-}
-
 // Helpers
 function fmtSaleDate(ts){
   if(!ts) return '—';
   return new Date(ts).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' });
 }
-// Sprint Axe 3 : helper unique qui synthétise le contexte de l'user.
-// Utilisé par les hero, banners et empty states pour adapter l'UI à l'état réel.
-// Sprint Axe 4 : voix par archétype. Subtile — pas du Hey Track Rat, plutôt un wording aligné.
-// Si multi-profil sélectionné, on prend le premier (l'user a fait son ordre dans Discover).
-// IDs alignés avec COLLECTOR_PROFILES du code (collector/flipper/track_rat/builder/enthusiast/driver/non_driver/social).
-const PROFILE_VOICE = {
-  collector: {
-    garageHook: 'Conservation, lignée, lente patine.',
-    emptyTitle: 'Une collection commence ici.',
-    emptyText: "Entre ta première voiture. CARNET en tiendra la mémoire — origine, factures, photos, parfois la cote. Le reste viendra avec le temps.",
-    pickerNote: 'Pour toi qui collectionnes : Premium 90 j met en avant provenance et carnet d\u2019entretien.'
-  },
-  flipper: {
-    garageHook: 'Acheter, attendre, revendre.',
-    emptyTitle: 'Ton inventaire de travail.',
-    emptyText: "Entre tes voitures actives. Tu suis leur cote, tu repères les fenêtres de revente, et tu publies depuis CARNET quand le moment vient.",
-    pickerNote: 'Pour ta rotation : Premium 30 j si tu vises rapide, enchère si tu maximises.'
-  },
-  track_rat: {
-    garageHook: 'Pas de vitrine. Du circuit.',
-    emptyTitle: 'Ta compagne de chrono.',
-    emptyText: "Entre ta première voiture de piste. CARNET tient le carnet d'entretien serré, le suivi des consommables, l'historique des sessions. Toi tu roules.",
-    pickerNote: 'Le marché de la piste cherche du concret : Premium 60 j avec photos circuit et palmarès.'
-  },
-  builder: {
-    garageHook: 'Build not bought.',
-    emptyTitle: 'Le châssis avant tout.',
-    emptyText: "Entre ta voiture — base saine, projet en cours, ou outlaw assumée. CARNET archive les étapes, les pièces, les factures. Ce que tu en fais reste ton affaire.",
-    pickerNote: 'Ton build se raconte : Premium 90 j pour l\u2019histoire complète, étapes et choix.'
-  },
-  enthusiast: {
-    garageHook: 'Numéros de châssis, options usine, séries spéciales.',
-    emptyTitle: 'Une voiture, un dossier.',
-    emptyText: "Entre ta première pièce. Numéros, configuration d'origine, options d'usine — CARNET garde la trace. La crème-de-la-crème mérite sa documentation.",
-    pickerNote: 'Les spécialistes lisent les détails : Premium 90 j avec narrative riche (châssis, options, matching numbers).'
-  },
-  driver: {
-    garageHook: 'Les kilomètres sont une médaille.',
-    emptyTitle: 'Ta première utilisée.',
-    emptyText: "Entre la voiture qui te suit au quotidien. Pas un musée — un compagnon de route. CARNET note les entretiens, les pannes, les souvenirs. Tu roules.",
-    pickerNote: 'Le kilométrage parle de toi — assume-le franchement. Premium 60 j suffit largement.'
-  },
-  non_driver: {
-    garageHook: 'Contempler, protéger.',
-    emptyTitle: 'Une voiture digne d\'être préservée.',
-    emptyText: "Entre la pièce que tu protèges. Garage climatisé ou salon — peu importe. CARNET veille sur la provenance et l'historique pendant que tu veilles sur la voiture.",
-    pickerNote: 'Tu vendras à un autre gardien : Premium 90 j avec narrative posée et photos d\u2019état.'
-  },
-  social: {
-    garageHook: 'Voyager, partager, manger bien.',
-    emptyTitle: 'Ta compagne de route.',
-    emptyText: "Entre la voiture qui t'emmène en rallye. CARNET tient le journal des routes, des arrivées, des copains. Le reste se vit en convoi.",
-    pickerNote: 'L\u2019acheteur cherche une voiture vivante : Premium 60 j avec photos de rallies et routes.'
-  }
-};
-function getProfileVoice(){
-  const ids = State.userProfiles || [];
-  if(ids.length === 0) return null;
-  const first = ids[0];
-  return PROFILE_VOICE[first] || null;
-}
-
-function getContextualState(){
-  const garage = State.garage || [];
-  const owned = garage.filter(c => c.ownership !== 'wishlist');
-  const wishlist = garage.filter(c => c.ownership === 'wishlist');
-  const inListing = owned.filter(c => c.saleStatus === 'listing');
-  const inAuction = owned.filter(c => c.saleStatus === 'auction');
-  const sold = owned.filter(c => c.saleStatus === 'sold');
-  const idle = owned.filter(c => !c.saleStatus);
-  // Annonces qui expirent dans <7j (action utilisateur potentielle)
-  const expiringSoon = inListing.filter(c => {
-    if(!c.saleData || !c.saleData.expiresAt) return false;
-    const days = Math.ceil((c.saleData.expiresAt - Date.now()) / 86400000);
-    return days >= 0 && days <= 7;
-  });
-  // Alertes
-  const alertsActive = (State.alerts || []).filter(a => !a.paused);
-  const alertsPaused = (State.alerts || []).filter(a => a.paused);
-  const matches = (State.liveMatches !== null && State.liveMatches !== undefined)
-    ? State.liveMatches.length
-    : (State.matches || []).length;
-  return {
-    cars: {
-      total: owned.length,
-      idle: idle.length,
-      inListing: inListing.length,
-      inAuction: inAuction.length,
-      sold: sold.length,
-      wishlist: wishlist.length,
-      expiringSoon: expiringSoon.length,
-      expiringList: expiringSoon
-    },
-    alerts: {
-      active: alertsActive.length,
-      paused: alertsPaused.length,
-      total: alertsActive.length + alertsPaused.length,
-      matches: matches
-    },
-    hasGarage: owned.length > 0,
-    hasAnySale: inListing.length + inAuction.length > 0,
-    isNew: owned.length === 0 && (alertsActive.length + alertsPaused.length) === 0
-  };
-}
-
 function getDaysRemaining(expiresAt){
   if(!expiresAt) return 0;
   const ms = expiresAt - Date.now();
@@ -17507,27 +17149,6 @@ function renderManageAuctionSheet(carId){
 function renderListForSaleSheet(carId){
   const car = (State.garage || []).find(x => x.id === carId);
   if(!car) return '';
-  // Sprint Boucler la boucle Vendre : picker aligné sur la grille de vendre.html.
-  // 4 cards annonce (free + 3 premium) + 1 card enchère séparée. Le plan choisi est
-  // injecté via State.pendingSaleIntent, qui est ensuite consommé par
-  // renderSaleListingFormSheet et nettoyé à la publication.
-  const planCard = (planKey, popular) => {
-    const p = LISTING_PLANS[planKey];
-    if(!p) return '';
-    const priceLabel = p.amount === 0 ? 'Gratuit' : `${p.amount}€`;
-    const chip = popular ? `${p.label.toUpperCase()} · POPULAIRE` : p.label.toUpperCase();
-    const borderStyle = popular ? 'border-color:var(--orange-polo);' : '';
-    return `
-      <button class="sale-mode-card" data-action="chooseSalePlan" data-id="${esc(carId)}" data-plan="${esc(planKey)}" style="${borderStyle}">
-        <div class="sale-mode-top">
-          <span class="sale-mode-chip">${esc(chip)}</span>
-          <span class="sale-mode-price">${esc(priceLabel)} · ${p.days} j</span>
-        </div>
-        <div class="sale-mode-title">${esc(p.label)}</div>
-        <div class="sale-mode-text">${esc(p.tagline || '')}</div>
-      </button>
-    `;
-  };
   return `
     <div class="sheet-handle-area" data-sheet-drag>
       <div class="sheet-handle"></div>
@@ -17541,38 +17162,26 @@ function renderListForSaleSheet(carId){
       <button class="sheet-close" data-action="closeSheet" aria-label="Fermer">×</button>
     </div>
     <div class="sheet-content">
-      ${(() => {
-        // Sprint Axe 4 : tip contextualisée selon le profil principal (si défini)
-        const voice = getProfileVoice();
-        if(!voice || !voice.pickerNote) return '';
-        return `
-          <div class="picker-profile-note">
-            <span class="picker-profile-note-tag">À TON PROFIL</span>
-            <p class="picker-profile-note-text"><em>${esc(voice.pickerNote)}</em></p>
-          </div>
-        `;
-      })()}
-      <div class="sheet-section-label">ANNONCE</div>
       <div class="sale-mode-grid">
-        ${planCard('free', false)}
-        ${planCard('premium-30', true)}
-        ${planCard('premium-60', false)}
-        ${planCard('premium-90', false)}
-      </div>
-      <div class="sheet-section-label" style="margin-top:var(--s-6)">ENCHÈRE</div>
-      <div class="sale-mode-grid">
-        <button class="sale-mode-card" data-action="chooseSalePlan" data-id="${esc(carId)}" data-plan="auction">
+        <button class="sale-mode-card" data-action="chooseSaleMode" data-id="${esc(carId)}" data-mode="listing">
           <div class="sale-mode-top">
-            <span class="sale-mode-chip">ENCHÈRE CARNET</span>
-            <span class="sale-mode-price">8,8 %</span>
+            <span class="sale-mode-chip">ANNONCE</span>
+            <span class="sale-mode-price">Gratuit · 90 j</span>
           </div>
-          <div class="sale-mode-title">Vente aux enchères</div>
-          <div class="sale-mode-text">Estimation, durée, prix de réserve. 7,1 % vendeur + 1,7 % acheteur. Settlement immédiat. Anti-shill cryptographique.</div>
+          <div class="sale-mode-title">Annonce 90 jours</div>
+          <div class="sale-mode-text">Tu fixes le prix demandé, tu reçois les contacts. Si elle ne trouve pas preneur à la fin, transition aux enchères en interne.</div>
+        </button>
+        <button class="sale-mode-card" data-action="chooseSaleMode" data-id="${esc(carId)}" data-mode="auction">
+          <div class="sale-mode-top">
+            <span class="sale-mode-chip">ENCHÈRE</span>
+            <span class="sale-mode-price">Commission douce</span>
+          </div>
+          <div class="sale-mode-title">Enchère CARNET</div>
+          <div class="sale-mode-text">Estimation, durée, prix de réserve. Tu donnes le rythme, le marché répond. La commission est prélevée à la vente.</div>
         </button>
       </div>
       <div style="font-family:var(--editorial);font-style:italic;font-size:11px;color:var(--gris);margin-top:var(--s-3);line-height:1.5">
         Tu peux changer de mode plus tard. Annule la mise en vente à tout moment depuis la fiche.
-        <br><a href="vendre.html" style="color:var(--orange-polo);text-decoration:none;border-bottom:1px solid var(--orange-polo);padding-bottom:1px">Voir le détail des plans sur Vendre \u2192</a>
       </div>
     </div>
   `;
@@ -17585,17 +17194,10 @@ function renderSaleListingFormSheet(carId){
     resetSaleListingForm();
     SaleListingFormState.carId = carId;
     SaleListingFormState.askingPrice = String(car.cote || car.paidPrice || '');
-    // Sprint Boucler la boucle Vendre : consommer le plan du pendingSaleIntent
-    if(State.pendingSaleIntent && State.pendingSaleIntent.mode === 'listing' && State.pendingSaleIntent.plan){
-      SaleListingFormState.plan = State.pendingSaleIntent.plan;
-    }
   }
   const f = SaleListingFormState;
   const valid = saleListingFormIsValid();
-  const planDays = getListingDurationForPlan(f.plan);
-  const planLabel = getListingLabelForPlan(f.plan);
-  const planAmount = getListingAmountForPlan(f.plan);
-  const endDate = new Date(Date.now() + planDays * 86400000);
+  const endDate = new Date(Date.now() + LISTING_DURATION_DAYS * 86400000);
   const endLabel = endDate.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
   const photosReady = (car.photos || []).length >= 3;
   const docsReady = (car.docs || []).length >= 1;
@@ -17605,7 +17207,7 @@ function renderSaleListingFormSheet(carId){
     </div>
     <div class="sheet-header">
       <div>
-        <div class="sheet-tag">ANNONCE · ${planDays} JOURS</div>
+        <div class="sheet-tag">ANNONCE · 90 JOURS</div>
         <h2 class="sheet-title">${esc(car.brand)} ${esc(car.model)}</h2>
         <div style="font-family:var(--editorial);font-style:italic;font-size:var(--t-sm);color:var(--gris);margin-top:var(--s-1)">Une annonce simple. Tu reçois les contacts intéressés.</div>
       </div>
@@ -17613,12 +17215,6 @@ function renderSaleListingFormSheet(carId){
     </div>
     <div class="sheet-content">
       <div class="garage-form">
-        ${planLabel && planAmount ? `
-        <div class="sale-plan-banner" style="border:1px solid var(--encre);background:var(--papier);padding:var(--s-3);margin-bottom:var(--s-4);border-radius:2px">
-          <div style="font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--gris);text-transform:uppercase">Plan choisi sur la page Vendre</div>
-          <div style="font-family:var(--editorial);font-style:italic;font-size:var(--t-md);color:var(--encre);margin-top:4px"><strong style="font-style:normal;font-family:var(--sans)">${esc(planLabel)}</strong> · ${esc(planAmount)} €</div>
-          <div style="font-family:var(--editorial);font-style:italic;font-size:11px;color:var(--gris);margin-top:6px;line-height:1.5">Réglé à la publication. Tu peux changer de plan en revenant sur la page Vendre.</div>
-        </div>` : ''}
         <div class="sheet-section-label">PRIX</div>
         <div class="garage-form-row">
           <label class="garage-form-label">Prix demandé (€)<span class="required">·</span></label>
@@ -17653,13 +17249,13 @@ function renderSaleListingFormSheet(carId){
 
         <div class="sheet-section-label">DURÉE</div>
         <div class="sale-duration-info">
-          Annonce active jusqu'au <strong>${esc(endLabel)}</strong> (${planDays} jours).<br>
+          Annonce active jusqu'au <strong>${esc(endLabel)}</strong> (90 jours).<br>
           Si elle n'a pas trouvé preneur, CARNET te propose la transition en enchère.
         </div>
       </div>
     </div>
     <div class="sheet-actions">
-      <button class="sheet-btn primary full" data-action="saleListingFormSubmit" ${valid ? '' : 'disabled'}>${valid ? (planAmount ? `Publier · ${planAmount} €` : "Publier l\u2019annonce") : 'Prix demandé requis'}</button>
+      <button class="sheet-btn primary full" data-action="saleListingFormSubmit" ${valid ? '' : 'disabled'}>${valid ? "Publier l\u2019annonce" : 'Prix demandé requis'}</button>
     </div>
   `;
 }
@@ -17900,19 +17496,142 @@ function renderNotifsSheet(){
   `;
 }
 
+function renderOnboardingMockup(idx){
+  // Panel I — Frontispice Genesis
+  if(idx === 0){
+    return `
+      <div class="ob-ornament-frontispiece">
+        <div class="ob-ornament-line"></div>
+        <div class="ob-ornament-square" data-action="onboardingEasterEgg"></div>
+        <div class="ob-ornament-line"></div>
+        <div class="ob-ornament-stamp">CARNET ouvert<br><span class="ob-ornament-stamp-emphasis">Le 14 décembre 2026 · Mulhouse</span></div>
+      </div>
+    `;
+  }
+  // Panel II — Garage hero + 1 fiche + peek
+  if(idx === 1){
+    return `
+      <div class="ob-preview-label">Aperçu · le Garage</div>
+      <div class="ob-garage-hero">
+        <div class="ob-garage-hero-kicker">
+          <span class="ob-garage-hero-kicker-left"><strong>Garage</strong> · 04</span>
+          <span class="ob-garage-hero-sync">SYNC <span class="ob-garage-hero-sync-dot"></span></span>
+        </div>
+        <div class="ob-garage-summary-label">VALEUR ESTIMÉE · COTE CARNET</div>
+        <div class="ob-garage-summary-value">985 400 €</div>
+        <div class="ob-garage-summary-delta">↗ +74 200 € · +8,1 % depuis acquisition</div>
+        <svg class="ob-garage-sparkline" viewBox="0 0 280 32" preserveAspectRatio="none" aria-hidden="true">
+          <polyline points="0,22 28,20 56,24 84,18 112,21 140,16 168,17 196,11 224,12 252,8 278,5" fill="none" stroke="#9FD3AC" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.9" />
+          <circle cx="278" cy="5" r="3" fill="#E85A1F" />
+        </svg>
+        <div class="ob-garage-summary-meta"><span>4 voitures</span><span>28 documents</span><span>156 photos</span></div>
+      </div>
+      <div class="ob-garage-card-mini">
+        <div class="ob-mini-tag">PORSCHE · 1993 · TURBO 3.6</div>
+        <div class="ob-mini-model">911 (964) Turbo 3.6</div>
+        <div class="ob-mini-sub">95 000 km · Noir</div>
+        <div class="ob-mini-money">
+          <div class="ob-mini-cote">280 000 € — 420 000 €</div>
+          <div class="ob-mini-cote-label">fourchette CARNET</div>
+        </div>
+      </div>
+      <div class="ob-garage-card-peek">
+        <div class="ob-mini-tag">FERRARI · 2005 · F430</div>
+        <div class="ob-mini-model">F430</div>
+        <div class="ob-mini-sub">55 000 km · Rosso Corsa</div>
+      </div>
+    `;
+  }
+  // Panel III — Match card (964 Turbo remontée)
+  if(idx === 2){
+    return `
+      <div class="ob-preview-label">Aperçu · le Marché</div>
+      <div class="ob-match-card">
+        <div class="ob-match-thumb"></div>
+        <div class="ob-match-body">
+          <div class="ob-match-strip">
+            <span class="ob-match-source">MOTEUR &amp; SENS</span>
+            <span class="ob-match-since">IL Y A 2 H</span>
+          </div>
+          <div class="ob-match-tag">PORSCHE · 1993 · TURBO 3.6</div>
+          <h3 class="ob-match-model">911 (964) Turbo 3.6</h3>
+          <div class="ob-match-sub">95 000 km · Noir · Île-de-France</div>
+          <div class="ob-match-divider"></div>
+          <div class="ob-match-money">
+            <div class="ob-match-money-side">
+              <div class="ob-match-price">369 900 €</div>
+              <div class="ob-match-label">prix demandé</div>
+            </div>
+            <div class="ob-match-money-side right">
+              <div class="ob-match-opp">→ médian</div>
+              <div class="ob-match-label">marché 2026</div>
+            </div>
+          </div>
+          <div class="ob-match-cote-row">
+            <div class="ob-match-cote-label">fourchette CARNET</div>
+            <div class="ob-match-cote-value">280 000 € — 420 000 €</div>
+          </div>
+          <div class="ob-match-scoring">AU MARCHÉ</div>
+          <div class="ob-match-alert"><strong>La 964 Turbo que tu suis</strong> — remontée par Moteur &amp; Sens</div>
+        </div>
+      </div>
+    `;
+  }
+  // Panel IV — Vente miroir (F430)
+  if(idx === 3){
+    return `
+      <div class="ob-preview-label">Aperçu · ton annonce</div>
+      <div class="ob-match-card">
+        <div class="ob-match-thumb ob-match-thumb-red"></div>
+        <div class="ob-match-body">
+          <div class="ob-match-strip">
+            <span class="ob-match-source ob-match-source-live">● EN LIGNE</span>
+            <span class="ob-match-since">J+42 / 90 OFFERTS</span>
+          </div>
+          <div class="ob-match-tag">FERRARI · 2005 · F430</div>
+          <h3 class="ob-match-model">F430</h3>
+          <div class="ob-match-sub">55 000 km · Rosso Corsa · Île-de-France</div>
+          <div class="ob-match-divider"></div>
+          <div class="ob-match-money">
+            <div class="ob-match-money-side">
+              <div class="ob-match-price">145 000 €</div>
+              <div class="ob-match-label">ton prix</div>
+            </div>
+            <div class="ob-match-money-side right">
+              <div class="ob-match-opp ob-match-opp-neutral">130–170k €</div>
+              <div class="ob-match-label">fourchette CARNET</div>
+            </div>
+          </div>
+          <div class="ob-vente-stats">
+            <div class="ob-vente-stat"><span class="ob-vente-val">68</span><span class="ob-vente-lbl">vues</span></div>
+            <div class="ob-vente-stat"><span class="ob-vente-val">3</span><span class="ob-vente-lbl">contacts</span></div>
+            <div class="ob-vente-stat"><span class="ob-vente-val">1</span><span class="ob-vente-lbl">offre</span></div>
+            <div class="ob-vente-stat"><span class="ob-vente-val">5</span><span class="ob-vente-lbl">alertes</span></div>
+          </div>
+          <div class="ob-match-alert"><strong>Ta F430</strong> — actuellement à la vente</div>
+        </div>
+      </div>
+    `;
+  }
+  return '';
+}
+
 function renderOnboardingSheet(){
   const selected = State.userProfiles || [];
+  const romans = ['I', 'II', 'III', 'IV', 'V'];
   const narrativePanels = ONBOARDING_PANELS.map((p, idx) => `
     <div class="onboarding-panel" data-onboarding-panel="${idx}">
-      <div class="onboarding-ornament">·</div>
+      <div class="onboarding-roman">${romans[idx]}</div>
       <div class="onboarding-tag">${esc(p.tag)}</div>
       <h2 class="onboarding-title">${esc(p.title)}</h2>
       <p class="onboarding-text">${esc(p.text)}</p>
+      <div class="onboarding-mockup">${renderOnboardingMockup(idx)}</div>
     </div>
   `).join('');
   const profilePanelIdx = ONBOARDING_PANELS.length;
   const profilePanel = `
     <div class="onboarding-panel onboarding-panel-profile" data-onboarding-panel="${profilePanelIdx}">
+      <div class="onboarding-roman">${romans[profilePanelIdx]}</div>
       <div class="onboarding-tag">TON PROFIL</div>
       <h2 class="onboarding-title">Choisis ceux qui te ressemblent.</h2>
       <p class="onboarding-text" style="margin-bottom:var(--s-2)">Plusieurs possibles, ajustables à tout moment. CARNET adapte le marché à toi.</p>
@@ -17935,21 +17654,22 @@ function renderOnboardingSheet(){
   `;
   const totalPanels = ONBOARDING_PANELS.length + 1;
   const dots = Array.from({ length: totalPanels }).map((_, idx) => `
-    <div class="onboarding-dot ${idx === 0 ? 'active' : ''}" data-onboarding-dot="${idx}"></div>
+    <button class="onboarding-dot ${idx === 0 ? 'active' : ''}" data-action="onboardingJump" data-idx="${idx}" aria-label="Panel ${romans[idx]}"></button>
   `).join('');
-  const ctaLabel = selected.length === 0
-    ? "C'est parti"
-    : `C'est parti · ${selected.length} profil${selected.length > 1 ? 's' : ''}`;
+  // CTA initial : Panel 0 = Suivant
+  const ctaInitial = 'Suivant';
   return `
     <div class="sheet-handle-area" data-sheet-drag>
       <div class="sheet-handle"></div>
     </div>
+    <button class="onboarding-passer" data-action="dismissOnboarding" type="button">PASSER</button>
     <div class="sheet-content" style="padding:0">
       <div class="onboarding-track" id="onboarding-track">${narrativePanels}${profilePanel}</div>
       <div class="onboarding-dots" id="onboarding-dots">${dots}</div>
     </div>
-    <div class="sheet-actions">
-      <button class="sheet-btn primary full" data-action="dismissOnboarding">${esc(ctaLabel)}</button>
+    <div class="sheet-actions onboarding-actions">
+      <button class="onboarding-back" id="onboarding-back" data-action="onboardingBack" type="button" aria-label="Panel précédent" style="visibility:hidden">←</button>
+      <button class="sheet-btn primary full" id="onboarding-cta" data-action="onboardingNext">${esc(ctaInitial)}</button>
     </div>
   `;
 }
@@ -18134,18 +17854,15 @@ const Actions = {
     const inner = document.querySelector('.sheet-inner');
     if (inner) inner.innerHTML = renderPaywallStep2();
   },
-  async paywallSelectMethod(method){
-    // Sprint Paywall : action appelée par le dispatcher avec t.dataset.method.
-    // Auparavant utilisait event.currentTarget qui plantait silencieusement.
-    if(!method) return;
-    if(!State.paywallState) return;
+  async paywallSelectMethod(){
+    const method = event.currentTarget.dataset.method;
     State.paywallState.method = method;
     State.paywallState.step = 3;
     State.paywallState.loading = true;
     State.paywallState.error = null;
     State.paywallState.expiredOrRejected = null;
 
-    if (method === 'xrp' || method === 'rlusd' || method === 'europ') {
+    if (method === 'xrp' || method === 'rlusd') {
       // Render loading state immédiat
       const innerLoading = document.querySelector('.sheet-inner');
       if (innerLoading) innerLoading.innerHTML = renderPaywallStep3();
@@ -18684,6 +18401,50 @@ const Actions = {
       if(State.activeTab === 'garage' && typeof renderGaragePage === 'function') renderGaragePage();
     }, 340);
   },
+  onboardingJump(idx){
+    const track = document.getElementById('onboarding-track');
+    if(!track) return;
+    const targetIdx = parseInt(idx, 10);
+    if(isNaN(targetIdx)) return;
+    const panel = track.querySelector(`[data-onboarding-panel="${targetIdx}"]`);
+    if(!panel) return;
+    if(navigator.vibrate) navigator.vibrate(8);
+    track.scrollTo({ left: panel.offsetLeft, behavior: 'smooth' });
+  },
+  onboardingBack(){
+    const track = document.getElementById('onboarding-track');
+    if(!track) return;
+    const activeDot = document.querySelector('.onboarding-dot.active');
+    if(!activeDot) return;
+    const currentIdx = parseInt(activeDot.dataset.idx, 10);
+    if(isNaN(currentIdx) || currentIdx <= 0) return;
+    if(navigator.vibrate) navigator.vibrate(8);
+    Actions.onboardingJump(currentIdx - 1);
+  },
+  onboardingNext(){
+    const track = document.getElementById('onboarding-track');
+    if(!track) return;
+    const activeDot = document.querySelector('.onboarding-dot.active');
+    if(!activeDot){ Actions.dismissOnboarding(); return; }
+    const currentIdx = parseInt(activeDot.dataset.idx, 10);
+    const totalPanels = ONBOARDING_PANELS.length + 1;
+    if(isNaN(currentIdx)){ Actions.dismissOnboarding(); return; }
+    if(currentIdx >= totalPanels - 1){
+      // Dernier panel → finish
+      if(navigator.vibrate) navigator.vibrate(15);
+      Actions.dismissOnboarding();
+      return;
+    }
+    if(navigator.vibrate) navigator.vibrate(12);
+    Actions.onboardingJump(currentIdx + 1);
+  },
+  onboardingEasterEgg(el){
+    if(!el) return;
+    if(navigator.vibrate) navigator.vibrate(20);
+    el.classList.remove('easter-egg');
+    void el.offsetWidth; // force reflow
+    el.classList.add('easter-egg');
+  },
   openNotifs(){
     Sheet.open('notifs');
   },
@@ -18719,17 +18480,6 @@ const Actions = {
     resetGarageForm();
     Sheet.open('addGarage');
   },
-  clearPendingSaleIntent(){
-    // Sprint « Boucler la boucle Vendre » — l'user annule l'intent de publication.
-    State.pendingSaleIntent = null;
-    if(State.activeTab === 'garage' && typeof renderGaragePage === 'function') renderGaragePage();
-    showToastFloat('Intention de publication annulée.');
-  },
-  // Sprint Axe 2 : raccourcis utilisés dans les empty states extras
-  switchToAnnonces(){ this.switchTab('annonces'); },
-  switchToEncheres(){ this.switchTab('encheres'); },
-  switchToAffut(){ this.switchTab('affut'); },
-  switchToGarage(){ this.switchTab('garage'); },
   garageFormChange(field, value){
     if(!field || typeof GarageFormState[field] === 'undefined') return;
     GarageFormState[field] = String(value || '');
@@ -18933,19 +18683,6 @@ const Actions = {
       // Toast flottant non-bloquant
       showToastFloat(`« ${newCar.brand} ${newCar.model} » ajoutée au Garage.`);
       resetGarageForm();
-      // Sprint Boucler la boucle Vendre : si l'user est arrivé depuis vendre.html
-      // avec un intent de publication, on enchaîne directement sur le form approprié
-      if(State.pendingSaleIntent){
-        const intent = State.pendingSaleIntent;
-        setTimeout(() => {
-          if(intent.mode === 'auction'){
-            Sheet.open('saleAuctionForm', newCar.id);
-          } else {
-            // listing par défaut, plan déjà attaché côté renderSaleListingFormSheet
-            Sheet.open('saleListingForm', newCar.id);
-          }
-        }, 600);
-      }
     }, 340);
     } catch(err) {
       GarageFormState._submitting = false;
@@ -19264,13 +19001,6 @@ const Actions = {
   listForSale(id){
     const c = (State.garage || []).find(x => x.id === id);
     if(!c) return;
-    // Sprint Boucler la boucle Vendre : si l'user arrive avec un intent
-    // de publication, on saute le picker et on ouvre directement le bon form.
-    if(State.pendingSaleIntent){
-      if(State.pendingSaleIntent.mode === 'auction') Sheet.open('saleAuctionForm', id);
-      else Sheet.open('saleListingForm', id);
-      return;
-    }
     Sheet.open('listForSale', id);
   },
   openSoldDetail(id){
@@ -19518,30 +19248,6 @@ const Actions = {
     if(mode === 'listing') Sheet.open('saleListingForm', id);
     else if(mode === 'auction') Sheet.open('saleAuctionForm', id);
   },
-  chooseSalePlan(id, plan){
-    // Sprint Boucler la boucle Vendre : appelé depuis le picker interne quand
-    // l'user clique une card plan. On réutilise pendingSaleIntent pour passer
-    // le plan choisi à renderSaleListingFormSheet (même code path que vendre.html).
-    if(!id || !plan) return;
-    if(plan === 'auction'){
-      State.pendingSaleIntent = null; // pas de plan attaché pour les enchères
-      Sheet.open('saleAuctionForm', id);
-      return;
-    }
-    if(!LISTING_PLANS[plan]){
-      // plan inconnu : fallback sur l'ouverture classique du form listing
-      Sheet.open('saleListingForm', id);
-      return;
-    }
-    State.pendingSaleIntent = {
-      plan: plan,
-      mode: 'listing',
-      amount: LISTING_PLANS[plan].amount,
-      label: LISTING_PLANS[plan].label,
-      ts: Date.now()
-    };
-    Sheet.open('saleListingForm', id);
-  },
   toggleTuner(formId, name){
     const state = formId === 'auction' ? SaleAuctionFormState : SaleListingFormState;
     if(state.tunerName === name){
@@ -19584,14 +19290,11 @@ const Actions = {
     if(idx === -1){ resetSaleListingForm(); Sheet.close(); return; }
     const car = State.garage[idx];
     const now = Date.now();
-    const planDays = getListingDurationForPlan(f.plan);
     car.saleStatus = 'listing';
     car.saleData = {
       mode: 'listing',
       startedAt: now,
-      expiresAt: now + planDays * 86400000,
-      plan: f.plan || null,
-      durationDays: planDays,
+      expiresAt: now + LISTING_DURATION_DAYS * 86400000,
       askingPrice: parseInt(f.askingPrice, 10) || 0,
       narrative: f.narrative.trim() || '',
       views: 0,
@@ -19604,17 +19307,11 @@ const Actions = {
     State.garage[idx] = car;
     if(!safePersistGarage()){ SaleListingFormState._submitting = false; return; }
     const carCopy = car;
-    // Consommer le pendingSaleIntent une fois la publication faite
-    if(State.pendingSaleIntent){ State.pendingSaleIntent = null; }
     Sheet.close();
     setTimeout(() => {
       resetSaleListingForm();
       if(State.activeTab === 'garage') renderGaragePage();
-      const planLabel = getListingLabelForPlan(carCopy.saleData.plan);
-      const toastMsg = planLabel
-        ? `Annonce publiée pour « ${carCopy.brand} ${carCopy.model} » · ${planLabel}.`
-        : `Annonce publiée pour « ${carCopy.brand} ${carCopy.model} » · ${planDays} jours d\u2019exposition.`;
-      showToastFloat(toastMsg);
+      showToastFloat(`Annonce publiée pour « ${carCopy.brand} ${carCopy.model} » \u00b7 90 jours d\u2019exposition.`);
     }, 340);
   },
   saleAuctionFormChange(field, value){
@@ -19763,62 +19460,6 @@ const Actions = {
 };
 
 // ===== RENDERERS =====
-// Sprint Axe 5 : footer éditorial réutilisable inclus à la fin de chaque page rendue.
-// Donne accès à tout l'écosystème Carnet (produit + éditorial + asso + légal).
-function renderEditorialFooter(){
-  return `
-    <footer class="carnet-footer">
-      <div class="carnet-footer-inner">
-        <div class="carnet-footer-brand">
-          <div class="carnet-footer-wordmark">Carnet <span class="carnet-footer-dot">·</span></div>
-          <div class="carnet-footer-tagline"><em>Une histoire de voitures.</em></div>
-          <div class="carnet-footer-asso">Association loi 1901 \u00e0 but non lucratif. Bénévoles uniquement, aucun salaire ni dividende.</div>
-        </div>
-
-        <div class="carnet-footer-grid">
-          <div class="carnet-footer-col">
-            <div class="carnet-footer-col-title">PRODUIT</div>
-            <button class="carnet-footer-link" data-action="switchToAffut">L'Affût</button>
-            <button class="carnet-footer-link" data-action="switchToAnnonces">Annonces</button>
-            <button class="carnet-footer-link" data-action="switchToEncheres">Enchères</button>
-            <button class="carnet-footer-link" data-action="switchToGarage">Garage</button>
-          </div>
-          <div class="carnet-footer-col">
-            <div class="carnet-footer-col-title">CARNET</div>
-            <a class="carnet-footer-link" href="vendre.html">Vendre</a>
-            <a class="carnet-footer-link" href="cote.html">Cote</a>
-            <a class="carnet-footer-link" href="discover.html">Découvrir</a>
-            <a class="carnet-footer-link" href="archetypes.html">Archétypes</a>
-          </div>
-          <div class="carnet-footer-col">
-            <div class="carnet-footer-col-title">ASSOCIATION</div>
-            <a class="carnet-footer-link" href="about.html">À propos</a>
-            <a class="carnet-footer-link" href="launch.html">14·12·2026 · Mulhouse</a>
-            <button class="carnet-footer-link" data-action="openPaywall">Contribuer</button>
-            <a class="carnet-footer-link" href="assurance.html">Partenaires</a>
-          </div>
-          <div class="carnet-footer-col">
-            <div class="carnet-footer-col-title">LÉGAL</div>
-            <a class="carnet-footer-link" href="terms.html">Conditions</a>
-            <a class="carnet-footer-link" href="privacy.html">Confidentialité</a>
-            <span class="carnet-footer-meta">CSBC Paris</span>
-            <span class="carnet-footer-meta">1 rue Sfax, 75116</span>
-          </div>
-        </div>
-
-        <div class="carnet-footer-bottom">
-          <div class="carnet-footer-onchain">
-            Transactions XRPL publiques · royalties NFT XLS-20 1,7 % · contributions 7,1 % bonne foi
-          </div>
-          <div class="carnet-footer-copyright">
-            <em>Curated Automotive Records Network for Exchange and Trust.</em>
-          </div>
-        </div>
-      </div>
-    </footer>
-  `;
-}
-
 function renderEmptyState(opts){
   opts = opts || {};
   const showOrnament = opts.ornament !== false;
@@ -19831,22 +19472,7 @@ function renderEmptyState(opts){
     const dataAttrs = (opts.cta.dataAttrs || []).map(a => `${esc(a.name)}="${esc(a.value)}"`).join(' ');
     ctaHtml = `<button class="${ctaClass}" data-action="${esc(opts.cta.action)}" ${dataAttrs}>${esc(opts.cta.label)}</button>`;
   }
-  // Sprint Axe 2 : extras = array de cross-links secondaires affichés sous le CTA principal.
-  // Chaque entry : { label, action?, href? } — soit data-action soit href.
-  let extrasHtml = '';
-  if(opts.extras && Array.isArray(opts.extras) && opts.extras.length > 0){
-    const links = opts.extras.map(ex => {
-      if(ex.href){
-        return `<a class="empty-state-extra-link" href="${esc(ex.href)}">${esc(ex.label)} \u2192</a>`;
-      }
-      if(ex.action){
-        return `<button class="empty-state-extra-link" data-action="${esc(ex.action)}">${esc(ex.label)} \u2192</button>`;
-      }
-      return '';
-    }).filter(Boolean).join('');
-    if(links) extrasHtml = `<div class="empty-state-extras">${links}</div>`;
-  }
-  return `<div class="empty-state">${ornamentHtml}${titleHtml}${textHtml}${ctaHtml}${extrasHtml}</div>`;
+  return `<div class="empty-state">${ornamentHtml}${titleHtml}${textHtml}${ctaHtml}</div>`;
 }
 
 function renderKpis(){
@@ -19923,18 +19549,9 @@ function renderMatches(){
   const source = (State.liveMatches !== null) ? State.liveMatches : State.matches;
   document.querySelector('.matches-count').textContent = source.length;
   if(source.length === 0){
-    const hasAlerts = (State.alerts || []).filter(a => !a.paused).length > 0;
     container.innerHTML = renderEmptyState({
-      title: hasAlerts ? "Rien n'est encore remonté" : "Aucune alerte active",
-      text: hasAlerts
-        ? "Tes alertes scrutent les marchés en continu. Les premières détections apparaîtront ici."
-        : "Crée ta première alerte. Marque, budget, kilométrage, état — tu affines ce qui doit te remonter. CARNET fait le reste.",
-      cta: hasAlerts ? null : { label: '+ Créer une alerte', action: 'openNewAlert', primary: true },
-      extras: [
-        { label: 'Explorer les annonces', action: 'switchToAnnonces' },
-        { label: 'Voir les enchères', action: 'switchToEncheres' },
-        { label: 'Découvrir CARNET', href: 'discover.html' }
-      ]
+      title: "Rien n'est encore remonté",
+      text: "Tes alertes scrutent les marchés en continu. Les premières détections apparaîtront ici."
     });
     return;
   }
@@ -20184,17 +19801,8 @@ function renderEncheresPage(){
   m.innerHTML = `
     <section class="hero">
       <div class="hero-tag">ENCHÈRES</div>
-      <h1 class="hero-title">${myAuctions.length > 0 ? 'Tes enchères et le marché.' : 'Le marché en direct.'}</h1>
-      <p class="hero-sub">${(() => {
-        const ctx = getContextualState();
-        if(ctx.cars.inAuction > 0){
-          return `${ctx.cars.inAuction} de tes enchères en cours · ${live.length} lot${live.length > 1 ? 's' : ''} live sur le marché collector ci-dessous.`;
-        }
-        if(live.length > 0){
-          return `${live.length} lot${live.length > 1 ? 's' : ''} en direct · BaT, RM Sotheby's, Artcurial, Bonhams, Gooding, Aguttes, Oldtimer Galerie.`;
-        }
-        return `Bring a Trailer, RM Sotheby's, Artcurial, Bonhams, Gooding, Aguttes, Oldtimer Galerie — les enchères collector agrégées.`;
-      })()}</p>
+      <h1 class="hero-title">Le marché en direct.</h1>
+      <p class="hero-sub">Bring a Trailer, RM Sotheby's, Artcurial, Bonhams, Gooding, Aguttes, Oldtimer Galerie — les enchères collector agrégées.</p>
     </section>
     <div class="encheres-filter-bar">${filterChips}</div>
     ${myAuctions.length > 0 ? `
@@ -20207,24 +19815,7 @@ function renderEncheresPage(){
           ${myAuctions.map(renderMyAuctionCard).join('')}
         </div>
       </section>
-    ` : (() => {
-      // Sprint Axe 2 : teaser enchère si user a des voitures sans enchère active
-      const garageCars = (State.garage || []).filter(c => c.ownership !== 'wishlist' && !c.saleStatus);
-      if(garageCars.length === 0) return '';
-      return `
-        <section class="section section-my-sales-teaser">
-          <div class="my-sales-teaser">
-            <div class="my-sales-teaser-tag">TES ENCHÈRES</div>
-            <div class="my-sales-teaser-title"><em>Tu n\u2019as aucune enchère en cours.</em></div>
-            <div class="my-sales-teaser-text">Commission 8,8 % à la vente — 7,1 % vendeur + 1,7 % acheteur. Aucun frais d\u2019entrée. ${garageCars.length === 1 ? 'Une voiture' : `${garageCars.length} voitures`} prêtes à partir.</div>
-            <div class="my-sales-teaser-actions">
-              <button class="my-sales-teaser-cta" data-action="switchToGarage">Aller au Garage \u2192</button>
-              <a class="my-sales-teaser-link" href="vendre.html">Détails enchères \u2192</a>
-            </div>
-          </div>
-        </section>
-      `;
-    })()}
+    ` : ''}
     <section class="section">
       <div class="section-header">
         <h2 class="section-title">${myAuctions.length > 0 ? 'Le marché · En direct' : 'En direct'}</h2>
@@ -20246,7 +19837,6 @@ function renderEncheresPage(){
       </div>
       <div class="encheres-feed encheres-feed-sold">${soldBody}</div>
     </section>
-    ${renderEditorialFooter()}
   `;
 }
 
@@ -20317,20 +19907,12 @@ function renderListingsPage(){
     if(hasQuery){
       body = renderEmptyState({
         title: 'Aucun résultat pour « ' + search + ' »',
-        text: hasFilter ? 'Élargis le tier ou modifie la recherche.' : 'Modifie ta recherche pour parcourir l\u2019ensemble du stock.',
-        extras: [
-          { label: 'Voir les enchères', action: 'switchToEncheres' },
-          { label: 'Estimer une cote', href: 'cote.html' }
-        ]
+        text: hasFilter ? 'Élargis le tier ou modifie la recherche.' : 'Modifie ta recherche pour parcourir l\u2019ensemble du stock.'
       });
     } else {
       body = renderEmptyState({
         title: 'Aucune voiture dans ce tier',
-        text: 'Élargis le tier pour voir plus de voitures du stock.',
-        extras: [
-          { label: 'Vendre une voiture', href: 'vendre.html' },
-          { label: 'Voir les enchères', action: 'switchToEncheres' }
-        ]
+        text: 'Élargis le tier pour voir plus de voitures du stock.'
       });
     }
   } else {
@@ -20339,19 +19921,8 @@ function renderListingsPage(){
   m.innerHTML = `
     <section class="hero">
       <div class="hero-tag">ANNONCES</div>
-      <h1 class="hero-title">${myListings.length > 0 ? 'Tes annonces et le stock.' : 'Le stock.'}</h1>
-      <p class="hero-sub">${(() => {
-        const ctx = getContextualState();
-        if(ctx.cars.inListing > 0){
-          const exp = ctx.cars.expiringSoon;
-          if(exp > 0) return `${ctx.cars.inListing} de tes annonces en ligne · <strong style="color:var(--orange-polo);font-style:normal">${exp} expire${exp > 1 ? 'nt' : ''} bientôt</strong> · ${allListings.length} au stock public ci-dessous.`;
-          return `${ctx.cars.inListing} de tes annonces en ligne · ${allListings.length} voitures sélectionnées au stock public ci-dessous.`;
-        }
-        if(ctx.cars.idle > 0){
-          return `${allListings.length} voitures sélectionnées · ${ctx.cars.idle} voiture${ctx.cars.idle > 1 ? 's' : ''} dans ton garage prête${ctx.cars.idle > 1 ? 's' : ''} à être publiée${ctx.cars.idle > 1 ? 's' : ''}.`;
-        }
-        return `${allListings.length} voitures sélectionnées · marchands premium et marketplaces collector.`;
-      })()}</p>
+      <h1 class="hero-title">Le stock.</h1>
+      <p class="hero-sub">${allListings.length} voitures sélectionnées · marchands premium et marketplaces collector.</p>
     </section>
     ${myListings.length > 0 ? `
       <section class="section section-my-sales">
@@ -20363,24 +19934,7 @@ function renderListingsPage(){
           ${myListings.map(renderMyListingCard).join('')}
         </div>
       </section>
-    ` : (() => {
-      // Sprint Axe 2 : teaser publication si user a des voitures sans annonce active
-      const garageCars = (State.garage || []).filter(c => c.ownership !== 'wishlist' && !c.saleStatus);
-      if(garageCars.length === 0) return '';
-      return `
-        <section class="section section-my-sales-teaser">
-          <div class="my-sales-teaser">
-            <div class="my-sales-teaser-tag">TES ANNONCES</div>
-            <div class="my-sales-teaser-title"><em>Tu n\u2019as encore rien publié.</em></div>
-            <div class="my-sales-teaser-text">${garageCars.length === 1 ? 'Une voiture' : `${garageCars.length} voitures`} dans ton garage. Mets-en une en vente quand tu veux — Premium 30/60/90 jours ou enchère.</div>
-            <div class="my-sales-teaser-actions">
-              <button class="my-sales-teaser-cta" data-action="switchToGarage">Aller au Garage \u2192</button>
-              <a class="my-sales-teaser-link" href="vendre.html">Voir les plans \u2192</a>
-            </div>
-          </div>
-        </section>
-      `;
-    })()}
+    ` : ''}
     <section class="section">
       ${myListings.length > 0 ? `
         <div class="section-header" style="margin-bottom:var(--s-2)">
@@ -20396,7 +19950,6 @@ function renderListingsPage(){
       <div class="listings-count">${filtered.length} ${filtered.length === 1 ? 'voiture' : 'voitures'}${hasFilter || hasQuery ? ' · sur ' + allListings.length + ' au stock' : ''}</div>
       ${body}
     </section>
-    ${renderEditorialFooter()}
   `;
 }
 
@@ -20540,36 +20093,6 @@ function renderListingCard(l){
 
 
 // ─── v6.16 : Completion banner ─────────────────────────────────────
-// Sprint Axe 3 : banner d'action requise quand annonces user expirent <7j.
-// Apparaît seulement s'il y a quelque chose à faire — sinon retourne '' (UI propre).
-function renderExpiringSoonBanner(){
-  const ctx = getContextualState();
-  if(!ctx.cars.expiringList || ctx.cars.expiringList.length === 0) return '';
-  // Tri par échéance la plus proche d'abord
-  const sorted = [...ctx.cars.expiringList].sort((a, b) => (a.saleData?.expiresAt || 0) - (b.saleData?.expiresAt || 0));
-  const first = sorted[0];
-  const days = Math.ceil((first.saleData.expiresAt - Date.now()) / 86400000);
-  const dayLabel = days <= 0 ? "aujourd'hui" : (days === 1 ? 'demain' : `dans ${days} jours`);
-  const restCount = sorted.length - 1;
-  return `
-    <div class="expiring-banner">
-      <div class="expiring-banner-head">
-        <span class="expiring-banner-dot"></span>
-        <span class="expiring-banner-tag">ACTION À PRÉVOIR</span>
-      </div>
-      <p class="expiring-banner-msg">
-        Ton annonce sur <strong>${esc(first.brand)} ${esc(first.model)}</strong> expire ${dayLabel}.
-        ${restCount > 0 ? ` Et ${restCount} autre${restCount > 1 ? 's' : ''} dans les jours qui suivent.` : ''}
-        Si elle ne trouve pas preneur, CARNET te propose la bascule en enchère.
-      </p>
-      <div class="expiring-banner-actions">
-        <button class="expiring-banner-cta" data-action="openGarageCar" data-id="${esc(first.id)}">Voir l'annonce</button>
-        <button class="expiring-banner-link" data-action="switchToAnnonces">Toutes mes annonces \u2192</button>
-      </div>
-    </div>
-  `;
-}
-
 function renderCompletionBanner(car) {
   if (!car) return '';
   // Marque comme "vu" pour respecter la cadence 1×/mois
@@ -20651,29 +20174,6 @@ function renderGarageDeadlinesBlock(){
   </div>`;
 }
 
-function renderPendingSaleIntentBanner(){
-  // Sprint « Boucler la boucle Vendre » — banner affiché quand l'user arrive
-  // depuis vendre.html avec une intention de publication.
-  const intent = State.pendingSaleIntent;
-  if(!intent) return '';
-  const isAuction = intent.mode === 'auction';
-  const tag = isAuction ? 'ENCHÈRE CARNET' : 'ANNONCE PREMIUM';
-  const headline = isAuction
-    ? 'Tu veux la mettre aux enchères.'
-    : `Tu veux la publier en ${intent.label}.`;
-  const sub = isAuction
-    ? 'Commission 8,8 % à la vente · aucun frais d\u2019entrée. Choisis la voiture ou ajoutes-en une.'
-    : `${intent.amount} € réglés à la publication. Choisis la voiture à publier ou ajoutes-en une nouvelle.`;
-  return `
-    <div class="pending-sale-banner" style="border:1px solid var(--encre);background:var(--orange-polo);color:var(--papier);padding:var(--s-3) var(--s-4);margin-bottom:var(--s-4);border-radius:2px;position:relative">
-      <div style="font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--papier);opacity:.85">${esc(tag)}</div>
-      <div style="font-family:var(--display);font-style:italic;font-size:var(--t-lg);color:var(--papier);margin-top:6px;line-height:1.25">${esc(headline)}</div>
-      <div style="font-family:var(--editorial);font-style:italic;font-size:var(--t-sm);color:var(--papier);opacity:.92;margin-top:8px;line-height:1.5">${esc(sub)}</div>
-      <button class="pending-sale-banner-close" data-action="clearPendingSaleIntent" aria-label="Annuler l'intention" style="position:absolute;top:8px;right:8px;background:transparent;border:none;color:var(--papier);font-size:22px;line-height:1;cursor:pointer;opacity:.8;padding:4px 8px">×</button>
-    </div>
-  `;
-}
-
 function renderGaragePage(){
   const m = document.querySelector('main.main');
   if(!m) return;
@@ -20701,21 +20201,11 @@ function renderGaragePage(){
 
   let body;
   if(garage.length === 0 && wishlistCars.length === 0){
-    // Sprint Axe 4 : empty state adapté au profil dominant si défini, sinon générique
-    const profileVoice = getProfileVoice();
-    body = renderPendingSaleIntentBanner() + renderProfileOnboardingBanner() + renderEmptyState({
-      title: profileVoice ? profileVoice.emptyTitle : 'Garage à remplir',
-      text: profileVoice
-        ? profileVoice.emptyText
-        : "Entre ta première voiture. Suivi de cote, entretien, photos, factures — tout reste là, accessible. Plus tard, fouille annonces et enchères pour étoffer, ou prépare une revente depuis CARNET.",
+    body = renderProfileOnboardingBanner() + renderEmptyState({
+      title: 'Garage à remplir',
+      text: "Entre ta première voiture. Suivi de cote, entretien, photos, factures — tout reste là, accessible. Plus tard, fouille annonces et enchères pour étoffer, ou prépare une revente depuis CARNET.",
       cta: { label: '+ Ajouter ma première voiture', action: 'openAddGarage', primary: true }
-    }) + `
-      <div class="garage-empty-portes" style="display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-top:24px;padding:18px 0;border-top:1px solid rgba(50,35,25,0.08)">
-        <a href="vendre.html" style="font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--orange-polo);text-decoration:none;border-bottom:1px solid var(--orange-polo);padding-bottom:2px">Vendre une voiture \u2192</a>
-        <a href="cote.html" style="font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--encre);text-decoration:none;border-bottom:1px solid var(--encre);padding-bottom:2px">Estimer une cote \u2192</a>
-        <a href="discover.html" style="font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--encre);text-decoration:none;border-bottom:1px solid var(--encre);padding-bottom:2px">Découvrir Carnet \u2192</a>
-      </div>
-    `;
+    });
   } else {
     const totalDocs = valuableCars.reduce((a,c) => a + (c.docsCount||0), 0);
     const totalPhotos = valuableCars.reduce((a,c) => a + (c.photosCount||0), 0);
@@ -20767,7 +20257,6 @@ function renderGaragePage(){
     ` : '';
 
     body = `
-      ${renderPendingSaleIntentBanner()}
       <div class="garage-summary">
         <div class="garage-summary-label">VALEUR ESTIM\u00c9E \u00b7 COTE CARNET</div>
         <div class="garage-summary-value">${esc(fmtPrice(totalValue))}</div>
@@ -20787,7 +20276,6 @@ function renderGaragePage(){
         <span class="garage-card-add-label">Ajouter une voiture</span>
       </button>
       ${renderProfileOnboardingBanner()}
-      ${renderExpiringSoonBanner()}
       ${(() => { const _c = findCarNeedingCompletion(); return _c ? renderCompletionBanner(_c) : ''; })()}
       ${renderGarageAdviceSection(activeCars)}
       ${inSaleSection}
@@ -20804,13 +20292,7 @@ function renderGaragePage(){
       </div>
       <h1 class="hero-title">Ma collection.</h1>
       <p class="hero-sub"><em class="garage-sub-lead">${frCarsCount(activeCars.length)}</em> Leur cote, leur carnet, leur place sur le march\u00e9.</p>
-      ${(() => {
-        const v = getProfileVoice();
-        return v ? `<p class="hero-profile-tagline"><em>${esc(v.garageHook)}</em></p>` : '';
-      })()}
       <a class="garage-discover-link" data-action="openDiscoverCarnet">Pourquoi CARNET \u2192</a>
-      <a class="garage-discover-link" href="vendre.html" style="margin-left:14px">Vendre \u2192</a>
-      <a class="garage-discover-link" href="cote.html" style="margin-left:14px">Cote \u2192</a>
       ${(State.userProfiles || []).length === 0 ? `<a class="garage-discover-link" data-action="openSelectProfile" style="margin-left:14px;color:var(--gris);border-bottom-color:var(--gris);">Mon profil \u2192</a>` : ''}
       ${(State.userProfiles || []).length > 0 ? `
         <div class="hero-profile-chips">
@@ -20824,7 +20306,6 @@ function renderGaragePage(){
     <section class="section">
       ${body}
     </section>
-    ${renderEditorialFooter()}
   `;
 }
 
@@ -21070,8 +20551,6 @@ function handleClick(e){
   if(action === 'toggleGarageCondition'){ Actions.toggleGarageCondition(t.dataset.field); return; }
   // Sale flow
   if(action === 'chooseSaleMode'){ Actions.chooseSaleMode(t.dataset.id, t.dataset.mode); return; }
-  if(action === 'chooseSalePlan'){ Actions.chooseSalePlan(t.dataset.id, t.dataset.plan); return; }
-  if(action === 'paywallSelectMethod'){ Actions.paywallSelectMethod(t.dataset.method); return; }
   if(action === 'saleAuctionFormChange' && t.dataset.value !== undefined){
     Actions.saleAuctionFormChange(t.dataset.field, t.dataset.value); return;
   }
@@ -21092,6 +20571,14 @@ function handleClick(e){
     Actions.kpiNav(t.dataset.target);
   } else if(action === 'dismissOnboarding'){
     Actions.dismissOnboarding();
+  } else if(action === 'onboardingJump'){
+    Actions.onboardingJump(t.dataset.idx);
+  } else if(action === 'onboardingBack'){
+    Actions.onboardingBack();
+  } else if(action === 'onboardingNext'){
+    Actions.onboardingNext();
+  } else if(action === 'onboardingEasterEgg'){
+    Actions.onboardingEasterEgg(t);
   } else if(action === 'builderSetType'){
     Actions.builderSetType(t.dataset.type);
   } else if(action === 'builderSetPosture'){
@@ -21244,41 +20731,6 @@ function init(){
   // Moteur d'auto-transition annonce → enchère
   const transitions = checkSaleTransitions();
 
-  // === Sprint « Boucler la boucle Vendre » : routing URL params ===
-  // vendre.html → /?tab=garage&plan=premium-30  → ouvre Garage avec intent de publication
-  // vendre.html → /?tab=garage&mode=enchere     → ouvre Garage avec intent d'enchère
-  try {
-    const urlParams = new URLSearchParams(window.location.search);
-    const requestedTab = urlParams.get('tab');
-    const requestedPlan = urlParams.get('plan');
-    const requestedMode = urlParams.get('mode');
-
-    if(requestedTab && ['affut','annonces','encheres','garage'].includes(requestedTab)){
-      State.activeTab = requestedTab;
-    }
-    if(requestedPlan && LISTING_PLANS[requestedPlan]){
-      State.pendingSaleIntent = {
-        plan: requestedPlan,
-        mode: 'listing',
-        amount: LISTING_PLANS[requestedPlan].amount,
-        label: LISTING_PLANS[requestedPlan].label,
-        ts: Date.now()
-      };
-    } else if(requestedMode === 'enchere'){
-      State.pendingSaleIntent = {
-        plan: null,
-        mode: 'auction',
-        amount: null,
-        label: 'Enchère · commission 8,8 %',
-        ts: Date.now()
-      };
-    }
-    // URL propre après lecture
-    if(urlParams.has('tab') || urlParams.has('plan') || urlParams.has('mode')){
-      try { window.history.replaceState({}, '', window.location.pathname); } catch(_){}
-    }
-  } catch(e){ /* no-op : on ne casse pas l'init si URLSearchParams indisponible */ }
-
   renderAll();
   captureAffutSnapshot();
   // Annoncer les transitions automatiques si applicables
@@ -21390,6 +20842,30 @@ function handleOnboardingScroll(e){
   dotsEl.querySelectorAll('.onboarding-dot').forEach((dot, i) => {
     dot.classList.toggle('active', i === idx);
   });
+  // Back arrow visibility (panels II..V)
+  const backBtn = document.getElementById('onboarding-back');
+  if(backBtn){ backBtn.style.visibility = idx === 0 ? 'hidden' : 'visible'; }
+  // CTA contextuel
+  const ctaBtn = document.getElementById('onboarding-cta');
+  if(ctaBtn){
+    const totalPanels = ONBOARDING_PANELS.length + 1;
+    const profileIdx = ONBOARDING_PANELS.length;
+    if(idx === profileIdx){
+      // Dernier panel · finish
+      const selected = (State.userProfiles || []).length;
+      ctaBtn.textContent = selected === 0
+        ? "C'est parti"
+        : `C'est parti · ${selected} profil${selected > 1 ? 's' : ''}`;
+      ctaBtn.dataset.action = 'dismissOnboarding';
+    } else if(idx === profileIdx - 1){
+      // Panel IV · vente → next is Choisir mon profil
+      ctaBtn.textContent = 'Choisir mon profil';
+      ctaBtn.dataset.action = 'onboardingNext';
+    } else {
+      ctaBtn.textContent = 'Suivant';
+      ctaBtn.dataset.action = 'onboardingNext';
+    }
+  }
 }
 
 if(document.readyState === 'loading'){
